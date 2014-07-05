@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Rozdělovač</string>
+    <string name="help">Nápověda</string>
+    <string name="no_browser">Není dostupný žádný prohlížeč!</string>
+    <string name="wait">Čekat</string>
+    <string name="connect">Spojit</string>
+    <string name="load">Nahrát</string>
+    <string name="stop">Zastavit</string>
+    <string name="cancel">Zrušit</string>
+    <string name="remove">Odstranit</string>
+    <string name="parse">Číst</string>
+    <string name="play">Přehrát</string>
+    <string name="pause">Pozastavit</string>
+    <string name="resume">Pokračovat</string>
+    <string name="first_run_title">Vítejte</string>
+    <string name="first_run_text">Vaším prvním krokem je přidání odběru jednoho nebo více záznamů (podcast), zvukových a obrazových. Použijte, prosím, zelené tlačítko níže k otevření dialogu Přidat záznam. Dialog nabízí i návrhy záznamů a seznam odběrů OPML.</string>
+    <string name="first_run_add">Přidat záznamy</string>
+    <string name="player_buffering">Ukládání do vyrovnávací paměti&#8230;</string>
+    <string name="player_label">u %1$s z %2$s</string>
+    <string name="player_label_short">%1$s z %2$s</string>
+    <string name="player_error">Přehrávání se nezdařilo</string>
+    <string name="podcast_image">Logo záznamu</string>
+    <string name="podcast_none">Nepřidán žádný záznam</string>
+    <string name="podcast_none_selected">Nevybrán žádný záznam</string>
+    <string name="podcast_select_all">Vybrat všechny záznamy</string>
+    <plurals name="podcasts">
+        <item quantity="one">Jeden záznam</item>
+        <item quantity="few">%d záznamy</item>
+        <item quantity="other">%d záznamů</item>
+    </plurals>
+    <string name="podcast_add_title">Nový záznam</string>
+    <string name="podcast_add_button">Přidat</string>
+    <string name="podcast_enter_url_here">Kopírovat adresu záznamu zde</string>
+    <string name="podcast_load_error">Záznam se nepodařilo nahrát!</string>
+    <string name="podcast_load_error_access_denied">Záznam se nepodařilo nahrát, protože přístup ke kanálu byl odepřen.</string>
+    <string name="podcast_load_error_explicit">Záznam se nepodařilo nahrát, protože přístup k určitému obsahu je v tomto uživatelském profilu blokován.</string>
+    <string name="podcast_load_error_not_reachable">Záznam se nepodařilo nahrát, protože se nepodařilo spojit se se serverem, nebo je adresa neplatná.</string>
+    <string name="podcast_load_error_not_parseable">Záznam se nepodařilo nahrát, protože adresa neukazuje na platný kanál záznamu.</string>
+    <string name="podcast_load_multiple_progress">%1$d z %2$d záznamů</string>
+    <string name="podcast_load_multiple_error">Záznam\n\"%s\"\nse nepodařilo nahrát.</string>
+    <string name="podcast_load_multiple_error_all">Všechn záznamy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
+    <string name="podcast_block_explicit">Blokovat záznamy s určitým obsahem</string>
+    <string name="episode_none">Žádné díly v tomto záznamu</string>
+    <string name="episode_none_all_podcasts">Žádné díly</string>
+    <string name="episode_no_description">Není dostupný žádný popis.</string>
+    <string name="episode_none_selected">Nevybrán žádný díl</string>
+    <plurals name="episodes">
+        <item quantity="one">Jeden díl</item>
+        <item quantity="few">%d díly</item>
+        <item quantity="other">%d dílů</item>
+    </plurals>
+    <string name="episodes_select_all">Vybrat vše</string>
+    <string name="episodes_sort_toggle">Obrátit pořadí</string>
+    <string name="download">Stahování</string>
+    <string name="downloads">Stahování</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="one">Smazat stažený</item>
+        <item quantity="few">Smazat %d stažené</item>
+        <item quantity="other">Smazat %d stažených</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="one">Díl nebude nadále dostupný mimo internet.</item>
+        <item quantity="few">Díly nebudou nadále dostupné mimo internet.</item>
+        <item quantity="other">Díly nebudou nadále dostupné mimo internet.</item>
+    </plurals>
+    <string name="downloads_none">Žádné stahování. Použijte ikonu pro stahování v nabídce pro zpřístupnění dílů, když nejste připojen k internetu.</string>
+    <string name="download_started">Stahování spuštěno pro \n\"%s\"</string>
+    <string name="download_failed">Stahování se nepodařilo u \n\"%s\"</string>
+    <string name="download_failed_cannot_write">Stahování se nepodařilo u \n\"%s\"</string>
+    <string name="download_failed_no_space">Stahování se nepodařilo u \n\"%s\"</string>
+    <string name="download_failed_download_app_disabled">Stahování se nepodařilo u \n\"%s\"</string>
+    <string name="auth">Oprávnění</string>
+    <string name="auth_edit">Upravit oprávnění</string>
+    <string name="auth_username">Uživatleské jméno</string>
+    <string name="auth_password">Heslo</string>
+    <string name="auth_submit">Potvrdit</string>
+    <string name="file_select">Vybrat</string>
+    <string name="file_select_file">Vybrat soubor</string>
+    <string name="file_select_folder">Vybrat složku</string>
+    <string name="file_select_folder_empty">Tato složka je prázdná.</string>
+    <string name="file_select_access_denied">Přístup odepřen!</string>
+    <string name="opml_import">Zavést OPML</string>
+    <string name="opml_import_failed">Zavedení OPML se nezdařilo</string>
+    <string name="opml_export">Vyvést OPML</string>
+    <string name="opml_export_success">Soubor OPML uložen</string>
+    <string name="opml_export_success_at">Soubor OPML uložen v\n%s</string>
+    <string name="opml_export_failed">Vyvedení OPML se nezdařilo</string>
+    <string name="suggestions">Návrhy</string>
+    <string name="suggested_podcasts">Navržené záznamy</string>
+    <string name="suggestion_listen">Poslouchat</string>
+    <string name="suggestion_watch">Dívat se</string>
+    <string name="suggestion_confirm_explicit">Tento záznam je označen jako výslovný. Opravdu jej chcete přidat do seznamu svých záznamů?</string>
+    <string name="suggestions_none">Žádné návrhy. Změňte, prosím, své filtry.</string>
+    <string name="suggestions_reset_filters">Nastavit filtry znovu</string>
+    <string name="suggestions_load_error">Návrhy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
+    <string name="suggestions_send">Odeslat návrh záznamu</string>
+    <string name="sync_all_started">Začala synchronizace pro všechny povolené služby</string>
+    <string name="sync_dropbox_unlink_title">Odpojit Dropbox</string>
+    <string name="sync_dropbox_unlink_message">Opravdu chcete odpojit svůj účet u Dropboxu od této aplikace? I když to pro teď veškerou synchronizaci přes Dropbox, můžete to vrátit zpět opětovným připojením aplikace později.</string>
+    <string name="sync_dropbox_unlink_button">Odpojit</string>
+    <string name="sync_gpodder_config_title">Nastavit gpodder.net</string>
+    <string name="sync_gpodder_login_invalid">Nepodařilo se přihlásit k gpodder.net. Prověřte, prosím, své přihlašovací údaje!</string>
+    <string name="sync_gpodder_device_id">ID zařízení</string>
+    <string name="preferences">Nastavení</string>
+    <string name="pref_select_all_on_start_title">Vybrat vše při spuštění</string>
+    <string name="pref_select_all_on_start_summary">Nahrát všechny odběry, když se program spouští</string>
+    <string name="pref_sync_title">Synchronizace</string>
+    <string name="pref_sync_none">Nyní zakázáno</string>
+    <string name="pref_sync_last_run">Poslední plná synchronizace: %1$s</string>
+    <string name="pref_sync_now">Synchronizovat</string>
+    <string name="pref_category_interface">Rozhraní</string>
+    <string name="pref_theme_color_title">Barva motivu</string>
+    <string name="pref_wide_episode_list_title">Rozsáhlý seznam dílů</string>
+    <string name="pref_wide_episode_list_summary">Udělat prostor pro více podrobností k dílu</string>
+</resources>

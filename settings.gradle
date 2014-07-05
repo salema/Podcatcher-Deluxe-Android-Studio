@@ -1,0 +1,1 @@
+include ':app', ':color_picker', 'gpodder_sync'

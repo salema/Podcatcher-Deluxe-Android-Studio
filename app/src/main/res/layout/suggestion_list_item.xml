@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<com.podcatcher.deluxe.view.SuggestionListItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/suggestion_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/suggestion_add_button"
+        android:ellipsize="marquee"
+        android:paddingLeft="@dimen/list_item_padding"
+        android:singleLine="true"
+        android:textAppearance="?android:textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/suggestion_featured"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/suggestion_name"
+        android:paddingLeft="@dimen/list_item_padding"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_suggestion_featured"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/suggestion_meta"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/suggestion_name"
+        android:layout_toLeftOf="@id/suggestion_add_button"
+        android:layout_toRightOf="@id/suggestion_featured"
+        android:ellipsize="marquee"
+        android:paddingLeft="@dimen/list_item_padding"
+        android:singleLine="true"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/text_secondary" />
+
+    <Button
+        android:id="@+id/suggestion_add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/list_item_padding"
+        android:background="@drawable/button_green"
+        android:paddingLeft="@dimen/suggestion_add_padding"
+        android:paddingRight="@dimen/suggestion_add_padding"
+        android:singleLine="true"
+        android:textColor="@drawable/button_label" />
+
+    <TextView
+        android:id="@+id/suggestion_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/suggestion_meta"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/list_item_padding"
+        android:paddingRight="@dimen/list_item_padding"
+        android:textAppearance="?android:textAppearanceSmall" />
+</com.podcatcher.deluxe.view.SuggestionListItemView>

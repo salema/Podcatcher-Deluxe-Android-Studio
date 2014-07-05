@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="select_all_on_startup"
+        android:summary="@string/pref_select_all_on_start_summary"
+        android:title="@string/pref_select_all_on_start_title" />
+    <com.podcatcher.deluxe.preferences.SynchronizationPreference
+        android:key="synchronization"
+        android:title="@string/pref_sync_title">
+        <intent
+            android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
+            android:targetPackage="com.podcatcher.deluxe" />
+    </com.podcatcher.deluxe.preferences.SynchronizationPreference>
+    <net.margaritov.preference.colorpicker.ColorPickerPreference
+        android:defaultValue="@color/theme_dark"
+        android:key="theme_color"
+        android:title="@string/pref_theme_color_title" />
+    <PreferenceCategory android:title="@string/downloads">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="auto_download"
+            android:summary="@string/pref_auto_download_summary"
+            android:title="@string/pref_auto_download_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="auto_delete"
+            android:summary="@string/pref_auto_delete_summary"
+            android:title="@string/pref_auto_delete_title" />
+        <com.podcatcher.deluxe.preferences.DownloadFolderPreference
+            android:key="download_folder"
+            android:title="@string/pref_download_folder_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

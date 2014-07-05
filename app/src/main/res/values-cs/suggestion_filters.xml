@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="wildcard">Vše</string>
+    <string-array name="languages">
+        <item>Angličtina</item>
+        <item>Francouzština</item>
+        <item>Němčina</item>
+        <item>Španělština</item>
+    </string-array>
+    <string-array name="types">
+        <item>Zvukový záznam</item>
+        <item>Obrazový záznam</item>
+    </string-array>
+    <string-array name="genres">
+        <item>Umění</item>
+        <item>Obchod</item>
+        <item>Komedie</item>
+        <item>Výchova a vzdělávání</item>
+        <item>Hry a koníčky</item>
+        <item>Vláda a organizace</item>
+        <item>Zdraví</item>
+        <item>Děti a rodina</item>
+        <item>Hudba</item>
+        <item>Zprávy a politika</item>
+        <item>Náboženství a duchovno</item>
+        <item>Věda a lékařství</item>
+        <item>Společnost a kultura</item>
+        <item>Sport a odpočinek</item>
+        <item>Technika</item>
+        <item>Televize a film</item>
+    </string-array>
+</resources>

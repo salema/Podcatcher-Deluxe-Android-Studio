@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PodcastActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <fragment
+            android:id="@+id/podcast_list"
+            class="com.podcatcher.deluxe.view.fragments.PodcastListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:tag="@string/podcast_list_fragment_tag"
+            tools:layout="@layout/list_content" />
+
+        <fragment
+            android:id="@+id/episode_list"
+            class="com.podcatcher.deluxe.view.fragments.EpisodeListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:tag="@string/episode_list_fragment_tag"
+            tools:layout="@layout/list_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/episode"
+            class="com.podcatcher.deluxe.view.fragments.EpisodeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:tag="@string/episode_fragment_tag"
+            tools:layout="@layout/episode" />
+
+        <fragment
+            android:id="@+id/player"
+            class="com.podcatcher.deluxe.view.fragments.PlayerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/player_fragment_tag"
+            tools:layout="@layout/player" />
+    </LinearLayout>
+</LinearLayout>

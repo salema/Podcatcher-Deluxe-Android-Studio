@@ -1,0 +1,107 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19 // 'android-L'
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.podcatcher.deluxe"
+        minSdkVersion 14
+        targetSdkVersion 19 // "L"
+        versionCode 1
+        versionName "1.0"
+    }
+    signingConfigs {
+        simple {
+            storeFile file("Podcatcher KeyStore")
+            storePassword System.getenv("PCDKSTOREPWD")
+            keyAlias "simple podcatcher"
+            keyPassword System.getenv("PCDKEYPWD")
+        }
+        deluxe {
+            storeFile file("Podcatcher KeyStore")
+            storePassword System.getenv("PCDKSTOREPWD")
+            keyAlias "deluxe podcatcher"
+            keyPassword System.getenv("PCDKEYPWD")
+        }
+        video {
+            storeFile file("Podcatcher KeyStore")
+            storePassword System.getenv("PCDKSTOREPWD")
+            keyAlias "video podcatcher"
+            keyPassword System.getenv("PCDKEYPWD")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "media", "edition" //, "store"
+    productFlavors {
+        simple {
+            flavorDimension "edition"
+            applicationId "net.alliknow.podcatcher"
+            versionName "3.0.6"
+
+            signingConfig signingConfigs.simple
+        }
+        deluxe {
+            flavorDimension "edition"
+        }
+        audio {
+            flavorDimension "media"
+            applicationId "com.podcatcher.deluxe"
+            versionName "4.0.6"
+
+            signingConfig signingConfigs.deluxe
+        }
+        video {
+            flavorDimension "media"
+            applicationId "com.podcatcher.deluxe.video"
+            versionName "5.0.6"
+
+            signingConfig signingConfigs.video
+        }
+        /* play {
+             flavorDimension "store"
+         }
+         amazon {
+             flavorDimension "store"
+         }
+         slideme {
+             flavorDimension "store"
+         }*/
+    }
+}
+
+dependencies {
+    // These are the libs to include
+    compile project(":gpodder_sync")
+    compile project(":color_picker")
+    compile files('libs/dropbox-sync-sdk-android.jar')
+    compile files("$buildDir/native-libs/native-libs.jar")
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // You must install or update the Support Repository through the SDK manager to use this dependency.
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.android.support:support-annotations:+'
+}
+
+task nativeLibsToJar(type: Zip) {
+    destinationDir file("$buildDir/native-libs")
+    baseName 'native-libs'
+    extension 'jar'
+    from fileTree(dir: 'libs', include: '**/*.so')
+    into 'lib/'
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn(nativeLibsToJar)
+}

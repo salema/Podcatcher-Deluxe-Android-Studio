@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Разделитель</string>
+    <string name="help">Справка</string>
+    <string name="no_browser">Не удалось найти браузер!</string>
+    <string name="wait">Подождите</string>
+    <string name="connect">Подключение</string>
+    <string name="load">Загрузка</string>
+    <string name="stop">Стоп</string>
+    <string name="cancel">Отмена</string>
+    <string name="remove">Удалить</string>
+    <string name="parse">Чтение</string>
+    <string name="play">Воспроизвести</string>
+    <string name="pause">Пауза</string>
+    <string name="resume">Продолжить</string>
+    <string name="first_run_title">Добро пожаловать</string>
+    <string name="first_run_text">Прежде всего добавьте одну или несколько подписок. Нажмите на зелёную кнопку внизу, чтобы открыть окно добавления. С его помощью вы также можете выбрать подкасты из списка рекомендуемых или импортировать список подкастов в формате OPML.</string>
+    <string name="first_run_add">Добавить подкасты</string>
+    <string name="player_buffering">Буферизация&#8230;</string>
+    <string name="player_label">на %1$s из %2$s</string>
+    <string name="player_label_short">%1$s из %2$s</string>
+    <string name="player_error">Ошибка</string>
+    <string name="podcast_image">Логотип подкаста</string>
+    <string name="podcast_none">Не добавлено ни одного подкаста</string>
+    <string name="podcast_none_selected">Не выбрано ни одного подкаста</string>
+    <string name="podcast_select_all">Выбрать все подкасты</string>
+    <plurals name="podcasts">
+        <item quantity="one">Один подкаст</item>
+        <item quantity="few">%d подкастов</item>
+        <item quantity="many">%d подкастов</item>
+        <item quantity="other">%d подкастов</item>
+    </plurals>
+    <string name="podcast_add_title">Новый подкаст</string>
+    <string name="podcast_add_button">Добавить</string>
+    <string name="podcast_enter_url_here">Вставьте сюда ссылку на подкаст</string>
+    <string name="podcast_load_error">Не удалось загрузить новый подкаст.</string>
+    <string name="podcast_load_error_access_denied">Не удалось загрузить подкаст. В доступе к новостной ленте отказано.</string>
+    <string name="podcast_load_error_explicit">Не удалось загрузить подкаст. Доступ к контенту откровенного содержания для этого профиля запрещён.</string>
+    <string name="podcast_load_error_not_reachable">Не удалось загрузить подкаст. Сервер перегружен или же введенная ссылка некорректна.</string>
+    <string name="podcast_load_error_not_parseable">Не удалось загрузить подкаст. По указанной ссылке не содержится корректной новостной ленты.</string>
+    <string name="podcast_load_multiple_progress">%1$d из %2$d подкастов</string>
+    <string name="podcast_load_multiple_error">Не удалось загрузить подкаст\n\"%s\"</string>
+    <string name="podcast_load_multiple_error_all">Не удалось загрузить ни одного подкаста. Пожалуйста, проверьте подключение к Интернету.</string>
+    <string name="podcast_block_explicit">Блокировать подкасты с откровенным содержанием</string>
+    <string name="episode_none">В этом подкасте нет ни одного эпизода</string>
+    <string name="episode_none_all_podcasts">Нет эпизодов</string>
+    <string name="episode_no_description">Описание отсутствует.</string>
+    <string name="episode_none_selected">Не выбрано ни одного эпизода</string>
+    <plurals name="episodes">
+        <item quantity="one">Один эпизод</item>
+        <item quantity="few">%d эпизодов</item>
+        <item quantity="many">%d эпизодов</item>
+        <item quantity="other">%d эпизодов</item>
+    </plurals>
+    <string name="episodes_select_all">Выбрать все</string>
+    <string name="episodes_sort_toggle">В обратном порядке</string>
+    <string name="download">Скачать</string>
+    <string name="downloads">Загрузки</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="one">Удалить загрузку</item>
+        <item quantity="few">Удалить %d загрузок</item>
+        <item quantity="many">Удалить %d загрузок</item>
+        <item quantity="other">Удалить %d загрузок</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="one">Вы больше не сможете просматривать этот эпизод без подключения к интернету.</item>
+        <item quantity="few">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
+        <item quantity="many">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
+        <item quantity="other">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
+    </plurals>
+    <string name="downloads_none">Нет загруженных эпизодов. Чтобы загрузить эпизоды, нажмите на иконку загрузки в меню. Так вы сможете просматривать их без подключения к интернету.</string>
+    <string name="download_started">Началась загрузка эпизода\n\"%s\"</string>
+    <string name="download_failed">Не удалось загрузить эпизод\n\"%s\"</string>
+    <string name="download_failed_cannot_write">Не удалось загрузить эпизод\n\"%s\"</string>
+    <string name="download_failed_no_space">Не удалось загрузить эпизод\n\"%s\"</string>
+    <string name="download_failed_download_app_disabled">Не удалось загрузить эпизод\n\"%s\"</string>
+    <string name="auth">Авторизация</string>
+    <string name="auth_edit">Редактировать параметры авторизации</string>
+    <string name="auth_username">Имя пользователя</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_submit">Подтвердить</string>
+    <string name="file_select">Выбрать</string>
+    <string name="file_select_file">Выберите файл</string>
+    <string name="file_select_folder">Выберите папку</string>
+    <string name="file_select_folder_empty">Эта папка пуста.</string>
+    <string name="file_select_access_denied">Доступ запрещен!</string>
+    <string name="opml_import">Импорт OPML</string>
+    <string name="opml_import_failed">Не удалось импортировать OPML</string>
+    <string name="opml_export">Экспорт OPML</string>
+    <string name="opml_export_success">OPML-файл сохранён</string>
+    <string name="opml_export_success_at">OPML-файл сохранён по адресу\n%s</string>
+    <string name="opml_export_failed">Не удалось экспортировать OPML</string>
+    <string name="suggestions">Рекомендации</string>
+    <string name="suggested_podcasts">Рекомендуемые подкасты</string>
+    <string name="suggestion_listen">Слушать</string>
+    <string name="suggestion_watch">Смотреть</string>
+    <string name="suggestion_confirm_explicit">Похоже, в этом подкасте есть материалы откровенного содержания. Вы уверены, что хотите добавить его в список?</string>
+    <string name="suggestions_none">По вашему запросу рекомендаций не найдено. Попробуйте указать другие фильтры.</string>
+    <string name="suggestions_reset_filters">Сбросить фильтры</string>
+    <string name="suggestions_load_error">Не удалось загрузить рекомендации. Проверьте подключение к Интернету.</string>
+    <string name="suggestions_send">Рекомендовать подкаст</string>
+    <string name="sync_all_started">Синхронизация начата</string>
+    <string name="sync_dropbox_unlink_title">Отвязать Dropbox</string>
+    <string name="sync_dropbox_unlink_message">Вы действительно хотите отвязать аккаунт в Dropbox от данного приложения? Синхронизация с Dropbox будет прервана, пока аккаунт не будет заново привязан к приложению.</string>
+    <string name="sync_dropbox_unlink_button">Отвязать</string>
+    <string name="sync_gpodder_config_title">Настроить gpodder.net</string>
+    <string name="sync_gpodder_login_invalid">Не удалось авторизоваться на gpodder.net. Пожалуйста, проверьте логин и пароль!</string>
+    <string name="sync_gpodder_device_id">ID устройства</string>
+    <string name="preferences">Настройки</string>
+    <string name="pref_select_all_on_start_title">Выбирать все при запуске</string>
+    <string name="pref_select_all_on_start_summary">Подгружать все подписки при запуске приложения</string>
+    <string name="pref_sync_title">Синхронизация</string>
+    <string name="pref_sync_none">В настоящий момент отключено</string>
+    <string name="pref_sync_last_run">Последняя полная синхронизация: %1$s</string>
+    <string name="pref_sync_now">Синхронизироваться</string>
+    <string name="pref_category_interface">Интерфейс</string>
+    <string name="pref_theme_color_title">Цвет темы</string>
+    <string name="pref_wide_episode_list_title">Широкий список эпизодов</string>
+    <string name="pref_wide_episode_list_summary">Выделить место для более подробной информации об эпизодах</string>
+</resources>

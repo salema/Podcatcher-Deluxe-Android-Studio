@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="about">Info su Podcatcher Deluxe</string>
+    <string name="next">Prossimo</string>
+    <string name="podcast_load_multiple_error_some">Impossibile caricare uno o più podcast</string>
+    <string name="episodes_no_new">Nessun nuovo episodio</string>
+    <plurals name="episodes_filtered">
+        <item quantity="one">Un vecchio episodio filtrato</item>
+        <item quantity="other">%d vecchi episodi filtrati</item>
+    </plurals>
+    <string name="episodes_old">Vecchio</string>
+    <string name="episodes_filter_all">Tutto</string>
+    <string name="episodes_filter_new">Nuovo</string>
+    <string name="playlist">Playlist</string>
+    <string name="playlist_empty">La tua playlist è vuota. Usa l\'elenco episodio dal menu
+        contestuale (tieni premuto su qualsiasi episodio per visualizzarlo) per aggiungere gli
+        episodi alla playlist.
+    </string>
+    <string name="playlist_add">Aggiungi alla playlist</string>
+    <string name="playlist_remove">Rimuovi dalla playlist</string>
+    <string name="playlist_swipe_reorder">Sposta gli episodi per riordinarli</string>
+    <string name="pref_auto_download_title">Download automatico</string>
+    <string name="pref_auto_download_summary">Rendi disponibili gli episodi offline quando uso la
+        connessione WiFi
+    </string>
+    <string name="pref_auto_delete_title">Eliminazione automatica</string>
+    <string name="pref_auto_delete_summary">Rimuovi episodi scaricati dopo averli visti
+        completamente
+    </string>
+    <string name="pref_download_folder_title">Cartella download</string>
+</resources>

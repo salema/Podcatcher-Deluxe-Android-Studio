@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/podcast_remove_contextmenuitem"
+        android:icon="@drawable/ic_menu_delete"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/remove" />
+    <item
+        android:id="@+id/edit_auth_contextmenuitem"
+        android:icon="@drawable/ic_menu_authorization"
+        android:orderInCategory="10"
+        android:showAsAction="ifRoom"
+        android:title="@string/auth_edit" />
+    <item
+        android:id="@+id/opml_export_contextmenuitem"
+        android:icon="@drawable/ic_menu_export"
+        android:orderInCategory="11"
+        android:showAsAction="ifRoom"
+        android:title="@string/opml_export" />
+    <item
+        android:id="@+id/suggest_podcast_contextmenuitem"
+        android:icon="@drawable/ic_menu_email"
+        android:orderInCategory="12"
+        android:showAsAction="ifRoom"
+        android:title="@string/suggestions_send" />
+</menu>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <color name="button_label_enabled">@android:color/white</color>
+    <color name="button_label_disabled">@android:color/darker_gray</color>
+    <color name="button_green_light">@android:color/holo_green_light</color>
+    <color name="button_green_dark">@android:color/holo_green_dark</color>
+    <color name="button_green_light_disabled">#ffaecc55</color>
+    <color name="button_green_dark_disabled">#ff7b993f</color>
+    <color name="button_red_light">@android:color/holo_red_light</color>
+    <color name="button_red_dark">@android:color/holo_red_dark</color>
+    <color name="button_red_light_disabled">#ffcc5353</color>
+    <color name="button_red_dark_disabled">#ffff6c6c</color>
+    <color name="button_orange_light">@android:color/holo_orange_light</color>
+    <color name="button_orange_dark">@android:color/holo_orange_dark</color>
+    <color name="button_blue_light">@android:color/holo_blue_light</color>
+    <color name="button_blue_dark">@android:color/holo_blue_dark</color>
+    <color name="text_error">@android:color/holo_red_dark</color>
+    <color name="text_secondary">@android:color/darker_gray</color>
+    <color name="divider">#ddd</color>
+</resources>

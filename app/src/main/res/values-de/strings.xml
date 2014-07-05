@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Trenner</string>
+    <string name="help">Hilfe</string>
+    <string name="no_browser">Kein Browser verfügbar!</string>
+    <string name="wait">Warten</string>
+    <string name="connect">Verbinden</string>
+    <string name="load">Laden</string>
+    <string name="stop">Stop</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="remove">Entfernen</string>
+    <string name="parse">Lesen</string>
+    <string name="play">Abspielen</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Abspielen</string>
+    <string name="first_run_title">Willkommen</string>
+    <string name="first_run_text">Bitte fügen Sie als ersten Schritt ein oder mehrere Podcasts in Ihre Podcastliste ein. Verwenden Sie dazu die grüne Schaltfläche unten. Von dem neuen Dialogfenster aus können Sie auch Podcastvorschläge einsehen und OPML-Listen importieren.</string>
+    <string name="first_run_add">Podcasts hinzufügen</string>
+    <string name="player_buffering">Puffer füllen&#8230;</string>
+    <string name="player_label">bei %1$s von %2$s</string>
+    <string name="player_label_short">%1$s von %2$s</string>
+    <string name="player_error">Wiedergabe fehlgeschlagen</string>
+    <string name="podcast_image">Podcast Logo</string>
+    <string name="podcast_none">Kein Podcast vorhanden</string>
+    <string name="podcast_none_selected">Kein Podcast ausgewählt</string>
+    <string name="podcast_select_all">Alle Podcasts auswählen</string>
+    <plurals name="podcasts">
+        <item quantity="one">Ein Podcast</item>
+        <item quantity="other">%d Podcasts</item>
+    </plurals>
+    <string name="podcast_add_title">Neuer Podcast</string>
+    <string name="podcast_add_button">Hinzufügen</string>
+    <string name="podcast_enter_url_here">Podcast-Adresse hier einfügen</string>
+    <string name="podcast_load_error">Der Podcast kann nicht geladen werden!</string>
+    <string name="podcast_load_error_access_denied">Der Podcast kann nicht geladen werden, der Zugriff wurde verweigert.</string>
+    <string name="podcast_load_error_explicit">Der Podcast konnte nicht geladen werden, da in diesem Profil nicht jugendfreie Inhalte gesperrt sind.</string>
+    <string name="podcast_load_error_not_reachable">Der Podcast kann nicht geladen werden, da der Server nicht erreicht wurde oder die Adresse ungültig ist.</string>
+    <string name="podcast_load_error_not_parseable">Der Podcast kann nicht geladen werden, da die Adresse nicht auf einen gültigen Podcast-Feed zeigt.</string>
+    <string name="podcast_load_multiple_progress">%1$d von %2$d Podcasts</string>
+    <string name="podcast_load_multiple_error">Der Podcast\n\"%s\"\nkonnte nicht geladen werden.</string>
+    <string name="podcast_load_multiple_error_all">Keiner der Podcasts kann geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
+    <string name="podcast_block_explicit">Podcasts mit nicht jugendfreien Inhalten blockieren</string>
+    <string name="episode_none">Dieser Podcast enthält keine Episoden</string>
+    <string name="episode_none_all_podcasts">Keine Episoden</string>
+    <string name="episode_no_description">Keine Beschreibung verfügbar.</string>
+    <string name="episode_none_selected">Keine Episode ausgewählt</string>
+    <plurals name="episodes">
+        <item quantity="one">Eine Episode</item>
+        <item quantity="other">%d Episoden</item>
+    </plurals>
+    <string name="episodes_select_all">Alle auswählen</string>
+    <string name="episodes_sort_toggle">Reihenfolge umdrehen</string>
+    <string name="download">Download</string>
+    <string name="downloads">Downloads</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="one">Download löschen</item>
+        <item quantity="other">%d Downloads löschen</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="one">Diese Episode ist nach dem Löschen nicht mehr ohne Internetverbindung verfügbar.</item>
+        <item quantity="other">Diese Episoden sind nach dem Löschen nicht mehr ohne Internetverbindung verfügbar.</item>
+    </plurals>
+    <string name="downloads_none">Keine Downloads vorhanden. Benutzen Sie das Download-Zeichen im Menü, um Episoden auf dem Gerät zu speichern.</string>
+    <string name="download_started">Download gestartet für \n\"%s\"</string>
+    <string name="download_failed">Download fehlgeschlagen für \n\"%s\"</string>
+    <string name="download_failed_cannot_write">Download fehlgeschlagen für\n\"%s\",\nda der gewählte Ordner nicht schreibbar ist.</string>
+    <string name="download_failed_no_space">Download fehlgeschlagen für\n\"%s\",\nda nicht genug Speicherplatz zur Verfügung steht.</string>
+    <string name="download_failed_download_app_disabled">Download fehlgeschlagen für\n\"%s\",\nda die Android Download-App deaktiviert ist.</string>
+    <string name="auth">Anmeldung</string>
+    <string name="auth_edit">Anmeldung bearbeiten</string>
+    <string name="auth_username">Benutzername</string>
+    <string name="auth_password">Passwort</string>
+    <string name="auth_submit">Senden</string>
+    <string name="file_select">Auswählen</string>
+    <string name="file_select_file">Datei wählen</string>
+    <string name="file_select_folder">Ordner wählen</string>
+    <string name="file_select_folder_empty">Dieser Ordner ist leer.</string>
+    <string name="file_select_access_denied">Zugriff verweigert!</string>
+    <string name="opml_import">OPML-Import</string>
+    <string name="opml_import_failed">OPML-Import fehlgeschlagen</string>
+    <string name="opml_export">OPML-Export</string>
+    <string name="opml_export_success">OPML-Datei gespeichert</string>
+    <string name="opml_export_success_at">OPML-Datei gespeichert unter\n%s</string>
+    <string name="opml_export_failed">OPML-Export fehlgeschlagen</string>
+    <string name="suggestions">Vorschläge</string>
+    <string name="suggested_podcasts">Empfohlene Podcasts</string>
+    <string name="suggestion_listen">Anhören</string>
+    <string name="suggestion_watch">Anschauen</string>
+    <string name="suggestion_confirm_explicit">Dieser Podcast hat Inhalte, die als nicht jugendfrei markiert sind. Wollen Sie ihn trotzdem hinzufügen?</string>
+    <string name="suggestions_none">Keine Empfehlungen, bitte ändern Sie Ihre Filter.</string>
+    <string name="suggestions_reset_filters">Filter zurücksetzen</string>
+    <string name="suggestions_load_error">Empfehlungen können nicht geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
+    <string name="suggestions_send">Podcast empfehlen</string>
+    <string name="sync_all_started">Synchronisation läuft für alle aktivierten Dienste</string>
+    <string name="sync_dropbox_unlink_title">Dropbox abmelden</string>
+    <string name="sync_dropbox_unlink_message">Wollen Sie die App wirklich von Ihrer Dropbox abmelden? Diese Aktion beendet die Synchronisation, kann aber später wieder zurückgenommen werden.</string>
+    <string name="sync_dropbox_unlink_button">Abmelden</string>
+    <string name="sync_gpodder_config_title">Bei gpodder.net anmelden</string>
+    <string name="sync_gpodder_login_invalid">Anmeldung bei gpodder.net fehlgeschlagen, bitte prüfen Sie Ihre Anmeldedaten!</string>
+    <string name="sync_gpodder_device_id">Device ID</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="pref_select_all_on_start_title">Alle Podcasts laden</string>
+    <string name="pref_select_all_on_start_summary">Beim Start der App alle Podcasts aktualisieren</string>
+    <string name="pref_sync_title">Synchronisation</string>
+    <string name="pref_sync_none">Nicht aktiv</string>
+    <string name="pref_sync_last_run">Letzte Synchronisation: %1$s</string>
+    <string name="pref_sync_now">Jetzt starten</string>
+    <string name="pref_category_interface">Oberfläche</string>
+    <string name="pref_theme_color_title">Farbthema</string>
+    <string name="pref_wide_episode_list_title">Breite Episodenliste</string>
+    <string name="pref_wide_episode_list_summary">Mehr Platz für Episodendetails</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="about">O programu Podcatcher Deluxe</string>
+    <string name="next">Další</string>
+    <string name="podcast_load_multiple_error_some">Jeden nebo více záznamů se nepodařilo nahrát.
+    </string>
+    <string name="episodes_no_new">Žádné nové díly</string>
+    <plurals name="episodes_filtered">
+        <item quantity="one">Přefiltrován jeden starý díl</item>
+        <item quantity="few">Přefiltrovány %d staré díly</item>
+        <item quantity="other">Přefiltrováno %d starých dílů</item>
+    </plurals>
+    <string name="episodes_old">Starý</string>
+    <string name="episodes_filter_all">Vše</string>
+    <string name="episodes_filter_new">Nový</string>
+    <string name="playlist">Seznam skladeb</string>
+    <string name="playlist_empty">Váš seznam skladeb je prázdný. Použijte nabídku pro seznam dílů
+        (stiskněte a podržte všechny díly k vložení) k přidání dílů do seznamu skladeb.
+    </string>
+    <string name="playlist_add">Přidat do seznamu skladeb</string>
+    <string name="playlist_remove">Odstranit ze seznamu skladeb</string>
+    <string name="playlist_swipe_reorder">Přejeďte prstem nad díly pro přeskupení</string>
+    <string name="pref_auto_download_title">Automatické stahování</string>
+    <string name="pref_auto_download_summary">Nové díly je možné zpřístupnit stažením jen v
+        přítomnosti WiFi
+    </string>
+    <string name="pref_auto_delete_title">Automatické smazání</string>
+    <string name="pref_auto_delete_summary">Odstranit stažené díly, když je přehrávání dokončeno
+    </string>
+    <string name="pref_download_folder_title">Složka pro stahování</string>
+</resources>

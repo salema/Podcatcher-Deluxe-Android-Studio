@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="wildcard">Alle</string>
+    <string-array name="languages">
+        <item>Englisch</item>
+        <item>Französisch</item>
+        <item>Deutsch</item>
+        <item>Spanisch</item>
+    </string-array>
+    <string-array name="types">
+        <item>Audio</item>
+        <item>Video</item>
+    </string-array>
+    <string-array name="genres">
+        <item>Kunst</item>
+        <item>Business</item>
+        <item>Comedy</item>
+        <item>Bildung</item>
+        <item>Spiele &amp; Hobbys</item>
+        <item>Regierung &amp; Organisationen</item>
+        <item>Gesundheit</item>
+        <item>Kinder &amp; Familie</item>
+        <item>Musik</item>
+        <item>Nachrichten &amp; Politik</item>
+        <item>Religion &amp; Spiritualität</item>
+        <item>Wissenschaft &amp; Medizin</item>
+        <item>Gesellschaft &amp; Kultur</item>
+        <item>Sport &amp; Erholung</item>
+        <item>Technologie</item>
+        <item>TV &amp; Film</item>
+    </string-array>
+</resources>
