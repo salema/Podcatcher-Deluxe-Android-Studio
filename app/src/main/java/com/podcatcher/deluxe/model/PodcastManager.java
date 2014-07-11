@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.preference.PreferenceManager;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.GetRestrictionsReceiver;
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.SettingsActivity;
@@ -203,6 +204,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         // Put some nice sample podcasts for testing
         // if (podcatcher.isInDebugMode())
         // putSamplePodcasts();
+        if (BuildConfig.DEBUG)
+            putSamplePodcasts();
 
         // Alert call-backs (if any)
         for (OnLoadPodcastListListener listener : loadPodcastListListeners)
@@ -218,7 +221,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                 podcatcher.getApplicationContext()).getBoolean(
                 SettingsActivity.KEY_SELECT_ALL_ON_START, false);
         new Timer().schedule(new PodcastUpdateTask(),
-                isSelectAllOnStart || podcatcher.isInDebugMode() ?
+                isSelectAllOnStart || BuildConfig.DEBUG ?
                         fiveMinutes : 0, fiveMinutes
         );
     }

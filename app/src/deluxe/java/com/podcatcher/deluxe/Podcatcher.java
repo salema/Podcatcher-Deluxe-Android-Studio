@@ -160,26 +160,6 @@ public class Podcatcher extends Application {
             }
     }
 
-    /**
-     * Checks whether the app is in debug mode.
-     *
-     * @return <code>true</code> iff in debug.
-     */
-    public boolean isInDebugMode() {
-        boolean debug = false;
-
-        PackageManager manager = getApplicationContext().getPackageManager();
-        try {
-            final ApplicationInfo info = manager.getApplicationInfo(
-                    getApplicationContext().getPackageName(), 0);
-            debug = (0 != (info.flags &= ApplicationInfo.FLAG_DEBUGGABLE));
-        } catch (Exception e) {
-            // pass
-        }
-
-        return debug;
-    }
-
     private NetworkInfo getNetworkInfo() {
         final ConnectivityManager manager = (ConnectivityManager) getApplicationContext()
                 .getSystemService(CONNECTIVITY_SERVICE);

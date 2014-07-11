@@ -36,7 +36,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.podcatcher.deluxe.Podcatcher;
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.types.Progress;
@@ -120,7 +120,7 @@ public class AddPodcastFragment extends DialogFragment {
         if (getActivity().getIntent().getData() != null)
             podcastUrlEditText.setText(getActivity().getIntent().getDataString());
             // This is for testing only
-        else if (((Podcatcher) getActivity().getApplication()).isInDebugMode())
+        else if (BuildConfig.DEBUG)
             podcastUrlEditText.setText("https://www.theskepticsguide.org/premium");
             // This checks for a potential podcast URL in the clipboard
             // and presets it in the text field if available

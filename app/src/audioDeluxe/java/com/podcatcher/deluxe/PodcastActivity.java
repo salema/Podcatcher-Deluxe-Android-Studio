@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError;
@@ -95,7 +96,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         super.onCreate(savedInstanceState);
 
         // Enable strict mode when on debug
-        if (((Podcatcher) getApplication()).isInDebugMode())
+        if (BuildConfig.DEBUG)
             StrictMode.enableDefaults();
 
         // 1. Create the UI via XML layouts and fragments

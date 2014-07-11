@@ -77,7 +77,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         super.onCreate(savedInstanceState);
 
         // Enable strict mode when on debug
-        if (((Podcatcher) getApplication()).isInDebugMode())
+        if (BuildConfig.DEBUG)
             StrictMode.enableDefaults();
 
         // 1. Create the UI via XML layouts and fragments
