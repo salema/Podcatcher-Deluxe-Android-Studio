@@ -102,11 +102,11 @@ public class ConfirmExplicitSuggestionFragment extends DialogFragment {
         });
 
         // Build the dialog
-        final AlertDialog.Builder abuilder = new AlertDialog.Builder(context);
-        abuilder.setTitle(title)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title)
                 .setView(content);
 
-        return abuilder.create();
+        return builder.create();
     }
 
     @Override

@@ -189,7 +189,7 @@ abstract class DropboxBaseSyncController extends SyncController
      * Hook for sub-classes to react to a sync failure.
      */
     protected void onSyncStoreFailed() {
-        // pass, sub-classes should add actions heres
+        // pass, sub-classes should add actions here
     }
 
     /**
@@ -206,8 +206,8 @@ abstract class DropboxBaseSyncController extends SyncController
 
         // The bytes[] has bytes in decimal format, convert it
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++)
-            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        for (byte aByte : bytes)
+            sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
 
         return sb.toString();
     }
@@ -263,7 +263,7 @@ abstract class DropboxBaseSyncController extends SyncController
                 // we finish the task and call listeners
                 DbxDatastoreStatus status = store.getSyncStatus();
                 int sleepInterval = 250;
-                while (status.isDownloading)
+                while (status.isDownloading && !isCancelled())
                     try {
                         Thread.sleep(sleepInterval);
 
@@ -272,16 +272,14 @@ abstract class DropboxBaseSyncController extends SyncController
                         // what's going on (this is all local, of course))
                         sleepInterval *= 2;
                     } catch (InterruptedException e) {
-                        Log.d(TAG, "Interrputed while waiting for sync to come down", e);
+                        Log.d(TAG, "Interrupted while waiting for sync to come down", e);
                     } finally {
                         if (sleepInterval > 1000 * 60) {
                             // We do want this to run forever, so we simply
-                            // cancel the whole thing after too long a wait. The
-                            // next sync will fix things...
+                            // cancel the whole task after too long a wait. The
+                            // next sync will hopefully fix things...
                             cancel(true);
                             Log.d(TAG, "Syncing datastore took too long!");
-
-                            break;
                         } else
                             status = store.getSyncStatus();
                     }

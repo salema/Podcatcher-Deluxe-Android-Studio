@@ -185,8 +185,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         podcastManager.addChangePodcastListListener(this);
     }
 
-    ;
-
     @Override
     protected void onNewIntent(Intent intent) {
         // This is an external call to add a new podcast

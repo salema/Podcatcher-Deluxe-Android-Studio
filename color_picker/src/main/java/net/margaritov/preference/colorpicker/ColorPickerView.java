@@ -613,8 +613,8 @@ public class ColorPickerView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        int width = 0;
-        int height = 0;
+        int width;
+        int height;
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -657,7 +657,7 @@ public class ColorPickerView extends View {
         if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.EXACTLY) {
             return size;
         } else { // (mode == MeasureSpec.UNSPECIFIED)
-            return getPrefferedWidth();
+            return getPreferredWidth();
         }
     }
 
@@ -665,13 +665,13 @@ public class ColorPickerView extends View {
         if (mode == MeasureSpec.AT_MOST || mode == MeasureSpec.EXACTLY) {
             return size;
         } else { // (mode == MeasureSpec.UNSPECIFIED)
-            return getPrefferedHeight();
+            return getPreferredHeight();
         }
     }
 
-    private int getPrefferedWidth() {
+    private int getPreferredWidth() {
 
-        int width = getPrefferedHeight();
+        int width = getPreferredHeight();
 
         if (mShowAlphaPanel) {
             width -= (PANEL_SPACING + ALPHA_PANEL_HEIGHT);
@@ -681,7 +681,7 @@ public class ColorPickerView extends View {
 
     }
 
-    private int getPrefferedHeight() {
+    private int getPreferredHeight() {
 
         int height = (int) (200 * mDensity);
 
@@ -874,7 +874,6 @@ public class ColorPickerView extends View {
             mSatShader = null;
             mHueShader = null;
             mAlphaShader = null;
-            ;
 
             requestLayout();
         }

@@ -40,9 +40,4 @@ public class DropboxSyncController extends DropboxPodcastListSyncController {
     public ControllerImpl getImpl() {
         return ControllerImpl.DROPBOX;
     }
-
-    @Override
-    public boolean isRunning() {
-        return super.isRunning();
-    }
 }

@@ -101,26 +101,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * Action to send to service to stop episode
      */
     public static final String ACTION_STOP = "com.podcatcher.deluxe.action.STOP";
-    /**
-     * Our notification id (does not really matter)
-     */
-    private static final int NOTIFICATION_ID = 123;
-    /**
-     * The amount of seconds used for any forward or rewind event
-     */
-    private static final int SKIP_AMOUNT = 10 * 1000;
-    /**
-     * The volume we duck playback to
-     */
-    private static final float DUCK_VOLUME = 0.1f;
-    /**
-     * Our log tag
-     */
-    private static final String TAG = "PlayEpisodeService";
-    /**
-     * Binder given to clients
-     */
-    private final IBinder binder = new PlayServiceBinder();
+
     /**
      * The episode manager handle
      */
@@ -145,6 +126,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * Are we bound to any activity ?
      */
     private boolean bound = false;
+
     /**
      * Our audio manager handle
      */
@@ -169,6 +151,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * Our notification helper
      */
     private PlayEpisodeNotification notification;
+
     /**
      * Play update timer for notification
      */
@@ -177,10 +160,47 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * Play update timer task for notification
      */
     private TimerTask playUpdateTimerTask;
+
+    /**
+     * Our notification id (does not really matter)
+     */
+    private static final int NOTIFICATION_ID = 123;
+    /**
+     * The amount of seconds used for any forward or rewind event
+     */
+    private static final int SKIP_AMOUNT = 10 * 1000;
+    /**
+     * The volume we duck playback to
+     */
+    private static final float DUCK_VOLUME = 0.1f;
+    /**
+     * Our log tag
+     */
+    private static final String TAG = "PlayEpisodeService";
+
     /**
      * The call-back set for the play service listeners
      */
     private Set<PlayServiceListener> listeners = new HashSet<>();
+    /**
+     * Binder given to clients
+     */
+    private final IBinder binder = new PlayServiceBinder();
+
+    /**
+     * The binder to return to client.
+     */
+    public class PlayServiceBinder extends Binder {
+
+        /**
+         * @return The service binder.
+         */
+        public PlayEpisodeService getService() {
+            // Return this instance of this service, so clients can call public
+            // methods
+            return PlayEpisodeService.this;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -212,25 +232,35 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             // Retrieve the action
             String action = intent.getAction();
             // Go handle the action
-            if (action.equals(ACTION_TOGGLE)) {
-                if (isPlaying())
-                    pause();
-                else
+            switch (action) {
+                case ACTION_TOGGLE:
+                    if (isPlaying())
+                        pause();
+                    else
+                        resume();
+                    break;
+                case ACTION_PLAY:
                     resume();
-            } else if (action.equals(ACTION_PLAY))
-                resume();
-            else if (action.equals(ACTION_PAUSE))
-                pause();
-            else if (action.equals(ACTION_PREVIOUS))
-                seekTo(0);
-            else if (action.equals(ACTION_SKIP))
-                ;
-            else if (action.equals(ACTION_REWIND)) {
-                rewind();
-            } else if (action.equals(ACTION_FORWARD)) {
-                fastForward();
-            } else if (action.equals(ACTION_STOP))
-                reset();
+                    break;
+                case ACTION_PAUSE:
+                    pause();
+                    break;
+                case ACTION_PREVIOUS:
+                    seekTo(0);
+                    break;
+                case ACTION_SKIP:
+                    // No action
+                    break;
+                case ACTION_REWIND:
+                    rewind();
+                    break;
+                case ACTION_FORWARD:
+                    fastForward();
+                    break;
+                case ACTION_STOP:
+                    reset();
+                    break;
+            }
 
             // Alert listeners so the UI can adjust
             for (PlayServiceListener listener : listeners)
@@ -713,20 +743,5 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     private void updateRemoteControlPlaystate(int state) {
         if (remoteControlClient != null)
             remoteControlClient.setPlaybackState(state);
-    }
-
-    /**
-     * The binder to return to client.
-     */
-    public class PlayServiceBinder extends Binder {
-
-        /**
-         * @return The service binder.
-         */
-        public PlayEpisodeService getService() {
-            // Return this instance of this service, so clients can call public
-            // methods
-            return PlayEpisodeService.this;
-        }
     }
 }

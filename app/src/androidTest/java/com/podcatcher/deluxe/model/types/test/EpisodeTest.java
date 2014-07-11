@@ -70,7 +70,7 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertEquals(1, e.parseDuration("00:00:01"));
         assertEquals(1, e.parseDuration("0:01"));
         assertEquals(1, e.parseDuration("1"));
-        assertEquals(1 * 3600 + 1 * 60 + 1, e.parseDuration("1:01:01"));
+        assertEquals(3600 + 60 + 1, e.parseDuration("1:01:01"));
         assertEquals(12 * 3600 + 59 * 60 + 33, e.parseDuration("12:59:33"));
     }
 
@@ -85,7 +85,7 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertEquals("0:01", e.getDurationString());
         e.setDuration(60);
         assertEquals("1:00", e.getDurationString());
-        e.setDuration(1 * 3600 + 1 * 60 + 1);
+        e.setDuration(3600 + 60 + 1);
         assertEquals("1:01:01", e.getDurationString());
         e.setDuration(12 * 3600 + 59 * 60 + 33);
         assertEquals("12:59:33", e.getDurationString());

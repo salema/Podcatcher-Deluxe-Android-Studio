@@ -6,7 +6,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class FeedServiceResponse extends ArrayList<Feed> {
 
-    public long last_modfied;
+    public long last_modified;
     public String[] feed_urls;
     public String[] indexed_feeds = {};
 
@@ -16,7 +16,7 @@ public class FeedServiceResponse extends ArrayList<Feed> {
     }
 
     public long getLastModified() {
-        return last_modfied;
+        return last_modified;
     }
 
     public void getFeeds() {

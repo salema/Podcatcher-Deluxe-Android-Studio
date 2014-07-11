@@ -170,7 +170,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
 
         Episode another = (Episode) o;
 
-        return mediaUrl == null ? false : mediaUrl.equals(another.mediaUrl);
+        return mediaUrl != null && mediaUrl.equals(another.mediaUrl);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
             result = another.pubDate.compareTo(pubDate);
         else if (this.pubDate == null && another.pubDate != null)
             result = -1;
-        else if (this.pubDate != null && another.pubDate == null)
+        else if (this.pubDate != null) // Always true: && another.pubDate == null)
             result = 1;
 
         // This should never be zero unless the episodes are equal, since a
@@ -293,10 +293,8 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
                 else if (split.length == 3)
                     result = Integer.parseInt(split[2]) + Integer.parseInt(split[1]) * 60
                             + Integer.parseInt(split[0]) * 3600;
-            } catch (NumberFormatException ex) {
-                // Pass, duration not available
-            } catch (NullPointerException nex) {
-                // Pass, duration string is null
+            } catch (NumberFormatException | NullPointerException ex) {
+                // Pass, duration not available or null
             }
         }
 

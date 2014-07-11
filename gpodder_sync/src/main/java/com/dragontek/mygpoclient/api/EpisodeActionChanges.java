@@ -14,7 +14,7 @@ public class EpisodeActionChanges {
     /**
      * A list of EpisodeAction objects
      */
-    public List<EpisodeAction> actions = new ArrayList<EpisodeAction>();
+    public List<EpisodeAction> actions = new ArrayList<>();
     /**
      * A timestamp value for use in future requests
      */

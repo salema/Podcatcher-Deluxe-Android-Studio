@@ -275,7 +275,7 @@ public class LoadPodcastLogoTask extends LoadRemoteFileTask<Podcast, Bitmap> {
         } finally {
             try {
                 out.close();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 // Nothing more we could do here
             }
         }

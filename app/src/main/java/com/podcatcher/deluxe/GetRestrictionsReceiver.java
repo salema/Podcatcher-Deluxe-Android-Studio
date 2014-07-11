@@ -60,8 +60,6 @@ public class GetRestrictionsReceiver extends BroadcastReceiver {
                 result.setResult(Activity.RESULT_OK, null, extras);
                 result.finish();
             }
-
-            ;
         }.start();
     }
 }

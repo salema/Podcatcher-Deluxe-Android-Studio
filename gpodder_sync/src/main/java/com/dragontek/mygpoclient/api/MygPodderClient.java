@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpException;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.StringEntity;
@@ -72,12 +71,12 @@ public class MygPodderClient extends SimpleClient {
      * resulting object, the client should rewrite the URL in its subscription
      * list so that new_url is used instead of old_url.
      *
-     * @param deviceId   the id of the device to be updated
-     * @param addUrls    a set of urls to be added to the device
-     * @param removeUrls a set of urls to be removed from the device
+     * @param deviceId the id of the device to be updated
+     * @param add      a set of urls to be added to the device
+     * @param remove   a set of urls to be removed from the device
      * @return a {@link UpdateResult} object that contains a list of (sanitized)
      * URLs and a "since" value that can be used for future calls to
-     * {@link pullSubscriptions}.
+     * {@link #pullSubscriptions(String, long)}.
      * @throws IOException
      */
     public UpdateResult updateSubscriptions(String deviceId, Set<String> add,
@@ -100,7 +99,6 @@ public class MygPodderClient extends SimpleClient {
      * can be used for future calls to this method.
      * @throws IOException
      * @throws AuthenticationException
-     * @throws HttpException
      */
     public SubscriptionChanges pullSubscriptions(String deviceId, long since)
             throws IOException, AuthenticationException {

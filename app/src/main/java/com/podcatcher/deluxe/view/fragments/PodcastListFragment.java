@@ -85,7 +85,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
      * Flag for animation currently running
      */
     private boolean animating = false;
-    ;
+
     /**
      * The podcast add and remove animation duration
      */

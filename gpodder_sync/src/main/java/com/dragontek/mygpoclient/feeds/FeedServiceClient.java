@@ -90,7 +90,7 @@ public class FeedServiceClient extends JsonClient {
                                           final long last_modified, boolean strip_html, boolean use_cache,
                                           boolean inline_logo, int scale_logo, String logo_format)
             throws ClientProtocolException, IOException {
-        List<NameValuePair> args = new ArrayList<NameValuePair>();
+        List<NameValuePair> args = new ArrayList<>();
         if (strip_html)
             args.add(new BasicNameValuePair("process_text", "strip_html"));
         if (use_cache)

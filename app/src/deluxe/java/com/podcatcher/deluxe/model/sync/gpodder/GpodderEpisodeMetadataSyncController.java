@@ -119,6 +119,7 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
                     final Episode episode = meta.marshalEpisode(action.episode);
                     // Act on the episode action if in receive mode
                     if (episode != null && SyncMode.SEND_RECEIVE.equals(mode))
+                        //noinspection unchecked
                         publishProgress(new AbstractMap.SimpleEntry<>(episode, action));
                 }
 
@@ -143,8 +144,9 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
             return null;
         }
 
+        @SafeVarargs
         @Override
-        protected void onProgressUpdate(Entry<Episode, EpisodeAction>... values) {
+        protected final void onProgressUpdate(Entry<Episode, EpisodeAction>... values) {
             // Go change local model as needed
             final Episode episode = values[0].getKey();
             final EpisodeAction episodeAction = values[0].getValue();

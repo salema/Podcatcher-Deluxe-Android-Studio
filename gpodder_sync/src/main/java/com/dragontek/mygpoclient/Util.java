@@ -9,7 +9,7 @@ public class Util {
     public static String join(String[] words) {
         StringBuilder wordList = new StringBuilder();
         for (String word : words) {
-            wordList.append(word + "/");
+            wordList.append(word).append("/");
         }
         return new String(wordList.deleteCharAt(wordList.length() - 1));
     }

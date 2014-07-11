@@ -15,7 +15,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.podcatcher.deluxe.remote.test;
+package com.podcatcher.deluxe.model.tasks.remote.test;
 
 import android.graphics.Bitmap;
 import android.test.InstrumentationTestCase;
@@ -57,7 +57,7 @@ public class LoadPodcastLogoTaskTest extends InstrumentationTestCase {
         int size = examplePodcasts.size();
         int index = 0;
         int failed = 0;
-        List<String> noLogo = new ArrayList<String>();
+        List<String> noLogo = new ArrayList<>();
 
         // Actual example Podcast
         Iterator<Podcast> podcasts = examplePodcasts.iterator();

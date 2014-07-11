@@ -144,7 +144,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             // available before we return
             EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
         } catch (XmlPullParserException xppe) {
-            errorCode = PodcastLoadError.NOT_PARSEABLE;
+            errorCode = PodcastLoadError.NOT_PARSABLE;
 
             cancel(true);
         } catch (IOException ioe) {
@@ -221,6 +221,6 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         /**
          * The URL does not point at a valid feed file
          */
-        NOT_PARSEABLE
+        NOT_PARSABLE
     }
 }

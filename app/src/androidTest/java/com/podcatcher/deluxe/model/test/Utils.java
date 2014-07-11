@@ -139,7 +139,7 @@ public class Utils {
      */
     public static List<Podcast> getExamplePodcasts(final Context context, final int limit) {
         final CountDownLatch signal = new CountDownLatch(1);
-        final List<Podcast> examples = new ArrayList<Podcast>();
+        final List<Podcast> examples = new ArrayList<>();
 
         LoadSuggestionsTask task = new LoadSuggestionsTask(context, new OnLoadSuggestionListener() {
 

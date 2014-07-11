@@ -103,8 +103,6 @@ public class ConfigureSyncFragment extends DialogFragment {
         return inflater.inflate(R.layout.sync_list, container, false);
     }
 
-    ;
-
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         getDialog().setTitle(R.string.pref_sync_title);

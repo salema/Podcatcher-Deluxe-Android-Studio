@@ -208,11 +208,11 @@ public class GpodderSyncConfigFragment extends DialogFragment {
                 GpodderSyncController.getDefaultDeviceId(getActivity())));
 
         // Build the dialog
-        final AlertDialog.Builder abuilder = new AlertDialog.Builder(context);
-        abuilder.setTitle(R.string.sync_gpodder_config_title)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.sync_gpodder_config_title)
                 .setView(content);
 
-        return abuilder.create();
+        return builder.create();
     }
 
     @Override

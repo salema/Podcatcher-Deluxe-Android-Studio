@@ -88,7 +88,7 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Unselect podcast
+                // Deselect podcast
                 selection.resetPodcast();
 
                 // This is called when the Home (Up) button is pressed
@@ -103,7 +103,7 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
 
     @Override
     public void onBackPressed() {
-        // Unselect podcast
+        // Deselect podcast
         selection.resetPodcast();
 
         super.onBackPressed();

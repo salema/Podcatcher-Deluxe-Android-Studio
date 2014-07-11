@@ -94,7 +94,7 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
             // Metadata not yet created
             if (meta == null && isOld != null && isOld) {
                 meta = new EpisodeMetadata();
-                meta.isOld = isOld;
+                meta.isOld = true;
 
                 metadata.put(episode.getMediaUrl(), meta);
             } // Metadata available

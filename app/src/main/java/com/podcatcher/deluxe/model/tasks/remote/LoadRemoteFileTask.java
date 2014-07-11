@@ -148,7 +148,7 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
             publishProgress(Progress.LOAD);
 
             byte[] buffer = new byte[1024];
-            int bytesRead = 0;
+            int bytesRead;
             int totalBytes = 0;
 
             // 3. Read stream and report progress (if possible)

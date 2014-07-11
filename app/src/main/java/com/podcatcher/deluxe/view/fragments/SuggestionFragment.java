@@ -41,9 +41,6 @@ import com.podcatcher.deluxe.adapters.GenreSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.LanguageSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.MediaTypeSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.SuggestionListAdapter;
-import com.podcatcher.deluxe.model.types.Genre;
-import com.podcatcher.deluxe.model.types.Language;
-import com.podcatcher.deluxe.model.types.MediaType;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.ProgressView;
@@ -158,8 +155,6 @@ public class SuggestionFragment extends DialogFragment {
 
         return layout;
     }
-
-    ;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -341,11 +336,11 @@ public class SuggestionFragment extends DialogFragment {
      */
     private boolean matchesFilter(Suggestion suggestion) {
         return (languageFilter.getSelectedItemPosition() == 0 ||
-                ((Language) languageFilter.getSelectedItem()).equals(suggestion.getLanguage())) &&
+                languageFilter.getSelectedItem().equals(suggestion.getLanguage())) &&
                 (genreFilter.getSelectedItemPosition() == 0 ||
-                        ((Genre) genreFilter.getSelectedItem()).equals(suggestion.getGenre())) &&
+                        genreFilter.getSelectedItem().equals(suggestion.getGenre())) &&
                 (mediaTypeFilter.getSelectedItemPosition() == 0 ||
-                        ((MediaType) mediaTypeFilter.getSelectedItem()).equals(suggestion.getMediaType()));
+                        mediaTypeFilter.getSelectedItem().equals(suggestion.getMediaType()));
     }
 
     /**

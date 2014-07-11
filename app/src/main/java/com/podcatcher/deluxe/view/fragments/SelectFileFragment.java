@@ -123,8 +123,6 @@ public class SelectFileFragment extends DialogFragment {
             this.selectedPosition = savedInstanceState.getInt(SELECTED_POSITION_KEY);
     }
 
-    ;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

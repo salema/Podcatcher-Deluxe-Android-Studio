@@ -53,7 +53,7 @@
     <string name="podcast_load_error_access_denied">Záznam se nepodařilo nahrát, protože přístup ke kanálu byl odepřen.</string>
     <string name="podcast_load_error_explicit">Záznam se nepodařilo nahrát, protože přístup k určitému obsahu je v tomto uživatelském profilu blokován.</string>
     <string name="podcast_load_error_not_reachable">Záznam se nepodařilo nahrát, protože se nepodařilo spojit se se serverem, nebo je adresa neplatná.</string>
-    <string name="podcast_load_error_not_parseable">Záznam se nepodařilo nahrát, protože adresa neukazuje na platný kanál záznamu.</string>
+    <string name="podcast_load_error_not_parsable">Záznam se nepodařilo nahrát, protože adresa neukazuje na platný kanál záznamu.</string>
     <string name="podcast_load_multiple_progress">%1$d z %2$d záznamů</string>
     <string name="podcast_load_multiple_error">Záznam\n\"%s\"\nse nepodařilo nahrát.</string>
     <string name="podcast_load_multiple_error_all">Všechn záznamy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
@@ -112,7 +112,6 @@
     <string name="suggestions_reset_filters">Nastavit filtry znovu</string>
     <string name="suggestions_load_error">Návrhy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
     <string name="suggestions_send">Odeslat návrh záznamu</string>
-    <string name="sync_all_started">Začala synchronizace pro všechny povolené služby</string>
     <string name="sync_dropbox_unlink_title">Odpojit Dropbox</string>
     <string name="sync_dropbox_unlink_message">Opravdu chcete odpojit svůj účet u Dropboxu od této aplikace? I když to pro teď veškerou synchronizaci přes Dropbox, můžete to vrátit zpět opětovným připojením aplikace později.</string>
     <string name="sync_dropbox_unlink_button">Odpojit</string>

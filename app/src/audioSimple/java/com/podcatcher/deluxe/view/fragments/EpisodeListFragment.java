@@ -363,8 +363,8 @@ public class EpisodeListFragment extends PodcatcherListFragment {
                     progressView.showError(R.string.podcast_load_error_access_denied);
                     break;
 
-                case NOT_PARSEABLE:
-                    progressView.showError(R.string.podcast_load_error_not_parseable);
+                case NOT_PARSABLE:
+                    progressView.showError(R.string.podcast_load_error_not_parsable);
                     break;
 
                 case NOT_REACHABLE:

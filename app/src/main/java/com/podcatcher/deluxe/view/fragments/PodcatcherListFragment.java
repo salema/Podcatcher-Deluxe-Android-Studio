@@ -169,7 +169,7 @@ public abstract class PodcatcherListFragment extends ListFragment {
     }
 
     /**
-     * Unselect selected item (if any).
+     * Deselect selected item (if any).
      */
     public void selectNone() {
         selectAll = false;

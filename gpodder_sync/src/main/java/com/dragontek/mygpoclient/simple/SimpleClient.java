@@ -88,7 +88,7 @@ public class SimpleClient {
                 for (Cookie c : tempClient.getCookieStore().getCookies()) {
                     if (c.getName().equals("sessionid"))
                         ;
-                    _authToken = c.getValue().toString();
+                    _authToken = c.getValue();
                 }
             } catch (Exception e) {
                 _authToken = null;

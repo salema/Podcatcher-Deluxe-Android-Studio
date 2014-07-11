@@ -29,8 +29,6 @@ public class JsonClient extends HttpClient {
         return gson.fromJson(data, clazz);
     }
 
-    ;
-
     @Override
     protected HttpUriRequest prepareRequest(String method, String uri,
                                             HttpEntity data) {

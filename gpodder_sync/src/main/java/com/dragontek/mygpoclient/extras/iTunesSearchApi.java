@@ -41,7 +41,7 @@ public class iTunesSearchApi {
         Gson gson = new Gson();
         Entity entity = gson.fromJson(response, Entity.class);
 
-        List<IPodcast> results = new ArrayList<IPodcast>(); // entity.results;
+        List<IPodcast> results = new ArrayList<>(); // entity.results;
         results.addAll(entity.results);
 
         return results;

@@ -62,8 +62,7 @@ public class ColorPickerPreference
     /**
      * For custom purposes. Not used by ColorPickerPreferrence
      *
-     * @param color
-     * @author Unknown
+     * @param color Color to convert
      */
     public static String convertToARGB(int color) {
         String alpha = Integer.toHexString(Color.alpha(color));
@@ -93,10 +92,9 @@ public class ColorPickerPreference
     /**
      * For custom purposes. Not used by ColorPickerPreference
      *
-     * @param color
+     * @param color Color to convert
      * @return A string representing the hex value of color, without the alpha
      * value
-     * @author Charles Rosaaen
      */
     public static String convertToRGB(int color) {
         String red = Integer.toHexString(Color.red(color));
@@ -121,9 +119,8 @@ public class ColorPickerPreference
     /**
      * For custom purposes. Not used by ColorPickerPreferrence
      *
-     * @param argb
-     * @throws NumberFormatException
-     * @author Unknown
+     * @param argb String to convert to color int
+     * @throws NumberFormatException If not a valid color string
      */
     public static int convertToColorInt(String argb) throws NumberFormatException {
 
@@ -131,7 +128,7 @@ public class ColorPickerPreference
             argb = argb.replace("#", "");
         }
 
-        int alpha = -1, red = -1, green = -1, blue = -1;
+        int alpha, red, green, blue;
 
         if (argb.length() == 8) {
             alpha = Integer.parseInt(argb.substring(0, 2), 16);
@@ -222,7 +219,7 @@ public class ColorPickerPreference
     /**
      * Toggle Alpha Slider visibility (by default it's disabled)
      *
-     * @param enable
+     * @param enable If slider is on
      */
     public void setAlphaSliderEnabled(boolean enable) {
         mAlphaSliderEnabled = enable;
@@ -231,7 +228,7 @@ public class ColorPickerPreference
     /**
      * Toggle Hex Value visibility (by default it's disabled)
      *
-     * @param enable
+     * @param enable If hex value input is on
      */
     public void setHexValueEnabled(boolean enable) {
         mHexValueEnabled = enable;

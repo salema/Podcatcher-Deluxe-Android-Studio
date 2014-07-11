@@ -670,11 +670,11 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
     /**
      * Whether the podcast content is old enough to need reloading. This relates
-     * to the time that {@link #parse(XmlPullParser)} has last been called on
+     * to the time that {@link Podcast#parse(XmlPullParser)} has last been called on
      * the object and has nothing to do with the updating of the podcast RSS
      * file on the provider's server.
      *
-     * @param Podcast to check.
+     * @param podcast Podcast to check.
      * @return <code>true</code> iff time to live expired or the podcast has
      * never been loaded.
      */

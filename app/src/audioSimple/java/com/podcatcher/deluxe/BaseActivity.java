@@ -61,10 +61,12 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * Key to find the podcast positions under
      */
     public static final String PODCAST_POSITION_LIST_KEY = "position_list_key";
+
     /**
      * The amount of min-dp for the large screen bucket
      */
     public static final int MIN_PIXEL_LARGE = 600;
+
     /**
      * The podcast manager handle
      */
@@ -81,6 +83,7 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * The shared app preferences
      */
     protected SharedPreferences preferences;
+
     /**
      * The theme color set
      */
@@ -89,6 +92,7 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * The light theme color set
      */
     protected int lightThemeColor;
+
     /**
      * The currently active view mode
      */
@@ -102,152 +106,6 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * Our toast object
      */
     private Toast toast;
-
-    @SuppressLint("ShowToast")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // This will suggest to the Android system, that the volume to be
-        // changed for this app (all its activities) is the music stream
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-
-        // Set the selection mode member
-        selection = ContentSelection.getInstance();
-        // Set the view mode member
-        view = ViewMode.determineViewMode(getResources());
-
-        // Set the data managers
-        podcastManager = PodcastManager.getInstance();
-        episodeManager = EpisodeManager.getInstance();
-        syncManager = SyncManager.getInstance();
-
-        // Get our preferences and listen to changes
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(this);
-
-        // Get the theme color
-        themeColor = preferences.getInt(SettingsActivity.KEY_THEME_COLOR,
-                getResources().getColor(R.color.theme_dark));
-        // This will set the light theme color member
-        lightThemeColor = calculateLightThemeColor();
-
-        // Create and configure toast member (not shown here, ignore lint
-        // warning). We use only one toast object to avoid stacked notifications
-        toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
-        final TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
-        if (textView != null)
-            textView.setGravity(Gravity.CENTER);
-    }
-
-    ;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Add generic menu items (help, web site...)
-        getMenuInflater().inflate(R.menu.podcatcher, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings_menuitem:
-                startActivity(new Intent(this, SettingsActivity.class));
-
-                return true;
-            case R.id.about_menuitem:
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_WEBSITE)));
-                } catch (ActivityNotFoundException e) {
-                    // We are in a restricted profile without a browser
-                    showToast(getString(R.string.no_browser));
-                }
-
-                return true;
-            case R.id.help_menuitem:
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_HELPSITE)));
-                } catch (ActivityNotFoundException e) {
-                    // We are in a restricted profile without a browser
-                    showToast(getString(R.string.no_browser));
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // Unregister the listener
-        preferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(SettingsActivity.KEY_THEME_COLOR)) {
-            // Set new color members
-            themeColor = preferences.getInt(SettingsActivity.KEY_THEME_COLOR, themeColor);
-            lightThemeColor = calculateLightThemeColor();
-        }
-    }
-
-    /**
-     * Gets the fragment for a given tag string id (resolved via app's
-     * resources) from the fragment manager.
-     *
-     * @param tagId Id of the tag string in resources.
-     * @return The fragment stored under the given tag or <code>null</code> if
-     * not added to the fragment manager.
-     */
-    protected Fragment findByTagId(int tagId) {
-        return getFragmentManager().findFragmentByTag(getString(tagId));
-    }
-
-    /**
-     * Show a short, centered toast.
-     *
-     * @param text Toast message text to show.
-     */
-    protected void showToast(String text) {
-        showToast(text, Toast.LENGTH_SHORT);
-    }
-
-    /**
-     * Show a centered toast.
-     *
-     * @param text   Toast message text to show.
-     * @param length The duration for the toast to show.
-     */
-    protected void showToast(String text, int length) {
-        toast.setText(text);
-        toast.setDuration(length);
-
-        toast.show();
-    }
-
-    private int calculateLightThemeColor() {
-        // If the theme color is unchanged, use original light variant
-        if (themeColor == getResources().getColor(R.color.theme_dark))
-            return getResources().getColor(R.color.theme_light);
-            // We have a custom theme color, calculate variant
-        else {
-            final float[] hsv = new float[3];
-            final int alpha = Color.alpha(themeColor);
-
-            Color.RGBToHSV(Color.red(themeColor), Color.green(themeColor), Color.blue(themeColor),
-                    hsv);
-            hsv[1] = (float) (hsv[1] - 0.25 < 0.05 ? 0.05 : hsv[1] - 0.25);
-            hsv[2] = (float) (hsv[2] + 0.25 > 0.95 ? 0.95 : hsv[2] + 0.25);
-
-            return Color.HSVToColor(alpha, hsv);
-        }
-    }
 
     /**
      * The options available for the content mode
@@ -429,6 +287,150 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
          */
         public void resetEpisode() {
             this.currentEpisode = null;
+        }
+    }
+
+    @SuppressLint("ShowToast")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // This will suggest to the Android system, that the volume to be
+        // changed for this app (all its activities) is the music stream
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        // Set the selection mode member
+        selection = ContentSelection.getInstance();
+        // Set the view mode member
+        view = ViewMode.determineViewMode(getResources());
+
+        // Set the data managers
+        podcastManager = PodcastManager.getInstance();
+        episodeManager = EpisodeManager.getInstance();
+        syncManager = SyncManager.getInstance();
+
+        // Get our preferences and listen to changes
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+
+        // Get the theme color
+        themeColor = preferences.getInt(SettingsActivity.KEY_THEME_COLOR,
+                getResources().getColor(R.color.theme_dark));
+        // This will set the light theme color member
+        lightThemeColor = calculateLightThemeColor();
+
+        // Create and configure toast member (not shown here, ignore lint
+        // warning). We use only one toast object to avoid stacked notifications
+        toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+        final TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+        if (textView != null)
+            textView.setGravity(Gravity.CENTER);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Add generic menu items (help, web site...)
+        getMenuInflater().inflate(R.menu.podcatcher, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_menuitem:
+                startActivity(new Intent(this, SettingsActivity.class));
+
+                return true;
+            case R.id.about_menuitem:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_WEBSITE)));
+                } catch (ActivityNotFoundException e) {
+                    // We are in a restricted profile without a browser
+                    showToast(getString(R.string.no_browser));
+                }
+
+                return true;
+            case R.id.help_menuitem:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_HELPSITE)));
+                } catch (ActivityNotFoundException e) {
+                    // We are in a restricted profile without a browser
+                    showToast(getString(R.string.no_browser));
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Unregister the listener
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(SettingsActivity.KEY_THEME_COLOR)) {
+            // Set new color members
+            themeColor = preferences.getInt(SettingsActivity.KEY_THEME_COLOR, themeColor);
+            lightThemeColor = calculateLightThemeColor();
+        }
+    }
+
+    /**
+     * Gets the fragment for a given tag string id (resolved via app's
+     * resources) from the fragment manager.
+     *
+     * @param tagId Id of the tag string in resources.
+     * @return The fragment stored under the given tag or <code>null</code> if
+     * not added to the fragment manager.
+     */
+    protected Fragment findByTagId(int tagId) {
+        return getFragmentManager().findFragmentByTag(getString(tagId));
+    }
+
+    /**
+     * Show a short, centered toast.
+     *
+     * @param text Toast message text to show.
+     */
+    protected void showToast(String text) {
+        showToast(text, Toast.LENGTH_SHORT);
+    }
+
+    /**
+     * Show a centered toast.
+     *
+     * @param text   Toast message text to show.
+     * @param length The duration for the toast to show.
+     */
+    protected void showToast(String text, int length) {
+        toast.setText(text);
+        toast.setDuration(length);
+
+        toast.show();
+    }
+
+    private int calculateLightThemeColor() {
+        // If the theme color is unchanged, use original light variant
+        if (themeColor == getResources().getColor(R.color.theme_dark))
+            return getResources().getColor(R.color.theme_light);
+            // We have a custom theme color, calculate variant
+        else {
+            final float[] hsv = new float[3];
+            final int alpha = Color.alpha(themeColor);
+
+            Color.RGBToHSV(Color.red(themeColor), Color.green(themeColor), Color.blue(themeColor),
+                    hsv);
+            hsv[1] = (float) (hsv[1] - 0.25 < 0.05 ? 0.05 : hsv[1] - 0.25);
+            hsv[2] = (float) (hsv[2] + 0.25 > 0.95 ? 0.95 : hsv[2] + 0.25);
+
+            return Color.HSVToColor(alpha, hsv);
         }
     }
 }

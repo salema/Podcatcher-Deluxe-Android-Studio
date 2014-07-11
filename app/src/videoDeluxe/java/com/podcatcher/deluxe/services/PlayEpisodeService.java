@@ -82,35 +82,35 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     /**
      * Action to send to service to toggle play/pause
      */
-    public static final String ACTION_TOGGLE = "com.podcatcher.deluxe.video.action.TOGGLE";
+    public static final String ACTION_TOGGLE = "com.podcatcher.deluxe.action.TOGGLE";
     /**
      * Action to send to service to play (resume) episode
      */
-    public static final String ACTION_PLAY = "com.podcatcher.deluxe.video.action.PLAY";
+    public static final String ACTION_PLAY = "com.podcatcher.deluxe.action.PLAY";
     /**
      * Action to send to service to pause episode
      */
-    public static final String ACTION_PAUSE = "com.podcatcher.deluxe.video.action.PAUSE";
+    public static final String ACTION_PAUSE = "com.podcatcher.deluxe.action.PAUSE";
     /**
      * Action to send to service to restart the current episode
      */
-    public static final String ACTION_PREVIOUS = "com.podcatcher.deluxe.video.action.PREVIOUS";
+    public static final String ACTION_PREVIOUS = "com.podcatcher.deluxe.action.PREVIOUS";
     /**
      * Action to send to service to skip to next episode
      */
-    public static final String ACTION_SKIP = "com.podcatcher.deluxe.video.action.SKIP";
+    public static final String ACTION_SKIP = "com.podcatcher.deluxe.action.SKIP";
     /**
      * Action to send to service to rewind the current episode
      */
-    public static final String ACTION_REWIND = "com.podcatcher.deluxe.video.action.REWIND";
+    public static final String ACTION_REWIND = "com.podcatcher.deluxe.action.REWIND";
     /**
      * Action to send to service to fast forward the current episode
      */
-    public static final String ACTION_FORWARD = "com.podcatcher.deluxe.video.action.FORWARD";
+    public static final String ACTION_FORWARD = "com.podcatcher.deluxe.action.FORWARD";
     /**
      * Action to send to service to stop episode
      */
-    public static final String ACTION_STOP = "com.podcatcher.deluxe.video.action.STOP";
+    public static final String ACTION_STOP = "com.podcatcher.deluxe.action.STOP";
 
     /**
      * The episode manager handle
@@ -258,38 +258,48 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             // Retrieve the action
             String action = intent.getAction();
             // Go handle the action
-            if (action.equals(ACTION_TOGGLE)) {
-                if (isPlaying())
-                    pause();
-                else
+            switch (action) {
+                case ACTION_TOGGLE:
+                    if (isPlaying())
+                        pause();
+                    else
+                        resume();
+                    break;
+                case ACTION_PLAY:
                     resume();
-            } else if (action.equals(ACTION_PLAY))
-                resume();
-            else if (action.equals(ACTION_PAUSE))
-                pause();
-            else if (action.equals(ACTION_PREVIOUS)) {
-                // Store the resume at value because we want to handle the case
-                // where the user invokes this action accidentally.
-                storeResumeAt();
+                    break;
+                case ACTION_PAUSE:
+                    pause();
+                    break;
+                case ACTION_PREVIOUS:
+                    // Store the resume at value because we want to handle the case
+                    // where the user invokes this action accidentally.
+                    storeResumeAt();
 
-                seekTo(0);
-            } else if (action.equals(ACTION_SKIP)) {
-                // "Skip" can mean two things here: Move ahead in the current
-                // episode to the stored "resume at" value, or (if that is not
-                // available or actually "behind" us) go to the next item in the
-                // playlist.
-                final int resumeAt = episodeManager.getResumeAt(currentEpisode);
+                    seekTo(0);
+                    break;
+                case ACTION_SKIP:
+                    // "Skip" can mean two things here: Move ahead in the current
+                    // episode to the stored "resume at" value, or (if that is not
+                    // available or actually "behind" us) go to the next item in the
+                    // playlist.
+                    final int resumeAt = episodeManager.getResumeAt(currentEpisode);
 
-                if (resumeAt > getCurrentPosition())
-                    player.seekTo(resumeAt);
-                else
-                    playNext();
-            } else if (action.equals(ACTION_REWIND)) {
-                rewind();
-            } else if (action.equals(ACTION_FORWARD)) {
-                fastForward();
-            } else if (action.equals(ACTION_STOP))
-                reset();
+                    if (resumeAt > getCurrentPosition())
+                        player.seekTo(resumeAt);
+                    else
+                        playNext();
+                    break;
+                case ACTION_REWIND:
+                    rewind();
+                    break;
+                case ACTION_FORWARD:
+                    fastForward();
+                    break;
+                case ACTION_STOP:
+                    reset();
+                    break;
+            }
 
             // Alert listeners so the UI can adjust
             for (PlayServiceListener listener : listeners)
@@ -775,7 +785,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         // Mark the episode old (needs to be done before resetting the service!)
         episodeManager.setState(currentEpisode, true);
         // Delete download if auto delete is enabled
-        if (shouldAutoDeleteCompletedEpisode(currentEpisode))
+        if (shouldAutoDeleteCompletedEpisode())
             episodeManager.deleteDownload(currentEpisode);
 
         // If there is another episode on the playlist, play it.
@@ -1007,7 +1017,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             remoteControlClient.setPlaybackState(state);
     }
 
-    private boolean shouldAutoDeleteCompletedEpisode(Episode episode) {
+    private boolean shouldAutoDeleteCompletedEpisode() {
         return PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(SettingsActivity.KEY_AUTO_DELETE, false);
     }

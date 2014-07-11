@@ -73,7 +73,7 @@ public class PlayEpisodeNotification {
      * The pending intents for the actions
      */
     private final PendingIntent stopPendingIntent;
-    private final PendingIntent tooglePendingIntent;
+    private final PendingIntent togglePendingIntent;
     private final PendingIntent nextPendingIntent;
 
     /**
@@ -105,9 +105,9 @@ public class PlayEpisodeNotification {
         stopPendingIntent = PendingIntent.getService(context, 0, stopIntent,
                 FLAG_UPDATE_CURRENT);
 
-        final Intent toogleIntent = new Intent(context, PlayEpisodeService.class);
-        toogleIntent.setAction(PlayEpisodeService.ACTION_TOGGLE);
-        tooglePendingIntent = PendingIntent.getService(context, 0, toogleIntent,
+        final Intent toggleIntent = new Intent(context, PlayEpisodeService.class);
+        toggleIntent.setAction(PlayEpisodeService.ACTION_TOGGLE);
+        togglePendingIntent = PendingIntent.getService(context, 0, toggleIntent,
                 FLAG_UPDATE_CURRENT);
 
         final Intent nextIntent = new Intent(context, PlayEpisodeService.class);
@@ -180,10 +180,10 @@ public class PlayEpisodeNotification {
             // Add other actions according to playback state
             if (paused)
                 notificationBuilder.addAction(R.drawable.ic_media_resume,
-                        context.getString(R.string.resume), tooglePendingIntent);
+                        context.getString(R.string.resume), togglePendingIntent);
             else
                 notificationBuilder.addAction(R.drawable.ic_media_pause,
-                        context.getString(R.string.pause), tooglePendingIntent);
+                        context.getString(R.string.pause), togglePendingIntent);
 
             if (!EpisodeManager.getInstance().isPlaylistEmptyBesides(episode))
                 notificationBuilder.addAction(R.drawable.ic_media_next,

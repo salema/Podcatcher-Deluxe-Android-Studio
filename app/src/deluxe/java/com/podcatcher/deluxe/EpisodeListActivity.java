@@ -350,6 +350,10 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         if (shouldAutoDownloadLatestEpisode(podcast))
             episodeManager.download(podcast.getEpisodes().get(0));
 
+        // Additionally, if on large device, process clever selection update
+        if (!view.isSmall())
+            updateEpisodeListSelection();
+
         // Update other UI
         updateActionBar();
         updateSortingUi();
@@ -447,7 +451,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             final Podcast podcast = selection.getPodcast();
             podcastManager.setCredentials(podcast, username, password);
 
-            // We need to unselect the podcast here in order to make it
+            // We need to deselect the podcast here in order to make it
             // selectable again...
             selection.setPodcast(null);
 

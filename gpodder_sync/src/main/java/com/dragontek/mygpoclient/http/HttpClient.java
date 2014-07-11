@@ -42,10 +42,10 @@ public class HttpClient extends DefaultHttpClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is,
                 Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder();
-        String line = null;
+        String line;
         try {
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
         } finally {
             try {

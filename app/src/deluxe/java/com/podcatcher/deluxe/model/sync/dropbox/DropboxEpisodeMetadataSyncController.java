@@ -106,6 +106,7 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
                     // If the episode exists in this context, update metadata on
                     // the main thread
                     if (episode != null)
+                        //noinspection unchecked
                         publishProgress(new AbstractMap.SimpleEntry<>(episode, record));
                 }
             } catch (DbxException | NullPointerException | InterruptedException e) {
@@ -116,8 +117,9 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
             return null;
         }
 
+        @SafeVarargs
         @Override
-        protected void onProgressUpdate(Entry<Episode, DbxRecord>... values) {
+        protected final void onProgressUpdate(Entry<Episode, DbxRecord>... values) {
             final Episode episode = values[0].getKey();
             final DbxRecord record = values[0].getValue();
 

@@ -321,7 +321,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         final Podcast another = (Podcast) o;
 
         // Podcasts are equal iff they point at the same online content
-        return url == null ? false : url.equals(another.url);
+        return url != null && url.equals(another.url);
     }
 
     @Override
@@ -335,7 +335,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             return name.compareToIgnoreCase(another.name);
         else if (name == null && another.name != null)
             return -1;
-        else if (name != null && another.name == null)
+        else if (name != null) // Always true: && another.name == null)
             return 1;
         else
             return 0;
@@ -439,7 +439,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
     }
 
-    protected void parseLogo(XmlPullParser parser) throws XmlPullParserException, IOException {
+    protected void parseLogo(XmlPullParser parser) throws IOException {
         try {
             // HREF attribute used?
             if (parser.getAttributeValue("", RSS.HREF) != null)
@@ -481,9 +481,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             final String title = newEpisode.getName();
             if (title != null && !title.isEmpty() && newEpisode.getMediaUrl() != null)
                 episodes.add(newEpisode);
-        } catch (XmlPullParserException e) {
-            // pass, episode not added
-        } catch (IOException e) {
+        } catch (XmlPullParserException | IOException e) {
             // pass, episode not added
         }
     }

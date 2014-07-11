@@ -95,7 +95,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     @Override
     protected List<Suggestion> doInBackground(Void... params) {
         List<Suggestion> result = new ArrayList<>();
-        byte[] suggestions = null;
+        byte[] suggestions;
 
         // 1. Load the file from the cache or the Internet
         try {
@@ -264,12 +264,10 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         try {
             input = new FileInputStream(cachedFile);
             input.read(result);
-        } catch (IOException e) {
-            throw e;
         } finally {
             try {
                 input.close();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 // Nothing more we could do here
             }
         }
@@ -292,7 +290,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         } finally {
             try {
                 out.close();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 // Nothing more we could do here
             }
         }

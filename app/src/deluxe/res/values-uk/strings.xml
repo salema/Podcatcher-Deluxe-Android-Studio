@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="about">Про Podcatcher Deluxe</string>
     <string name="next">Далі</string>
     <string name="podcast_load_multiple_error_some">Не вдалось завантажити один або більше
@@ -24,7 +24,7 @@
     </string>
     <string name="episodes_no_new">Немає нових епізодів</string>
     <plurals name="episodes_filtered">
-        <item quantity="one">Один старий епізод відфільтровано</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Один старий епізод відфільтровано</item>
         <item quantity="few">%d старих епізодів відфільтровано</item>
         <item quantity="many">%d старих епізодів відфільтровано</item>
         <item quantity="other">%d старих епізодів відфільтровано</item>

@@ -188,7 +188,7 @@ public class ColorPickerDialog
      * Set a OnColorChangedListener to get notified when the color selected by
      * the user has changed.
      *
-     * @param listener
+     * @param listener The listener
      */
     public void setOnColorChangedListener(OnColorChangedListener listener) {
         mListener = listener;

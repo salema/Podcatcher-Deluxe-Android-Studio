@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="divider">Разделитель</string>
     <string name="help">Справка</string>
     <string name="no_browser">Не удалось найти браузер!</string>
@@ -42,8 +42,7 @@
     <string name="podcast_none_selected">Не выбрано ни одного подкаста</string>
     <string name="podcast_select_all">Выбрать все подкасты</string>
     <plurals name="podcasts">
-        <item quantity="one">Один подкаст</item>
-        <item quantity="few">%d подкастов</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Один подкаст</item>
         <item quantity="many">%d подкастов</item>
         <item quantity="other">%d подкастов</item>
     </plurals>
@@ -54,7 +53,7 @@
     <string name="podcast_load_error_access_denied">Не удалось загрузить подкаст. В доступе к новостной ленте отказано.</string>
     <string name="podcast_load_error_explicit">Не удалось загрузить подкаст. Доступ к контенту откровенного содержания для этого профиля запрещён.</string>
     <string name="podcast_load_error_not_reachable">Не удалось загрузить подкаст. Сервер перегружен или же введенная ссылка некорректна.</string>
-    <string name="podcast_load_error_not_parseable">Не удалось загрузить подкаст. По указанной ссылке не содержится корректной новостной ленты.</string>
+    <string name="podcast_load_error_not_parsable">Не удалось загрузить подкаст. По указанной ссылке не содержится корректной новостной ленты.</string>
     <string name="podcast_load_multiple_progress">%1$d из %2$d подкастов</string>
     <string name="podcast_load_multiple_error">Не удалось загрузить подкаст\n\"%s\"</string>
     <string name="podcast_load_multiple_error_all">Не удалось загрузить ни одного подкаста. Пожалуйста, проверьте подключение к Интернету.</string>
@@ -64,8 +63,7 @@
     <string name="episode_no_description">Описание отсутствует.</string>
     <string name="episode_none_selected">Не выбрано ни одного эпизода</string>
     <plurals name="episodes">
-        <item quantity="one">Один эпизод</item>
-        <item quantity="few">%d эпизодов</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Один эпизод</item>
         <item quantity="many">%d эпизодов</item>
         <item quantity="other">%d эпизодов</item>
     </plurals>
@@ -74,14 +72,12 @@
     <string name="download">Скачать</string>
     <string name="downloads">Загрузки</string>
     <plurals name="downloads_remove_title">
-        <item quantity="one">Удалить загрузку</item>
-        <item quantity="few">Удалить %d загрузок</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Удалить загрузку</item>
         <item quantity="many">Удалить %d загрузок</item>
         <item quantity="other">Удалить %d загрузок</item>
     </plurals>
     <plurals name="downloads_remove_text">
-        <item quantity="one">Вы больше не сможете просматривать этот эпизод без подключения к интернету.</item>
-        <item quantity="few">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Вы больше не сможете просматривать этот эпизод без подключения к интернету.</item>
         <item quantity="many">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
         <item quantity="other">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
     </plurals>
@@ -116,7 +112,6 @@
     <string name="suggestions_reset_filters">Сбросить фильтры</string>
     <string name="suggestions_load_error">Не удалось загрузить рекомендации. Проверьте подключение к Интернету.</string>
     <string name="suggestions_send">Рекомендовать подкаст</string>
-    <string name="sync_all_started">Синхронизация начата</string>
     <string name="sync_dropbox_unlink_title">Отвязать Dropbox</string>
     <string name="sync_dropbox_unlink_message">Вы действительно хотите отвязать аккаунт в Dropbox от данного приложения? Синхронизация с Dropbox будет прервана, пока аккаунт не будет заново привязан к приложению.</string>
     <string name="sync_dropbox_unlink_button">Отвязать</string>

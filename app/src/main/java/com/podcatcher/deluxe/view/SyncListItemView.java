@@ -24,7 +24,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -127,7 +126,7 @@ public class SyncListItemView extends LinearLayout {
         // The onCheckedChanged listener for the radio group fires too much, we
         // simply attach onClick listeners to each radio button...
         for (int index = 0; index < modeRadioGroup.getChildCount(); index++)
-            ((RadioButton) modeRadioGroup.getChildAt(index))
+            modeRadioGroup.getChildAt(index)
                     .setOnClickListener(new OnClickListener() {
 
                         @Override

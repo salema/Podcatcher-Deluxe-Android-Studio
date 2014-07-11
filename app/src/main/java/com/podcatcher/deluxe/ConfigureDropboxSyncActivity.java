@@ -52,7 +52,7 @@ public class ConfigureDropboxSyncActivity extends BaseActivity implements
                 // implementations below
                 new ConfirmUnlinkDropboxFragment().show(getFragmentManager(), null);
             } else
-                accountManager.startLink((Activity) this, 42);
+                accountManager.startLink(this, 42);
         }
     }
 

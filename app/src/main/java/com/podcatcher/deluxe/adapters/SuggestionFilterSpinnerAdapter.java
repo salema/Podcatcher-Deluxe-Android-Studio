@@ -59,7 +59,7 @@ public abstract class SuggestionFilterSpinnerAdapter extends PodcatcherBaseAdapt
     }
 
     private View getLabel(int position, View convertView, ViewGroup parent, boolean dropDown) {
-        TextView result = null;
+        TextView result;
 
         // Get the correct return view
         if (dropDown)

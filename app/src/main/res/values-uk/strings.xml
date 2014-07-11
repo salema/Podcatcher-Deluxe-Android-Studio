@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="divider">Дільник</string>
     <string name="help">Довідка</string>
     <string name="no_browser">Немає браузера!</string>
@@ -42,7 +42,7 @@
     <string name="podcast_none_selected">Не обрано жодного подкасту</string>
     <string name="podcast_select_all">Обрати усі подкасти</string>
     <plurals name="podcasts">
-        <item quantity="one">Один подкаст</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Один подкаст</item>
         <item quantity="few">%d подкастів</item>
         <item quantity="many">%d подкастів</item>
         <item quantity="other">%d подкастів</item>
@@ -54,7 +54,7 @@
     <string name="podcast_load_error_access_denied">Не вдалося завантажити подкаст. Немає доступу до новинної стрічки.</string>
     <string name="podcast_load_error_explicit">Не вдалося завантажити подкаст. Для цього профілю заборонено доступ до контенту з відвертим змістом.</string>
     <string name="podcast_load_error_not_reachable">Не вдалося завантажити подкаст. Сервер недосяжний або посилання недійсне.</string>
-    <string name="podcast_load_error_not_parseable">Не вдалося завантажити подкаст. Введена адреса не вказує на дійсну новинну стрічку.</string>
+    <string name="podcast_load_error_not_parsable">Не вдалося завантажити подкаст. Введена адреса не вказує на дійсну новинну стрічку.</string>
     <string name="podcast_load_multiple_progress">%1$d з %2$d подкастів</string>
     <string name="podcast_load_multiple_error">Не вдалося завантажити подкаст\n\"%s\"</string>
     <string name="podcast_load_multiple_error_all">Не вдалося завантажити жодного подкасту. Будь ласка, перевірте підключення до Інтернету.</string>
@@ -64,7 +64,7 @@
     <string name="episode_no_description">Опис відсутній.</string>
     <string name="episode_none_selected">Не обрано жодного епізоду</string>
     <plurals name="episodes">
-        <item quantity="one">Один епізод</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Один епізод</item>
         <item quantity="few">%d епізодів</item>
         <item quantity="many">%d епізодів</item>
         <item quantity="other">%d епізодів</item>
@@ -74,13 +74,13 @@
     <string name="download">Завантажити</string>
     <string name="downloads">Завантаження</string>
     <plurals name="downloads_remove_title">
-        <item quantity="one">Видалити завантаження</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Видалити завантаження</item>
         <item quantity="few">Видалити %d завантажень</item>
         <item quantity="many">Видалити %d завантажень</item>
         <item quantity="other">Видалити %d завантажень</item>
     </plurals>
     <plurals name="downloads_remove_text">
-        <item quantity="one">Цей епізод не можна буде грати без підключення до Інтернету.</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Цей епізод не можна буде грати без підключення до Інтернету.</item>
         <item quantity="few">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
         <item quantity="many">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
         <item quantity="other">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
@@ -116,7 +116,6 @@
     <string name="suggestions_reset_filters">Скасувати фільтри</string>
     <string name="suggestions_load_error">Не вдалося завантажити рекомендації. Будь ласка, перевірте підключення до Інтернету.</string>
     <string name="suggestions_send">Рекомендувати подкаст</string>
-    <string name="sync_all_started">Синхронізацію розпочато</string>
     <string name="sync_dropbox_unlink_title">Відв’язати Dropbox</string>
     <string name="sync_dropbox_unlink_message">Ви дійсно хочете відв’язати ваш акаунт у Dropbox від цієї програми? Це призупинить синхронізацію, доки ви наново не прив’яжете до програми цей або іншний акаунт Dropbox.</string>
     <string name="sync_dropbox_unlink_button">Відв’язати</string>

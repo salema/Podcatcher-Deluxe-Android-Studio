@@ -96,6 +96,7 @@ public class ExportOpmlActivity extends BaseActivity implements OnStorePodcastLi
                     final StorePodcastListTask exportTask = new StorePodcastListTask(this, this);
                     exportTask.setCustomLocation(result.getData());
 
+                    //noinspection unchecked
                     exportTask.execute(exports);
                 }
             } else

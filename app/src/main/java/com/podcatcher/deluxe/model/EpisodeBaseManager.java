@@ -164,7 +164,7 @@ public abstract class EpisodeBaseManager implements OnLoadEpisodeMetadataListene
      * Utility method to populate an episode's metadata object.
      *
      * @param episode Episode to take data from
-     * @param meta    Metadate holder to populate
+     * @param meta    Metadata holder to populate
      */
     protected void putAdditionalEpisodeInformation(Episode episode, EpisodeMetadata meta) {
         // We need all there object to be present: episode, podcast and holder

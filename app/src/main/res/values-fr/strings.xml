@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="divider">Séparateur</string>
     <string name="help">Aide</string>
     <string name="no_browser">Aucun navigateur disponible!</string>
@@ -42,7 +42,7 @@
     <string name="podcast_none_selected">Aucun podcast sélectionné</string>
     <string name="podcast_select_all">Sélectionner tous</string>
     <plurals name="podcasts">
-        <item quantity="one">Un podcast</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Un podcast</item>
         <item quantity="other">%d podcasts</item>
     </plurals>
     <string name="podcast_add_title">Nouveau podcast</string>
@@ -52,7 +52,7 @@
     <string name="podcast_load_error_access_denied">Le chargement du podcast a échoué car l’accès au flux a été refusé.</string>
     <string name="podcast_load_error_explicit">Le chargement du podcast a échoué car dans votre profil l’accès au contenu réservé aux adultes est bloqué.</string>
     <string name="podcast_load_error_not_reachable">Le chargement du podcast a échoué car le serveur ne peut pas être contacté ou l’URL n’est pas valide.</string>
-    <string name="podcast_load_error_not_parseable">Le chargement du podcast a échoué car l’URL ne correspond pas à un flux de podcast valide.</string>
+    <string name="podcast_load_error_not_parsable">Le chargement du podcast a échoué car l’URL ne correspond pas à un flux de podcast valide.</string>
     <string name="podcast_load_multiple_progress">%1$d de %2$d podcasts</string>
     <string name="podcast_load_multiple_error">Le podcast\n\"%s\"\nne peut pas être chargé.</string>
     <string name="podcast_load_multiple_error_all">Le chargement des podcasts a échoué. Vérifiez votre connexion Internet!</string>
@@ -62,7 +62,7 @@
     <string name="episode_no_description">Aucune description disponible.</string>
     <string name="episode_none_selected">Aucun épisode sélectionné</string>
     <plurals name="episodes">
-        <item quantity="one">Un épisode</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Un épisode</item>
         <item quantity="other">%d épisodes</item>
     </plurals>
     <string name="episodes_select_all">Sélectionner tous</string>
@@ -70,11 +70,11 @@
     <string name="download">Télécharger</string>
     <string name="downloads">Téléchargements</string>
     <plurals name="downloads_remove_title">
-        <item quantity="one">Supprimer téléchargement</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Supprimer téléchargement</item>
         <item quantity="other">Supprimer %d téléchargements</item>
     </plurals>
     <plurals name="downloads_remove_text">
-        <item quantity="one">Après avoir supprimé cet épisode, celui-ci ne sera plus accessible sans connexion internet.</item>
+        <item quantity="one" tools:ignore="ImpliedQuantity">Après avoir supprimé cet épisode, celui-ci ne sera plus accessible sans connexion internet.</item>
         <item quantity="other">Après avoir supprimé ces épisodes, ceux-ci ne seront plus accessibles sans connexion internet.</item>
     </plurals>
     <string name="downloads_none">Aucun épisode disponible. Pour sauvegarder des épisodes, cliquez sur le symbole de téléchargement.</string>
@@ -108,7 +108,6 @@
     <string name="suggestions_reset_filters">Réinitialiser les filtres</string>
     <string name="suggestions_load_error">Impossible de charger les suggestions. Vérifiez votre connexion Internet!</string>
     <string name="suggestions_send">Suggérer un podcast</string>
-    <string name="sync_all_started">Synchronsation démarrée pour tous les services activés</string>
     <string name="sync_dropbox_unlink_title">Se déconnecter de Dropbox</string>
     <string name="sync_dropbox_unlink_message">Êtes-vous sûr de vouloir déconnecter cette app de votre compte Dropbox? Même si avec cette opération la synchronisation avec Dropbox est terminée pour le moment, vous pouvez toujours vous connecter à l’app plus tard. </string>
     <string name="sync_dropbox_unlink_button">Se déconnecter</string>

@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:hint="HEX"
             android:maxLength="7"
-            android:visibility="gone"></EditText>
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout

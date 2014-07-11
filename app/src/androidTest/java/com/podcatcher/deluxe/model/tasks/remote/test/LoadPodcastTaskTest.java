@@ -122,7 +122,7 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
                 false);
         assertTrue(mockLoader.failed);
         assertNull(mockLoader.result.getLastLoaded());
-        assertEquals(mockLoader.code, PodcastLoadError.NOT_PARSEABLE);
+        assertEquals(mockLoader.code, PodcastLoadError.NOT_PARSABLE);
 
         // Auth required
         loadAndWait(mockLoader, new Podcast("SGU",

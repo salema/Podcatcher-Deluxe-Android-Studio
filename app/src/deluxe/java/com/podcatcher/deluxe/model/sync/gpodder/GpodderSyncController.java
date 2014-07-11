@@ -43,11 +43,6 @@ public class GpodderSyncController extends GpodderEpisodeMetadataSyncController 
     }
 
     @Override
-    public boolean isRunning() {
-        return super.isRunning();
-    }
-
-    @Override
     public void syncSettings() {
         // pass, settings are not yet supported by this sync controller
     }

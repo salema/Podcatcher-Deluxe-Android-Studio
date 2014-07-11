@@ -97,6 +97,7 @@ public class PodcatcherRCClient extends RemoteControlClient {
      * @param canSkip Give <code>true</code> for the "next" transport control to
      *                be displayed.
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void showNext(boolean canSkip) {
         setTransportControlFlags(SUPPORTED_TRANSPORTS | (canSkip ? FLAG_KEY_MEDIA_NEXT : 0)
                 | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 ?

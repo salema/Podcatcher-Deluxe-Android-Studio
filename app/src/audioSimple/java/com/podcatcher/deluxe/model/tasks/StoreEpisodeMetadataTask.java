@@ -73,8 +73,9 @@ public class StoreEpisodeMetadataTask extends StoreFileTask<Map<String, EpisodeM
         this.listener = listener;
     }
 
+    @SafeVarargs
     @Override
-    protected Void doInBackground(Map<String, EpisodeMetadata>... params) {
+    protected final Void doInBackground(Map<String, EpisodeMetadata>... params) {
         try {
             // 1. Do house keeping and remove all metadata instances without
             // data

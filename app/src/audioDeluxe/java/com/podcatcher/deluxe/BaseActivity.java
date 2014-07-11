@@ -63,6 +63,11 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     public static final String PODCAST_POSITION_LIST_KEY = "position_list_key";
 
     /**
+     * The amount of min-dp for the large screen bucket
+     */
+    public static final int MIN_PIXEL_LARGE = 600;
+
+    /**
      * The podcast manager handle
      */
     protected PodcastManager podcastManager;
@@ -88,10 +93,6 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      */
     protected int lightThemeColor;
 
-    /**
-     * The amount of min-dp for the large screen bucket
-     */
-    public static final int MIN_PIXEL_LARGE = 600;
     /**
      * The currently active view mode
      */
@@ -130,8 +131,6 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
          */
         PLAYLIST
     }
-
-    ;
 
     /**
      * Content selection singleton, makes the user selection of podcasts,

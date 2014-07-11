@@ -186,6 +186,7 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                     // 2b3. Remove local podcasts not in synced list
                     for (Podcast podcast : podcastManager.getPodcastList())
                         if (!synced.contains(podcast.getUrl())) {
+                            //noinspection unchecked
                             publishProgress(new AbstractMap.SimpleEntry<>(false, podcast));
                             subscriptionsRemovedLocally.add(podcast.getUrl());
                         }
@@ -197,7 +198,7 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                         if (!podcastManager.contains(podcast)) {
                             // Increase running tasks counter
                             runningLoadPodcastTaskCount++;
-
+                            //noinspection unchecked
                             publishProgress(new AbstractMap.SimpleEntry<>(true, podcast));
                             subscriptionsAddedLocally.add(url);
                         }
@@ -229,8 +230,9 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
             return null;
         }
 
+        @SafeVarargs
         @Override
-        protected void onProgressUpdate(Entry<Boolean, Podcast>... values) {
+        protected final void onProgressUpdate(Entry<Boolean, Podcast>... values) {
             // Each progress update entry represents a podcast to be added or
             // removed locally, so we do just that:
             final boolean add = values[0].getKey();

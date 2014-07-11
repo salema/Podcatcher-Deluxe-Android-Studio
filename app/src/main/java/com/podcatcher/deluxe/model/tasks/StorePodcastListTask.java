@@ -115,13 +115,14 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
         this.writeAuthorization = write;
     }
 
+    @SafeVarargs
     @Override
-    protected Void doInBackground(List<Podcast>... params) {
+    protected final Void doInBackground(List<Podcast>... params) {
         this.podcastList = params[0];
 
         try {
             // 1. Open the file and get a writer
-            OutputStream fileStream = null;
+            OutputStream fileStream;
             try {
                 fileStream = context.getContentResolver().openOutputStream(exportLocation);
             } catch (FileNotFoundException fnfe) {

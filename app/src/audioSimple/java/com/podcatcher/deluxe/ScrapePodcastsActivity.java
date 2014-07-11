@@ -63,7 +63,7 @@ public class ScrapePodcastsActivity extends BaseActivity implements OnLoadPodcas
         // Add all podcasts to the list
         for (Podcast podcast : podcastList) {
             names.add(podcast.getName());
-            urls.add(podcast.getUrl().toString());
+            urls.add(podcast.getUrl());
         }
 
         Intent podcasts = new Intent();

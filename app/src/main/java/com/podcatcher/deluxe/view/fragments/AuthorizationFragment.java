@@ -160,11 +160,11 @@ public class AuthorizationFragment extends DialogFragment {
         });
 
         // Build the dialog
-        final AlertDialog.Builder abuilder = new AlertDialog.Builder(context);
-        abuilder.setTitle(R.string.auth)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.auth)
                 .setView(content);
 
-        return abuilder.create();
+        return builder.create();
     }
 
     @Override

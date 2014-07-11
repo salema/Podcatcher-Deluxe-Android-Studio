@@ -67,7 +67,7 @@ public class SynchronizationPreference extends Preference {
             // Add all controller with send only
             for (ControllerImpl impl : ControllerImpl.values())
                 if (SyncMode.SEND_ONLY.equals(syncManager.getSyncMode(impl)))
-                    builder.append(impl.getLabel() + ", ");
+                    builder.append(impl.getLabel()).append(", ");
 
             // Delete last ", "
             builder.delete(builder.length() - 2, builder.length());
@@ -80,7 +80,7 @@ public class SynchronizationPreference extends Preference {
             // Add all send + receive controllers
             for (ControllerImpl impl : ControllerImpl.values())
                 if (SyncMode.SEND_RECEIVE.equals(syncManager.getSyncMode(impl)))
-                    builder.append(impl.getLabel() + ", ");
+                    builder.append(impl.getLabel()).append(", ");
 
             builder.delete(builder.length() - 2, builder.length());
 
