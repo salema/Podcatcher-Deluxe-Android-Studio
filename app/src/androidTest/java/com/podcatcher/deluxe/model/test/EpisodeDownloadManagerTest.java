@@ -43,5 +43,14 @@ public class EpisodeDownloadManagerTest extends InstrumentationTestCase {
                         "Linux Outlaws 332 – International Football is a Bit Like War",
                         "http://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/linuxoutlaws/linuxoutlaws332.mp3")
         );
+
+        assertEquals(
+                "For Army Reserve Soldier Michael Cross the world as he knew it ended in an instant" + s
+                        + "Live from Hollywood CA by way of the Broken Skull Ranch Pro Wrestling Hall of Famer.mp3",
+                sanitizeAsFilePath(
+                        "For Army Reserve Soldier Michael Cross, the world as he knew it ended in an instant. One minute, he&#39;s in college, and in the next, rioters are roaming the highway around him, breaking into cars, and literally tearing people apart. This is the day the dead walk. This is the world of We&#39;re Alive. We’re Alive is an ongoing series, packing performances and sound effects that rival movies and prove that modern audio drama is undead and well. Join our survivors as they band together, struggle to fortify a safe haven known as the Tower, and discovers that zombies are far from the worst thing in a post-apocalyptic Los Angeles where the rules of human decency no longer apply. We premiere 3 New episodes a month, with a week off between chapters. Little food. Little water. Little hope. Who is lucky enough to say &quot;We&#39;re Alive?&quot;",
+                        "Live from Hollywood, CA by way of the Broken Skull Ranch, Pro Wrestling Hall of Famer, Action Movie/TV star, Steve Austin lets loose on these no-holds barred, explicit versions of the program. Steve gets down and dirty with Hollywood celebrities, past wrestling buddies, present pros, MMA fighters, athletes, movie stuntmen and from time to time, you the working man (or woman). Got questions? [questions@steveaustinshow.com](mailto:questions@steveaustinshow.com) [Hear the Tuesday Edition of The Steve Austin Show (Family, Friendly Edition), click here!](http://podcastone.com/Steve-Austin-Show-Clean) [ ![Sponsor](http://www.launchpaddigitalmedia.com/images/general /Button_Support_The_Sponsors-smaller.jpg)](http://www.podcastone.com/g/Steve- Austin-Show-Sponsors/453.html)",
+                        url + "x.mp3")
+        );
     }
 }

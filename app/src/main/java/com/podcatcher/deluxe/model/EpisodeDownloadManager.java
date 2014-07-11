@@ -64,9 +64,14 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         DownloadTaskListener {
 
     /**
-     * Characters not allowed in filenames
+     * Characters not allowed in file names
      */
     private static final String RESERVED_CHARS = "|\\?*<\":>+[]/'#!,&";
+
+    /**
+     * Maximum file/folder name length
+     */
+    private static final int MAX_LENGTH = 80;
 
     /**
      * The current number of downloaded episodes we know of
@@ -125,9 +130,19 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
     public static String sanitizeAsFilename(String name) {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < name.length(); i++)
+        for (int i = 0; i < name.length(); i++) {
+            // If max length is reached, wait for next whitespace and truncate
+            if (i > MAX_LENGTH && name.charAt(i) == ' ')
+                break;
+
+            // Remove un-allowed chars
             if (RESERVED_CHARS.indexOf(name.charAt(i)) == -1)
                 builder.append(name.charAt(i));
+        }
+
+        // Make sure filename does not end with a dot
+        if (builder.length() > 0 && builder.charAt(builder.length() - 1) == '.')
+            builder.deleteCharAt(builder.length() -1);
 
         return builder.toString();
     }
@@ -160,7 +175,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
 
         // Create sanitized path <podcast>/<episode>.<ending>
         return sanitizeAsFilename(podcast) + File.separatorChar
-                + sanitizeAsFilename(episode + fileEnding);
+                + sanitizeAsFilename(episode) + sanitizeAsFilename(fileEnding);
     }
 
     /**
@@ -291,8 +306,6 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
                         if (filePath != null)
                             new File(filePath).delete();
                     }
-
-                    ;
                 }.start();
 
                 meta.downloadId = null;
@@ -319,10 +332,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
      * @return <code>true</code> if the episode is downloaded and available.
      */
     public boolean isDownloaded(Episode episode) {
-        if (episode != null && metadata != null)
-            return isDownloaded(metadata.get(episode.getMediaUrl()));
-        else
-            return false;
+        return episode != null && metadata != null && isDownloaded(metadata.get(episode.getMediaUrl()));
     }
 
     /**
