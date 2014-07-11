@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19 // 'android-L'
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.podcatcher.deluxe"
@@ -41,6 +41,11 @@ android {
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }
+
+        /*amazon {
+            runProguard true
+            proguardFiles 'proguard-rules.pro'
+        }*/
     }
 
     flavorDimensions "media", "edition" //, "store"
@@ -83,12 +88,10 @@ android {
 
 dependencies {
     // These are the libs to include
-    compile project(":gpodder_sync")
-    compile project(":color_picker")
+    compile project(':gpodder_sync')
+    compile project(':color_picker')
     compile files('libs/dropbox-sync-sdk-android.jar')
-    compile files("$buildDir/native-libs/native-libs.jar")
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:19.+'
     compile 'com.android.support:support-annotations:+'
