@@ -18,5 +18,4 @@
 -->
 <resources>
     <string name="about">À propos Simple Podcatcher</string>
-    <string name="ad">Testez &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt; et &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video Podcatcher Deluxe&lt;/a&gt;, les applications qui vous offrent plus d’options que la version simple: la création de listes de lecture, des filtres et beaucoup d’autres fonctions!</string>
 </resources>

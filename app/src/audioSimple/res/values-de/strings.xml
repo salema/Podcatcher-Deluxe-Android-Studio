@@ -18,5 +18,4 @@
 -->
 <resources>
     <string name="about">Über Simple Podcatcher</string>
-    <string name="ad">Testen Sie &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt; und &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video Podcatcher Deluxe&lt;/a&gt;: Wiedergabelisten, Filter und viele weitere Komfortfunktionen!</string>
 </resources>

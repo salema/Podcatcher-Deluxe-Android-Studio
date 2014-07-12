@@ -18,8 +18,10 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <activity
-        android:name=".FullscreenVideoActivity"
-        android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
+    <application>
+        <activity
+            android:name=".FullscreenVideoActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"/>
+    </application>
 
 </manifest>

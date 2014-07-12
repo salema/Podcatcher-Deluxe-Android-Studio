@@ -18,5 +18,4 @@
 -->
 <resources>
     <string name="about">Про Simple Podcatcher</string>
-    <string name="ad">Спробуйте &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt; та &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video Podcatcher Deluxe&lt;/a&gt;. Плейлисти, фільтри та багато інших додаткових можливостей!</string>
 </resources>

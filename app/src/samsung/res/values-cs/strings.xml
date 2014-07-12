@@ -16,17 +16,10 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-        <activity
-            android:name=".ScrapePodcastsActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="com.podcatcher.deluxe.action.IMPORT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-    </application>
-
-</manifest>
+<resources>
+    <string name="ad">Zkuste &lt;a href="samsungapps://ProductDetail/com.podcatcher.deluxe"&gt;Podcatcher
+        Deluxe&lt;/a&gt; a &lt;a href="samsungapps://ProductDetail/com.podcatcher.deluxe.video"&gt;Video
+        Podcatcher Deluxe&lt;/a&gt; kvůli seznamům skladeb, filtrům a mnoha dalším prémiovým
+        funkcím!
+    </string>
+</resources>

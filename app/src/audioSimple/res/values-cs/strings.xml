@@ -18,5 +18,4 @@
 -->
 <resources>
     <string name="about">O programu Simple Podcatcher</string>
-    <string name="ad">Zkuste &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt; a &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video Podcatcher Deluxe&lt;/a&gt; kvůli seznamům skladeb, filtrům a mnoha dalším prémiovým funkcím!</string>
 </resources>

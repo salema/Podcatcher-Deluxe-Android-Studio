@@ -8,23 +8,21 @@ android {
         applicationId "com.podcatcher.deluxe"
         minSdkVersion 14
         targetSdkVersion 19 // "L"
-        versionCode 1
-        versionName "1.0"
     }
     signingConfigs {
-        simple {
+        audioSimple {
             storeFile file("Podcatcher KeyStore")
             storePassword System.getenv("PCDKSTOREPWD")
             keyAlias "simple podcatcher"
             keyPassword System.getenv("PCDKEYPWD")
         }
-        deluxe {
+        audioDeluxe {
             storeFile file("Podcatcher KeyStore")
             storePassword System.getenv("PCDKSTOREPWD")
             keyAlias "deluxe podcatcher"
             keyPassword System.getenv("PCDKEYPWD")
         }
-        video {
+        videoDeluxe {
             storeFile file("Podcatcher KeyStore")
             storePassword System.getenv("PCDKSTOREPWD")
             keyAlias "video podcatcher"
@@ -37,25 +35,37 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     buildTypes {
-        release {
+        play {
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }
-
-        /*amazon {
+        amazon {
             runProguard true
             proguardFiles 'proguard-rules.pro'
-        }*/
+        }
+        slideme {
+            runProguard true
+            proguardFiles 'proguard-rules.pro'
+        }
+        samsung {
+            runProguard true
+            proguardFiles 'proguard-rules.pro'
+        }
     }
 
-    flavorDimensions "media", "edition" //, "store"
+    flavorDimensions "media", "edition"
     productFlavors {
+        def audioSimpleSigningVariable = signingConfigs.audioSimple
+        def audioDeluxeSigningVariable = signingConfigs.audioDeluxe
+        def videoDeluxeSigningVariable = signingConfigs.videoDeluxe
+
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
+            versionCode 200
             versionName "3.0.6"
 
-            signingConfig signingConfigs.simple
+            signingConfig audioSimpleSigningVariable
         }
         deluxe {
             flavorDimension "edition"
@@ -63,26 +73,19 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
+            versionCode 201
             versionName "4.0.6"
 
-            signingConfig signingConfigs.deluxe
+            signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
+            versionCode 202
             versionName "5.0.6"
 
-            signingConfig signingConfigs.video
+            signingConfig videoDeluxeSigningVariable
         }
-        /* play {
-             flavorDimension "store"
-         }
-         amazon {
-             flavorDimension "store"
-         }
-         slideme {
-             flavorDimension "store"
-         }*/
     }
 }
 

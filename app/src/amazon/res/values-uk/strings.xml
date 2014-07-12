@@ -16,17 +16,6 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-        <activity
-            android:name=".ScrapePodcastsActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="com.podcatcher.deluxe.action.IMPORT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-    </application>
-
-</manifest>
+<resources>
+    <string name="ad">Спробуйте &lt;a href="http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt; та &lt;a href="http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe.video"&gt;Video Podcatcher Deluxe&lt;/a&gt;. Плейлисти, фільтри та багато інших додаткових можливостей!</string>
+</resources>
