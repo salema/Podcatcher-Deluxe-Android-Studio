@@ -72,35 +72,35 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     /**
      * Action to send to service to toggle play/pause
      */
-    public static final String ACTION_TOGGLE = "com.podcatcher.deluxe.action.TOGGLE";
+    public static final String ACTION_TOGGLE = "net.alliknow.podcatcher.action.TOGGLE";
     /**
      * Action to send to service to play (resume) episode
      */
-    public static final String ACTION_PLAY = "com.podcatcher.deluxe.action.PLAY";
+    public static final String ACTION_PLAY = "net.alliknow.podcatcher.action.PLAY";
     /**
      * Action to send to service to pause episode
      */
-    public static final String ACTION_PAUSE = "com.podcatcher.deluxe.action.PAUSE";
+    public static final String ACTION_PAUSE = "net.alliknow.podcatcher.action.PAUSE";
     /**
      * Action to send to service to restart the current episode
      */
-    public static final String ACTION_PREVIOUS = "com.podcatcher.deluxe.action.PREVIOUS";
+    public static final String ACTION_PREVIOUS = "net.alliknow.podcatcher.action.PREVIOUS";
     /**
      * Action to send to service to skip to next episode
      */
-    public static final String ACTION_SKIP = "com.podcatcher.deluxe.action.SKIP";
+    public static final String ACTION_SKIP = "net.alliknow.podcatcher.action.SKIP";
     /**
      * Action to send to service to rewind the current episode
      */
-    public static final String ACTION_REWIND = "com.podcatcher.deluxe.action.REWIND";
+    public static final String ACTION_REWIND = "net.alliknow.podcatcher.action.REWIND";
     /**
      * Action to send to service to fast forward the current episode
      */
-    public static final String ACTION_FORWARD = "com.podcatcher.deluxe.action.FORWARD";
+    public static final String ACTION_FORWARD = "net.alliknow.podcatcher.action.FORWARD";
     /**
      * Action to send to service to stop episode
      */
-    public static final String ACTION_STOP = "com.podcatcher.deluxe.action.STOP";
+    public static final String ACTION_STOP = "net.alliknow.podcatcher.action.STOP";
 
     /**
      * The episode manager handle

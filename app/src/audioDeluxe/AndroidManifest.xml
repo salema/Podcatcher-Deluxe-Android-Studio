@@ -19,25 +19,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity
-            android:name=".FullscreenVideoActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
-        </activity>
-
         <service
             android:name=".services.PlayEpisodeService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.podcatcher.deluxe.video.action.TOGGLE"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PLAY"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PAUSE"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PREVIOUS"/>
-                <action android:name="com.podcatcher.deluxe.video.action.SKIP"/>
-                <action android:name="com.podcatcher.deluxe.video.action.REWIND"/>
-                <action android:name="com.podcatcher.deluxe.video.action.FORWARD"/>
-                <action android:name="com.podcatcher.deluxe.video.action.STOP"/>
+                <action android:name="com.podcatcher.deluxe.action.TOGGLE"/>
+                <action android:name="com.podcatcher.deluxe.action.PLAY"/>
+                <action android:name="com.podcatcher.deluxe.action.PAUSE"/>
+                <action android:name="com.podcatcher.deluxe.action.PREVIOUS"/>
+                <action android:name="com.podcatcher.deluxe.action.SKIP"/>
+                <action android:name="com.podcatcher.deluxe.action.REWIND"/>
+                <action android:name="com.podcatcher.deluxe.action.FORWARD"/>
+                <action android:name="com.podcatcher.deluxe.action.STOP"/>
             </intent-filter>
         </service>
     </application>
-
 </manifest>

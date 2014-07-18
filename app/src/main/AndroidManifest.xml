@@ -17,18 +17,18 @@
  */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.podcatcher.deluxe">
+          package="com.podcatcher.deluxe">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true"/>
     <application
         android:name="Podcatcher"
         android:allowBackup="true"
@@ -37,8 +37,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".PodcastActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -46,149 +46,134 @@
             android:parentActivityName=".PodcastActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PodcastActivity" />
+                android:value=".PodcastActivity"/>
         </activity>
         <activity
             android:name=".ShowEpisodeActivity"
             android:parentActivityName=".ShowEpisodeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ShowEpisodeListActivity" />
+                android:value=".ShowEpisodeListActivity"/>
         </activity>
         <activity
             android:name=".ImportPodcastActivity"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="itpc" />
-                <data android:scheme="pcast" />
-                <data android:scheme="feed" />
-                <data android:scheme="rss" />
+                <data android:scheme="itpc"/>
+                <data android:scheme="pcast"/>
+                <data android:scheme="feed"/>
+                <data android:scheme="rss"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="http" />
-                <data android:host="*" />
-                <data android:pathPattern=".*xml.*" />
-                <data android:pathPattern=".*XML.*" />
-                <data android:pathPattern=".*rss.*" />
-                <data android:pathPattern=".*RSS.*" />
-                <data android:pathPattern=".*feed.*" />
-                <data android:pathPattern=".*cast.*" />
-                <data android:pathPattern=".*podcast.*" />
+                <data android:scheme="http"/>
+                <data android:host="*"/>
+                <data android:pathPattern=".*xml.*"/>
+                <data android:pathPattern=".*XML.*"/>
+                <data android:pathPattern=".*rss.*"/>
+                <data android:pathPattern=".*RSS.*"/>
+                <data android:pathPattern=".*feed.*"/>
+                <data android:pathPattern=".*cast.*"/>
+                <data android:pathPattern=".*podcast.*"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="http" />
-                <data android:host="feeds.feedburner.com" />
-                <data android:host="feedproxy.google.com" />
-                <data android:host="feeds2.feedburner.com" />
-                <data android:host="feedsproxy.google.com" />
+                <data android:scheme="http"/>
+                <data android:host="feeds.feedburner.com"/>
+                <data android:host="feedproxy.google.com"/>
+                <data android:host="feeds2.feedburner.com"/>
+                <data android:host="feedsproxy.google.com"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="http" />
-                <data android:mimeType="text/xml" />
-                <data android:mimeType="application/rss+xml" />
-                <data android:mimeType="application/atom+xml" />
-                <data android:mimeType="application/xml" />
+                <data android:scheme="http"/>
+                <data android:mimeType="text/xml"/>
+                <data android:mimeType="application/rss+xml"/>
+                <data android:mimeType="application/atom+xml"/>
+                <data android:mimeType="application/xml"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" />
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
         <activity
             android:name=".FirstRunActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".AddPodcastActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".AddSuggestionActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".RemovePodcastActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".ImportOpmlActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".ExportOpmlActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".SelectFileActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".ConfigureSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
-
-        <service
-            android:name=".services.PlayEpisodeService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.podcatcher.deluxe.action.TOGGLE" />
-                <action android:name="com.podcatcher.deluxe.action.PLAY" />
-                <action android:name="com.podcatcher.deluxe.action.PAUSE" />
-                <action android:name="com.podcatcher.deluxe.action.PREVIOUS" />
-                <action android:name="com.podcatcher.deluxe.action.SKIP" />
-                <action android:name="com.podcatcher.deluxe.action.REWIND" />
-                <action android:name="com.podcatcher.deluxe.action.FORWARD" />
-                <action android:name="com.podcatcher.deluxe.action.STOP" />
-            </intent-filter>
-        </service>
+            android:theme="@android:style/Theme.NoDisplay"/>
 
         <receiver
             android:name=".services.MediaButtonReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
         </receiver>
         <receiver
             android:name=".services.BecomingNoisyReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+                <action android:name="android.media.AUDIO_BECOMING_NOISY"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".GetRestrictionsReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.GET_RESTRICTION_ENTRIES" />
+                <action android:name="android.intent.action.GET_RESTRICTION_ENTRIES"/>
             </intent-filter>
         </receiver>
 
         <activity
             android:name=".ConfigureGpodderSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name=".ConfigureDropboxSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
-        <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
+            android:theme="@android:style/Theme.NoDisplay"/>
+        <activity android:name="com.dropbox.sync.android.DbxAuthActivity"/>
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:launchMode="singleTask">
             <intent-filter>
-                <data android:scheme="@string/dropbox_scheme" />
-                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="@string/dropbox_scheme"/>
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
@@ -196,6 +181,6 @@
             android:name="com.dropbox.sync.android.DbxSyncService"
             android:enabled="true"
             android:exported="false"
-            android:label="Dropbox Sync" />
+            android:label="Dropbox Sync"/>
     </application>
 </manifest>
