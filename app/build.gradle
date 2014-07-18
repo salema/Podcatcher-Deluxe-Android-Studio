@@ -9,24 +9,16 @@ android {
         minSdkVersion 14
         targetSdkVersion 19 // "L"
     }
-    signingConfigs {
-        audioSimple {
-            storeFile file("Podcatcher KeyStore")
-            storePassword System.getenv("PCDKSTOREPWD")
-            keyAlias "simple podcatcher"
-            keyPassword System.getenv("PCDKEYPWD")
-        }
-        audioDeluxe {
-            storeFile file("Podcatcher KeyStore")
-            storePassword System.getenv("PCDKSTOREPWD")
-            keyAlias "deluxe podcatcher"
-            keyPassword System.getenv("PCDKEYPWD")
-        }
-        videoDeluxe {
-            storeFile file("Podcatcher KeyStore")
-            storePassword System.getenv("PCDKSTOREPWD")
-            keyAlias "video podcatcher"
-            keyPassword System.getenv("PCDKEYPWD")
+    // Bring in the signing configurations, place these in a file at
+    // ${USER.HOME}/.signing/pcd.gradle for this to work. You need to
+    // define one config per flavor. If the property does not exist
+    // or the path is not valid, only debug builds will succeed.
+    if (project.hasProperty("PodcatcherDeluxe.signing")) {
+        def signingConfigs = System.getProperty("user.home") + "/" +
+                project.property("PodcatcherDeluxe.signing") + ".gradle"
+
+        if (new File(signingConfigs).exists()) {
+            apply from: signingConfigs;
         }
     }
 
@@ -90,14 +82,14 @@ android {
 }
 
 dependencies {
-    // These are the libs to include
+    // These are the libs to include: gpodder, colorpicker and Dropbox
     compile project(':gpodder_sync')
     compile project(':color_picker')
     compile files('libs/dropbox-sync-sdk-android.jar')
     compile files("$buildDir/native-libs/native-libs.jar")
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    // You must install or update the Support Repository through the SDK manager to use this dependency.
+
     compile 'com.android.support:support-v4:19.+'
     compile 'com.android.support:support-annotations:+'
 }
