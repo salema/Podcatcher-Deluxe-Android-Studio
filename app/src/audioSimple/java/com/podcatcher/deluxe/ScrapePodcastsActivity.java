@@ -20,6 +20,7 @@ package com.podcatcher.deluxe;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.types.Podcast;
@@ -34,15 +35,6 @@ import java.util.List;
  * available in the app.
  */
 public class ScrapePodcastsActivity extends BaseActivity implements OnLoadPodcastListListener {
-
-    /**
-     * The key to store exported podcast name list under
-     */
-    private static final String EXPORT_PODCAST_NAMES_KEY = "names";
-    /**
-     * The key to store exported podcast url list under
-     */
-    private static final String EXPORT_PODCAST_URLS_KEY = "urls";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +59,8 @@ public class ScrapePodcastsActivity extends BaseActivity implements OnLoadPodcas
         }
 
         Intent podcasts = new Intent();
-        podcasts.putStringArrayListExtra(EXPORT_PODCAST_NAMES_KEY, names);
-        podcasts.putStringArrayListExtra(EXPORT_PODCAST_URLS_KEY, urls);
+        podcasts.putStringArrayListExtra(getString(R.string.podcast_names_key), names);
+        podcasts.putStringArrayListExtra(getString(R.string.podcast_urls_key), urls);
 
         setResult(RESULT_OK, podcasts);
 

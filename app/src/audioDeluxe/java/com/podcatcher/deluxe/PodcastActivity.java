@@ -30,7 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
-import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError;
@@ -60,14 +59,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
      * The import from Simple Podcatcher action
      */
     private static final String IMPORT_ACTION = "com.podcatcher.deluxe.action.IMPORT";
-    /**
-     * The key to find imported podcast name list under
-     */
-    private static final String IMPORT_PODCAST_NAMES_KEY = "podcast_names_key";
-    /**
-     * The key to find imported podcast url list under
-     */
-    private static final String IMPORT_PODCAST_URLS_KEY = "podcast_urls_key";
 
     /**
      * The current podcast list fragment
@@ -344,8 +335,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
             // Find if we got some podcasts
             if (data != null) {
-                final List<String> names = data.getStringArrayListExtra(IMPORT_PODCAST_NAMES_KEY);
-                final List<String> urls = data.getStringArrayListExtra(IMPORT_PODCAST_URLS_KEY);
+                final List<String> names = data.getStringArrayListExtra(getString(R.string.podcast_names_key));
+                final List<String> urls = data.getStringArrayListExtra(getString(R.string.podcast_urls_key));
                 // Yes, we got some podcasts from the Simple Podcatcher
                 if (names != null && names.size() > 0) {
                     // Make sure dialog does not pop up
