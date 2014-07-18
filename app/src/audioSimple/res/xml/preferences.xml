@@ -21,16 +21,16 @@
         android:defaultValue="false"
         android:key="select_all_on_startup"
         android:summary="@string/pref_select_all_on_start_summary"
-        android:title="@string/pref_select_all_on_start_title" />
+        android:title="@string/pref_select_all_on_start_title"/>
     <com.podcatcher.deluxe.preferences.SynchronizationPreference
         android:key="synchronization"
         android:title="@string/pref_sync_title">
         <intent
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:targetPackage="com.podcatcher.deluxe" />
+            android:targetPackage="net.alliknow.podcatcher"/>
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
     <net.margaritov.preference.colorpicker.ColorPickerPreference
         android:defaultValue="@color/theme_dark"
         android:key="theme_color"
-        android:title="@string/pref_theme_color_title" />
+        android:title="@string/pref_theme_color_title"/>
 </PreferenceScreen>

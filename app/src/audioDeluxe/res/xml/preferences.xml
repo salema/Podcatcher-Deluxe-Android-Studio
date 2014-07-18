@@ -27,17 +27,25 @@
         android:title="@string/pref_sync_title">
         <intent
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:targetPackage="net.alliknow.podcatcher"/>
+            android:targetPackage="com.podcatcher.deluxe"/>
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
-    <PreferenceCategory android:title="@string/pref_category_interface">
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-            android:defaultValue="@color/theme_dark"
-            android:key="theme_color"
-            android:title="@string/pref_theme_color_title"/>
+    <net.margaritov.preference.colorpicker.ColorPickerPreference
+        android:defaultValue="@color/theme_dark"
+        android:key="theme_color"
+        android:title="@string/pref_theme_color_title"/>
+    <PreferenceCategory android:title="@string/downloads">
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="wide_episode_list"
-            android:summary="@string/pref_wide_episode_list_summary"
-            android:title="@string/pref_wide_episode_list_title"/>
+            android:key="auto_download"
+            android:summary="@string/pref_auto_download_summary"
+            android:title="@string/pref_auto_download_title"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="auto_delete"
+            android:summary="@string/pref_auto_delete_summary"
+            android:title="@string/pref_auto_delete_title"/>
+        <com.podcatcher.deluxe.preferences.DownloadFolderPreference
+            android:key="download_folder"
+            android:title="@string/pref_download_folder_title"/>
     </PreferenceCategory>
 </PreferenceScreen>
