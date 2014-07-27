@@ -39,10 +39,6 @@ android {
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }
-        samsung {
-            runProguard true
-            proguardFiles 'proguard-rules.pro'
-        }
     }
 
     flavorDimensions "media", "edition"
