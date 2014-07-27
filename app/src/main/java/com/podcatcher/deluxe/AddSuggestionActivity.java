@@ -76,8 +76,7 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
         if (savedInstanceState == null) {
             this.suggestionFragment = new SuggestionFragment();
             // Need to set style, because this activity has no UI
-            suggestionFragment.setStyle(DialogFragment.STYLE_NORMAL,
-                    android.R.style.Theme_Holo_Light_Dialog);
+            suggestionFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
             suggestionFragment.show(getFragmentManager(), ADD_SUGGESTION_DIALOG_TAG);
         } else {

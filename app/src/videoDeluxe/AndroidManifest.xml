@@ -21,7 +21,7 @@
     <application>
         <activity
             android:name=".FullscreenVideoActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
+            android:theme="@style/AppFullscreen">
         </activity>
 
         <service

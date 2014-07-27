@@ -112,7 +112,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+            android:theme="@style/AppDialog"/>
         <activity
             android:name=".FirstRunActivity"
             android:theme="@android:style/Theme.NoDisplay"/>

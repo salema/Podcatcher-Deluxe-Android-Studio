@@ -3,8 +3,8 @@
  *
  * This file is part of PodCatcher Deluxe.
  *
- * PodCatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,13 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <item name="android:colorPrimary">@color/theme_light</item>
-        <item name="android:colorAccent">@color/theme_dark</item>
-    </style>
-    <style name="AppDialog" parent="android:Theme.Material.Light.Dialog" />-->
-
+    <style name="AppFullscreen" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen"/>
 </resources>

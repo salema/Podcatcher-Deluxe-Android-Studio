@@ -79,8 +79,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
         if (savedInstanceState == null) {
             this.addPodcastFragment = new AddPodcastFragment();
             // Need to set style, because this activity has no UI
-            addPodcastFragment.setStyle(DialogFragment.STYLE_NORMAL,
-                    android.R.style.Theme_Holo_Light_Dialog);
+            addPodcastFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
             addPodcastFragment.show(getFragmentManager(), ADD_PODCAST_DIALOG_TAG);
         }

@@ -67,8 +67,7 @@ public class ConfirmUnlinkDropboxFragment extends DialogFragment {
         final String message = getString(R.string.sync_dropbox_unlink_message);
 
         // Define context to use (parent activity might have no theme)
-        final ContextThemeWrapper context = new ContextThemeWrapper(getActivity(),
-                android.R.style.Theme_Holo_Light_Dialog);
+        final ContextThemeWrapper context = new ContextThemeWrapper(getActivity(), R.style.AppDialog);
 
         // Inflate our custom view
         final LayoutInflater inflater = LayoutInflater.from(context);

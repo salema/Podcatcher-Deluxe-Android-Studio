@@ -114,8 +114,7 @@ public class DeleteDownloadsConfirmationFragment extends DialogFragment {
                 .getQuantityString(R.plurals.downloads_remove_text, episodeCount, episodeCount);
 
         // Define context to use (parent activity might have no theme)
-        final ContextThemeWrapper context = new ContextThemeWrapper(getActivity(),
-                android.R.style.Theme_Holo_Light_Dialog);
+        final ContextThemeWrapper context = new ContextThemeWrapper(getActivity(), R.style.AppDialog);
 
         // Inflate our custom view
         final LayoutInflater inflater = LayoutInflater.from(context);

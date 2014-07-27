@@ -63,8 +63,7 @@ public class ConfigureSyncActivity extends BaseActivity implements ConfigureSync
         if (savedInstanceState == null) {
             this.configureSyncFragment = new ConfigureSyncFragment();
             // Need to set style, because this activity has no UI
-            configureSyncFragment.setStyle(DialogFragment.STYLE_NORMAL,
-                    android.R.style.Theme_Holo_Light_Dialog);
+            configureSyncFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
             configureSyncFragment.show(getFragmentManager(), SYNC_CONFIG_DIALOG_TAG);
         } else

@@ -73,8 +73,7 @@ public class SelectFileActivity extends BaseActivity implements SelectFileDialog
         // Create the dialog fragment
         if (savedInstanceState == null) {
             this.selectFileFragment = new SelectFileFragment();
-            selectFileFragment.setStyle(DialogFragment.STYLE_NORMAL,
-                    android.R.style.Theme_Holo_Light_Dialog);
+            selectFileFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
             // Show the fragment
             selectFileFragment.show(getFragmentManager(), SELECT_FILE_DIALOG_TAG);
