@@ -37,6 +37,8 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.podcatcher.deluxe.R;
 
+import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
+
 /**
  * A podcast authorization dialog. Let's the user supply a name/password
  * combination.
@@ -164,7 +166,12 @@ public class AuthorizationFragment extends DialogFragment {
         builder.setTitle(R.string.auth)
                 .setView(content);
 
-        return builder.create();
+        final AlertDialog dialog = builder.create();
+        // Make sure the keyboard shows up
+        usernameEditText.requestFocus();
+        dialog.getWindow().setSoftInputMode(SOFT_INPUT_STATE_VISIBLE);
+
+        return dialog;
     }
 
     @Override
