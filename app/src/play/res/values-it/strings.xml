@@ -17,8 +17,8 @@
  */
 -->
 <resources>
-    <string name="ad">Prova &lt;a href=\"market://details?id=com.podcatcher.deluxe\"&gt;Podcatcher
-        Deluxe&lt;/a&gt; and &lt;a href=\"market://details?id=com.podcatcher.deluxe.video\"&gt;Video
+    <string name="ad">Prova &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher
+        Deluxe&lt;/a&gt; and &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video
         Podcatcher Deluxe&lt;/a&gt; per playlist, filtri, e molte altre caratteristiche premium!
     </string>
 </resources>

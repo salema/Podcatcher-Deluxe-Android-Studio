@@ -17,5 +17,9 @@
  */
 -->
 <resources>
-    <string name="ad">Prova &lt;a href=\"http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe\"&gt;Podcatcher Deluxe&lt;/a&gt; and &lt;a href=\"http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe.video\"&gt;Video Podcatcher Deluxe&lt;/a&gt; per playlist, filtri, e molte altre caratteristiche premium!</string>
+    <string name="ad">Prova &lt;a
+        href="http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe"&gt;Podcatcher Deluxe&lt;/a&gt;
+        and &lt;a href="http://www.amazon.com/gp/mas/dl/android?p=com.podcatcher.deluxe.video"&gt;Video
+        Podcatcher Deluxe&lt;/a&gt; per playlist, filtri, e molte altre caratteristiche premium!
+    </string>
 </resources>

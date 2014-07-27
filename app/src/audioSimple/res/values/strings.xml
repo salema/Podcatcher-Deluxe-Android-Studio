@@ -18,4 +18,8 @@
 -->
 <resources>
     <string name="about">About Simple Podcatcher</string>
+    <string name="ad">Try &lt;a href="market://details?id=com.podcatcher.deluxe"&gt;Podcatcher
+        Deluxe&lt;/a&gt; and &lt;a href="market://details?id=com.podcatcher.deluxe.video"&gt;Video
+        Podcatcher Deluxe&lt;/a&gt; for playlists, filters, and many more premium features!
+    </string>
 </resources>
