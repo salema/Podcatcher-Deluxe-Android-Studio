@@ -234,14 +234,15 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
         super.onViewCreated(view, savedInstanceState);
 
         // Find UI widgets
-        emptyView = getView().findViewById(android.R.id.empty);
-        titleView = (TextView) getView().findViewById(R.id.episode_title);
-        subtitleView = (TextView) getView().findViewById(R.id.podcast_title);
-        stateIconView = (ImageView) getView().findViewById(R.id.state_icon);
-        downloadIconView = (ImageView) getView().findViewById(R.id.download_icon);
-        dividerView = getView().findViewById(R.id.episode_divider);
+        emptyView = view.findViewById(android.R.id.empty);
+        titleView = (TextView) view.findViewById(R.id.episode_title);
+        subtitleView = (TextView) view.findViewById(R.id.podcast_title);
+        stateIconView = (ImageView) view.findViewById(R.id.state_icon);
+        downloadIconView = (ImageView) view.findViewById(R.id.download_icon);
+        descriptionView = (WebView) view.findViewById(R.id.episode_description);
+        dividerView = view.findViewById(R.id.episode_divider);
 
-        videoView = getView().findViewById(R.id.episode_video);
+        videoView = view.findViewById(R.id.episode_video);
         videoView.setOnTouchListener(new OnTouchListener() {
 
             @Override
@@ -253,11 +254,9 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
             }
         });
 
-        surfaceView = (SurfaceView) getView().findViewById(R.id.surface);
+        surfaceView = (SurfaceView) view.findViewById(R.id.surface);
         surfaceView.getHolder().addCallback(videoCallback);
-        fullscreenButton = (ImageView) getView().findViewById(R.id.fullscreen);
-
-        descriptionView = (WebView) getView().findViewById(R.id.episode_description);
+        fullscreenButton = (ImageView) view.findViewById(R.id.fullscreen);
 
         viewCreated = true;
 

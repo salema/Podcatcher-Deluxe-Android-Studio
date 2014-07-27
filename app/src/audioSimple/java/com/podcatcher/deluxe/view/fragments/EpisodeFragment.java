@@ -157,12 +157,12 @@ public class EpisodeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Find UI widgets
-        emptyView = getView().findViewById(android.R.id.empty);
-        titleView = (TextView) getView().findViewById(R.id.episode_title);
-        subtitleView = (TextView) getView().findViewById(R.id.podcast_title);
-        downloadIconView = (ImageView) getView().findViewById(R.id.download_icon);
-        descriptionView = (WebView) getView().findViewById(R.id.episode_description);
-        dividerView = getView().findViewById(R.id.episode_divider);
+        emptyView = view.findViewById(android.R.id.empty);
+        titleView = (TextView) view.findViewById(R.id.episode_title);
+        subtitleView = (TextView) view.findViewById(R.id.podcast_title);
+        downloadIconView = (ImageView) view.findViewById(R.id.download_icon);
+        descriptionView = (WebView) view.findViewById(R.id.episode_description);
+        dividerView = view.findViewById(R.id.episode_divider);
 
         viewCreated = true;
 
