@@ -40,6 +40,8 @@ android {
     }
     buildTypes {
         debug {
+            versionNameSuffix "-debug"
+
             resValue "string", "dropbox_scheme", dropboxDebugScheme
             resValue "string", "dropbox_appkey", dropboxDebugKey
             resValue "string", "dropbox_appsecret", dropboxDebugSecret
