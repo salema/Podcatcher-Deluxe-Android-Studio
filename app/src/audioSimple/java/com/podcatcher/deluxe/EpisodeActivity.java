@@ -41,6 +41,7 @@ import com.podcatcher.deluxe.view.fragments.PlayerFragment;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
@@ -462,7 +463,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
                 playerFragment.setPlayerSeekbarVisibility(!view.isSmallLandscape());
                 // Set player button label format
                 playerFragment.setShowShortPosition(
-                        view.isSmall() && service.getDuration() >= 60 * 60 * 1000);
+                        view.isSmall() && service.getDuration() >= TimeUnit.HOURS.toMillis(1));
+
                 // Update UI to reflect service status
                 playerFragment.updatePlayerTitle(service.getCurrentEpisode());
                 playerFragment.updateSeekBar(!service.isPreparing(), service.getDuration(),

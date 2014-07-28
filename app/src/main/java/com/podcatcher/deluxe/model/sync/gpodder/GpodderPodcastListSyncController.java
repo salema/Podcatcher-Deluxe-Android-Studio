@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A podcast list sync controller for the gpodder.net service. This operates by
@@ -212,7 +213,7 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                     // local status
                     while (runningLoadPodcastTaskCount > 0)
                         try {
-                            Thread.sleep(1000);
+                            TimeUnit.SECONDS.sleep(1);
                         } catch (Exception e) {
                             // pass
                         }

@@ -27,6 +27,8 @@ import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
 
+import java.util.concurrent.TimeUnit;
+
 import static android.media.MediaMetadataRetriever.METADATA_KEY_ARTIST;
 import static android.media.MediaMetadataRetriever.METADATA_KEY_DATE;
 import static android.media.MediaMetadataRetriever.METADATA_KEY_DURATION;
@@ -111,7 +113,7 @@ public class PodcatcherRCClient extends RemoteControlClient {
             editor.putString(METADATA_KEY_TITLE, episode.getName())
                     .putString(METADATA_KEY_ARTIST, episode.getPodcast().getName())
                     .putString(METADATA_KEY_DATE, Utils.getRelativePubDate(episode))
-                    .putLong(METADATA_KEY_DURATION, episode.getDuration() * 1000);
+                    .putLong(METADATA_KEY_DURATION, TimeUnit.SECONDS.toMillis(episode.getDuration()));
 
             final Bitmap logo = episode.getPodcast().getLogo();
             if (logo != null)

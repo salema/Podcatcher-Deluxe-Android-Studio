@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A task that loads and reads suggested podcasts.
@@ -79,7 +80,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * Flag to indicate the max age that would trigger re-load.
      */
-    private int maxAge = 60 * 24 * 3;
+    private int maxAge = (int) TimeUnit.DAYS.toSeconds(3);
 
     /**
      * Create new task.
@@ -251,7 +252,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     private int getCachedLogoAge() {
         if (isCachedLocally())
             return (int) ((new Date().getTime() - getSuggestionsCacheFile().lastModified())
-                    / (60 * 1000)); // Calculate to minutes
+                    / TimeUnit.MINUTES.toMillis(1)); // Calculate to minutes
         else
             return -1;
     }

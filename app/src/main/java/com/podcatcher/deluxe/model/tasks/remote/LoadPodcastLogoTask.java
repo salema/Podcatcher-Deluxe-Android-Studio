@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.round;
 
@@ -82,9 +83,9 @@ public class LoadPodcastLogoTask extends LoadRemoteFileTask<Podcast, Bitmap> {
      */
     private boolean localOnly = false;
     /**
-     * Flag to indicate the max age that would trigger re-load.
+     * Flag to indicate the max age that would trigger re-load (in minutes).
      */
-    private int maxAge = 60 * 24 * 7; // One week is the default
+    private int maxAge = (int) TimeUnit.DAYS.toMinutes(7); // One week is the default
 
     /**
      * Create new task.
@@ -247,10 +248,16 @@ public class LoadPodcastLogoTask extends LoadRemoteFileTask<Podcast, Bitmap> {
         return getLogoCacheFile(podcast).exists();
     }
 
+    /**
+     * Get the logo age for the given podcast.
+     *
+     * @param podcast The podcast which logo should be checked.
+     * @return The age in minutes.
+     */
     private int getCachedLogoAge(Podcast podcast) {
         if (isCachedLocally(podcast))
             return (int) ((new Date().getTime() - getLogoCacheFile(podcast).lastModified())
-                    / (60 * 1000)); // Calculate to minutes
+                    / TimeUnit.MINUTES.toMillis(1)); // Calculate to minutes
         else
             return -1;
     }

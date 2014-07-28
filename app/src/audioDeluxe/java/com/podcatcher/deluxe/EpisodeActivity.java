@@ -43,6 +43,7 @@ import com.podcatcher.deluxe.view.fragments.PlayerFragment;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
@@ -525,7 +526,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
                 final boolean showNext =
                         !episodeManager.isPlaylistEmptyBesides(service.getCurrentEpisode());
                 playerFragment.setShowShortPosition(!view.isLargePortrait() &&
-                        (showNext || service.getDuration() >= 60 * 60 * 1000));
+                        (showNext || service.getDuration() >= TimeUnit.HOURS.toMillis(1)));
                 playerFragment.setNextButtonVisibility(showNext);
 
                 // Update UI to reflect service status

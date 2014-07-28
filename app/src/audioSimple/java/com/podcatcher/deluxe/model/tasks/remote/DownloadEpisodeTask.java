@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static android.app.DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR;
 import static android.app.DownloadManager.COLUMN_LOCAL_FILENAME;
@@ -63,12 +64,6 @@ import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.Episo
  * method or things will break.
  */
 public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
-
-    /**
-     * The amount of time we wait (in ms) before checking on the download's
-     * status again.
-     */
-    private static final long DOWNLOAD_STATUS_POLL_INTERVAL = 1000;
 
     /**
      * The podcatcher app handle
@@ -208,7 +203,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             // time to complete. Otherwise the UI will show artifacts because we
             // return too early (i.e. before the animation completed).
             try {
-                Thread.sleep(podcatcher.getResources().getInteger(
+                TimeUnit.MILLISECONDS.sleep(podcatcher.getResources().getInteger(
                         android.R.integer.config_longAnimTime));
             } catch (InterruptedException e) {
             }
@@ -272,7 +267,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             while (!isCancelled() && !finished) {
                 // Wait between polls
                 try {
-                    Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     // pass
                 }

@@ -58,6 +58,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import static android.media.RemoteControlClient.PLAYSTATE_BUFFERING;
 import static android.media.RemoteControlClient.PLAYSTATE_ERROR;
@@ -180,9 +181,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     private static final int NOTIFICATION_ID = 123;
     /**
-     * The amount of seconds used for any forward or rewind event
+     * The amount of seconds used for any forward or rewind event (in millis)
      */
-    private static final int SKIP_AMOUNT = 10 * 1000;
+    private static final int SKIP_AMOUNT = (int) TimeUnit.SECONDS.toMillis(10);
     /**
      * The volume we duck playback to
      */

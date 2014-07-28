@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Base for the episode manager's class hierarchy. This sets things up by
@@ -62,7 +63,7 @@ public abstract class EpisodeBaseManager implements OnLoadEpisodeMetadataListene
     /**
      * Amount of milliseconds between {@link #saveState()} calls
      */
-    private long PERSIST_METADATA_INTERVAL = 60 * 1000;
+    private long PERSIST_METADATA_INTERVAL = TimeUnit.MINUTES.toMillis(1);
     /**
      * Flag to indicate whether the store meta data task is active
      */

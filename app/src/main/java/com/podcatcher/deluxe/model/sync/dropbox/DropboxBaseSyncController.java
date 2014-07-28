@@ -39,6 +39,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A sync controller for the Dropbox service, abstract base class. Provides some
@@ -265,7 +266,7 @@ abstract class DropboxBaseSyncController extends SyncController
                 int sleepInterval = 250;
                 while (status.isDownloading && !isCancelled())
                     try {
-                        Thread.sleep(sleepInterval);
+                        TimeUnit.MILLISECONDS.sleep(sleepInterval);
 
                         // Increase the timeout to back off a bit, but not too
                         // much (we want to pull at least once a minute and see
@@ -274,7 +275,7 @@ abstract class DropboxBaseSyncController extends SyncController
                     } catch (InterruptedException e) {
                         Log.d(TAG, "Interrupted while waiting for sync to come down", e);
                     } finally {
-                        if (sleepInterval > 1000 * 60) {
+                        if (sleepInterval > TimeUnit.MINUTES.toMillis(1)) {
                             // We do want this to run forever, so we simply
                             // cancel the whole task after too long a wait. The
                             // next sync will hopefully fix things...

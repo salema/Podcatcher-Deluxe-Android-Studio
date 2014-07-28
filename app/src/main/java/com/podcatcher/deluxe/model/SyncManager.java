@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Singleton sync manager to enabled/disable sync controllers. Listens to
@@ -44,17 +45,17 @@ import java.util.Set;
 public class SyncManager implements SyncControllerListener {
 
     /**
-     * The timeout that will trigger a sync event
+     * The timeout that will trigger a sync event (in millis)
      */
-    public static final int TIME_TO_SYNC = 15 * 60 * 1000;
+    public static final int TIME_TO_SYNC = (int) TimeUnit.MINUTES.toMillis(15);
     /**
-     * The timeout that will trigger a sync event when on mobile data
+     * The timeout that will trigger a sync event when on mobile data (in millis)
      */
-    public static final int TIME_TO_SYNC_MOBILE = 60 * 60 * 1000;
+    public static final int TIME_TO_SYNC_MOBILE = (int) TimeUnit.MINUTES.toMillis(60);
     /**
      * The interval to check whether sync is needed (fifteen minutes)
      */
-    private final static int TRIGGER_SYNC_HANDLER_INTERVAL = 15 * 60 * 1000;
+    private final static int TRIGGER_SYNC_HANDLER_INTERVAL = TIME_TO_SYNC;
     /**
      * The actual runnable doing the trigger sync work
      */
@@ -78,7 +79,7 @@ public class SyncManager implements SyncControllerListener {
     /**
      * The check sync status timeout (in ms)
      */
-    private final static int MONITOR_SYNC_HANDLER_INTERVAL = 1000;
+    private final static int MONITOR_SYNC_HANDLER_INTERVAL = (int) TimeUnit.SECONDS.toMillis(1);
     /**
      * Our log tag
      */

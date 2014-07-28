@@ -35,6 +35,7 @@ import com.podcatcher.deluxe.model.types.Progress;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An abstract sync controller to be extended for each specific service.
@@ -215,7 +216,8 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
             // 30 secs.)
             final Date loadDate = podcast.getLastLoaded();
 
-            if (loadDate != null && new Date().getTime() - loadDate.getTime() < 1000 * 30)
+            if (loadDate != null &&
+                    new Date().getTime() - loadDate.getTime() < TimeUnit.SECONDS.toMillis(30))
                 syncEpisodeMetadata();
         }
     }

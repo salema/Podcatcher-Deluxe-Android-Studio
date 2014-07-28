@@ -55,6 +55,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Our model class. Holds all the podcast and episode model data and offers
@@ -70,12 +71,12 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The time podcast content is buffered on non-mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIFE = 30 * 60 * 1000;
+    public static final int TIME_TO_LIFE = (int) TimeUnit.MINUTES.toMillis(30);
     /**
      * The minimum time podcast content is buffered on mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIFE_MOBILE = 60 * 60 * 1000;
+    public static final int TIME_TO_LIFE_MOBILE = (int) TimeUnit.MINUTES.toMillis(60);
     /**
      * Maximum byte size for the logo to load when on mobile connection
      */
@@ -89,17 +90,17 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      */
     public static final String OPML_FILE_ENCODING = "utf8";
     /**
-     * Max stale time we accept from http cache on fast connections
+     * Max stale time we accept feeds from http cache on fast connections (in seconds)
      */
-    private static final int MAX_STALE = 60 * 60; // one hour
+    private static final int MAX_STALE = (int) TimeUnit.HOURS.toSeconds(1); // one hour
     /**
-     * Max stale time we accept from http cache on mobile connections
+     * Max stale time we accept feeds from http cache on mobile connections (in seconds)
      */
-    private static final int MAX_STALE_MOBILE = 60 * 60 * 4; // 4 hours
+    private static final int MAX_STALE_MOBILE = (int) TimeUnit.HOURS.toSeconds(4); // 4 hours
     /**
-     * Max stale time we accept from http cache when offline
+     * Max stale time we accept feeds from http cache when offline (in seconds)
      */
-    private static final int MAX_STALE_OFFLINE = 60 * 60 * 24 * 7; // 1 week
+    private static final int MAX_STALE_OFFLINE = (int) TimeUnit.DAYS.toSeconds(7); // 1 week
     /**
      * The single instance
      */
@@ -216,13 +217,12 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
             loadLogo(podcast, true);
 
         // Run podcast update task every five minutes
-        final int fiveMinutes = 1000 * 60 * 5;
         final boolean isSelectAllOnStart = PreferenceManager.getDefaultSharedPreferences(
                 podcatcher.getApplicationContext()).getBoolean(
                 SettingsActivity.KEY_SELECT_ALL_ON_START, false);
         new Timer().schedule(new PodcastUpdateTask(),
                 isSelectAllOnStart || BuildConfig.DEBUG ?
-                        fiveMinutes : 0, fiveMinutes
+                        TimeUnit.MINUTES.toMillis(5) : 0, TimeUnit.MINUTES.toMillis(5)
         );
     }
 
@@ -753,11 +753,11 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         public void run() {
             final boolean online = podcatcher.isOnline();
             // This is the current time minus the time to life for the podcast
-            // minus some extra time to make sure we refresh before it if
+            // minus some extra time to make sure we refresh before it is
             // actually due
             final Date triggerIfLoadedBefore = new Date(new Date().getTime() -
                     (podcatcher.isOnFastConnection() ? TIME_TO_LIFE : TIME_TO_LIFE_MOBILE) -
-                    1000 * 60 * 6); // trigger if six minutes before reload
+                    TimeUnit.MINUTES.toMillis(6)); // trigger if six minutes before reload
 
             // There are some conditions here: We need to be online and there
             // should not be too many threads open
