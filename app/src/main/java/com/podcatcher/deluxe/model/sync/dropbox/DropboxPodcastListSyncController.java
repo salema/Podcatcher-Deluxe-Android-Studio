@@ -25,8 +25,6 @@ import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
 import com.podcatcher.deluxe.model.types.Podcast;
 
-import java.util.Iterator;
-
 /**
  * A sync controller for the Dropbox service dealing with the podcast list.
  */
@@ -104,11 +102,7 @@ abstract class DropboxPodcastListSyncController extends DropboxSettingsSyncContr
                         podcastManager.removePodcast(podcastManager.indexOf(podcast));
 
                 // Add podcasts not in local list
-                final Iterator<DbxRecord> iterator = podcastTable.query().iterator();
-
-                while (iterator.hasNext()) {
-                    final DbxRecord record = iterator.next();
-
+                for (DbxRecord record : podcastTable.query()) {
                     // Make sure name and URL are present
                     if (record.hasField(PODCAST_NAME) && record.hasField(PODCAST_URL)) {
                         final Podcast podcast = new Podcast(record.getString(PODCAST_NAME),

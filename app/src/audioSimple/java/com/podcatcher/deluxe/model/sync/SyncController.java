@@ -38,10 +38,68 @@ public abstract class SyncController implements OnChangePodcastListListener,
      * The podcast manager handle
      */
     protected final PodcastManager podcastManager;
+
+    /**
+     * Interface definition for a callback to be alerted about the action taking
+     * place in a {@link SyncController}. This is implemented by the
+     * {@link SyncManager} to monitor the controller's state and behavior and to
+     * make this information available to the rest of the app as needed.
+     */
+    public interface SyncControllerListener {
+
+        /**
+         * Called by a {@link SyncController} on its call-back to indicate that
+         * a sync action was triggered internally. After this is called,
+         * {@link SyncController#isRunning()} should return <code>true</code>
+         * until {@link #onSyncCompleted(ControllerImpl)} or
+         * {@link #onSyncFailed(ControllerImpl, Throwable)} is called.
+         *
+         * @param impl Controller that synced successfully.
+         */
+        public void onSyncTriggered(ControllerImpl impl);
+
+        /**
+         * Called by a {@link SyncController} on its call-back to indicate that
+         * a sync action completed normally. After this is called,
+         * {@link SyncController#isRunning()} should return <code>false</code>.
+         *
+         * @param impl Controller that synced successfully.
+         */
+        public void onSyncCompleted(ControllerImpl impl);
+
+        /**
+         * Called by a {@link SyncController} on its call-back when a sync
+         * action failed to complete. After this is called,
+         * {@link SyncController#isRunning()} should return <code>false</code>.
+         *
+         * @param impl  Controller that failed to sync contents.
+         * @param cause The reason for the failure (might be <code>null</code>).
+         */
+        public void onSyncFailed(ControllerImpl impl, Throwable cause);
+    }
+
     /**
      * The sync listener handle
      */
     protected SyncControllerListener listener;
+
+    /**
+     * The sync mode the controller operates in.
+     */
+    public static enum SyncMode {
+        /**
+         * Only send changes out to the service connected, do not change the
+         * local data on the device.
+         */
+        SEND_ONLY,
+
+        /**
+         * Send and receive data. Update the local model to match the service
+         * state. Only one controller can be in this mode at any point in time.
+         */
+        SEND_RECEIVE
+    }
+
     /**
      * The current sync mode
      */
@@ -146,61 +204,5 @@ public abstract class SyncController implements OnChangePodcastListListener,
      */
     protected void onDeactivate() {
         // pass, sub-classes might want to do some house keeping here...
-    }
-
-    /**
-     * The sync mode the controller operates in.
-     */
-    public static enum SyncMode {
-        /**
-         * Only send changes out to the service connected, do not change the
-         * local data on the device.
-         */
-        SEND_ONLY,
-
-        /**
-         * Send and receive data. Update the local model to match the service
-         * state. Only one controller can be in this mode at any point in time.
-         */
-        SEND_RECEIVE,
-    }
-
-    /**
-     * Interface definition for a callback to be alerted about the action taking
-     * place in a {@link SyncController}. This is implemented by the
-     * {@link SyncManager} to monitor the controller's state and behavior and to
-     * make this information available to the rest of the app as needed.
-     */
-    public interface SyncControllerListener {
-
-        /**
-         * Called by a {@link SyncController} on its call-back to indicate that
-         * a sync action was triggered internally. After this is called,
-         * {@link SyncController#isRunning()} should return <code>true</code>
-         * until {@link #onSyncCompleted(ControllerImpl)} or
-         * {@link #onSyncFailed(ControllerImpl, Throwable)} is called.
-         *
-         * @param impl Controller that synced successfully.
-         */
-        public void onSyncTriggered(ControllerImpl impl);
-
-        /**
-         * Called by a {@link SyncController} on its call-back to indicate that
-         * a sync action completed normally. After this is called,
-         * {@link SyncController#isRunning()} should return <code>false</code>.
-         *
-         * @param impl Controller that synced successfully.
-         */
-        public void onSyncCompleted(ControllerImpl impl);
-
-        /**
-         * Called by a {@link SyncController} on its call-back when a sync
-         * action failed to complete. After this is called,
-         * {@link SyncController#isRunning()} should return <code>false</code>.
-         *
-         * @param impl  Controller that failed to sync contents.
-         * @param cause The reason for the failure (might be <code>null</code>).
-         */
-        public void onSyncFailed(ControllerImpl impl, Throwable cause);
     }
 }

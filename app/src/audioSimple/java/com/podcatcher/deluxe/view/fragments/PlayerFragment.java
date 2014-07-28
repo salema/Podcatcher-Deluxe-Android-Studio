@@ -49,13 +49,10 @@ import static android.view.View.VISIBLE;
 public class PlayerFragment extends Fragment {
 
     /**
-     * Delay in between rewind or forward call-backs
-     */
-    private static long TRANSPORT_DELAY = 500;
-    /**
      * The listener for the title click
      */
     private PlayerListener listener;
+
     /**
      * Flag for the show load menu item state
      */
@@ -84,14 +81,17 @@ public class PlayerFragment extends Fragment {
      * Flag for the show error view state
      */
     private boolean showError = false;
+
     /**
      * Status flag indicating that our view is created
      */
     private boolean viewCreated = false;
+
     /**
      * The load episode menu bar item
      */
     private MenuItem loadMenuItem;
+
     /**
      * Title view showing current episode title
      */
@@ -116,6 +116,7 @@ public class PlayerFragment extends Fragment {
      * The error view
      */
     private TextView errorView;
+
     /**
      * The handler posting rewind and forward events
      */
@@ -124,19 +125,10 @@ public class PlayerFragment extends Fragment {
      * Rewind or forward active flag (button held down)
      */
     private boolean transportActive = false;
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // Make sure our listener is present
-        try {
-            this.listener = (PlayerListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement PlayerListener");
-        }
-    }
-
+    /**
+     * Delay in between rewind or forward call-backs
+     */
+    private static long TRANSPORT_DELAY = 500;
     /**
      * The rewind runnable
      */
@@ -150,14 +142,6 @@ public class PlayerFragment extends Fragment {
                 transportationHandler.postDelayed(rewindRunnable, TRANSPORT_DELAY);
         }
     };
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setHasOptionsMenu(true);
-    }
-
     /**
      * The forward runnable
      */
@@ -171,6 +155,25 @@ public class PlayerFragment extends Fragment {
                 transportationHandler.postDelayed(forwardRunnable, TRANSPORT_DELAY);
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Make sure our listener is present
+        try {
+            this.listener = (PlayerListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement PlayerListener");
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -467,6 +470,4 @@ public class PlayerFragment extends Fragment {
             });
         }
     }
-
-
 }

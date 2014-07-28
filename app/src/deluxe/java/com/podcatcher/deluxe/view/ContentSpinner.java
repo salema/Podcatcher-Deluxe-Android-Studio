@@ -63,6 +63,76 @@ public class ContentSpinner extends Spinner implements OnItemSelectedListener {
     private final NavigationSpinnerAdapter spinnerAdapter;
 
     /**
+     * Create a new content mode spinner to be added as a custom view to the
+     * app's action bar.
+     *
+     * @param context  Context the view lives in.
+     * @param listener The action call-back to alert when a content selection is
+     *                 made.
+     */
+    public ContentSpinner(Context context, OnSelectPodcastListener listener) {
+        super(context, null, android.R.attr.actionDropDownStyle);
+
+        this.listener = listener;
+        this.spinnerAdapter = new NavigationSpinnerAdapter(this);
+
+        closedTitleView = (TextView) spinnerAdapter.getClosedView().findViewById(R.id.title);
+        closedSubtitleView = (TextView) spinnerAdapter.getClosedView().findViewById(R.id.subtitle);
+
+        setAdapter(spinnerAdapter);
+        setOnItemSelectedListener(this);
+    }
+
+    /**
+     * Set the main text for the closed spinner view.
+     *
+     * @param title Text to show.
+     */
+    public void setTitle(String title) {
+        closedTitleView.setText(title);
+    }
+
+    /**
+     * Set the sub title for the closed spinner view.
+     *
+     * @param subtitle The subtitle, set to <code>null</code> to hide.
+     */
+    public void setSubtitle(String subtitle) {
+        closedSubtitleView.setText(subtitle);
+        closedSubtitleView.setVisibility(subtitle == null ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // The initial selection on creation of position 0 is ignored and
+        // actions are only triggered for real user selections.
+        if (position > 0) {
+            switch (Long.valueOf(id).intValue()) {
+                case R.string.podcast_select_all:
+                    listener.onAllPodcastsSelected();
+                    break;
+                case R.string.downloads:
+                    listener.onDownloadsSelected();
+                    break;
+                case R.string.playlist:
+                    listener.onPlaylistSelected();
+                    break;
+                default:
+                    // Nothing to do here
+                    break;
+            }
+
+            // This invalidates the selection, the same item can be picked again
+            setSelection(getAdapter().getCount());
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // pass
+    }
+
+    /**
      * The data adapter used to populate the spinner
      */
     private static class NavigationSpinnerAdapter extends BaseAdapter {
@@ -193,75 +263,5 @@ public class ContentSpinner extends Spinner implements OnItemSelectedListener {
                 subtitleView.setText(parent.getContext().getResources()
                         .getQuantityString(R.plurals.episodes, count, count));
         }
-    }
-
-    /**
-     * Create a new content mode spinner to be added as a custom view to the
-     * app's action bar.
-     *
-     * @param context  Context the view lives in.
-     * @param listener The action call-back to alert when a content selection is
-     *                 made.
-     */
-    public ContentSpinner(Context context, OnSelectPodcastListener listener) {
-        super(context, null, android.R.attr.actionDropDownStyle);
-
-        this.listener = listener;
-        this.spinnerAdapter = new NavigationSpinnerAdapter(this);
-
-        closedTitleView = (TextView) spinnerAdapter.getClosedView().findViewById(R.id.title);
-        closedSubtitleView = (TextView) spinnerAdapter.getClosedView().findViewById(R.id.subtitle);
-
-        setAdapter(spinnerAdapter);
-        setOnItemSelectedListener(this);
-    }
-
-    /**
-     * Set the main text for the closed spinner view.
-     *
-     * @param title Text to show.
-     */
-    public void setTitle(String title) {
-        closedTitleView.setText(title);
-    }
-
-    /**
-     * Set the sub title for the closed spinner view.
-     *
-     * @param subtitle The subtitle, set to <code>null</code> to hide.
-     */
-    public void setSubtitle(String subtitle) {
-        closedSubtitleView.setText(subtitle);
-        closedSubtitleView.setVisibility(subtitle == null ? View.GONE : View.VISIBLE);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // The initial selection on creation of position 0 is ignored and
-        // actions are only triggered for real user selections.
-        if (position > 0) {
-            switch (Long.valueOf(id).intValue()) {
-                case R.string.podcast_select_all:
-                    listener.onAllPodcastsSelected();
-                    break;
-                case R.string.downloads:
-                    listener.onDownloadsSelected();
-                    break;
-                case R.string.playlist:
-                    listener.onPlaylistSelected();
-                    break;
-                default:
-                    // Nothing to do here
-                    break;
-            }
-
-            // This invalidates the selection, the same item can be picked again
-            setSelection(getAdapter().getCount());
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // pass
     }
 }

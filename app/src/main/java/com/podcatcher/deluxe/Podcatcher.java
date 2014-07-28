@@ -18,8 +18,6 @@
 package com.podcatcher.deluxe;
 
 import android.app.Application;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.http.HttpResponseCache;
@@ -65,6 +63,21 @@ public class Podcatcher extends Application {
      */
     public static final long HTTP_CACHE_SIZE = 8 * 1024 * 1024; // 8 MiB
 
+    /**
+     * Thread to move the http cache flushing off the UI thread
+     */
+    private static class FlushCacheThread extends Thread {
+
+        @Override
+        public void run() {
+            Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
+
+            final HttpResponseCache cache = HttpResponseCache.getInstalled();
+            if (cache != null)
+                cache.flush();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,7 +110,7 @@ public class Podcatcher extends Application {
         // 2. At the same time we load episode metadata from file async (this
         // has the potential to take a lot of time, since the amount of data
         // might be quite big). The UI is functional without this having
-        // completed, but loading of podcasts and downloads will
+        // completed, but loading of podcasts, downloads or the playlist will
         // block until the data is available.
         new LoadEpisodeMetadataTask(this, EpisodeManager.getInstance())
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
@@ -145,45 +158,10 @@ public class Podcatcher extends Application {
             }
     }
 
-    /**
-     * Checks whether the app is in debug mode.
-     *
-     * @return <code>true</code> iff in debug.
-     */
-    public boolean isInDebugMode() {
-        boolean debug = false;
-
-        PackageManager manager = getApplicationContext().getPackageManager();
-        try {
-            final ApplicationInfo info = manager.getApplicationInfo(
-                    getApplicationContext().getPackageName(), 0);
-            debug = (0 != (info.flags &= ApplicationInfo.FLAG_DEBUGGABLE));
-        } catch (Exception e) {
-            // pass
-        }
-
-        return debug;
-    }
-
     private NetworkInfo getNetworkInfo() {
         final ConnectivityManager manager = (ConnectivityManager) getApplicationContext()
                 .getSystemService(CONNECTIVITY_SERVICE);
 
         return manager.getActiveNetworkInfo();
-    }
-
-    /**
-     * Thread to move the http cache flushing off the UI thread
-     */
-    private static class FlushCacheThread extends Thread {
-
-        @Override
-        public void run() {
-            Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
-
-            final HttpResponseCache cache = HttpResponseCache.getInstalled();
-            if (cache != null)
-                cache.flush();
-        }
     }
 }

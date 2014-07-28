@@ -17,11 +17,12 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".view.fragments.PlayerFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              tools:context=".view.fragments.PlayerFragment"
+              tools:showIn="@layout/main">
 
     <ImageView
         android:id="@+id/player_divider"
@@ -30,7 +31,7 @@
         android:layout_marginBottom="3dp"
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright" />
+        android:src="@android:drawable/divider_horizontal_bright"/>
 
     <TextView
         android:id="@+id/player_error"
@@ -40,7 +41,7 @@
         android:gravity="center"
         android:text="@string/player_error"
         android:textColor="@color/text_error"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/player_title"
@@ -53,7 +54,7 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:visibility="gone"
         tools:text="Test Episode Title - Test Podcast"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
 
     <SeekBar
         android:id="@+id/player_seekbar"
@@ -61,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="@dimen/episode_view_padding"
-        android:layout_marginRight="@dimen/episode_view_padding" />
+        android:layout_marginRight="@dimen/episode_view_padding"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +78,7 @@
             android:layout_height="48dp"
             android:layout_marginRight="2dp"
             android:background="@drawable/button_orange"
-            android:src="@drawable/ic_media_rewind" />
+            android:src="@drawable/ic_media_rewind"/>
 
         <Button
             android:id="@+id/player_button"
@@ -92,7 +93,8 @@
             android:text="@string/pause"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@drawable/button_label"
-            tools:background="@drawable/button_green" />
+            tools:background="@drawable/button_green"
+            tools:text="XX:XX of X:XX:XX"/>
 
         <ImageButton
             android:id="@+id/player_forward"
@@ -100,6 +102,6 @@
             android:layout_height="48dp"
             android:layout_marginLeft="2dp"
             android:background="@drawable/button_orange"
-            android:src="@drawable/ic_media_forward" />
+            android:src="@drawable/ic_media_forward"/>
     </LinearLayout>
 </LinearLayout>

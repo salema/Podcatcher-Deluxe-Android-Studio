@@ -44,7 +44,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -142,7 +141,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
 
         // Make sure filename does not end with a dot
         if (builder.length() > 0 && builder.charAt(builder.length() - 1) == '.')
-            builder.deleteCharAt(builder.length() -1);
+            builder.deleteCharAt(builder.length() - 1);
 
         return builder.toString();
     }
@@ -405,10 +404,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         // This is only possible if the metadata is available
         if (metadata != null) {
             // Find downloads from metadata
-            Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, EpisodeMetadata> entry = iterator.next();
-
+            for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                 // Find records for downloaded episodes
                 if (isDownloaded(entry.getValue())) {
                     // Create and add the downloaded episode
@@ -523,9 +519,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         // Nothing we can do if the meta data is not available
         if (metadata != null) {
             // Find download from metadata
-            Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet().iterator();
-            while (iterator.hasNext()) {
-                final Entry<String, EpisodeMetadata> entry = iterator.next();
+            for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                 final EpisodeMetadata data = entry.getValue();
 
                 // Only act if we care for this download
