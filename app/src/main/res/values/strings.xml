@@ -107,7 +107,7 @@
     <string name="suggestions_none">No suggestions, please change your filters.</string>
     <string name="suggestions_reset_filters">Reset filters</string>
     <string name="suggestions_load_error">Suggestions failed to load, please check your internet connection!</string>
-    <string name="suggestions_send">Suggest a podcast</string>
+    <string name="suggestions_send">Suggest podcast</string>
     <string name="sync_dropbox_unlink_title">Unlink Dropbox</string>
     <string name="sync_dropbox_unlink_message">Do you really want to unlink your Dropbox account from this app? While this will end all sync action via Dropbox for now, you can revert this by re-linking the app later.</string>
     <string name="sync_dropbox_unlink_button">Unlink</string>

@@ -107,7 +107,7 @@
     <string name="suggestions_none">No hay ninguna sugerencia. Por favor, modifique los filtros.</string>
     <string name="suggestions_reset_filters">Restablecer filtros</string>
     <string name="suggestions_load_error">Las sugerencias no se han podido cargar. Comprobar la conexión a Internet.</string>
-    <string name="suggestions_send">Envíe una propuesta</string>
+    <string name="suggestions_send">Envíe propuesta</string>
     <string name="sync_dropbox_unlink_title">Desconectarse de Dropbox</string>
     <string name="sync_dropbox_unlink_message">¿Está seguro de querer desconectar esta app de su cuenta Dropbox? Aunque con esta operación se termina por ahora la sincronización con Dropbox podrá siempre volver a conectarse a la app.   </string>
     <string name="sync_dropbox_unlink_button">Desconectarse</string>

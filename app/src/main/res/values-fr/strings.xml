@@ -107,7 +107,7 @@
     <string name="suggestions_none">Aucune suggestion. Veuillez modifier les critères de filtre.</string>
     <string name="suggestions_reset_filters">Réinitialiser les filtres</string>
     <string name="suggestions_load_error">Impossible de charger les suggestions. Vérifiez votre connexion Internet!</string>
-    <string name="suggestions_send">Suggérer un podcast</string>
+    <string name="suggestions_send">Suggérer podcast</string>
     <string name="sync_dropbox_unlink_title">Se déconnecter de Dropbox</string>
     <string name="sync_dropbox_unlink_message">Êtes-vous sûr de vouloir déconnecter cette app de votre compte Dropbox? Même si avec cette opération la synchronisation avec Dropbox est terminée pour le moment, vous pouvez toujours vous connecter à l’app plus tard. </string>
     <string name="sync_dropbox_unlink_button">Se déconnecter</string>
