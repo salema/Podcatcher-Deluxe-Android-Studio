@@ -18,4 +18,5 @@
 -->
 <resources>
     <string name="about">Про Simple Podcatcher</string>
+    <string name="ad">Спробуйте %1$s та %2$s. Плейлисти, фільтри та багато інших додаткових можливостей!</string>
 </resources>

@@ -18,4 +18,5 @@
 -->
 <resources>
     <string name="about">O programu Simple Podcatcher</string>
+    <string name="ad">Zkuste %1$s a %2$s kvůli seznamům skladeb, filtrům a mnoha dalším prémiovým funkcím!</string>
 </resources>

@@ -18,4 +18,5 @@
 -->
 <resources>
     <string name="about">Info su Simple Podcatcher</string>
+    <string name="ad">Prova %1$s e %2$s per playlist, filtri, e molte altre caratteristiche premium!</string>
 </resources>

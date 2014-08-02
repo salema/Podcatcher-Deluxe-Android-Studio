@@ -36,6 +36,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.GenreSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.LanguageSpinnerAdapter;
@@ -200,7 +201,8 @@ public class SuggestionFragment extends DialogFragment {
         sendSuggestionView = (TextView) view.findViewById(R.id.suggestion_send);
         sendSuggestionView.setText(Html.fromHtml("<a href=\"mailto:" +
                 getString(R.string.suggestion_address) + "?subject=" +
-                getString(R.string.suggestion_subject) + "\">" +
+                getString(R.string.suggestion_subject,
+                        getString(R.string.app_name), BuildConfig.STORE) + "\">" +
                 getString(R.string.suggestions_send) + "</a>"));
         sendSuggestionView.setMovementMethod(LinkMovementMethod.getInstance());
 

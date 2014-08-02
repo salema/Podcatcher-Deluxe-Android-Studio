@@ -43,19 +43,39 @@ android {
         debug {
             versionNameSuffix "-debug"
 
+            buildConfigField "String", "STORE", "\"Debug Store\""
+            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+
             resValue "string", "dropbox_scheme", dropboxDebugScheme
             resValue "string", "dropbox_appkey", dropboxDebugKey
             resValue "string", "dropbox_appsecret", dropboxDebugSecret
         }
         play {
+            buildConfigField "String", "STORE", "\"Google Play\""
+            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }
         amazon {
+            buildConfigField "String", "STORE", "\"Amazon\""
+            buildConfigField "String", "STORE_URL_PREFIX", "\"http://www.amazon.com/gp/mas/dl/android?p=\""
+
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }
         slideme {
+            buildConfigField "String", "STORE", "\"SlideMe\""
+            buildConfigField "String", "STORE_URL_PREFIX", "\"http://slideme.org/app/\""
+
+            runProguard true
+            proguardFiles 'proguard-rules.pro'
+        }
+        samsung {
+            buildConfigField "String", "STORE", "\"Samsung\""
+            // Link to Google Play because Samsung does not allow new apps
+            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+
             runProguard true
             proguardFiles 'proguard-rules.pro'
         }

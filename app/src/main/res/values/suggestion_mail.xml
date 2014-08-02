@@ -18,4 +18,5 @@
 -->
 <resources>
     <string name="suggestion_address" translatable="false">suggestion@podcatcher-deluxe.com</string>
+    <string name="suggestion_subject" translatable="false">A podcast suggestion for the %s Android app (%s)</string>
 </resources>

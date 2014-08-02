@@ -18,4 +18,5 @@
 -->
 <resources>
     <string name="about">Über Simple Podcatcher</string>
+    <string name="ad">Testen Sie %1$s und %2$s: Wiedergabelisten, Filter und viele weitere Komfortfunktionen!</string>
 </resources>

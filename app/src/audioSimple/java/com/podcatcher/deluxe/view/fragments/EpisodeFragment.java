@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.model.types.Episode;
@@ -138,9 +139,14 @@ public class EpisodeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Prepare the ad
+        String audioLink = "<a href=\"" + BuildConfig.STORE_URL_PREFIX +
+                "com.podcatcher.deluxe\">Podcatcher Deluxe</a>";
+        String videoLink = "<a href=\"" + BuildConfig.STORE_URL_PREFIX +
+                "com.podcatcher.deluxe.video\">Video Podcatcher Deluxe</a>";
         ad = "<hr style=\"color: gray; width: 100%\">" +
                 "<div style=\"color: gray; font-size: smaller; text-align: center; width: 100%\">" +
-                getString(R.string.ad) + "</div>";
+                getString(R.string.ad, audioLink, videoLink) + "</div>";
 
         setHasOptionsMenu(true);
     }

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView.MultiChoiceModeListener;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.ExportOpmlActivity;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.RemovePodcastActivity;
@@ -146,7 +147,8 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 // Construct the email
                 final String uriText = String.format(Locale.US, "mailto:%s?subject=%s&body=%s",
                         encode(fragment.getString(R.string.suggestion_address)),
-                        encode(fragment.getString(R.string.suggestion_subject)),
+                        encode(fragment.getString(R.string.suggestion_subject,
+                                fragment.getString(R.string.app_name), BuildConfig.STORE)),
                         encode(suggestion.getName() + " at " + suggestion.getUrl()));
 
                 // Go start the mail app
