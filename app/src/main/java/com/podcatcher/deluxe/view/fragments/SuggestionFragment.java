@@ -72,6 +72,11 @@ public class SuggestionFragment extends DialogFragment {
      */
     private static final String MEDIATYPE_FILTER_POSITION = "mediatype_filter_position";
     /**
+     * Video media type flavor identifier, used for drop down pre-selection
+     */
+    private static final String VIDEO_MEDIA_TYPE_FLAVOR = "video";
+
+    /**
      * The listener to update the list on filter change
      */
     private final OnItemSelectedListener selectionListener = new OnItemSelectedListener() {
@@ -86,6 +91,7 @@ public class SuggestionFragment extends DialogFragment {
             updateList();
         }
     };
+
     /**
      * The list of suggestions to show
      */
@@ -118,10 +124,7 @@ public class SuggestionFragment extends DialogFragment {
      * The suggestions list empty view
      */
     private ViewStub suggestionsListEmptyView;
-    /**
-     * The send a suggestion view
-     */
-    private TextView sendSuggestionView;
+
     /**
      * The call back we work on
      */
@@ -198,7 +201,7 @@ public class SuggestionFragment extends DialogFragment {
         suggestionsListEmptyView.setVisibility(View.GONE);
         suggestionsListView.setEmptyView(progressView);
 
-        sendSuggestionView = (TextView) view.findViewById(R.id.suggestion_send);
+        TextView sendSuggestionView = (TextView) view.findViewById(R.id.suggestion_send);
         sendSuggestionView.setText(Html.fromHtml("<a href=\"mailto:" +
                 getString(R.string.suggestion_address) + "?subject=" +
                 getString(R.string.suggestion_subject,
@@ -298,8 +301,8 @@ public class SuggestionFragment extends DialogFragment {
 
         // Set to "all"
         genreFilter.setSelection(0);
-        // Set to audio, since this is an audio version
-        mediaTypeFilter.setSelection(getResources().getInteger(R.integer.suggestion_mediatype_preselect));
+        // Set according to media type flavor (audio/video)
+        mediaTypeFilter.setSelection(BuildConfig.FLAVOR_media.equals(VIDEO_MEDIA_TYPE_FLAVOR) ? 2 : 1);
     }
 
     private void updateList() {
