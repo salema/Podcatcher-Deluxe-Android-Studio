@@ -58,8 +58,8 @@ import static com.podcatcher.deluxe.view.fragments.AuthorizationFragment.USERNAM
  */
 public abstract class EpisodeListActivity extends EpisodeActivity implements
         OnLoadPodcastListener, OnEnterAuthorizationListener, OnLoadPodcastLogoListener,
-        OnSelectPodcastListener, OnLoadDownloadsListener, OnLoadPlaylistListener,
-        OnReorderEpisodeListener, OnToggleFilterListener, OnReverseSortingListener {
+        OnSelectPodcastListener, OnLoadDownloadsListener, OnReverseSortingListener,
+        OnLoadPlaylistListener, OnReorderEpisodeListener, OnToggleFilterListener {
 
     /**
      * Key used to save the current content mode in bundle

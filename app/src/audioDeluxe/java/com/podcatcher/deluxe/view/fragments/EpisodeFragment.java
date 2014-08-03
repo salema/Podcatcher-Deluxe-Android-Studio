@@ -48,7 +48,7 @@ public class EpisodeFragment extends Fragment {
     /**
      * The listener for the menu item
      */
-    private OnDownloadEpisodeListener listener;
+    private OnDownloadEpisodeListener downloadListener;
     /**
      * The currently shown episode
      */
@@ -133,7 +133,7 @@ public class EpisodeFragment extends Fragment {
 
         // Make sure our listener is present
         try {
-            this.listener = (OnDownloadEpisodeListener) activity;
+            this.downloadListener = (OnDownloadEpisodeListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnDownloadEpisodeListener");
@@ -191,7 +191,7 @@ public class EpisodeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.episode_download_menuitem:
                 // Tell activity to load/unload the current episode
-                listener.onToggleDownload();
+                downloadListener.onToggleDownload();
 
                 return true;
             default:

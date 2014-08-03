@@ -72,31 +72,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
      * Play service
      */
     private PlayEpisodeService service;
-    /**
-     * Defines callbacks for service binding, passed to bindService()
-     */
-    private ServiceConnection connection = new ServiceConnection() {
 
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
-            service = ((PlayServiceBinder) serviceBinder).getService();
-
-            // Register listener
-            service.addPlayServiceListener(EpisodeActivity.this);
-
-            // Update player UI
-            updatePlayerUi();
-
-            // Restart play progress timer task if service is playing
-            if (service.isPlaying())
-                startPlayProgressTimer();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            // Nothing to do here
-        }
-    };
     /**
      * Play update timer
      */
@@ -109,6 +85,41 @@ public abstract class EpisodeActivity extends BaseActivity implements
      * Flag for visibility, coordinating timer
      */
     private boolean visible = false;
+
+    /**
+     * The actual task to regularly update the UI on playback
+     */
+    private static class PlayProgressTask extends TimerTask {
+
+        /**
+         * Use weak reference to avoid any leaking of activities
+         */
+        private final WeakReference<EpisodeActivity> activityReference;
+
+        /**
+         * Create a new update task.
+         *
+         * @param episodeActivity Activity to call update player for.
+         */
+        public PlayProgressTask(EpisodeActivity episodeActivity) {
+            activityReference = new WeakReference<>(episodeActivity);
+        }
+
+        @Override
+        public void run() {
+            final EpisodeActivity episodeActivity = activityReference.get();
+            if (episodeActivity != null) {
+                // Need to run on UI thread, since we want to update the player
+                episodeActivity.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        episodeActivity.updatePlayerUi();
+                    }
+                });
+            }
+        }
+    }
 
     /**
      * Get the fragments needed by this activity from the fragment manager and
@@ -503,37 +514,28 @@ public abstract class EpisodeActivity extends BaseActivity implements
     }
 
     /**
-     * The actual task to regularly update the UI on playback
+     * Defines callbacks for service binding, passed to bindService()
      */
-    private static class PlayProgressTask extends TimerTask {
+    private ServiceConnection connection = new ServiceConnection() {
 
-        /**
-         * Use weak reference to avoid any leaking of activities
-         */
-        private final WeakReference<EpisodeActivity> activityReference;
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
+            service = ((PlayServiceBinder) serviceBinder).getService();
 
-        /**
-         * Create a new update task.
-         *
-         * @param episodeActivity Activity to call update player for.
-         */
-        public PlayProgressTask(EpisodeActivity episodeActivity) {
-            activityReference = new WeakReference<>(episodeActivity);
+            // Register listener
+            service.addPlayServiceListener(EpisodeActivity.this);
+
+            // Update player UI
+            updatePlayerUi();
+
+            // Restart play progress timer task if service is playing
+            if (service.isPlaying())
+                startPlayProgressTimer();
         }
 
         @Override
-        public void run() {
-            final EpisodeActivity episodeActivity = activityReference.get();
-            if (episodeActivity != null) {
-                // Need to run on UI thread, since we want to update the player
-                episodeActivity.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        episodeActivity.updatePlayerUi();
-                    }
-                });
-            }
+        public void onServiceDisconnected(ComponentName arg0) {
+            // Nothing to do here
         }
-    }
+    };
 }

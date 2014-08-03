@@ -55,8 +55,8 @@ import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFr
  */
 public abstract class EpisodeActivity extends BaseActivity implements
         PlayerListener, PlayServiceListener, OnSelectEpisodeListener,
-        OnDownloadEpisodeListener, OnRequestFullscreenListener, OnChangePlaylistListener,
-        OnChangeEpisodeStateListener {
+        OnDownloadEpisodeListener, OnChangePlaylistListener, OnChangeEpisodeStateListener,
+        OnRequestFullscreenListener {
 
     /**
      * Key used to store episode URL in intent or bundle

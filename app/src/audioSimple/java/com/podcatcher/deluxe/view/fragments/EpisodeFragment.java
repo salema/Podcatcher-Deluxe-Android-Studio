@@ -47,17 +47,14 @@ import static android.view.View.VISIBLE;
 public class EpisodeFragment extends Fragment {
 
     /**
-     * Separator for date and podcast name
-     */
-    private static final String SEPARATOR = " • ";
-    /**
      * The listener for the menu item
      */
-    private OnDownloadEpisodeListener listener;
+    private OnDownloadEpisodeListener downloadListener;
     /**
      * The currently shown episode
      */
     private Episode currentEpisode;
+
     /**
      * Flag for show download menu item state
      */
@@ -78,6 +75,12 @@ public class EpisodeFragment extends Fragment {
      * Flag for the state of the download icon
      */
     private boolean downloadIconState = true;
+
+    /**
+     * Separator for date and podcast name
+     */
+    private static final String SEPARATOR = " • ";
+
     /**
      * Status flag indicating that our view is created
      */
@@ -128,7 +131,7 @@ public class EpisodeFragment extends Fragment {
 
         // Make sure our listener is present
         try {
-            this.listener = (OnDownloadEpisodeListener) activity;
+            this.downloadListener = (OnDownloadEpisodeListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnDownloadEpisodeListener");
@@ -193,7 +196,7 @@ public class EpisodeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.episode_download_menuitem:
                 // Tell activity to load/unload the current episode
-                listener.onToggleDownload();
+                downloadListener.onToggleDownload();
 
                 return true;
             default:
