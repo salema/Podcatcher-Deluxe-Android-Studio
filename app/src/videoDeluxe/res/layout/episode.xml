@@ -17,11 +17,11 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.fragments.EpisodeFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".view.fragments.EpisodeFragment">
 
     <TextView
         android:id="@id/android:empty"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/episode_none_selected" />
+        android:text="@string/episode_none_selected"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:paddingLeft="@dimen/episode_view_padding"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textSize="@dimen/font_size_large"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/podcast_title"
@@ -62,7 +62,7 @@
                 android:paddingLeft="@dimen/episode_view_padding"
                 android:singleLine="true"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -76,7 +76,7 @@
                 android:layout_alignParentTop="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_media_new"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/download_icon"
@@ -84,7 +84,7 @@
                 android:layout_height="24dp"
                 android:layout_alignParentBottom="true"
                 android:scaleType="centerInside"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -95,7 +95,7 @@
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
         android:src="@android:drawable/divider_horizontal_bright"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/episode_video"
@@ -106,14 +106,14 @@
         <SurfaceView
             android:id="@+id/surface"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <ImageView
             android:id="@+id/fullscreen"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_media_fullscreen" />
+            android:src="@drawable/ic_media_fullscreen"/>
     </RelativeLayout>
 
     <WebView
@@ -121,5 +121,5 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </LinearLayout>

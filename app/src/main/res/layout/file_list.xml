@@ -17,10 +17,10 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:ellipsize="start"
             android:gravity="center"
             android:singleLine="true"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textAppearance="?android:textAppearanceMedium"/>
 
         <ImageButton
             android:id="@+id/path_up"
@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:layout_margin="3dp"
             android:background="@drawable/button_orange"
-            android:src="@drawable/ic_file_up" />
+            android:src="@drawable/ic_file_up"/>
     </LinearLayout>
 
     <ImageView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright" />
+        android:src="@android:drawable/divider_horizontal_bright"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,14 +62,14 @@
             android:id="@+id/files"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:choiceMode="none" />
+            android:choiceMode="none"/>
 
         <TextView
             android:id="@android:id/empty"
             style="@style/ListView.Empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/file_select_folder_empty" />
+            android:text="@string/file_select_folder_empty"/>
     </FrameLayout>
 
     <Button
@@ -79,5 +79,5 @@
         android:layout_margin="3dp"
         android:background="@drawable/button_green"
         android:text="@string/file_select"
-        android:textColor="@drawable/button_label" />
+        android:textColor="@drawable/button_label"/>
 </LinearLayout>

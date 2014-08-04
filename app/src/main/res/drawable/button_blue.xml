@@ -19,16 +19,16 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape>
-            <gradient android:angle="90" android:centerColor="@color/button_blue_light" android:endColor="@color/button_blue_light" android:startColor="@color/button_blue_dark" />
-            <stroke android:width="1dp" android:color="@color/button_blue_dark" />
-            <corners android:radius="3dp" />
+            <gradient android:angle="90" android:centerColor="@color/button_blue_light" android:endColor="@color/button_blue_light" android:startColor="@color/button_blue_dark"/>
+            <stroke android:width="1dp" android:color="@color/button_blue_dark"/>
+            <corners android:radius="3dp"/>
         </shape>
     </item>
     <item>
         <shape>
-            <gradient android:angle="90" android:centerColor="@color/button_blue_dark" android:endColor="@color/button_blue_light" android:startColor="@color/button_blue_dark" />
-            <stroke android:width="1dp" android:color="@color/button_blue_dark" />
-            <corners android:radius="3dp" />
+            <gradient android:angle="90" android:centerColor="@color/button_blue_dark" android:endColor="@color/button_blue_light" android:startColor="@color/button_blue_dark"/>
+            <stroke android:width="1dp" android:color="@color/button_blue_dark"/>
+            <corners android:radius="3dp"/>
         </shape>
     </item>
 </selector>

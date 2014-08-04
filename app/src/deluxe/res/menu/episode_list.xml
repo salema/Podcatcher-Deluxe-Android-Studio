@@ -22,11 +22,11 @@
         android:icon="@drawable/ic_menu_sort"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="@string/episodes_sort_toggle" />
+        android:title="@string/episodes_sort_toggle"/>
     <item
         android:id="@+id/filter_menuitem"
         android:icon="@drawable/ic_menu_filter"
         android:orderInCategory="3"
         android:showAsAction="always"
-        android:title="@string/episodes_filter_new" />
+        android:title="@string/episodes_filter_new"/>
 </menu>

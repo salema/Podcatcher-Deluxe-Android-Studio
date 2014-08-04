@@ -17,18 +17,18 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".PodcastActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".PodcastActivity">
 
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:layout="@layout/podcast_list" />
+        tools:layout="@layout/podcast_list"/>
 
     <fragment
         android:id="@+id/player"
@@ -36,5 +36,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="@string/player_fragment_tag"
-        tools:layout="@layout/player" />
+        tools:layout="@layout/player"/>
 </LinearLayout>

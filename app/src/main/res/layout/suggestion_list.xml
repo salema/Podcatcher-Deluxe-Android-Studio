@@ -17,10 +17,10 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,21 +32,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <Spinner
             android:id="@+id/suggestion_genre_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <Spinner
             android:id="@+id/suggestion_type_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <ImageView
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright" />
+        android:src="@android:drawable/divider_horizontal_bright"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -64,21 +64,21 @@
         <com.podcatcher.deluxe.view.ProgressView
             android:id="@+id/suggestion_list_progress"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <ListView
             android:id="@+id/suggestion_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:choiceMode="none"
-            android:scrollbars="none" />
+            android:scrollbars="none"/>
 
         <ViewStub
             android:id="@+id/suggestion_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout="@layout/suggestion_list_empty" />
+            android:layout="@layout/suggestion_list_empty"/>
     </FrameLayout>
 
     <ImageView
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright" />
+        android:src="@android:drawable/divider_horizontal_bright"/>
 
     <TextView
         android:id="@+id/suggestion_send"
@@ -98,5 +98,5 @@
         android:drawableLeft="@drawable/ic_email"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:textAppearance="?android:textAppearanceLarge"/>
 </LinearLayout>

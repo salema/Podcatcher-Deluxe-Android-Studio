@@ -22,5 +22,5 @@
         android:icon="@drawable/ic_menu_sort"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="@string/episodes_sort_toggle" />
+        android:title="@string/episodes_sort_toggle"/>
 </menu>
