@@ -26,6 +26,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -305,5 +307,25 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     protected boolean isContentEncodedTag(XmlPullParser parser) {
         return RSS.CONTENT_ENCODED.equals(parser.getName()) &&
                 RSS.CONTENT_NAMESPACE.equals(parser.getNamespace(parser.getPrefix()));
+    }
+
+    @Override
+    protected String normalizeUrl(String spec) {
+        spec = super.normalizeUrl(spec);
+
+        if (!spec.startsWith("http://") && !spec.startsWith("https://"))
+            try {
+                final URL url = new URL(spec);
+                final String scheme = url.getProtocol();
+                if (scheme == null || scheme.isEmpty() ||
+                        (!scheme.equals("http://") && !scheme.equals("https://")))
+                    spec = new URL("http", url.getHost(), -1, url.getFile()).toExternalForm();
+            } catch (MalformedURLException mue) {
+                // we simply try returning the original string starting with http://
+                spec = "http://" + spec;
+            }
+
+
+        return spec;
     }
 }

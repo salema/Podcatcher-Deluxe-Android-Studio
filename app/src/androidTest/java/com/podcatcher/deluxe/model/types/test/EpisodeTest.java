@@ -102,6 +102,19 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertFalse(tal.getEpisodes().get(0).isExplicit());
     }
 
+    public final void testNormalizeUrl() {
+        Podcast dummy = new Podcast(null, null);
+
+        assertEquals("http://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3",
+                new EpisodeForTesting(dummy, 0).normalizeUrl("www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3"));
+        assertEquals("http://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3",
+                new EpisodeForTesting(dummy, 0).normalizeUrl("http://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3"));
+        assertEquals("https://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3",
+                new EpisodeForTesting(dummy, 0).normalizeUrl("https://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3"));
+        assertEquals("http://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3",
+                new EpisodeForTesting(dummy, 0).normalizeUrl("file://www.podtrac.com/pts/redirect.mp3/traffic.libsyn.com/sciencefriday/scifri201408221.mp3"));
+    }
+
     class EpisodeForTesting extends Episode {
 
         public EpisodeForTesting(Podcast podcast, int index) {
@@ -123,6 +136,10 @@ public class EpisodeTest extends InstrumentationTestCase {
 
         public void setDuration(int duration) {
             this.duration = duration;
+        }
+
+        public String normalizeUrl(String spec) {
+            return super.normalizeUrl(spec);
         }
     }
 }
