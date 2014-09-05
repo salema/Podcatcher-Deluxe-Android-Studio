@@ -166,7 +166,12 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
         /**
          * The device's download app is disabled.
          */
-        DOWNLOAD_APP_DISABLED
+        DOWNLOAD_APP_DISABLED,
+
+        /**
+         * The episode does not provide a valid media URL
+         */
+        BAD_EPISODE
     }
 
     /**
@@ -216,17 +221,24 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             localFile.getParentFile().mkdirs();
 
             // Create the request
-            Request download = new Request(Uri.parse(episode.getMediaUrl()))
-                    .setDestinationUri(Uri.fromFile(localFile))
-                    .setTitle(episode.getName())
-                    .setDescription(episode.getPodcast().getName())
-                            // We overwrite the AndroidDownloadManager user agent
-                            // string here because there are servers out there (e.g.
-                            // ORF.at) that apparently block downloads based on this
-                            // information
-                    .addRequestHeader(USER_AGENT_KEY, USER_AGENT_VALUE)
-                            // Make sure our download does not end up in the http cache
-                    .addRequestHeader("Cache-Control", "no-store");
+            Request download = null;
+            try {
+                download = new Request(Uri.parse(episode.getMediaUrl()))
+                        .setDestinationUri(Uri.fromFile(localFile))
+                        .setTitle(episode.getName())
+                        .setDescription(episode.getPodcast().getName())
+                                // We overwrite the AndroidDownloadManager user agent
+                                // string here because there are servers out there (e.g.
+                                // ORF.at) that apparently block downloads based on this
+                                // information
+                        .addRequestHeader(USER_AGENT_KEY, USER_AGENT_VALUE)
+                                // Make sure our download does not end up in the http cache
+                        .addRequestHeader("Cache-Control", "no-store");
+            } catch (NullPointerException | IllegalArgumentException re) {
+                // The Android DownloadManager will reject URL that
+                // don't start with http or https
+                return cancelAndSetError(EpisodeDownloadError.BAD_EPISODE);
+            }
 
             // Set auth if available
             final String auth = episode.getPodcast().getAuthorization();
