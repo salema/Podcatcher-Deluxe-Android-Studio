@@ -76,7 +76,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The minimum time podcast content is buffered on mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIFE_MOBILE = (int) TimeUnit.MINUTES.toMillis(60);
+    public static final int TIME_TO_LIFE_MOBILE = (int) TimeUnit.MINUTES.toMillis(120);
     /**
      * Maximum byte size for the logo to load when on mobile connection
      */
@@ -125,9 +125,9 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     private boolean blockExplicit = false;
 
     /**
-     * The current podcast load tasks
+     * The podcasts currently loading
      */
-    private Map<Podcast, LoadPodcastTask> loadPodcastTasks = new HashMap<>();
+    private final Set<Podcast> loadingPodcasts = Collections.synchronizedSet(new HashSet<Podcast>());
     /**
      * The current podcast logo load tasks
      */
@@ -263,29 +263,27 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @see EpisodeManager#blockUntilEpisodeMetadataIsLoaded()
      */
     public void load(Podcast podcast) {
-        // Only load podcast if not too old
         if (!shouldReload(podcast))
             onPodcastLoaded(podcast);
-            // Only start the load task if it is not already active
-        else if (!loadPodcastTasks.containsKey(podcast)) {
-            // Download podcast RSS feed (async)
-            final LoadPodcastTask task = new LoadPodcastTask(this);
-            task.setBlockExplicitEpisodes(blockExplicit);
-            // We will accept stale versions from the cache in certain
-            // situations
-            task.setMaxStale(podcatcher.isOnline() ?
-                    podcatcher.isOnFastConnection() ? MAX_STALE : MAX_STALE_MOBILE
-                    : MAX_STALE_OFFLINE);
+        else synchronized (loadingPodcasts) {
+            if (!loadingPodcasts.contains(podcast))
+                try {
+                    // Download podcast RSS feed (async)
+                    final LoadPodcastTask task = new LoadPodcastTask(this);
+                    task.setBlockExplicitEpisodes(blockExplicit);
+                    // We will accept stale versions from the cache in certain situations
+                    task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnFastConnection() ?
+                            MAX_STALE : MAX_STALE_MOBILE : MAX_STALE_OFFLINE);
 
-            try {
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+                    // Enqueue podcast load/refresh
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
 
-                // Keep task reference, so we can cancel the load and determine
-                // whether a task for this podcast is already running
-                loadPodcastTasks.put(podcast, task);
-            } catch (RejectedExecutionException ree) {
-                // Skip update TODO We might need a better solution here?
-            }
+                    // Update the set of currently loading podcasts
+                    loadingPodcasts.add(podcast);
+                } catch (RejectedExecutionException ree) {
+                    // Skip update
+                    onPodcastLoadFailed(podcast, PodcastLoadError.UNKNOWN);
+                }
         }
     }
 
@@ -296,14 +294,14 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @return <code>true</code> iff loading.
      */
     public boolean isLoading(Podcast podcast) {
-        return loadPodcastTasks.containsKey(podcast);
+        return loadingPodcasts.contains(podcast);
     }
 
     /**
      * @return The number of podcasts currently loading.
      */
     public int getLoadCount() {
-        return loadPodcastTasks.size();
+        return loadingPodcasts.size();
     }
 
     @Override
@@ -315,8 +313,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
     @Override
     public void onPodcastLoaded(Podcast podcast) {
-        // Remove from the map of loading task
-        loadPodcastTasks.remove(podcast);
+        // Remove from the set of loading task
+        loadingPodcasts.remove(podcast);
         // Clear the failed count for this podcast
         podcast.resetFailedLoadAttempts();
 
@@ -330,8 +328,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
     @Override
     public void onPodcastLoadFailed(Podcast podcast, PodcastLoadError code) {
-        // Remove from the map of loading task
-        loadPodcastTasks.remove(podcast);
+        // Remove from the set of loading task
+        loadingPodcasts.remove(podcast);
         // Increment the failed load attempt count
         podcast.incrementFailedLoadAttempts();
 
@@ -751,38 +749,37 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
         @Override
         public void run() {
-            final boolean online = podcatcher.isOnline();
-            // This is the current time minus the time to life for the podcast
-            // minus some extra time to make sure we refresh before it is
-            // actually due
-            final Date triggerIfLoadedBefore = new Date(new Date().getTime() -
-                    (podcatcher.isOnFastConnection() ? TIME_TO_LIFE : TIME_TO_LIFE_MOBILE) -
-                    TimeUnit.MINUTES.toMillis(6)); // trigger if six minutes before reload
+            // We block on the loading set to avoid it being modified concurrently and
+            // to make sure each podcast is only loaded once
+            synchronized (loadingPodcasts) {
+                // There are some conditions here: We need to be online
+                // and no podcasts are currently loading
+                if (podcatcher.isOnline() && loadingPodcasts.isEmpty()) {
+                    // This is the current time minus the time to life for the podcast
+                    // minus some extra time to make sure we refresh before it is
+                    // actually due
+                    final Date triggerIfLoadedBefore = new Date(new Date().getTime() -
+                            TIME_TO_LIFE - TimeUnit.MINUTES.toMillis(6)); // six minutes before reload
 
-            // There are some conditions here: We need to be online and there
-            // should not be too many threads open
-            if (online && (loadPodcastTasks.size() + loadPodcastLogoTasks.size() < 50))
-                for (Podcast podcast : podcastList) {
-                    // There are more conditions here: The podcast is not
-                    // currently loading, and has not been loaded recently
-                    if (!loadPodcastTasks.containsKey(podcast) &&
-                            (podcast.getLastLoaded() == null || podcast.getLastLoaded().before(
-                                    triggerIfLoadedBefore))) {
-                        // Download podcast RSS feed (async)
-                        final LoadPodcastTask task = new LoadPodcastTask(PodcastManager.this);
-                        task.setBlockExplicitEpisodes(blockExplicit);
-                        try {
-                            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+                    // Test each podcast and schedule reload as needed
+                    for (Podcast podcast : podcastList)
+                        // There are more conditions here: The podcast has not been loaded
+                        // or, when on wifi, has not been loaded recently enough
+                        if (podcast.getLastLoaded() == null || (podcatcher.isOnFastConnection() &&
+                                podcast.getLastLoaded().before(triggerIfLoadedBefore)))
+                            try {
+                                // All set, go schedule the refresh
+                                final LoadPodcastTask task = new LoadPodcastTask(PodcastManager.this);
+                                task.setBlockExplicitEpisodes(blockExplicit);
+                                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
 
-                            // Keep task reference, so we can cancel the load
-                            // and determine whether a task for this podcast is
-                            // already running
-                            loadPodcastTasks.put(podcast, task);
-                        } catch (RejectedExecutionException ree) {
-                            // Skip update
-                        }
-                    }
+                                // Update set of currently loading podcasts
+                                loadingPodcasts.add(podcast);
+                            } catch (RejectedExecutionException ree) {
+                                // Skip update
+                            }
                 }
+            }
         }
     }
 }
