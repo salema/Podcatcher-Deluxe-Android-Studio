@@ -22,7 +22,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.widget.SeekBar;
 
 import com.podcatcher.deluxe.listeners.OnChangeEpisodeStateListener;
@@ -40,9 +42,7 @@ import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.
 import com.podcatcher.deluxe.view.fragments.EpisodeFragment;
 import com.podcatcher.deluxe.view.fragments.PlayerFragment;
 
-import java.lang.ref.WeakReference;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.lang.Runnable;
 import java.util.concurrent.TimeUnit;
 
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
@@ -76,52 +76,25 @@ public abstract class EpisodeActivity extends BaseActivity implements
     private PlayEpisodeService service;
 
     /**
-     * Play update timer
+     * Player update handler, runs every 1000ms when playing
      */
-    private Timer playUpdateTimer = new Timer();
+    private Handler playerUpdateHandler = new Handler(Looper.getMainLooper());
     /**
-     * Play update timer task
-     */
-    private TimerTask playUpdateTimerTask;
-    /**
-     * Flag for visibility, coordinating timer
+     * Flag for visibility, coordinating update handler
      */
     private boolean visible = false;
-
     /**
-     * The actual task to regularly update the UI on playback
+     * Player update runnable used by the handler
      */
-    private static class PlayProgressTask extends TimerTask {
-
-        /**
-         * Use weak reference to avoid any leaking of activities
-         */
-        private final WeakReference<EpisodeActivity> activityReference;
-
-        /**
-         * Create a new update task.
-         *
-         * @param episodeActivity Activity to call update player for.
-         */
-        public PlayProgressTask(EpisodeActivity episodeActivity) {
-            activityReference = new WeakReference<>(episodeActivity);
-        }
+    private Runnable playerUpdater = new Runnable() {
 
         @Override
         public void run() {
-            final EpisodeActivity episodeActivity = activityReference.get();
-            if (episodeActivity != null) {
-                // Need to run on UI thread, since we want to update the player
-                episodeActivity.runOnUiThread(new Runnable() {
+            updatePlayerUi();
 
-                    @Override
-                    public void run() {
-                        episodeActivity.updatePlayerUi();
-                    }
-                });
-            }
+            playerUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
         }
-    }
+    };
 
     /**
      * Get the fragments needed by this activity from the fragment manager and
@@ -166,9 +139,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
         super.onStart();
         this.visible = true;
 
-        // This is safe since it actually only starts the timer if it is
-        // actually needed
-        startPlayProgressTimer();
+        // This is safe since it actually only starts the updater if it is actually needed
+        startPlayerUpdater();
     }
 
     @Override
@@ -184,15 +156,12 @@ public abstract class EpisodeActivity extends BaseActivity implements
         super.onStop();
         this.visible = false;
 
-        stopPlayProgressTimer();
+        stopPlayerUpdater();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // Stop the timer
-        playUpdateTimer.cancel();
 
         // Disconnect from episode manager
         episodeManager.removeDownloadListener(this);
@@ -334,7 +303,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
     @Override
     public void onToggleLoad() {
         // Stop timer task
-        stopPlayProgressTimer();
+        stopPlayerUpdater();
 
         // Stop called: unload episode
         if (service.isLoadedEpisode(selection.getEpisode()))
@@ -353,11 +322,11 @@ public abstract class EpisodeActivity extends BaseActivity implements
         // Player is playing
         if (service.isPlaying()) {
             service.pause();
-            stopPlayProgressTimer();
+            stopPlayerUpdater();
         } // Player in pause
         else {
             service.resume();
-            startPlayProgressTimer();
+            startPlayerUpdater();
         }
 
         updatePlayerUi();
@@ -389,7 +358,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
     @Override
     public void onPlaybackStarted() {
-        startPlayProgressTimer();
+        startPlayerUpdater();
     }
 
     @Override
@@ -397,9 +366,9 @@ public abstract class EpisodeActivity extends BaseActivity implements
         updatePlayerUi();
 
         if (service != null && service.isPlaying())
-            startPlayProgressTimer();
+            startPlayerUpdater();
         else
-            stopPlayProgressTimer();
+            stopPlayerUpdater();
     }
 
     @Override
@@ -412,23 +381,23 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        stopPlayProgressTimer();
+        stopPlayerUpdater();
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        startPlayProgressTimer();
+        startPlayerUpdater();
     }
 
     @Override
     public void onStopForBuffering() {
-        stopPlayProgressTimer();
+        stopPlayerUpdater();
         updatePlayerUi();
     }
 
     @Override
     public void onResumeFromBuffering() {
-        startPlayProgressTimer();
+        startPlayerUpdater();
     }
 
     @Override
@@ -439,14 +408,14 @@ public abstract class EpisodeActivity extends BaseActivity implements
     @Override
     public void onPlaybackComplete() {
         if (episodeManager.isPlaylistEmpty()) {
-            stopPlayProgressTimer();
+            stopPlayerUpdater();
             updatePlayerUi();
         }
     }
 
     @Override
     public void onError() {
-        stopPlayProgressTimer();
+        stopPlayerUpdater();
         service.reset();
 
         updatePlayerUi();
@@ -539,31 +508,19 @@ public abstract class EpisodeActivity extends BaseActivity implements
         }
     }
 
-    private void startPlayProgressTimer() {
+    private void startPlayerUpdater() {
         // Do not start the task if there is no progress to monitor and we are
-        // visible (this fixes the case of stacked activities running the timer)
+        // visible (this fixes the case of stacked activities running the handler)
         if (visible && service != null && service.isPlaying()) {
-            // Only start task if it isn't already running and
-            // there is actually some progress to monitor
-            if (playUpdateTimerTask == null) {
-                PlayProgressTask task = new PlayProgressTask(this);
-
-                try {
-                    playUpdateTimer.schedule(task, 0, 1000);
-                    playUpdateTimerTask = task;
-                } catch (IllegalStateException e) {
-                    // In rare cases, the timer might be canceled (the activity
-                    // is going down) while schedule() is called, skip...
-                }
-            }
+            // Remove existing runnables to make sure only one runs at any given time
+            playerUpdateHandler.removeCallbacks(playerUpdater);
+            playerUpdateHandler.post(playerUpdater);
         }
     }
 
-    private void stopPlayProgressTimer() {
-        if (playUpdateTimerTask != null) {
-            playUpdateTimerTask.cancel();
-            playUpdateTimerTask = null;
-        }
+    private void stopPlayerUpdater() {
+        // Stop the player update handler
+        playerUpdateHandler.removeCallbacks(playerUpdater);
     }
 
     /**
@@ -583,7 +540,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
             // Restart play progress timer task if service is playing
             if (service.isPlaying())
-                startPlayProgressTimer();
+                startPlayerUpdater();
         }
 
         @Override

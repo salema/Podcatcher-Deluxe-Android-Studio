@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
@@ -56,8 +57,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static android.media.RemoteControlClient.PLAYSTATE_BUFFERING;
@@ -168,13 +167,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     private PlayEpisodeNotification notification;
 
     /**
-     * Play update timer for notification
+     * Update handler for the notification
      */
-    private Timer playUpdateTimer = new Timer();
-    /**
-     * Play update timer task for notification
-     */
-    private TimerTask playUpdateTimerTask;
+    private Handler notificationUpdateHandler = new Handler();
 
     /**
      * Our notification id (does not really matter)
@@ -332,12 +327,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
     @Override
     public void onDestroy() {
-        reset();
-
         // Unregister listener
         episodeManager.removePlaylistListener(this);
         // Stop the timer
-        playUpdateTimer.cancel();
+        notificationUpdateHandler.removeCallbacksAndMessages(null);
+
+        reset();
 
         // Disable broadcast receivers
         disableReceiver(noisyReceiver);
@@ -530,7 +525,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             player.pause();
             storeResumeAt();
 
-            stopPlayProgressTimer();
+            stopNotificationUpdater();
             updateRemoteControlPlaystate(PLAYSTATE_PAUSED);
             rebuildNotification();
         }
@@ -543,7 +538,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         if (prepared && !isPlaying()) {
             player.start();
 
-            startPlayProgressTimer();
+            startNotificationUpdater();
             updateRemoteControlPlaystate(PLAYSTATE_PLAYING);
             rebuildNotification();
         }
@@ -724,7 +719,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             }
             // Show notification
             startForeground(NOTIFICATION_ID, notification.build(currentEpisode));
-            startPlayProgressTimer();
+            startNotificationUpdater();
         } else
             onError(mediaPlayer, 0, 0);
     }
@@ -889,7 +884,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
         // Remove notification
         stopForeground(true);
-        stopPlayProgressTimer();
+        stopNotificationUpdater();
 
         // Reset variables
         this.currentEpisode = null;
@@ -961,21 +956,22 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         player.setOnVideoSizeChangedListener(this);
     }
 
-    private void startPlayProgressTimer() {
-        // Only start task if it isn't already running
-        if (playUpdateTimerTask == null) {
-            final TimerTask task = new TimerTask() {
+    private void startNotificationUpdater() {
+        // Remove all runnables and post a fresh one
+        notificationUpdateHandler.removeCallbacksAndMessages(null);
+        notificationUpdateHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                startForeground(NOTIFICATION_ID,
+                        notification.updateProgress(getCurrentPosition(), getDuration()));
 
-                @Override
-                public void run() {
-                    startForeground(NOTIFICATION_ID,
-                            notification.updateProgress(getCurrentPosition(), getDuration()));
-                }
-            };
+                notificationUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
+            }
+        });
+    }
 
-            playUpdateTimer.schedule(task, 1000, 1000);
-            playUpdateTimerTask = task;
-        }
+    private void stopNotificationUpdater() {
+        notificationUpdateHandler.removeCallbacksAndMessages(null);
     }
 
     private void rebuildNotification() {
@@ -984,13 +980,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                     notification.build(currentEpisode, !isPlaying(), getCurrentPosition(),
                             getDuration())
             );
-    }
-
-    private void stopPlayProgressTimer() {
-        if (playUpdateTimerTask != null) {
-            playUpdateTimerTask.cancel();
-            playUpdateTimerTask = null;
-        }
     }
 
     private void stopSelfIfUnboundAndIdle() {
