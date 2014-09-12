@@ -2,6 +2,7 @@ package com.podcatcher.deluxe.model.types.test;
 
 import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.util.Log;
 
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Episode;
@@ -14,9 +15,12 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
 
     @Override
     protected void setUp() throws Exception {
-        sampleSize = 25;
+        sampleSize = 10;
 
         super.setUp();
+
+        for (Podcast podcast : examplePodcasts)
+            Log.d(Utils.TEST_STATUS, "Selected podcast " + podcast.getName() + " (" + podcast.getEpisodeCount() + " episodes)");
     }
 
     @SmallTest
@@ -56,7 +60,9 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
 
     @LargeTest
     public final void testCompareTo() {
-        for (Podcast podcast : examplePodcasts)
+        for (Podcast podcast : examplePodcasts) {
+            Log.d(Utils.TEST_STATUS, "Starting compareTo for podcast " + podcast.getName());
+
             for (Episode episode : podcast.getEpisodes())
                 for (Podcast otherPodcast : examplePodcasts)
                     for (Episode otherEpisode : otherPodcast.getEpisodes())
@@ -64,6 +70,7 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
                                 "LHS: " + episode.getName() + " RHS: " + otherEpisode.getName(),
                                 episode.equals(otherEpisode),
                                 episode.compareTo(otherEpisode) == 0);
+        }
 
         // "LHS: " + episode.getName() + "/"
         // + episode.getPodcast().getName() + "/"
@@ -90,7 +97,10 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
     public final void testGetMediaUrl() {
         for (Podcast podcast : examplePodcasts) {
             for (Episode episode : podcast.getEpisodes()) {
-                assertNotNull(episode.getMediaUrl());
+                String messageStart = "Episode " + episode.getName() + "(" + episode.getPodcast().getName() + ")";
+
+                assertNotNull(messageStart + " has null media url", episode.getMediaUrl());
+                assertTrue(messageStart + " has bad media url: " + episode.getMediaUrl(), episode.getMediaUrl().startsWith("http"));
             }
         }
     }

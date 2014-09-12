@@ -313,12 +313,13 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     protected String normalizeUrl(String spec) {
         spec = super.normalizeUrl(spec);
 
-        if (!spec.startsWith("http://") && !spec.startsWith("https://"))
+        // Try to rescue bad media file URLs
+        if (!spec.startsWith("http"))
             try {
                 final URL url = new URL(spec);
                 final String scheme = url.getProtocol();
-                if (scheme == null || scheme.isEmpty() ||
-                        (!scheme.equals("http://") && !scheme.equals("https://")))
+
+                if (!scheme.equals("http") && !scheme.equals("https"))
                     spec = new URL("http", url.getHost(), -1, url.getFile()).toExternalForm();
             } catch (MalformedURLException mue) {
                 // we simply try returning the original string starting with http://
