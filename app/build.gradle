@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19 // 'android-L'
+    compileSdkVersion 20 // 'android-L'
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         applicationId "com.podcatcher.deluxe"
-        versionCode 200
+        versionCode 201
         minSdkVersion 14
-        targetSdkVersion 19 // "L"
+        targetSdkVersion 20 // "L"
     }
     // Bring in the signing configurations, place these in a file at
     // ${USER.HOME}/.signing/pcd.gradle for this to work. You need to
@@ -90,7 +90,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.0.6"
+            versionName "3.0.7"
 
             signingConfig audioSimpleSigningVariable
 
@@ -104,7 +104,7 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.0.6"
+            versionName "4.0.7"
 
             signingConfig audioDeluxeSigningVariable
 
@@ -115,13 +115,20 @@ android {
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.0.6"
+            versionName "5.0.7"
 
             signingConfig videoDeluxeSigningVariable
 
             resValue "string", "dropbox_scheme", dropboxVideoScheme
             resValue "string", "dropbox_appkey", dropboxVideoKey
             resValue "string", "dropbox_appsecret", dropboxVideoSecret
+        }
+    }
+    variantFilter { variant ->
+        // Ignore all variant we do not need: release and videoSimple
+        if (variant.buildType.name.equals('release') ||
+                (variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('simple'))) {
+            variant.setIgnore(true);
         }
     }
 }
