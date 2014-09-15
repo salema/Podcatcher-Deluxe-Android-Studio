@@ -1,7 +1,5 @@
 package com.podcatcher.deluxe.model.types.test;
 
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Base64;
@@ -106,22 +104,6 @@ public class PodcastTest extends InstrumentationTestCase {
         assertNull(tal.getLogoUrl());
         Utils.loadAndWait(tal);
         assertNotNull(tal.getLogoUrl());
-    }
-
-    public final void testGetLogo() {
-        assertNull(new Podcast(null, null).getLogo());
-
-        Podcast tal = new Podcast("TAL",
-                "http://feeds.thisamericanlife.org/talpodcast");
-        assertNull(tal.getLogo());
-        assertFalse(tal.isLogoCached());
-        Utils.loadAndWait(tal);
-        assertNull(tal.getLogo());
-        assertFalse(tal.isLogoCached());
-
-        tal.setLogo(Bitmap.createBitmap(10, 10, Config.ALPHA_8));
-        assertNotNull(tal.getLogo());
-        assertTrue(tal.isLogoCached());
     }
 
     public final void testLastLoaded() {

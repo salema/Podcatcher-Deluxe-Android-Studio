@@ -80,11 +80,12 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
             } else {
                 assertFalse(task.isCancelled());
                 assertNotNull(mockLoader.result);
-                assertFalse(mockLoader.result.getEpisodes().isEmpty());
                 assertNotNull(mockLoader.result.getLastLoaded());
 
-                Log.d(Utils.TEST_STATUS, "Tested \"" + mockLoader.result +
-                        "\" - okay...");
+                if (mockLoader.result.getEpisodes().isEmpty())
+                    Log.w(Utils.TEST_STATUS, "Podcast " + ep.getName() + " has not episodes!");
+                else
+                    Log.d(Utils.TEST_STATUS, "Tested " + mockLoader.result + " - okay...");
             }
 
             // Discard the complete podcast because otherwise
