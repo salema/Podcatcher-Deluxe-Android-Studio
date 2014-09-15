@@ -68,3 +68,6 @@
 # platform version.  We know about them, and they are safe.
 -dontwarn android.support.**
 -dontwarn com.dropbox.ledger.**
+
+# This is needed for Picasso
+-dontwarn com.squareup.okhttp.**

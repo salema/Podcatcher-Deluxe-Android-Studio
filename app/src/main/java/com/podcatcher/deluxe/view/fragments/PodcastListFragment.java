@@ -35,7 +35,6 @@ import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 
 import com.podcatcher.deluxe.AddPodcastActivity;
@@ -46,6 +45,7 @@ import com.podcatcher.deluxe.listeners.PodcastListContextListener;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.PodcastListItemView;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
@@ -98,6 +98,26 @@ public class PodcastListFragment extends PodcatcherListFragment {
      * Status flag indicating that our view is created
      */
     private boolean viewCreated = false;
+
+    /**
+     * The options available for the logo view
+     */
+    public static enum LogoViewMode {
+        /**
+         * Do not show the podcast logo
+         */
+        NONE,
+
+        /**
+         * Show small podcast logo in list item
+         */
+        SMALL,
+
+        /**
+         * Show large podcast logo at the bottom
+         */
+        LARGE
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -152,7 +172,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
             }
         });
 
-        logoDividerView = getView().findViewById(R.id.podcast_image_divider);
+        logoDividerView = view.findViewById(R.id.podcast_image_divider);
         // Find logo view member handle
         logoView = (ImageView) view.findViewById(R.id.podcast_image);
         // ... and make sure the logo view is square
@@ -169,6 +189,9 @@ public class PodcastListFragment extends PodcatcherListFragment {
                         final LayoutParams layoutParams = logoView.getLayoutParams();
                         layoutParams.height = logoViewHeight;
                         logoView.setLayoutParams(layoutParams);
+
+                        // Make sure logo view mode is set
+                        updateLogo(logoViewMode);
                     }
                 }
         );
@@ -183,9 +206,6 @@ public class PodcastListFragment extends PodcatcherListFragment {
         // controls are established (the list might have been set earlier)
         if (currentPodcastList != null)
             setPodcastList(currentPodcastList);
-
-        // Make sure logo view mode is set
-        updateLogo(logoViewMode);
     }
 
     @Override
@@ -365,12 +385,13 @@ public class PodcastListFragment extends PodcatcherListFragment {
 
             // LARGE shows the big image view below the list
             if (LogoViewMode.LARGE.equals(logoViewMode)) {
-                updatePodcastLogoView();
                 logoDividerView.setVisibility(View.VISIBLE);
                 logoView.setVisibility(View.VISIBLE);
 
                 if (needsSlide && logoViewHeight > 0)
                     slideInLogoView();
+                else
+                    updatePodcastLogoView();
             }
             // NONE hides the logo view
             else {
@@ -403,6 +424,8 @@ public class PodcastListFragment extends PodcatcherListFragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 animating = false;
+
+                updatePodcastLogoView();
             }
         });
 
@@ -443,41 +466,15 @@ public class PodcastListFragment extends PodcatcherListFragment {
     }
 
     private void updatePodcastLogoView() {
-        if (currentPodcastList != null && selectedPosition >= 0) {
+        if (currentPodcastList != null && selectedPosition >= 0 && logoViewHeight > 0) {
             final Podcast selectedPodcast = currentPodcastList.get(selectedPosition);
 
-            // Check for logo and show it if available
-            if (selectedPodcast.isLogoCached()) {
-                logoView.setImageBitmap(selectedPodcast.getLogo());
-                logoView.setScaleType(ScaleType.FIT_XY);
-            } else
-                showGenericPodcastLogo();
-        } else
-            showGenericPodcastLogo();
-    }
-
-    private void showGenericPodcastLogo() {
-        logoView.setImageResource(R.drawable.default_podcast_logo);
-        logoView.setScaleType(ScaleType.CENTER_INSIDE);
-    }
-
-    /**
-     * The options available for the logo view
-     */
-    public static enum LogoViewMode {
-        /**
-         * Do not show the podcast logo
-         */
-        NONE,
-
-        /**
-         * Show small podcast logo in list item
-         */
-        SMALL,
-
-        /**
-         * Show large podcast logo at the bottom
-         */
-        LARGE
+            Picasso.with(getActivity()).load(selectedPodcast.getLogoUrl())
+                    .placeholder(R.drawable.default_podcast_logo)
+                    .error(R.drawable.default_podcast_logo)
+                    .noFade()
+                    .resize(logoViewHeight, logoViewHeight) // width == height, see onCreate()
+                    .into(logoView);
+        }
     }
 }

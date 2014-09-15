@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
+import com.squareup.picasso.Picasso;
 
 /**
  * A list item view to represent a podcast.
@@ -80,7 +81,7 @@ public class PodcastListItemView extends PodcatcherListItemView {
         // 0. Check podcast state
         final boolean loading = podcastManager.isLoading(podcast);
         final int episodeNumber = podcast.getEpisodeCount();
-        final boolean showLogoView = showLogo && podcast.isLogoCached();
+        final boolean showLogoView = showLogo && podcast.hasLogoUrl();
         final boolean progressShouldFade = podcast.hashCode() == lastItemId;
 
         // 1. Set podcast title
@@ -110,7 +111,9 @@ public class PodcastListItemView extends PodcatcherListItemView {
 
         // 4. Set podcast logo if available
         logoView.setVisibility(showLogoView ? VISIBLE : GONE);
-        logoView.setImageBitmap(showLogoView ? podcast.getLogo() : null);
+        if (showLogoView)
+            Picasso.with(getContext()).load(podcast.getLogoUrl())
+                    .fit().into(logoView);
 
         // 5. Store state to make sure it is available next time show() is
         // called and we can decide whether to crossfade or not

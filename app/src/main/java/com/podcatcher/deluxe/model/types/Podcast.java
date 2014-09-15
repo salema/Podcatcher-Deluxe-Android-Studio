@@ -17,7 +17,6 @@
 
 package com.podcatcher.deluxe.model.types;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.Html;
 import android.util.Base64;
@@ -55,10 +54,7 @@ import java.util.Locale;
  * </p>
  * <p>
  * <b>Logo:</b> Podcast often have logos. This podcast type allows for access to
- * the logo's online location (after {@link #parse(XmlPullParser)}, of course)
- * and for caching of the logo using {@link #setLogo(Bitmap)}. Use
- * {@link #isLogoCached()} to find the current state, {@link #getLogo()} will
- * return an immutable copy.
+ * the logo's online location (after {@link #parse(XmlPullParser)}, of course).
  * </p>
  */
 public class Podcast extends FeedEntity implements Comparable<Podcast> {
@@ -80,10 +76,6 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * The podcast's image (logo) location
      */
     protected String logoUrl;
-    /**
-     * The cached logo bitmap
-     */
-    protected Bitmap logo;
 
     /**
      * Username for http authorization
@@ -242,38 +234,16 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     /**
      * Find and return the podcast's image location (logo).
      *
-     * @return URL pointing at the logo location.
+     * @return URL pointing at the logo location (might be <code>null</code> if the podcast
+     * does not provide a logo or it has not been parsed).
      * @see #parse(XmlPullParser)
      */
     public String getLogoUrl() {
         return logoUrl;
     }
 
-    /**
-     * Get a cached logo for this podcast.
-     *
-     * @return The cached logo if it was previously set using
-     * {@link #setLogo(Bitmap)}, <code>null</code> otherwise.
-     */
-    public Bitmap getLogo() {
-        return logo == null ? null : Bitmap.createBitmap(logo);
-    }
-
-    /**
-     * Cache the podcast logo given.
-     *
-     * @param logo Logo to use for this podcast.
-     */
-    public void setLogo(Bitmap logo) {
-        this.logo = logo;
-    }
-
-    /**
-     * @return Whether the podcast's logo is currently cached and returned by
-     * {@link #getLogo()}.
-     */
-    public boolean isLogoCached() {
-        return logo != null;
+    public boolean hasLogoUrl() {
+        return logoUrl != null && logoUrl.startsWith("http");
     }
 
     /**
@@ -387,9 +357,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @throws XmlPullParserException On parsing errors.
      */
     public void parse(XmlPullParser parser) throws XmlPullParserException, IOException {
-        // Keep temp list of old episodes is case of errors (disabled for now,
-        // because this doubles our memory needs and crashes the app at times)
-        // final List<Episode> oldEpisodes = new ArrayList<>(episodes);
+        // Keep temp list of old episodes is case of errors
+        final List<Episode> oldEpisodes = new ArrayList<>(episodes);
 
         // Reset state
         episodes.clear();
@@ -430,7 +399,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             lastLoaded = new Date();
         } catch (XmlPullParserException | IOException e) {
             // Reset the episode list to its former value
-            // this.episodes = oldEpisodes;
+            this.episodes = oldEpisodes;
             throw e;
         } finally {
             // Make sure name is not empty

@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/podcast_image"
-        android:scaleType="centerInside"
+        android:scaleType="center"
         android:src="@drawable/default_podcast_logo"
         tools:layout_height="200dp"
         tools:visibility="visible"/>

@@ -514,7 +514,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
         // Update rc if any (e.g. lock screen)
         if (currentEpisode != null && remoteControlClient != null)
-            remoteControlClient.showNext(!episodeManager.isPlaylistEmptyBesides(currentEpisode));
+            remoteControlClient.setTransportControlFlags(
+                    !episodeManager.isPlaylistEmptyBesides(currentEpisode));
     }
 
     /**

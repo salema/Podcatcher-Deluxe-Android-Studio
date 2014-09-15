@@ -134,11 +134,16 @@ android {
 }
 
 dependencies {
-    // These are the libs to include: gpodder, colorpicker and Dropbox
+    // These are the libs to include
+    // gpodder connector (local lib module) and Dropbox
     compile project(':gpodder_sync')
+    // colorpicker dialog (local lib module)
     compile project(':color_picker')
+    // Dropbox Sync API (see https://www.dropbox.com/developers/blog/57/using-the-sync-api-with-android-studio
     compile files('libs/dropbox-sync-sdk-android.jar')
     compile files("$buildDir/native-libs/native-libs.jar")
+    // Picasso (podcast logo loading)
+    compile 'com.squareup.picasso:picasso:2.3.+'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
 

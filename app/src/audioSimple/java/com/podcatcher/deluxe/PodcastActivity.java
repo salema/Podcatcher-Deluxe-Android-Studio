@@ -440,11 +440,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     public void onPodcastLoaded(Podcast podcast) {
-        // This will display the number of episodes
         podcastListFragment.refresh();
-
-        // Tell the podcast manager to load podcast logo
-        podcastManager.loadLogo(podcast);
+        updateLogoViewMode();
 
         // In small portrait mode, work is done in separate activity
         if (!view.isSmallPortrait())
@@ -455,20 +452,9 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     public void onPodcastLoadFailed(Podcast failedPodcast, PodcastLoadError code) {
         podcastListFragment.refresh();
 
-        // Tell the podcast manager to load podcast logo even though the podcast
-        // failed to load since the podcast logo might be available offline.
-        podcastManager.loadLogo(failedPodcast);
-
         // In small portrait mode, work is done in separate activity
         if (!view.isSmallPortrait())
             super.onPodcastLoadFailed(failedPodcast, code);
-    }
-
-    @Override
-    public void onPodcastLogoLoaded(Podcast podcast) {
-        super.onPodcastLogoLoaded(podcast);
-
-        updateLogoViewMode();
     }
 
     @Override

@@ -30,6 +30,7 @@ import com.podcatcher.deluxe.model.SuggestionManager;
 import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.tasks.LoadEpisodeMetadataTask;
 import com.podcatcher.deluxe.model.tasks.LoadPodcastListTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,6 +115,9 @@ public class Podcatcher extends Application {
         // block until the data is available.
         new LoadEpisodeMetadataTask(this, EpisodeManager.getInstance())
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+
+        // Configure the Picasso image lib
+        Picasso.with(this).setIndicatorsEnabled(BuildConfig.DEBUG);
     }
 
     /**

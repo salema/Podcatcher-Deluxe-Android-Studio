@@ -20,12 +20,16 @@ package com.podcatcher.deluxe.services;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.RemoteControlClient;
 import android.os.Build;
 
+import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,7 +43,7 @@ import static android.media.RemoteControlClient.MetadataEditor.BITMAP_KEY_ARTWOR
  * Our remote control client used to provide playback information to a remote
  * control that might be present and able to display some episode metadata.
  */
-public class PodcatcherRCClient extends RemoteControlClient {
+public class PodcatcherRCClient extends RemoteControlClient implements Target {
 
     /**
      * The supported transport modes for the remote control
@@ -56,13 +60,10 @@ public class PodcatcherRCClient extends RemoteControlClient {
      * @param episode           The episode to get metadata from.
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public PodcatcherRCClient(PendingIntent mediaButtonIntent, final PlayEpisodeService service,
-                              Episode episode) {
-
+    public PodcatcherRCClient(PendingIntent mediaButtonIntent, final PlayEpisodeService service, Episode episode) {
         super(mediaButtonIntent);
 
-        // This will set the transport control flags
-        showNext(!EpisodeManager.getInstance().isPlaylistEmptyBesides(episode));
+        setTransportControlFlags(!EpisodeManager.getInstance().isPlaylistEmptyBesides(episode));
 
         // On Android 4.3 and later we also add playback progress and scrubbing
         // support for the remote control client
@@ -89,7 +90,29 @@ public class PodcatcherRCClient extends RemoteControlClient {
             });
         }
 
+        // Update the episode metadata
         setMetadata(episode);
+        // Load and show logo, onBitmapLoaded() below
+        Picasso.with(service.getApplicationContext())
+                .load(episode.getPodcast().getLogoUrl())
+                .resizeDimen(R.dimen.logo_size, R.dimen.logo_size)
+                .into(this);
+    }
+
+    @Override
+    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+        // Add the logo Picasso loaded async, leaving the other metadata in place
+        editMetadata(false).putBitmap(BITMAP_KEY_ARTWORK, bitmap).apply();
+    }
+
+    @Override
+    public void onBitmapFailed(Drawable errorDrawable) {
+        // pass
+    }
+
+    @Override
+    public void onPrepareLoad(Drawable placeHolderDrawable) {
+        // pass
     }
 
     /**
@@ -100,26 +123,20 @@ public class PodcatcherRCClient extends RemoteControlClient {
      *                be displayed.
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public void showNext(boolean canSkip) {
-        setTransportControlFlags(SUPPORTED_TRANSPORTS | (canSkip ? FLAG_KEY_MEDIA_NEXT : 0)
+    public void setTransportControlFlags(boolean canSkip) {
+        super.setTransportControlFlags(SUPPORTED_TRANSPORTS | (canSkip ? FLAG_KEY_MEDIA_NEXT : 0)
                 | (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 ?
                 FLAG_KEY_MEDIA_POSITION_UPDATE : 0));
     }
 
     private void setMetadata(Episode episode) {
-        if (episode != null) {
-            final MetadataEditor editor = editMetadata(true);
+        final MetadataEditor editor = editMetadata(true);
 
-            editor.putString(METADATA_KEY_TITLE, episode.getName())
-                    .putString(METADATA_KEY_ARTIST, episode.getPodcast().getName())
-                    .putString(METADATA_KEY_DATE, Utils.getRelativePubDate(episode))
-                    .putLong(METADATA_KEY_DURATION, TimeUnit.SECONDS.toMillis(episode.getDuration()));
+        editor.putString(METADATA_KEY_TITLE, episode.getName())
+                .putString(METADATA_KEY_ARTIST, episode.getPodcast().getName())
+                .putString(METADATA_KEY_DATE, Utils.getRelativePubDate(episode))
+                .putLong(METADATA_KEY_DURATION, TimeUnit.SECONDS.toMillis(episode.getDuration()));
 
-            final Bitmap logo = episode.getPodcast().getLogo();
-            if (logo != null)
-                editor.putBitmap(BITMAP_KEY_ARTWORK, logo);
-
-            editor.apply();
-        }
+        editor.apply();
     }
 }

@@ -22,8 +22,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
@@ -32,10 +32,8 @@ import com.podcatcher.deluxe.PodcastActivity;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.model.types.Podcast;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.podcatcher.deluxe.EpisodeActivity.EPISODE_URL_KEY;
@@ -45,7 +43,7 @@ import static com.podcatcher.deluxe.EpisodeListActivity.PODCAST_URL_KEY;
  * Helper class for the {@link PlayEpisodeService} to encapsulate the complexity
  * of notifications.
  */
-public class PlayEpisodeNotification {
+public class PlayEpisodeNotification implements Target {
 
     /**
      * The single instance
@@ -55,15 +53,6 @@ public class PlayEpisodeNotification {
      * The context the notifications live in
      */
     private final Context context;
-
-    /**
-     * Large icon width for the device (used for down-scaling)
-     */
-    private final int largeIconWidth;
-    /**
-     * Large icon height for the device (used for down-scaling)
-     */
-    private final int largeIconHeight;
 
     /**
      * The intent that brings back the app
@@ -80,19 +69,9 @@ public class PlayEpisodeNotification {
      * Our builder
      */
     private Notification.Builder notificationBuilder;
-    /**
-     * The cache for the scaled bitmaps
-     */
-    private Map<String, Bitmap> bitmapCache = new HashMap<>();
 
     private PlayEpisodeNotification(Context context) {
         this.context = context;
-
-        final Resources res = context.getResources();
-        this.largeIconWidth =
-                (int) res.getDimension(android.R.dimen.notification_large_icon_width);
-        this.largeIconHeight =
-                (int) res.getDimension(android.R.dimen.notification_large_icon_height);
 
         // Create all the static intents we need for every build
         appIntent = new Intent(context, PodcastActivity.class)
@@ -168,9 +147,12 @@ public class PlayEpisodeNotification {
                 .setWhen(0)
                 .setProgress(duration, position, false)
                 .setOngoing(true);
-        // Add large image if available
-        if (episode.getPodcast().isLogoCached())
-            notificationBuilder.setLargeIcon(getScaledBitmap(episode.getPodcast()));
+        // Load large image if available, see onBitmapLoaded() below
+        if (episode.getPodcast().hasLogoUrl())
+            Picasso.with(context).load(episode.getPodcast().getLogoUrl())
+                    .resizeDimen(android.R.dimen.notification_large_icon_width,
+                            android.R.dimen.notification_large_icon_height)
+                    .into(this);
 
         // Adding actions to notification is only supported in Android >4.1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -210,13 +192,20 @@ public class PlayEpisodeNotification {
         return notificationBuilder.getNotification();
     }
 
-    private Bitmap getScaledBitmap(Podcast podcast) {
-        final String cacheKey = podcast.getUrl();
+    @Override
+    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+        // Set bitmap on the notification builder, this will be picked up
+        // when updateProgress is called the next time
+        notificationBuilder.setLargeIcon(bitmap);
+    }
 
-        if (!bitmapCache.containsKey(cacheKey))
-            bitmapCache.put(cacheKey, Bitmap.createScaledBitmap(podcast.getLogo(),
-                    largeIconWidth, largeIconHeight, false));
+    @Override
+    public void onBitmapFailed(Drawable errorDrawable) {
+        // pass
+    }
 
-        return bitmapCache.get(cacheKey);
+    @Override
+    public void onPrepareLoad(Drawable placeHolderDrawable) {
+        // pass
     }
 }

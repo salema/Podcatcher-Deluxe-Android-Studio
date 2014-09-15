@@ -24,7 +24,6 @@ import android.os.Bundle;
 
 import com.podcatcher.deluxe.listeners.OnLoadDownloadsListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
-import com.podcatcher.deluxe.listeners.OnLoadPodcastLogoListener;
 import com.podcatcher.deluxe.listeners.OnReverseSortingListener;
 import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
@@ -51,8 +50,8 @@ import static com.podcatcher.deluxe.view.fragments.AuthorizationFragment.USERNAM
  * extend or simply show this layout.
  */
 public abstract class EpisodeListActivity extends EpisodeActivity implements
-        OnLoadPodcastListener, OnEnterAuthorizationListener, OnLoadPodcastLogoListener,
-        OnSelectPodcastListener, OnLoadDownloadsListener, OnReverseSortingListener {
+        OnLoadPodcastListener, OnEnterAuthorizationListener, OnSelectPodcastListener,
+        OnLoadDownloadsListener, OnReverseSortingListener {
 
     /**
      * Key used to save the current content mode in bundle
@@ -109,7 +108,6 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         // We have to do this here instead of onCreate since we can only react
         // on the call-backs properly once we have our fragment
         podcastManager.addLoadPodcastListener(this);
-        podcastManager.addLoadPodcastLogoListener(this);
     }
 
     @Override
@@ -125,7 +123,6 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         super.onDestroy();
 
         podcastManager.removeLoadPodcastListener(this);
-        podcastManager.removeLoadPodcastLogoListener(this);
     }
 
     @Override
@@ -362,16 +359,6 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     public void onCancelAuthorization() {
         if (selection.isPodcastSet())
             onPodcastLoadFailed(selection.getPodcast(), PodcastLoadError.ACCESS_DENIED);
-    }
-
-    @Override
-    public void onPodcastLogoLoaded(Podcast podcast) {
-        // pass
-    }
-
-    @Override
-    public void onPodcastLogoLoadFailed(Podcast podcast) {
-        // pass
     }
 
     @Override

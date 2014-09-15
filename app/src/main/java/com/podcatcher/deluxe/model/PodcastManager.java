@@ -33,9 +33,7 @@ import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
-import com.podcatcher.deluxe.listeners.OnLoadPodcastLogoListener;
 import com.podcatcher.deluxe.model.tasks.StorePodcastListTask;
-import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastLogoTask;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.types.Episode;
@@ -47,10 +45,8 @@ import org.xmlpull.v1.XmlPullParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,8 +60,7 @@ import java.util.concurrent.TimeUnit;
  * sub-class only, there is never more than one instance of this around. You
  * should never have to create this yourself.
  */
-public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastListener,
-        OnLoadPodcastLogoListener {
+public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastListener {
 
     /**
      * The time podcast content is buffered on non-mobile connections (in
@@ -77,10 +72,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * milliseconds). If older, we will to reload.
      */
     public static final int TIME_TO_LIFE_MOBILE = (int) TimeUnit.MINUTES.toMillis(120);
-    /**
-     * Maximum byte size for the logo to load when on mobile connection
-     */
-    public static final int MAX_LOGO_SIZE_MOBILE = 500000;
     /**
      * The name of the file we store our saved podcasts in (as OPML)
      */
@@ -128,10 +119,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The podcasts currently loading
      */
     private final Set<Podcast> loadingPodcasts = Collections.synchronizedSet(new HashSet<Podcast>());
-    /**
-     * The current podcast logo load tasks
-     */
-    private Map<Podcast, LoadPodcastLogoTask> loadPodcastLogoTasks = new HashMap<>();
 
     /**
      * The call-back set for the podcast list load listeners
@@ -145,10 +132,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The call-back set for the podcast load listeners
      */
     private Set<OnLoadPodcastListener> loadPodcastListeners = new HashSet<>();
-    /**
-     * The call-back set for the podcast logo load listeners
-     */
-    private Set<OnLoadPodcastLogoListener> loadPodcastLogoListeners = new HashSet<>();
 
     /**
      * Init the podcast data.
@@ -211,10 +194,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         // Alert call-backs (if any)
         for (OnLoadPodcastListListener listener : loadPodcastListListeners)
             listener.onPodcastListLoaded(getPodcastList(), input);
-
-        // Go load all podcast logo available offline
-        for (Podcast podcast : podcastList)
-            loadLogo(podcast, true);
 
         // Run podcast update task every five minutes
         final boolean isSelectAllOnStart = PreferenceManager.getDefaultSharedPreferences(
@@ -339,62 +318,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     }
 
     /**
-     * Load logo for given podcast from its URL. This is an async load, so this
-     * method will return immediately. Implement the appropriate call-back to
-     * monitor the load process and to get its result.
-     *
-     * @param podcast Podcast to load logo for.
-     * @see OnLoadPodcastLogoListener
-     */
-    public void loadLogo(Podcast podcast) {
-        loadLogo(podcast, false);
-    }
-
-    private void loadLogo(Podcast podcast, boolean localOnly) {
-        // Only load podcast logo if it is not there yet
-        if (podcast.isLogoCached())
-            onPodcastLogoLoaded(podcast);
-            // Only start the load task if it is not already active
-        else if (!loadPodcastLogoTasks.containsKey(podcast)) {
-            // Start logo download
-            LoadPodcastLogoTask task = new LoadPodcastLogoTask(podcatcher, this);
-
-            // Limit logo size download unless we are on a fast network.
-            if (!podcatcher.isOnFastConnection())
-                task.setLoadLimit(MAX_LOGO_SIZE_MOBILE);
-            // Only use cached file if offline (even if stale)
-            task.setLocalOnly(!podcatcher.isOnline() || localOnly);
-
-            try {
-                // Go for it!
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
-
-                // Keep task reference, so we can cancel the load and determine
-                // whether a task for this podcast logo is already running
-                loadPodcastLogoTasks.put(podcast, task);
-            } catch (RejectedExecutionException ree) {
-                // Skip logo loading
-            }
-        }
-    }
-
-    @Override
-    public void onPodcastLogoLoaded(Podcast podcast) {
-        loadPodcastLogoTasks.remove(podcast);
-
-        for (OnLoadPodcastLogoListener listener : loadPodcastLogoListeners)
-            listener.onPodcastLogoLoaded(podcast);
-    }
-
-    @Override
-    public void onPodcastLogoLoadFailed(Podcast podcast) {
-        loadPodcastLogoTasks.remove(podcast);
-
-        for (OnLoadPodcastLogoListener listener : loadPodcastLogoListeners)
-            listener.onPodcastLogoLoadFailed(podcast);
-    }
-
-    /**
      * Add a new podcast to the list of podcasts.
      * {@link OnChangePodcastListListener}s will be notified. If the podcast
      * already is in the list, it will not be added and no notification takes
@@ -405,20 +328,18 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @see OnChangePodcastListListener
      */
     public void addPodcast(Podcast newPodcast) {
-        if (newPodcast != null)
-            // Check whether the new podcast is already added
-            if (!contains(newPodcast)) {
-                // Add the new podcast
-                podcastList.add(newPodcast);
-                Collections.sort(podcastList);
+        if (newPodcast != null && !contains(newPodcast)) {
+            // Add the new podcast
+            podcastList.add(newPodcast);
+            Collections.sort(podcastList);
 
-                // Alert listeners of new podcast
-                for (OnChangePodcastListListener listener : changePodcastListListeners)
-                    listener.onPodcastAdded(newPodcast);
+            // Alert listeners of new podcast
+            for (OnChangePodcastListListener listener : changePodcastListListeners)
+                listener.onPodcastAdded(newPodcast);
 
-                // Mark podcast list dirty
-                podcastListChanged = true;
-            }
+            // Mark podcast list dirty
+            podcastListChanged = true;
+        }
     }
 
     /**
@@ -647,26 +568,6 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      */
     public void removeLoadPodcastListener(OnLoadPodcastListener listener) {
         loadPodcastListeners.remove(listener);
-    }
-
-    /**
-     * Add load podcast logo listener.
-     *
-     * @param listener Listener to add.
-     * @see OnLoadPodcastLogoListener
-     */
-    public void addLoadPodcastLogoListener(OnLoadPodcastLogoListener listener) {
-        loadPodcastLogoListeners.add(listener);
-    }
-
-    /**
-     * Remove load podcast logo listener.
-     *
-     * @param listener Listener to remove.
-     * @see OnLoadPodcastLogoListener
-     */
-    public void removeLoadPodcastLogoListener(OnLoadPodcastLogoListener listener) {
-        loadPodcastLogoListeners.remove(listener);
     }
 
     /**
