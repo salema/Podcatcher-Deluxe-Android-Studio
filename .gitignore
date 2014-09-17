@@ -23,5 +23,8 @@ local.properties
 .idea/vcs.xml
 *.iml
 
+# Dropbox secret keys
+dropbox_secrets.xml
+
 # OS-specific files
 .DS_Store

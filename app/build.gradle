@@ -22,18 +22,6 @@ android {
             apply from: signingConfigs;
         }
     }
-    // Bring in the Dropbox configurations. These are simple properties
-    // for the keys and secrets listed in the external file and injected
-    // into the different flavors below.
-    if (project.hasProperty("PodcatcherDeluxe.dropbox")) {
-        def dropboxConfig = System.getProperty("user.home") + "/" +
-                project.property("PodcatcherDeluxe.dropbox") + ".gradle"
-
-        if (new File(dropboxConfig).exists()) {
-            apply from: dropboxConfig;
-        }
-    }
-
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -45,10 +33,6 @@ android {
 
             buildConfigField "String", "STORE", "\"Debug Store\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
-
-            resValue "string", "dropbox_scheme", dropboxDebugScheme
-            resValue "string", "dropbox_appkey", dropboxDebugKey
-            resValue "string", "dropbox_appsecret", dropboxDebugSecret
         }
         play {
             buildConfigField "String", "STORE", "\"Google Play\""
@@ -93,10 +77,6 @@ android {
             versionName "3.0.7"
 
             signingConfig audioSimpleSigningVariable
-
-            resValue "string", "dropbox_scheme", dropboxSimpleScheme
-            resValue "string", "dropbox_appkey", dropboxSimpleKey
-            resValue "string", "dropbox_appsecret", dropboxSimpleSecret
         }
         deluxe {
             flavorDimension "edition"
@@ -107,10 +87,6 @@ android {
             versionName "4.0.7"
 
             signingConfig audioDeluxeSigningVariable
-
-            resValue "string", "dropbox_scheme", dropboxAudioScheme
-            resValue "string", "dropbox_appkey", dropboxAudioKey
-            resValue "string", "dropbox_appsecret", dropboxAudioSecret
         }
         video {
             flavorDimension "media"
@@ -118,10 +94,6 @@ android {
             versionName "5.0.7"
 
             signingConfig videoDeluxeSigningVariable
-
-            resValue "string", "dropbox_scheme", dropboxVideoScheme
-            resValue "string", "dropbox_appkey", dropboxVideoKey
-            resValue "string", "dropbox_appsecret", dropboxVideoSecret
         }
     }
     variantFilter { variant ->
