@@ -467,9 +467,10 @@ public class PodcastListFragment extends PodcatcherListFragment {
 
     private void updatePodcastLogoView() {
         if (currentPodcastList != null && selectedPosition >= 0 && logoViewHeight > 0) {
-            final Podcast selectedPodcast = currentPodcastList.get(selectedPosition);
+            final Podcast podcast = currentPodcastList.get(selectedPosition);
 
-            Picasso.with(getActivity()).load(selectedPodcast.getLogoUrl())
+            Picasso.with(getActivity())
+                    .load(podcast.hasLogoUrl() ? podcast.getLogoUrl() : null) // null -> placeholder
                     .placeholder(R.drawable.default_podcast_logo)
                     .error(R.drawable.default_podcast_logo)
                     .noFade()

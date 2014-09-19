@@ -384,7 +384,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                     else if (tagName.equalsIgnoreCase(RSS.IMAGE))
                         parseLogo(parser);
                         // Thumbnail found (used by some podcast instead of image)
-                    else if (tagName.equalsIgnoreCase(RSS.THUMBNAIL) && logoUrl == null)
+                    else if (tagName.equalsIgnoreCase(RSS.THUMBNAIL) && !hasLogoUrl())
                         logoUrl = parser.getAttributeValue("", RSS.URL);
                         // Episode found
                     else if (tagName.equalsIgnoreCase(RSS.ITEM))

@@ -93,10 +93,11 @@ public class PodcatcherRCClient extends RemoteControlClient implements Target {
         // Update the episode metadata
         setMetadata(episode);
         // Load and show logo, onBitmapLoaded() below
-        Picasso.with(service.getApplicationContext())
-                .load(episode.getPodcast().getLogoUrl())
-                .resizeDimen(R.dimen.logo_size, R.dimen.logo_size)
-                .into(this);
+        if (episode.getPodcast().hasLogoUrl())
+            Picasso.with(service.getApplicationContext())
+                    .load(episode.getPodcast().getLogoUrl())
+                    .resizeDimen(R.dimen.logo_size, R.dimen.logo_size)
+                    .into(this);
     }
 
     @Override
