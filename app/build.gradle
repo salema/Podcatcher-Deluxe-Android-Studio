@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.podcatcher.deluxe"
-        versionCode 201
+        versionCode 202
         minSdkVersion 14
         targetSdkVersion 20 // "L"
     }
@@ -74,7 +74,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.0.7"
+            versionName "3.0.8"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -84,14 +84,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.0.7"
+            versionName "4.0.8"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.0.7"
+            versionName "5.0.8"
 
             signingConfig videoDeluxeSigningVariable
         }
