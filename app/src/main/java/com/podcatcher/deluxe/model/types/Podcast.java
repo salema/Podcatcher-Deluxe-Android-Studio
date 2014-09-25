@@ -357,11 +357,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @throws XmlPullParserException On parsing errors.
      */
     public void parse(XmlPullParser parser) throws XmlPullParserException, IOException {
-        // Keep temp list of old episodes is case of errors
-        final List<Episode> oldEpisodes = new ArrayList<>(episodes);
-
-        // Reset state
-        episodes.clear();
+        final List<Episode> newEpisodes = new ArrayList<>();
 
         try {
             // Start parsing
@@ -372,7 +368,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 // We only need start tags here
                 if (eventType == XmlPullParser.START_TAG) {
-                    String tagName = parser.getName();
+                    final String tagName = parser.getName();
 
                     // Podcast name found and not set yet
                     if (tagName.equalsIgnoreCase(RSS.TITLE) && name == null)
@@ -388,7 +384,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                         logoUrl = parser.getAttributeValue("", RSS.URL);
                         // Episode found
                     else if (tagName.equalsIgnoreCase(RSS.ITEM))
-                        parseEpisode(parser, episodeIndex++);
+                        parseAndAddEpisode(parser, newEpisodes, episodeIndex++);
                 }
 
                 // Done, get next parsing event
@@ -396,11 +392,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             }
 
             // Parsing completed without errors, mark as updated
-            lastLoaded = new Date();
-        } catch (XmlPullParserException | IOException e) {
-            // Reset the episode list to its former value
-            this.episodes = oldEpisodes;
-            throw e;
+            this.episodes = newEpisodes;
+            this.lastLoaded = new Date();
         } finally {
             // Make sure name is not empty
             if (name == null || name.trim().isEmpty())
@@ -439,7 +432,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
     }
 
-    protected void parseEpisode(XmlPullParser parser, int index) {
+    protected void parseAndAddEpisode(XmlPullParser parser, List<Episode> list, int index) {
         // Create episode and parse the data
         final Episode newEpisode = new Episode(this, index);
 
@@ -448,10 +441,11 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
             // Only add if there is a title and some actual content to play
             final String title = newEpisode.getName();
-            if (title != null && !title.isEmpty() && newEpisode.getMediaUrl() != null)
-                episodes.add(newEpisode);
+            if (title != null && !title.trim().isEmpty() &&
+                    newEpisode.getMediaUrl() != null)
+                list.add(newEpisode);
         } catch (XmlPullParserException | IOException e) {
-            // pass, episode not added
+            // pass, episode will not be added
         }
     }
 
