@@ -19,7 +19,6 @@ package com.podcatcher.deluxe;
 
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
@@ -43,7 +42,6 @@ import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.
 import com.podcatcher.deluxe.view.fragments.EpisodeFragment;
 import com.podcatcher.deluxe.view.fragments.PlayerFragment;
 
-import java.lang.Runnable;
 import java.util.concurrent.TimeUnit;
 
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
@@ -122,12 +120,13 @@ public abstract class EpisodeActivity extends BaseActivity implements
      * avoid the case where we are hit by a call-back and could not react to it.
      */
     protected void registerListeners() {
-        // Make sure play service is started
+        // Make sure play service is started, this will not have any effect
+        // if the service is already running
         startService(new Intent(this, PlayEpisodeService.class));
         // Attach to play service, this will register the play service listener
         // once the service is up
         Intent intent = new Intent(this, PlayEpisodeService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        bindService(intent, connection, 0); // no flags needed
 
         // We have to do this here instead of onCreate since we can only react
         // on the call-backs properly once we have our fragment
@@ -171,7 +170,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
         episodeManager.removePlaylistListener(this);
         episodeManager.removeStateChangedListener(this);
 
-        // Detach from play service (prevents leaking)
+        // Detach from play service
         if (service != null) {
             service.removePlayServiceListener(this);
             unbindService(connection);

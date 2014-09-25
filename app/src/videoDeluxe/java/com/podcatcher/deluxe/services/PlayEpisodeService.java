@@ -22,7 +22,6 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
@@ -67,12 +66,18 @@ import static android.media.RemoteControlClient.PLAYSTATE_STOPPED;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 
 /**
+ * <p>
  * Play an episode service, wraps media player. This class implements an Android
  * service. It can be used to play back podcast episodes and tries to hide away
  * the complexity of the media player support in Android. All methods should
- * fail gracefully. Connect (bind) to the service from your activity/fragment
- * and/or send intent actions to use it. For even more interaction, implement
- * {@link PlayServiceListener}.
+ * fail gracefully.
+ * </p>
+ * <p>
+ * To use this service, either issue a start command and/or connect (bind) to
+ * the service from your activity/fragment. You can also send intent actions
+ * to use it. For even more interaction, implement the {@link PlayServiceListener}.
+ * This service will never stop itself.
+ * </p>
  */
 public class PlayEpisodeService extends Service implements MediaPlayerControl,
         SurfaceHolder.Callback, OnVideoSizeChangedListener, OnPreparedListener,
@@ -113,17 +118,17 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     public static final String ACTION_STOP = "com.podcatcher.deluxe.video.action.STOP";
 
     /**
-     * The episode manager handle
-     */
-    private EpisodeManager episodeManager;
-    /**
      * Current episode
      */
     private Episode currentEpisode;
     /**
+     * The episode manager handle
+     */
+    private EpisodeManager episodeManager;
+    /**
      * Our MediaPlayer handle
      */
-    private MediaPlayer player;
+    private MediaPlayer player = new MediaPlayer();
     /**
      * Is the player prepared ?
      */
@@ -136,19 +141,11 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * The current buffer state
      */
     private int bufferPercent = 0;
-    /**
-     * Are we bound to any activity ?
-     */
-    private boolean bound = false;
 
     /**
      * Our audio manager handle
      */
     private AudioManager audioManager;
-    /**
-     * Our becoming noisy broadcast receiver
-     */
-    private ComponentName noisyReceiver;
     /**
      * Our media button broadcast receiver
      */
@@ -206,7 +203,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Binder given to clients
      */
     private final IBinder binder = new PlayServiceBinder();
-
     /**
      * The binder to return to client.
      */
@@ -216,8 +212,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
          * @return The service binder.
          */
         public PlayEpisodeService getService() {
-            // Return this instance of this service, so clients can call public
-            // methods
+            // Return the service, so clients can call public methods
             return PlayEpisodeService.this;
         }
     }
@@ -226,18 +221,15 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     public void onCreate() {
         super.onCreate();
 
-        // Get and enable broadcast receivers
-        noisyReceiver = new ComponentName(this, BecomingNoisyReceiver.class);
-        enableReceiver(noisyReceiver);
+        // Get media button receiver
         mediaButtonReceiver = new ComponentName(this, MediaButtonReceiver.class);
-        enableReceiver(mediaButtonReceiver);
 
         // Get the audio manager handle
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         // Create the wifi lock (not acquired yet)
         wifiLock = ((WifiManager) getSystemService(Context.WIFI_SERVICE))
-                .createWifiLock(WifiManager.WIFI_MODE_FULL, "mylock");
+                .createWifiLock(WifiManager.WIFI_MODE_FULL, null);
 
         // Get our episode manager handle
         episodeManager = EpisodeManager.getInstance();
@@ -245,6 +237,15 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         episodeManager.addPlaylistListener(this);
         // Our notification helper
         notification = PlayEpisodeNotification.getInstance(this);
+
+        // Add media player listeners
+        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        player.setOnPreparedListener(this);
+        player.setOnCompletionListener(this);
+        player.setOnErrorListener(this);
+        player.setOnInfoListener(this);
+        player.setOnBufferingUpdateListener(this);
+        player.setOnVideoSizeChangedListener(this);
     }
 
     @Override
@@ -256,7 +257,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             // Go handle the action
             switch (action) {
                 case ACTION_TOGGLE:
-                    if (isPlaying())
+                    if (player.isPlaying())
                         pause();
                     else
                         resume();
@@ -302,27 +303,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                 listener.onPlaybackStateChanged();
         }
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        this.bound = true;
-
         return binder;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        this.bound = false;
-
-        // Since this is a started service (which is also bound to in addition)
-        // we need to take care of stopping ourself. But we do not want to go
-        // away if there is still some playback. Therefore we check whether
-        // there is any episode loaded and only stop ourselves if there is none.
-        stopSelfIfUnboundAndIdle();
-
-        return false;
     }
 
     @Override
@@ -333,10 +319,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         notificationUpdateHandler.removeCallbacksAndMessages(null);
 
         reset();
-
-        // Disable broadcast receivers
-        disableReceiver(noisyReceiver);
-        disableReceiver(mediaButtonReceiver);
     }
 
     /**
@@ -428,8 +410,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                 onVideoSizeChanged(player, player.getVideoWidth(), player.getVideoHeight());
         } catch (IllegalArgumentException iae) {
             Log.w(TAG, "Surface holder cannot be set as video sink", iae);
-        } catch (NullPointerException npe) {
-            // pass
         }
     }
 
@@ -440,7 +420,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     public void playEpisode(Episode episode) {
         if (episode != null) {
-            // Stop and release the current player and reset variables
+            // Stop and reset the current player and init variables
             reset();
 
             // Make the new episode our current source
@@ -448,12 +428,11 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
             // Start playback for new episode
             try {
-                initPlayer();
-
                 // Play local file
-                if (episodeManager.isDownloaded(episode))
+                if (episodeManager.isDownloaded(episode)) {
                     player.setDataSource(episodeManager.getLocalPath(episode));
-                    // Need to resort to remote file
+                }
+                // Need to resort to remote file
                 else {
                     // We add some request headers to overwrite the default user
                     // agent because this is blocked by some servers
@@ -474,8 +453,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
                 player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
                 player.prepareAsync(); // might take long! (for buffering, etc)
-            } catch (Exception e) {
-                Log.d(TAG, "Prepare/Play failed for episode: " + episode, e);
+            } catch (Throwable throwable) {
+                Log.w(TAG, "Prepare/Play failed for episode: " + episode, throwable);
             }
         }
     }
@@ -522,12 +501,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Pause current playback.
      */
     public void pause() {
-        if (prepared && isPlaying()) {
+        if (prepared && player.isPlaying()) {
             player.pause();
             storeResumeAt();
 
             stopNotificationUpdater();
-            updateRemoteControlPlaystate(PLAYSTATE_PAUSED);
+            updateRemoteControlPlayState(PLAYSTATE_PAUSED);
             rebuildNotification();
         }
     }
@@ -536,11 +515,11 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Resume to play current episode.
      */
     public void resume() {
-        if (prepared && !isPlaying()) {
+        if (prepared && !player.isPlaying()) {
             player.start();
 
             startNotificationUpdater();
-            updateRemoteControlPlaystate(PLAYSTATE_PLAYING);
+            updateRemoteControlPlayState(PLAYSTATE_PLAYING);
             rebuildNotification();
         }
     }
@@ -553,7 +532,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     /**
      * Seek player to given location in media file.
      *
-     * @param msecs Milli seconds from the start to seek to.
+     * @param msecs Milliseconds from the start to seek to.
      */
     public void seekTo(int msecs) {
         if (prepared && msecs >= 0 && msecs <= getDuration()) {
@@ -586,7 +565,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * @return Whether the player is currently playing.
      */
     public boolean isPlaying() {
-        return player != null && player.isPlaying();
+        return player.isPlaying();
     }
 
     /**
@@ -640,7 +619,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
     /**
      * Checks whether the currently loaded episode is equal to the one given.
-     * The check we be true regardless of whether the episode has been actually
+     * The check will be true regardless of whether the episode has been actually
      * prepared or not.
      *
      * @param episode Episode to check for.
@@ -651,32 +630,26 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     }
 
     /**
-     * @return The episode currently loaded.
+     * @return The episode currently loaded (might be <code>null</code>).
      */
     public Episode getCurrentEpisode() {
         return currentEpisode;
     }
 
     /**
-     * @return Current position of playback in milli-seconds from media start.
+     * @return Current position of playback in milliseconds from media start.
      * Does not throw any exception but returns at least zero.
      */
     public int getCurrentPosition() {
-        if (player == null || !prepared)
-            return 0;
-        else
-            return player.getCurrentPosition();
+        return !prepared ? 0 : player.getCurrentPosition();
     }
 
     /**
-     * @return Duration of media element in milli-seconds. Does not throw any
+     * @return Duration of media element in milliseconds. Does not throw any
      * exception but returns at least zero.
      */
     public int getDuration() {
-        if (player == null || !prepared)
-            return 0;
-        else
-            return player.getDuration();
+        return !prepared ? 0 : player.getDuration();
     }
 
     @Override
@@ -689,11 +662,10 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
         // Only start playback if focus is granted
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // So we have audio focus and we tell the audio manager all the
-            // details about our playback and that it should route media buttons
-            // to us
+            // So we have audio focus and we tell the audio manager all the details
+            // about our playback and that it should route media buttons to us
             updateAudioManager();
-            updateRemoteControlPlaystate(PLAYSTATE_PLAYING);
+            updateRemoteControlPlayState(PLAYSTATE_PLAYING);
 
             // Start the playback the right point in time
             player.seekTo(episodeManager.getResumeAt(currentEpisode));
@@ -756,7 +728,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         switch (what) {
             case MediaPlayer.MEDIA_INFO_BUFFERING_START:
                 buffering = true;
-                updateRemoteControlPlaystate(PLAYSTATE_BUFFERING);
+                updateRemoteControlPlayState(PLAYSTATE_BUFFERING);
 
                 for (PlayServiceListener listener : listeners)
                     listener.onStopForBuffering();
@@ -764,7 +736,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                 break;
             case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                 buffering = false;
-                updateRemoteControlPlaystate(isPlaying() ? PLAYSTATE_PLAYING : PLAYSTATE_PAUSED);
+                updateRemoteControlPlayState(player.isPlaying() ?
+                        PLAYSTATE_PLAYING : PLAYSTATE_PAUSED);
 
                 for (PlayServiceListener listener : listeners)
                     listener.onResumeFromBuffering();
@@ -777,7 +750,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        updateRemoteControlPlaystate(PLAYSTATE_STOPPED);
+        updateRemoteControlPlayState(PLAYSTATE_STOPPED);
 
         // Mark the episode old (needs to be done before resetting the service!)
         episodeManager.setState(currentEpisode, true);
@@ -794,18 +767,17 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             episodeManager.removeFromPlaylist(currentEpisode);
 
             reset();
-            stopSelfIfUnboundAndIdle();
-
-            // Alert listeners
-            if (listeners.size() > 0)
-                for (PlayServiceListener listener : listeners)
-                    listener.onPlaybackComplete();
         }
+
+        // Alert listeners
+        if (listeners.size() > 0)
+            for (PlayServiceListener listener : listeners)
+                listener.onPlaybackComplete();
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        updateRemoteControlPlaystate(PLAYSTATE_ERROR);
+        updateRemoteControlPlayState(PLAYSTATE_ERROR);
 
         // If there is another downloaded episode in the playlist, play it.
         final SortedMap<Integer, Episode> playlist = episodeManager.getDownloadedPlaylist();
@@ -834,13 +806,10 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         else if (listeners.size() > 0)
             for (PlayServiceListener listener : listeners)
                 listener.onError();
-        else {
+        else
             reset();
-            stopSelfIfUnboundAndIdle();
 
-            Log.d(TAG, "Media player send error: " + what + "/" + extra);
-        }
-
+        Log.w(TAG, "Media player send error: " + what + "/" + extra);
         return true;
     }
 
@@ -853,14 +822,13 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and
-                // release media player
+                // reset media player
                 reset();
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                // Lost focus for a short time, but we have to stop
-                // playback. We don't release the media player because playback
-                // is likely to resume
+                // Lost focus for a short time, but we have to stop playback.
+                // We don't release the media player because playback is likely to resume
                 pause();
                 break;
 
@@ -880,7 +848,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         storeResumeAt();
 
         // Stop current playback if any
-        if (isPlaying())
+        if (player.isPlaying())
             player.stop();
 
         // Remove notification
@@ -901,15 +869,13 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         if (wifiLock.isHeld())
             wifiLock.release();
 
-        // Release player
-        if (player != null) {
-            player.release();
-            player = null;
-        }
+        // Reset player
+        setVideoSurface(null);
+        player.reset();
     }
 
     private void storeResumeAt() {
-        if (currentEpisode != null && player != null) {
+        if (currentEpisode != null) {
             final int position = player.getCurrentPosition();
             final int duration = player.getDuration();
 
@@ -919,42 +885,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             episodeManager.setResumeAt(currentEpisode,
                     position == 0 || position / (float) duration > 0.99 ? null : position);
         }
-    }
-
-    private void enableReceiver(final ComponentName receiver) {
-        // This writes to disk, so go off the main thread
-        new Thread() {
-            @Override
-            public void run() {
-                getPackageManager().setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
-            }
-        }.start();
-    }
-
-    private void disableReceiver(final ComponentName receiver) {
-        // This writes to disk, so go off the main thread
-        new Thread() {
-            @Override
-            public void run() {
-                getPackageManager().setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP);
-            }
-        }.start();
-    }
-
-    private void initPlayer() {
-        player = new MediaPlayer();
-
-        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        player.setOnPreparedListener(this);
-        player.setOnCompletionListener(this);
-        player.setOnErrorListener(this);
-        player.setOnInfoListener(this);
-        player.setOnBufferingUpdateListener(this);
-        player.setOnVideoSizeChangedListener(this);
     }
 
     private void startNotificationUpdater() {
@@ -978,14 +908,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     private void rebuildNotification() {
         if (isPrepared() && currentEpisode != null)
             startForeground(NOTIFICATION_ID,
-                    notification.build(currentEpisode, !isPlaying(), getCurrentPosition(),
-                            getDuration())
+                    notification.build(currentEpisode, !player.isPlaying(),
+                            getCurrentPosition(), getDuration())
             );
-    }
-
-    private void stopSelfIfUnboundAndIdle() {
-        if (!bound && currentEpisode == null)
-            stopSelf();
     }
 
     private void updateAudioManager() {
@@ -1003,7 +928,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         audioManager.registerRemoteControlClient(remoteControlClient);
     }
 
-    private void updateRemoteControlPlaystate(int state) {
+    private void updateRemoteControlPlayState(int state) {
         if (remoteControlClient != null)
             remoteControlClient.setPlaybackState(state);
     }

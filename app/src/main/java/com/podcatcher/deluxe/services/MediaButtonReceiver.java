@@ -47,8 +47,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
                 if (event.getAction() == KeyEvent.ACTION_DOWN)
                     // Send appropriate action to the episode playback service.
                     // Since we are only registered if the service is running,
-                    // there
-                    // should not be a SecurityException problem (see
+                    // there should not be a SecurityException problem (see
                     // BecomingNoisyReceiver).
                     switch (event.getKeyCode()) {
                         case KeyEvent.KEYCODE_HEADSETHOOK:
