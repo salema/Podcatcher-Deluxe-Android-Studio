@@ -52,6 +52,7 @@ import static android.app.DownloadManager.STATUS_SUCCESSFUL;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_KEY;
 import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.BAD_EPISODE;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.DESTINATION_NOT_WRITABLE;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.DOWNLOAD_APP_DISABLED;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.NO_SPACE;
@@ -240,7 +241,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             } catch (NullPointerException | IllegalArgumentException re) {
                 // The Android DownloadManager will reject URL that
                 // don't start with http or https
-                return cancelAndSetError(EpisodeDownloadError.BAD_EPISODE);
+                return cancelAndSetError(BAD_EPISODE);
             }
 
             // Set auth if available
@@ -270,6 +271,9 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             } catch (IllegalArgumentException lae) {
                 // The happens if the download app on the device is disabled
                 return cancelAndSetError(DOWNLOAD_APP_DISABLED);
+            } catch (NullPointerException npe) {
+                // The download manager does not like our request because it is incomplete
+                return cancelAndSetError(BAD_EPISODE);
             }
 
             // We need to tell our listener about the download id, to
