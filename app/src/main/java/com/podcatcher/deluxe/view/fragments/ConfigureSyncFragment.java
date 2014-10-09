@@ -81,6 +81,42 @@ public class ConfigureSyncFragment extends DialogFragment {
      */
     private ConfigureSyncDialogListener listener;
 
+    /**
+     * Interface definition for a callback to be invoked when sync settings are
+     * changed in the dialog.
+     */
+    public interface ConfigureSyncDialogListener extends OnCancelListener {
+
+        /**
+         * Called on the listener when the user request the
+         * {@link SyncController}'s settings to be displayed (and possibly
+         * changed).
+         *
+         * @param impl The controller to present settings for.
+         */
+        public void onUpdateSettings(ControllerImpl impl);
+
+        /**
+         * Called on the listener when the user set the {@link SyncMode} for a
+         * {@link SyncController}.
+         *
+         * @param impl The controller mode is set for.
+         * @param mode The new sync mode. By giving <code>null</code> here, the
+         *             controller is disabled.
+         */
+        public void onUpdateMode(ControllerImpl impl, SyncMode mode);
+
+        /**
+         * Called on the listener when the user wants to see the help screen.
+         */
+        public void onShowHelp();
+
+        /**
+         * Called on the listener when the user triggered a sync all event.
+         */
+        public void onSyncNow();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -175,41 +211,5 @@ public class ConfigureSyncFragment extends DialogFragment {
     private void updateSyncButton() {
         syncNowButton.setEnabled(!syncManager.isSyncRunning()
                 && syncManager.getActiveControllerCount() > 0);
-    }
-
-    /**
-     * Interface definition for a callback to be invoked when sync settings are
-     * changed in the dialog.
-     */
-    public interface ConfigureSyncDialogListener extends OnCancelListener {
-
-        /**
-         * Called on the listener when the user request the
-         * {@link SyncController}'s settings to be displayed (and possibly
-         * changed).
-         *
-         * @param impl The controller to present settings for.
-         */
-        public void onUpdateSettings(ControllerImpl impl);
-
-        /**
-         * Called on the listener when the user set the {@link SyncMode} for a
-         * {@link SyncController}.
-         *
-         * @param impl The controller mode is set for.
-         * @param mode The new sync mode. By giving <code>null</code> here, the
-         *             controller is disabled.
-         */
-        public void onUpdateMode(ControllerImpl impl, SyncMode mode);
-
-        /**
-         * Called on the listener when the user wants to see the help screen.
-         */
-        public void onShowHelp();
-
-        /**
-         * Called on the listener when the user triggered a sync all event.
-         */
-        public void onSyncNow();
     }
 }

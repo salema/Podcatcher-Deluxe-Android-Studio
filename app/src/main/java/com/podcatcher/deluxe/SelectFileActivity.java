@@ -58,7 +58,7 @@ public class SelectFileActivity extends BaseActivity implements SelectFileDialog
      */
     public static final String SELECTION_MODE_KEY = "file_selection_mode";
     /**
-     * Tag to find the add suggestion dialog fragment under
+     * Tag to find the file dialog fragment under
      */
     private static final String SELECT_FILE_DIALOG_TAG = "select_file_dialog";
     /**
