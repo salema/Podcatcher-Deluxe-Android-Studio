@@ -73,6 +73,10 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     protected MediaType mediaType;
 
     /**
+     * The podcast feed file encoding
+     */
+    protected String feedEncoding;
+    /**
      * The podcast's image (logo) location
      */
     protected String logoUrl;
@@ -232,6 +236,15 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     /**
+     * @return The feed remote file encoding or <code>null</code> if not yet parsed or
+     * detected by the parser.
+     * @see #parse(XmlPullParser)
+     */
+    public String getFeedEncoding() {
+        return feedEncoding;
+    }
+
+    /**
      * Find and return the podcast's image location (logo).
      *
      * @return URL pointing at the logo location (might be <code>null</code> if the podcast
@@ -361,6 +374,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
         try {
             // Start parsing
+            this.feedEncoding = parser.getInputEncoding();
             int eventType = parser.next();
             int episodeIndex = 0;
 

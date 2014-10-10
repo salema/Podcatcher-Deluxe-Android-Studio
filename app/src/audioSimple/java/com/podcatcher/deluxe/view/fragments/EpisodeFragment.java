@@ -18,8 +18,10 @@
 package com.podcatcher.deluxe.view.fragments;
 
 import android.animation.LayoutTransition;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,6 +83,14 @@ public class EpisodeFragment extends Fragment {
      * Separator for date and podcast name
      */
     private static final String SEPARATOR = " • ";
+    /**
+     * The mime type set for the episode description
+     */
+    private static final String EPISODE_DESCRIPTION_MIME_TYPE = "text/html";
+    /**
+     * The encoding of the episode description if not specified
+     */
+    private static final String EPISODE_DESCRIPTION_DEFAULT_ENCODING = "UTF-8";
 
     /**
      * Status flag indicating that our view is created
@@ -170,8 +181,15 @@ public class EpisodeFragment extends Fragment {
         titleView = (TextView) view.findViewById(R.id.episode_title);
         subtitleView = (TextView) view.findViewById(R.id.podcast_title);
         downloadIconView = (ImageView) view.findViewById(R.id.download_icon);
-        descriptionView = (WebView) view.findViewById(R.id.episode_description);
         dividerView = view.findViewById(R.id.episode_divider);
+
+        // Get and configure the web view showing the episode description
+        descriptionView = (WebView) view.findViewById(R.id.episode_description);
+        final WebSettings settings = descriptionView.getSettings();
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
 
         viewCreated = true;
 
@@ -216,6 +234,7 @@ public class EpisodeFragment extends Fragment {
      *
      * @param selectedEpisode Episode to show.
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void setEpisode(Episode selectedEpisode) {
         // Set handle to episode in case we are not resumed
         this.currentEpisode = selectedEpisode;
@@ -235,15 +254,30 @@ public class EpisodeFragment extends Fragment {
             if (currentEpisode.getDurationString() != null)
                 subtitleView.setText(subtitleView.getText() + SEPARATOR
                         + currentEpisode.getDurationString());
-            // Find valid episode description
-            String description = currentEpisode.getLongDescription();
-            if (description == null)
-                description = currentEpisode.getDescription();
-            if (description == null)
-                description = getString(R.string.episode_no_description);
+
             // Set episode description
-            descriptionView.loadDataWithBaseURL(null, description + ad,
-                    "text/html", "utf-8", null);
+            final boolean isNewWebView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+            final boolean hasHtmlDescription = currentEpisode.getLongDescription() != null;
+            final String encoding = currentEpisode.getPodcast().getFeedEncoding();
+
+            final WebSettings settings = descriptionView.getSettings();
+            settings.setLoadWithOverviewMode(isNewWebView && hasHtmlDescription);
+            settings.setUseWideViewPort(isNewWebView && hasHtmlDescription);
+            settings.setLayoutAlgorithm(isNewWebView ?
+                    hasHtmlDescription ?
+                            WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING :
+                            WebSettings.LayoutAlgorithm.NORMAL :
+                    WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+            descriptionView.loadDataWithBaseURL(null, // Even a null baseURL somehow helps
+                    !hasHtmlDescription ?
+                            currentEpisode.getDescription() == null ?
+                                    getString(R.string.episode_no_description) :
+                                    currentEpisode.getDescription() :
+                            currentEpisode.getLongDescription(),
+                    EPISODE_DESCRIPTION_MIME_TYPE,
+                    encoding != null ? encoding : EPISODE_DESCRIPTION_DEFAULT_ENCODING,
+                    null);
         }
 
         // Update the UI widget's visibility to reflect state
