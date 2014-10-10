@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Process;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
 import com.podcatcher.deluxe.EpisodeActivity;
@@ -51,6 +52,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import static android.app.DownloadManager.ACTION_NOTIFICATION_CLICKED;
 import static android.app.DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 /**
  * This class is the part of the episode manager stack that handles the download
@@ -290,6 +292,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
                 new Thread() {
                     @Override
                     public void run() {
+                        Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
                         // This should delete the download and remove all
                         // information from the download manager
                         try {

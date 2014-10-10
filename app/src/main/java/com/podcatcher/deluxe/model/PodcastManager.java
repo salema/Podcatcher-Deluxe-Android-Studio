@@ -20,7 +20,6 @@ package com.podcatcher.deluxe.model;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.UserManager;
@@ -50,7 +49,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,26 +82,15 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The OPML file encoding
      */
     public static final String OPML_FILE_ENCODING = "utf8";
+
     /**
-     * Max stale time we accept feeds from http cache on fast connections (in seconds)
+     * The application itself
      */
-    private static final int MAX_STALE = (int) TimeUnit.HOURS.toSeconds(1); // one hour
-    /**
-     * Max stale time we accept feeds from http cache on mobile connections (in seconds)
-     */
-    private static final int MAX_STALE_MOBILE = (int) TimeUnit.HOURS.toSeconds(4); // 4 hours
-    /**
-     * Max stale time we accept feeds from http cache when offline (in seconds)
-     */
-    private static final int MAX_STALE_OFFLINE = (int) TimeUnit.DAYS.toSeconds(7); // 1 week
+    private final Podcatcher podcatcher;
     /**
      * The single instance
      */
     private static PodcastManager manager;
-    /**
-     * The application itself
-     */
-    private Podcatcher podcatcher;
     /**
      * The list of podcasts we know
      */
@@ -110,11 +101,9 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     private boolean podcastListChanged;
 
     /**
-     * Flag to indicate whether we run in a restricted profile and should block
-     * explicit podcasts from loading and suggestions from the being added
+     * An {@link java.util.concurrent.Executor} for loading podcasts in parallel.
      */
-    private boolean blockExplicit = false;
-
+    public final Executor loadPodcastExecutor;
     /**
      * The podcasts currently loading
      */
@@ -134,7 +123,26 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     private Set<OnLoadPodcastListener> loadPodcastListeners = new HashSet<>();
 
     /**
-     * Init the podcast data.
+     * Max stale time we accept feeds from http cache on fast connections (in seconds)
+     */
+    private static final int MAX_STALE = (int) TimeUnit.HOURS.toSeconds(1); // one hour
+    /**
+     * Max stale time we accept feeds from http cache on mobile connections (in seconds)
+     */
+    private static final int MAX_STALE_MOBILE = (int) TimeUnit.HOURS.toSeconds(4); // 4 hours
+    /**
+     * Max stale time we accept feeds from http cache when offline (in seconds)
+     */
+    private static final int MAX_STALE_OFFLINE = (int) TimeUnit.DAYS.toSeconds(7); // 1 week
+
+    /**
+     * Flag to indicate whether we run in a restricted profile and should block
+     * explicit podcasts from loading and suggestions from the being added
+     */
+    private final boolean blockExplicit;
+
+    /**
+     * Init the podcast data manager.
      *
      * @param app The podcatcher application object (also a singleton).
      */
@@ -145,6 +153,14 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
         // Check for preferences
         this.blockExplicit = checkForRestrictedProfileBlocksExplicit();
+
+        // Init the executor. This is used exclusively by the podcast manager
+        // and makes sure that other parts of the application do not have to wait
+        // for lengthy podcast feed downloads to finish before their async tasks
+        // can run on the default executor.
+        final int cpuCount = Runtime.getRuntime().availableProcessors();
+        this.loadPodcastExecutor = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1,
+                1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     }
 
     /**
@@ -255,7 +271,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                             MAX_STALE : MAX_STALE_MOBILE : MAX_STALE_OFFLINE);
 
                     // Enqueue podcast load/refresh
-                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+                    task.executeOnExecutor(loadPodcastExecutor, podcast);
 
                     // Update the set of currently loading podcasts
                     loadingPodcasts.add(podcast);
@@ -672,7 +688,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                                 // All set, go schedule the refresh
                                 final LoadPodcastTask task = new LoadPodcastTask(PodcastManager.this);
                                 task.setBlockExplicitEpisodes(blockExplicit);
-                                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+                                task.executeOnExecutor(loadPodcastExecutor, podcast);
 
                                 // Update set of currently loading podcasts
                                 loadingPodcasts.add(podcast);

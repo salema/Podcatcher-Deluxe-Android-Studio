@@ -25,8 +25,11 @@ import android.content.Intent;
 import android.content.RestrictionEntry;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 
 import java.util.ArrayList;
+
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
 
 /**
  * Creates the app's configurable restrictions for restricted users.
@@ -45,6 +48,7 @@ public class GetRestrictionsReceiver extends BroadcastReceiver {
 
         new Thread() {
             public void run() {
+                Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
                 final Bundle extras = new Bundle();
 
                 // Create the restriction

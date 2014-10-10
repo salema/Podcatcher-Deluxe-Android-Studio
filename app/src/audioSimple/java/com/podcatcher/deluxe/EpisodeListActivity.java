@@ -192,11 +192,11 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 // Update other UI
                 updateSortingUi();
 
-                // Go load all podcasts...
+                // Go load special episodes...
+                episodeManager.getDownloadsAsync(this);
+                // ... and all other podcast data
                 for (Podcast podcast : podcastManager.getPodcastList())
                     podcastManager.load(podcast);
-                // ... and special episodes
-                episodeManager.getDownloadsAsync(this);
 
                 // Action bar needs update after loading has started
                 updateActionBar();

@@ -138,12 +138,12 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
             episodeListFragment.resetUi();
         episodeListFragment.setShowPodcastNames(true);
 
+        // ... plus special episodes...
+        episodeManager.getDownloadsAsync(this);
+        episodeManager.getPlaylistAsync(this);
         // ... and go get the podcast data
         for (Podcast podcast : podcastManager.getPodcastList())
             podcastManager.load(podcast);
-        // ... plus special episodes
-        episodeManager.getDownloadsAsync(this);
-        episodeManager.getPlaylistAsync(this);
 
         updateActionBar();
     }
