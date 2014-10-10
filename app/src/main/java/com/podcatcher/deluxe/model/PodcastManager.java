@@ -267,8 +267,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                     final LoadPodcastTask task = new LoadPodcastTask(this);
                     task.setBlockExplicitEpisodes(blockExplicit);
                     // We will accept stale versions from the cache in certain situations
-                    task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnFastConnection() ?
-                            MAX_STALE : MAX_STALE_MOBILE : MAX_STALE_OFFLINE);
+                    task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnMeteredConnection() ?
+                            MAX_STALE_MOBILE : MAX_STALE : MAX_STALE_OFFLINE);
 
                     // Enqueue podcast load/refresh
                     task.executeOnExecutor(loadPodcastExecutor, podcast);
@@ -606,7 +606,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
             // Check age
         else {
             final long age = new Date().getTime() - podcast.getLastLoaded().getTime();
-            return age > (podcatcher.isOnFastConnection() ? TIME_TO_LIFE : TIME_TO_LIFE_MOBILE);
+            return age > (podcatcher.isOnMeteredConnection() ? TIME_TO_LIFE_MOBILE : TIME_TO_LIFE);
         }
     }
 
@@ -682,7 +682,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                     for (Podcast podcast : podcastList)
                         // There are more conditions here: The podcast has not been loaded
                         // or, when on wifi, has not been loaded recently enough
-                        if (podcast.getLastLoaded() == null || (podcatcher.isOnFastConnection() &&
+                        if (podcast.getLastLoaded() == null || (!podcatcher.isOnMeteredConnection() &&
                                 podcast.getLastLoaded().before(triggerIfLoadedBefore)))
                             try {
                                 // All set, go schedule the refresh

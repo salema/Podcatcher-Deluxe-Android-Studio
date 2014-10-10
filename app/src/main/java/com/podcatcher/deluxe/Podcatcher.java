@@ -17,11 +17,13 @@
 
 package com.podcatcher.deluxe;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Process;
 
 import com.podcatcher.deluxe.model.EpisodeManager;
@@ -134,7 +136,7 @@ public class Podcatcher extends Application {
      * @return <code>true</code> iff we have Internet access.
      */
     public boolean isOnline() {
-        final NetworkInfo activeNetwork = getNetworkInfo();
+        final NetworkInfo activeNetwork = getConnectivityManager().getActiveNetworkInfo();
 
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
@@ -147,7 +149,7 @@ public class Podcatcher extends Application {
      * Internet access.
      */
     public boolean isOnFastConnection() {
-        final NetworkInfo activeNetwork = getNetworkInfo();
+        final NetworkInfo activeNetwork = getConnectivityManager().getActiveNetworkInfo();
 
         if (activeNetwork == null)
             return false;
@@ -162,10 +164,20 @@ public class Podcatcher extends Application {
             }
     }
 
-    private NetworkInfo getNetworkInfo() {
-        final ConnectivityManager manager = (ConnectivityManager) getApplicationContext()
-                .getSystemService(CONNECTIVITY_SERVICE);
+    /**
+     * Checks whether the device is on a metered network. If this information is not available,
+     * the inversion of {@link #isOnFastConnection()} is returned.
+     *
+     * @return <code>true</code> iff we have metered (and potentially slow) Internet access.
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public boolean isOnMeteredConnection() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ?
+                getConnectivityManager().isActiveNetworkMetered() :
+                !isOnFastConnection();
+    }
 
-        return manager.getActiveNetworkInfo();
+    private ConnectivityManager getConnectivityManager() {
+        return (ConnectivityManager) getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
     }
 }

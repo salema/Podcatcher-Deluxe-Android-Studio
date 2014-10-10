@@ -66,7 +66,7 @@ public class SyncManager implements SyncControllerListener {
             final boolean online = podcatcher.isOnline();
             final Date lastSync = getLastFullSyncDate();
             final Date triggerIfSyncedBefore = new Date(new Date().getTime() -
-                    (podcatcher.isOnFastConnection() ? TIME_TO_SYNC : TIME_TO_SYNC_MOBILE));
+                    (podcatcher.isOnMeteredConnection() ? TIME_TO_SYNC_MOBILE : TIME_TO_SYNC));
 
             // If we are online and the last sync is sufficiently old, trigger a
             // full sync on all active sync controllers (on the main UI thread)

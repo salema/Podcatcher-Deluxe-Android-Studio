@@ -248,7 +248,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         }
 
         // Trigger sync event
-        if (((Podcatcher) getApplication()).isOnFastConnection())
+        if (!((Podcatcher) getApplication()).isOnMeteredConnection())
             syncManager.syncAll();
 
         // Make sure we are alerted on back stack changes. This needs to be
