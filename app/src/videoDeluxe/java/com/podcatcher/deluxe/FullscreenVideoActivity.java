@@ -31,6 +31,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.MediaController;
 
 import com.podcatcher.deluxe.listeners.PlayServiceListener;
@@ -172,7 +173,13 @@ public class FullscreenVideoActivity extends BaseActivity implements VideoSurfac
             finish();
             // Update the controller
         else if (controller != null) {
-            controller.show();
+            try {
+                controller.show();
+            } catch (WindowManager.BadTokenException bte) {
+                // This happens of the Amazon devices a lot, not sure why
+                // pass
+            }
+
             attachPrevNextListeners();
         }
     }
