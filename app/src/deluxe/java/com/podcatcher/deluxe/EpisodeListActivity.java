@@ -551,6 +551,17 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     }
 
     @Override
+    public void onDownloadSuccess(Episode episode) {
+        if (!view.isSmallPortrait()) {
+            super.onDownloadSuccess(episode);
+
+            // Reload list of downloads if one completes
+            if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+                episodeManager.getDownloadsAsync(this);
+        }
+    }
+
+    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         super.onSharedPreferenceChanged(sharedPreferences, key);
 

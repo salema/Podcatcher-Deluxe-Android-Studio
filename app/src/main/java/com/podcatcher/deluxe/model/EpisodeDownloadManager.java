@@ -48,7 +48,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static android.app.DownloadManager.ACTION_NOTIFICATION_CLICKED;
 import static android.app.DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
@@ -63,6 +67,11 @@ import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
  */
 public abstract class EpisodeDownloadManager extends EpisodeBaseManager implements
         DownloadTaskListener {
+
+    /**
+     * An {@link java.util.concurrent.Executor} for downloading episodes in parallel.
+     */
+    public final Executor downloadEpisodeExecutor;
 
     /**
      * Characters not allowed in file names
@@ -119,6 +128,14 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         // when a download is clicked in the DownloadManager UI
         podcatcher.registerReceiver(onDownloadClicked,
                 new IntentFilter(DownloadManager.ACTION_NOTIFICATION_CLICKED));
+
+        // Init the executor. This is used exclusively by the episode manager
+        // and makes sure that other parts of the application do not have to wait
+        // for lengthy episode downloads to finish before their async tasks
+        // can run on the default executor.
+        final int cpuCount = Runtime.getRuntime().availableProcessors();
+        this.downloadEpisodeExecutor = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1,
+                1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     }
 
     /**
@@ -208,7 +225,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
             // Start the actual download
             try {
                 new DownloadEpisodeTask(podcatcher, this)
-                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, episode);
+                        .executeOnExecutor(downloadEpisodeExecutor, episode);
             } catch (RejectedExecutionException ree) {
                 // Too many tasks running
                 onEpisodeDownloadFailed(episode, EpisodeDownloadError.UNKNOWN);

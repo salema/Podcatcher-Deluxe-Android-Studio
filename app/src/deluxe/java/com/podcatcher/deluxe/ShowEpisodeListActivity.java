@@ -192,6 +192,15 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
     }
 
     @Override
+    public void onDownloadSuccess(Episode episode) {
+        super.onDownloadSuccess(episode);
+
+        // Reload list of downloads if one completes
+        if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+            episodeManager.getDownloadsAsync(this);
+    }
+
+    @Override
     public void onPlaylistLoaded(List<Episode> playlist) {
         super.onPlaylistLoaded(playlist);
 
