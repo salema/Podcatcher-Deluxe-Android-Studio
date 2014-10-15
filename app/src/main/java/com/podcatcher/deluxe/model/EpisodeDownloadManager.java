@@ -49,10 +49,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import static android.app.DownloadManager.ACTION_NOTIFICATION_CLICKED;
 import static android.app.DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
@@ -132,10 +130,10 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         // Init the executor. This is used exclusively by the episode manager
         // and makes sure that other parts of the application do not have to wait
         // for lengthy episode downloads to finish before their async tasks
-        // can run on the default executor.
-        final int cpuCount = Runtime.getRuntime().availableProcessors();
-        this.downloadEpisodeExecutor = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1,
-                1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+        // can run on the default executor. We put in some extra threads here, since
+        // downloads are mainly slow I/O and not very CPU intensive.
+        final int threadCount = Runtime.getRuntime().availableProcessors() * 2 + 1;
+        this.downloadEpisodeExecutor = Executors.newFixedThreadPool(threadCount);
     }
 
     /**
