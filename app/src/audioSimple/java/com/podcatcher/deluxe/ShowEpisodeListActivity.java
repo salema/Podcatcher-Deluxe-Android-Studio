@@ -175,6 +175,15 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
     }
 
     @Override
+    public void onDownloadSuccess(Episode episode) {
+        // Reload list of downloads if one completes
+        if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+            episodeManager.getDownloadsAsync(this);
+        else
+            updateDownloadUi();
+    }
+
+    @Override
     protected void updateActionBar() {
         contentSpinner.setTitle(getString(R.string.app_name));
 
