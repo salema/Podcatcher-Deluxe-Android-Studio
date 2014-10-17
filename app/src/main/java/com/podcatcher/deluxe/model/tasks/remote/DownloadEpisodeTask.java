@@ -26,8 +26,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.SettingsActivity;
+import com.podcatcher.deluxe.listeners.DownloadTaskListener;
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
@@ -97,51 +99,11 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
      * Flag on whether the download needs moving after the fact
      */
     private boolean needsPostDownloadMove = false;
+
     /**
      * The episode download error code
      */
     private EpisodeDownloadError downloadError = UNKNOWN;
-
-    /**
-     * The interface to implement by the call-back for this task
-     */
-    public interface DownloadTaskListener {
-
-        /**
-         * Called on the listener when the episode is enqueued.
-         *
-         * @param episode The episode now downloading.
-         * @param id      The download manager id for the download.
-         */
-        public void onEpisodeEnqueued(Episode episode, long id);
-
-        /**
-         * Called on the listener when the progress of the download for the
-         * episode advanced.
-         *
-         * @param episode The episode downloading.
-         * @param percent The percent value currently downloaded [0...100].
-         */
-        public void onEpisodeDownloadProgressed(Episode episode, int percent);
-
-        /**
-         * Called on the listener if the episode requested to be downloaded is
-         * already available on the device's storage.
-         *
-         * @param episode     The episode the task was started for.
-         * @param episodeFile The local file.
-         */
-        public void onEpisodeDownloaded(Episode episode, File episodeFile);
-
-        /**
-         * Called on the listener when the download for the episode fails for
-         * some reason.
-         *
-         * @param episode The episode the download failed for.
-         * @param error   The reason for failure per {@link EpisodeDownloadError}
-         */
-        public void onEpisodeDownloadFailed(Episode episode, EpisodeDownloadError error);
-    }
 
     /**
      * Episode download error codes as returned by
@@ -180,8 +142,8 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
     /**
      * Create a new task.
      *
-     * @param podcatcher The podcatcher app handle.
-     * @param listener   The call-back used by the task.
+     * @param podcatcher The podcatcher app handle (not <code>null</code>).
+     * @param listener   The call-back used by the task (not <code>null</code>).
      */
     public DownloadEpisodeTask(Podcatcher podcatcher, DownloadTaskListener listener) {
         this.podcatcher = podcatcher;
@@ -196,6 +158,11 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
     @Override
     protected Void doInBackground(Episode... params) {
         this.episode = params[0];
+
+        // Update the thread name to include the episode working on
+        if (BuildConfig.DEBUG)
+            Thread.currentThread().setName(Thread.currentThread().getName() +
+                    " [" + episode.getName() + "]");
 
         // Find the podcast directory and the path to store episode under
         final File podcastDir = new File(PreferenceManager.getDefaultSharedPreferences(podcatcher)
@@ -358,6 +325,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             }
         }
 
+        revertThreadName();
         return null;
     }
 
@@ -435,7 +403,13 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
     private Void cancelAndSetError(EpisodeDownloadError error) {
         this.downloadError = error;
         cancel(false);
+        revertThreadName();
 
         return null;
+    }
+
+    private void revertThreadName() {
+        if (BuildConfig.DEBUG)
+            Thread.currentThread().setName(Thread.currentThread().getName().split(" \\[")[0]);
     }
 }

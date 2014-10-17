@@ -19,14 +19,16 @@ package com.podcatcher.deluxe.model.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
+import android.preference.PreferenceManager;
 
+import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnLoadEpisodeMetadataListener;
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.tags.METADATA;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 import com.podcatcher.deluxe.model.types.Progress;
+import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -176,8 +178,9 @@ public class LoadEpisodeMetadataTask extends
 
     private void cleanMetadata(Map<String, EpisodeMetadata> result) {
         // Find download folder
-        File podcastDir = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS);
+        File podcastDir = new File(PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(SettingsActivity.KEY_DOWNLOAD_FOLDER,
+                        DownloadFolderPreference.getDefaultDownloadFolder().getAbsolutePath()));
 
         // Handle the case where the download finished while the application was
         // not running. In this case, there would be a downloadId but no

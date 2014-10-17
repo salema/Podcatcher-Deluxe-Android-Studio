@@ -47,6 +47,10 @@ public class SettingsActivity extends BaseActivity {
      * The episode list width preference key
      */
     public static final String KEY_WIDE_EPISODE_LIST = "wide_episode_list";
+    /**
+     * The key for the download folder preference
+     */
+    public static final String KEY_DOWNLOAD_FOLDER = "download_folder";
 
     /**
      * Setting key for the sync receive field

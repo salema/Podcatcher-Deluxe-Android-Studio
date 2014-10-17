@@ -17,8 +17,7 @@
 
 package com.podcatcher.deluxe.model.tasks.remote;
 
-import android.util.Log;
-
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Podcast;
@@ -53,138 +52,23 @@ import java.net.URL;
 public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
 
     /**
-     * Maximum byte size for the RSS file to load
-     */
-    public static final int MAX_RSS_FILE_SIZE = 2000000;
-    /**
-     * Our log tag
-     */
-    private static final String TAG = "LoadPodcastTask";
-    /**
-     * Call back
+     * Call back to alert on completion and failure
      */
     private OnLoadPodcastListener listener;
     /**
-     * Podcast currently loading
+     * Podcast currently loading by this task
      */
     private Podcast podcast;
+
     /**
-     * The error code
-     */
-    private PodcastLoadError errorCode = PodcastLoadError.UNKNOWN;
-    /**
-     * Flag whether we strip out explicit episodes
+     * Flag indicating whether we strip out explicit episodes
      */
     private boolean blockExplicit = false;
 
     /**
-     * Create new task.
-     *
-     * @param listener Callback to be alerted on progress and completion.
+     * The error code returned on failure
      */
-    public LoadPodcastTask(OnLoadPodcastListener listener) {
-        this.listener = listener;
-        // We disable the load limit for the podcast feeds because there are
-        // huge feeds out there and user's really do not understand why they are
-        // unable to access them.
-        // this.loadLimit = MAX_RSS_FILE_SIZE;
-    }
-
-    /**
-     * @param block Whether the task should block explicit episodes from showing
-     *              up in the episode list of the loaded podcast. If set and the
-     *              episode list collapses to zero episodes, the task will fail
-     *              with {@link PodcastLoadError#EXPLICIT_BLOCKED}.
-     */
-    public void setBlockExplicitEpisodes(boolean block) {
-        this.blockExplicit = block;
-    }
-
-    @Override
-    protected Void doInBackground(Podcast... podcasts) {
-        this.podcast = podcasts[0];
-
-        try {
-            // 1. Load the file from the Internet
-            publishProgress(Progress.CONNECT);
-
-            // Set auth
-            this.authorization = podcast.getAuthorization();
-            // ... and go get the file
-            byte[] podcastRssFile = loadFile(new URL(podcast.getUrl()));
-
-            if (isCancelled())
-                return null;
-            else
-                publishProgress(Progress.PARSE);
-
-            // 2. Create the parser to use
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(new ByteArrayInputStream(podcastRssFile), null);
-
-            // 3. Parse as podcast content
-            if (!isCancelled())
-                podcast.parse(parser);
-
-            // 4. Clean out explicit episodes
-            if (!isCancelled() && blockExplicit) {
-                final int episodeCount = podcast.getEpisodeCount();
-                final int cleanEpisodeCount = podcast.removeExplicitEpisodes();
-
-                if (cleanEpisodeCount == 0 && episodeCount > 0) {
-                    errorCode = PodcastLoadError.EXPLICIT_BLOCKED;
-
-                    cancel(true);
-                }
-            }
-
-            // 5. We need to wait here and make sure the episode metadata is
-            // available before we return
-            EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
-        } catch (XmlPullParserException xppe) {
-            errorCode = PodcastLoadError.NOT_PARSABLE;
-
-            cancel(true);
-        } catch (IOException ioe) {
-            // This will also catch mal-formed URLs
-            errorCode = PodcastLoadError.NOT_REACHABLE;
-
-            cancel(true);
-        } catch (Throwable throwable) {
-            Log.d(TAG, "Load failed for podcast \"" + podcast + "\"", throwable);
-
-            cancel(true);
-        } finally {
-            publishProgress(Progress.DONE);
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onProgressUpdate(Progress... progress) {
-        if (listener != null)
-            listener.onPodcastLoadProgress(podcast, progress[0]);
-    }
-
-    @Override
-    protected void onPostExecute(Void nothing) {
-        // Podcast was loaded
-        if (listener != null)
-            listener.onPodcastLoaded(podcast);
-    }
-
-    @Override
-    protected void onCancelled(Void nothing) {
-        // Background task failed to complete
-        if (listener != null)
-            if (needsAuthorization)
-                listener.onPodcastLoadFailed(podcast, PodcastLoadError.AUTH_REQUIRED);
-            else
-                listener.onPodcastLoadFailed(podcast, errorCode);
-    }
+    private PodcastLoadError errorCode = PodcastLoadError.UNKNOWN;
 
     /**
      * Podcast load error codes as returned by
@@ -209,7 +93,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         ACCESS_DENIED,
 
         /**
-         * The restricted profile blocks explicit podcasts
+         * The restricted profile blocks explicit podcasts.
          */
         EXPLICIT_BLOCKED,
 
@@ -219,8 +103,111 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         NOT_REACHABLE,
 
         /**
-         * The URL does not point at a valid feed file
+         * The URL does not point at a valid feed file.
          */
         NOT_PARSABLE
+    }
+
+    /**
+     * Create new task.
+     *
+     * @param listener Callback to be alerted on progress and completion (not <code>null</code>).
+     */
+    public LoadPodcastTask(OnLoadPodcastListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * @param block Whether the task should block explicit episodes from showing
+     *              up in the episode list of the loaded podcast. If set and the
+     *              episode list collapses to zero episodes, the task will fail
+     *              with {@link PodcastLoadError#EXPLICIT_BLOCKED}.
+     */
+    public void setBlockExplicitEpisodes(boolean block) {
+        this.blockExplicit = block;
+    }
+
+    @Override
+    protected Void doInBackground(Podcast... podcasts) {
+        this.podcast = podcasts[0];
+
+        // Update the thread name to include the podcast working on
+        if (BuildConfig.DEBUG)
+            Thread.currentThread().setName(Thread.currentThread().getName() +
+                    " [" + podcast.getName() + "]");
+
+        try {
+            // 1. Load the file from the Internet
+            publishProgress(Progress.CONNECT);
+
+            // Set auth
+            this.authorization = podcast.getAuthorization();
+            // ... and go get the file
+            byte[] podcastRssFile = loadFile(new URL(podcast.getUrl()));
+
+            if (!isCancelled()) {
+                publishProgress(Progress.PARSE);
+
+                // 2. Parse as podcast content
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(true);
+                XmlPullParser parser = factory.newPullParser();
+                parser.setInput(new ByteArrayInputStream(podcastRssFile), null);
+
+                podcast.parse(parser);
+
+                // 3. Clean out explicit episodes
+                if (!isCancelled() && blockExplicit) {
+                    final int episodeCount = podcast.getEpisodeCount();
+                    final int cleanEpisodeCount = podcast.removeExplicitEpisodes();
+
+                    if (cleanEpisodeCount == 0 && episodeCount > 0) {
+                        errorCode = PodcastLoadError.EXPLICIT_BLOCKED;
+                        cancel(true);
+                    }
+                }
+
+                // 4. We need to wait here and make sure the episode metadata is
+                // available before we return
+                EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
+            }
+        } catch (XmlPullParserException xppe) {
+            errorCode = PodcastLoadError.NOT_PARSABLE;
+            cancel(true);
+        } catch (IOException ioe) {
+            // This will also catch mal-formed URLs
+            errorCode = PodcastLoadError.NOT_REACHABLE;
+            cancel(true);
+        } catch (InterruptedException ie) {
+            // Cannot wait of metadata, should not be an issue most of the time
+            // pass
+        } finally {
+            publishProgress(Progress.DONE);
+        }
+
+        // Revert the thread name
+        if (BuildConfig.DEBUG)
+            Thread.currentThread().setName(Thread.currentThread().getName().split(" \\[")[0]);
+
+        return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Progress... progress) {
+        listener.onPodcastLoadProgress(podcast, progress[0]);
+    }
+
+    @Override
+    protected void onPostExecute(Void nothing) {
+        listener.onPodcastLoaded(podcast);
+    }
+
+    @Override
+    protected void onCancelled(Void nothing) {
+        // Background task failed to complete
+        if (needsAuthorization)
+            listener.onPodcastLoadFailed(podcast, PodcastLoadError.AUTH_REQUIRED);
+        else
+            listener.onPodcastLoadFailed(podcast, errorCode);
     }
 }

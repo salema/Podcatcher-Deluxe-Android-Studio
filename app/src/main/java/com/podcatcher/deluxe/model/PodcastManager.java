@@ -52,7 +52,9 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Our model class. Holds all the podcast and episode model data and offers
@@ -157,8 +159,14 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         // and makes sure that other parts of the application do not have to wait
         // for lengthy podcast feed downloads to finish before their async tasks
         // can run on the default executor.
-        final int threadCount = Runtime.getRuntime().availableProcessors() + 1;
-        this.loadPodcastExecutor = Executors.newFixedThreadPool(threadCount);
+        final int threadCount = Runtime.getRuntime().availableProcessors() + 2;
+        this.loadPodcastExecutor = Executors.newFixedThreadPool(threadCount, new ThreadFactory() {
+            private final AtomicInteger count = new AtomicInteger(1);
+
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "LoadPodcastTask #" + count.getAndIncrement());
+            }
+        });
     }
 
     /**

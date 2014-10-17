@@ -31,11 +31,11 @@ import com.podcatcher.deluxe.EpisodeActivity;
 import com.podcatcher.deluxe.EpisodeListActivity;
 import com.podcatcher.deluxe.PodcastActivity;
 import com.podcatcher.deluxe.Podcatcher;
+import com.podcatcher.deluxe.listeners.DownloadTaskListener;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.listeners.OnLoadDownloadsListener;
 import com.podcatcher.deluxe.model.tasks.LoadDownloadsTask;
 import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask;
-import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.DownloadTaskListener;
 import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
@@ -48,9 +48,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.app.DownloadManager.ACTION_NOTIFICATION_CLICKED;
 import static android.app.DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
@@ -69,7 +72,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
     /**
      * An {@link java.util.concurrent.Executor} for downloading episodes in parallel.
      */
-    public final Executor downloadEpisodeExecutor;
+    public final ThreadPoolExecutor downloadEpisodeExecutor;
 
     /**
      * Characters not allowed in file names
@@ -133,7 +136,17 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         // can run on the default executor. We put in some extra threads here, since
         // downloads are mainly slow I/O and not very CPU intensive.
         final int threadCount = Runtime.getRuntime().availableProcessors() * 2 + 1;
-        this.downloadEpisodeExecutor = Executors.newFixedThreadPool(threadCount);
+        this.downloadEpisodeExecutor = new ThreadPoolExecutor(threadCount, threadCount,
+                1L, TimeUnit.SECONDS,
+                new LinkedBlockingDeque<Runnable>(),
+                new ThreadFactory() {
+                    private final AtomicInteger count = new AtomicInteger(1);
+
+                    public Thread newThread(Runnable r) {
+                        return new Thread(r, "DownloadEpisodeTask #" + count.getAndIncrement());
+                    }
+                });
+        this.downloadEpisodeExecutor.allowCoreThreadTimeOut(true);
     }
 
     /**
