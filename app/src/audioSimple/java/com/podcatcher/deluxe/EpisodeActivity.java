@@ -442,8 +442,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
                         !view.isSmallLandscape() && !currentEpisodeIsShowing);
                 playerFragment.setPlayerSeekbarVisibility(!view.isSmallLandscape());
                 // Set player button label format
-                playerFragment.setShowShortPosition(
-                        view.isSmall() && service.getDuration() >= TimeUnit.HOURS.toMillis(1));
+                playerFragment.setShowShortPosition(view.isSmall());
 
                 // Update UI to reflect service status
                 playerFragment.updatePlayerTitle(service.getCurrentEpisode());

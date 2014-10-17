@@ -77,6 +77,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
             android:background="@drawable/button_orange"
             android:src="@drawable/ic_media_rewind"/>
 
@@ -85,14 +86,15 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:drawableStart="@drawable/ic_media_play"
             android:ellipsize="marquee"
             android:gravity="center"
             android:paddingRight="32dp"
+            android:paddingEnd="32dp"
             android:singleLine="true"
             android:text="@string/pause"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@drawable/button_label"
+            tools:drawableLeft="@drawable/ic_media_play"
             tools:background="@drawable/button_green"
             tools:text="XX:XX of X:XX:XX"/>
 
@@ -101,7 +103,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:background="@drawable/button_orange"
             android:src="@drawable/ic_media_forward"/>
+
     </LinearLayout>
 </LinearLayout>

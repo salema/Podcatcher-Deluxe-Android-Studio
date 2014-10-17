@@ -534,12 +534,10 @@ public abstract class EpisodeActivity extends BaseActivity implements
                 playerFragment.setPlayerTitleVisibility(
                         !view.isSmallLandscape() && !currentEpisodeIsShowing);
                 playerFragment.setPlayerSeekbarVisibility(!view.isSmallLandscape());
+                playerFragment.setShowShortPosition(view.isSmall());
                 // Enable/disable next button
-                final boolean showNext =
-                        !episodeManager.isPlaylistEmptyBesides(service.getCurrentEpisode());
-                playerFragment.setShowShortPosition(!view.isLargePortrait() &&
-                        (showNext || service.getDuration() >= TimeUnit.HOURS.toMillis(1)));
-                playerFragment.setNextButtonVisibility(showNext);
+                playerFragment.setNextButtonVisibility(!view.isSmall() &&
+                        !episodeManager.isPlaylistEmptyBesides(service.getCurrentEpisode()));
 
                 // Update UI to reflect service status
                 playerFragment.updatePlayerTitle(service.getCurrentEpisode());

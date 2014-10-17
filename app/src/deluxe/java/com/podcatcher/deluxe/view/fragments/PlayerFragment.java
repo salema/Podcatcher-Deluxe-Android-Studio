@@ -224,13 +224,14 @@ public class PlayerFragment extends Fragment {
         prepareTransportButton(forwardButton, false);
 
         nextButton = (ImageButton) view.findViewById(R.id.player_next);
-        nextButton.setOnClickListener(new OnClickListener() {
+        if (nextButton != null)
+            nextButton.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                listener.onNext();
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    listener.onNext();
+                }
+            });
 
         errorView = (TextView) view.findViewById(R.id.player_error);
 
@@ -372,7 +373,7 @@ public class PlayerFragment extends Fragment {
         this.showNextButton = show;
 
         // Only do it right away if resumed, otherwise onResume will call us.
-        if (isResumed())
+        if (isResumed() && nextButton != null)
             nextButton.setVisibility(show ? VISIBLE : GONE);
     }
 
@@ -461,55 +462,48 @@ public class PlayerFragment extends Fragment {
         if (isResumed()) {
             titleView.setVisibility(show ? GONE : showPlayerTitle ? VISIBLE : GONE);
             seekBar.setVisibility(show ? GONE : showPlayerSeekbar ? VISIBLE : GONE);
-            if (rewindButton != null)
-                rewindButton.setVisibility(show ? GONE : VISIBLE);
+            rewindButton.setVisibility(show ? GONE : VISIBLE);
             playPauseButton.setVisibility(show ? GONE : VISIBLE);
-            if (forwardButton != null)
-                forwardButton.setVisibility(show ? GONE : VISIBLE);
-            nextButton.setVisibility(show ? GONE : showNextButton ? VISIBLE : GONE);
+            forwardButton.setVisibility(show ? GONE : VISIBLE);
+            if (nextButton != null)
+                nextButton.setVisibility(show ? GONE : showNextButton ? VISIBLE : GONE);
 
             errorView.setVisibility(show ? VISIBLE : GONE);
         }
     }
 
     private void prepareTransportButton(ImageButton button, final boolean rewind) {
-        // Button might not be present since some layouts (e.g. for small
-        // screens) might not include it
-        if (button != null) {
-            // The long click listener starts regular rewind/forward actions as
-            // long as the user keeps holding the button down
-            button.setOnLongClickListener(new OnLongClickListener() {
+        // The long click listener starts regular rewind/forward actions as
+        // long as the user keeps holding the button down
+        button.setOnLongClickListener(new OnLongClickListener() {
 
-                @Override
-                public boolean onLongClick(View v) {
-                    transportationHandler.post(rewind ? rewindRunnable : forwardRunnable);
-                    transportActive = true;
+            @Override
+            public boolean onLongClick(View v) {
+                transportationHandler.post(rewind ? rewindRunnable : forwardRunnable);
+                transportActive = true;
 
-                    return false;
+                return false;
+            }
+        });
+
+        // The click listener detects that the user let the button go. If it
+        // had been long-clicked, we stop sending actions otherwise we run
+        // the action once
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (transportActive) {
+                    transportationHandler.removeCallbacks(rewind ? rewindRunnable : forwardRunnable);
+                    transportActive = false;
+                } else {
+                    // No long click, run once
+                    if (rewind)
+                        listener.onRewind();
+                    else
+                        listener.onFastForward();
                 }
-            });
-
-            // The click listener detects that the user let the button go. If it
-            // had been long-clicked, we stop sending actions otherwise we run
-            // the action once
-            button.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    if (transportActive) {
-                        transportationHandler.removeCallbacks(
-                                rewind ? rewindRunnable : forwardRunnable);
-
-                        transportActive = false;
-                    } else {
-                        // No long click, run once
-                        if (rewind)
-                            listener.onRewind();
-                        else
-                            listener.onFastForward();
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 }

@@ -420,54 +420,46 @@ public class PlayerFragment extends Fragment {
         if (isResumed()) {
             titleView.setVisibility(show ? GONE : showPlayerTitle ? VISIBLE : GONE);
             seekBar.setVisibility(show ? GONE : showPlayerSeekbar ? VISIBLE : GONE);
-            if (rewindButton != null)
-                rewindButton.setVisibility(show ? GONE : VISIBLE);
+            rewindButton.setVisibility(show ? GONE : VISIBLE);
             playPauseButton.setVisibility(show ? GONE : VISIBLE);
-            if (forwardButton != null)
-                forwardButton.setVisibility(show ? GONE : VISIBLE);
+            forwardButton.setVisibility(show ? GONE : VISIBLE);
 
             errorView.setVisibility(show ? VISIBLE : GONE);
         }
     }
 
     private void prepareTransportButton(ImageButton button, final boolean rewind) {
-        // Button might not be present since some layouts (e.g. for small
-        // screens) might not include it
-        if (button != null) {
-            // The long click listener starts regular rewind/forward actions as
-            // long as the user keeps holding the button down
-            button.setOnLongClickListener(new OnLongClickListener() {
+        // The long click listener starts regular rewind/forward actions as
+        // long as the user keeps holding the button down
+        button.setOnLongClickListener(new OnLongClickListener() {
 
-                @Override
-                public boolean onLongClick(View v) {
-                    transportationHandler.post(rewind ? rewindRunnable : forwardRunnable);
-                    transportActive = true;
+            @Override
+            public boolean onLongClick(View v) {
+                transportationHandler.post(rewind ? rewindRunnable : forwardRunnable);
+                transportActive = true;
 
-                    return false;
+                return false;
+            }
+        });
+
+        // The click listener detects that the user let the button go. If it
+        // had been long-clicked, we stop sending actions otherwise we run
+        // the action once
+        button.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (transportActive) {
+                    transportationHandler.removeCallbacks(rewind ? rewindRunnable : forwardRunnable);
+                    transportActive = false;
+                } else {
+                    // No long click, run once
+                    if (rewind)
+                        listener.onRewind();
+                    else
+                        listener.onFastForward();
                 }
-            });
-
-            // The click listener detects that the user let the button go. If it
-            // had been long-clicked, we stop sending actions otherwise we run
-            // the action once
-            button.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    if (transportActive) {
-                        transportationHandler.removeCallbacks(
-                                rewind ? rewindRunnable : forwardRunnable);
-
-                        transportActive = false;
-                    } else {
-                        // No long click, run once
-                        if (rewind)
-                            listener.onRewind();
-                        else
-                            listener.onFastForward();
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 }
