@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.0.0"
 
     defaultConfig {
         applicationId "net.margaritov.preference.colorpicker"
         minSdkVersion 14
-        targetSdkVersion 20
+        targetSdkVersion 21
     }
 
     compileOptions {
