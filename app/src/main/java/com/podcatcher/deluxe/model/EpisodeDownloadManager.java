@@ -17,6 +17,7 @@
 
 package com.podcatcher.deluxe.model;
 
+import android.annotation.TargetApi;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,6 +25,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Process;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
@@ -366,6 +369,21 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
     }
 
     /**
+     * Check whether the download for this episode resides on a removable SD card.
+     *
+     * @param episode Episode to check for.
+     * @return <code>true</code> if the local media file is on a removable storage. This only
+     * works on Android >= 5.0, this method will return <code>false</code> on all earlier versions
+     * of the platform even if the file is actually stored on a SD card.
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public boolean isDownloadedToSdCard(Episode episode) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                isDownloaded(episode) && Environment.isExternalStorageRemovable(
+                new File(metadata.get(episode.getMediaUrl()).filePath));
+    }
+
+    /**
      * Check whether given episode is currently downloading.
      *
      * @param episode Episode to check for.
@@ -529,6 +547,13 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
      */
     public void removeDownloadListener(OnDownloadEpisodeListener listener) {
         downloadListeners.remove(listener);
+    }
+
+    /**
+     * @return The default podcast episode download folder.
+     */
+    public static File getDefaultDownloadFolder() {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS);
     }
 
     private void initDownloadsCounter() {

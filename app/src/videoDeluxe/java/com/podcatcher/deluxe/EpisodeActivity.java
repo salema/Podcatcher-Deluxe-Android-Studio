@@ -470,7 +470,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
             episodeFragment.setDownloadMenuItemVisibility(selection.isEpisodeSet(),
                     !(downloading || downloaded));
-            episodeFragment.setDownloadIconVisibility(downloading || downloaded, downloaded);
+            episodeFragment.setDownloadIconVisibility(downloading || downloaded, downloaded,
+                    episodeManager.isDownloadedToSdCard(selection.getEpisode()));
         }
     }
 

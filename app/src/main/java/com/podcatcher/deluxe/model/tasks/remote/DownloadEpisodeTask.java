@@ -32,7 +32,6 @@ import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.DownloadTaskListener;
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -167,7 +166,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
         // Find the podcast directory and the path to store episode under
         final File podcastDir = new File(PreferenceManager.getDefaultSharedPreferences(podcatcher)
                 .getString(SettingsActivity.KEY_DOWNLOAD_FOLDER,
-                        DownloadFolderPreference.getDefaultDownloadFolder().getAbsolutePath()));
+                        EpisodeDownloadManager.getDefaultDownloadFolder().getAbsolutePath()));
         final String subPath = EpisodeDownloadManager.sanitizeAsFilePath(
                 episode.getPodcast().getName(), episode.getName(), episode.getMediaUrl());
         // The actual episode file

@@ -16,16 +16,14 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="about">Про Podcatcher Deluxe</string>
     <string name="next">Далі</string>
-    <string name="podcast_load_multiple_error_some">Не вдалось завантажити один або більше
-        подкастів.
-    </string>
+    <string name="podcast_load_multiple_error_some">Не вдалось завантажити один або більше подкастів.</string>
     <string name="episodes_no_new">Немає нових епізодів</string>
     <plurals name="episodes_filtered">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Один старий епізод відфільтровано</item>
-        <item quantity="few">%d старих епізодів відфільтровано</item>
+        <item quantity="one">%d старий епізод відфільтровано</item>
+        <item quantity="few">%d старі епізоди відфільтровано</item>
         <item quantity="many">%d старих епізодів відфільтровано</item>
         <item quantity="other">%d старих епізодів відфільтровано</item>
     </plurals>
@@ -33,22 +31,19 @@
     <string name="episodes_filter_all">Усі</string>
     <string name="episodes_filter_new">Нові</string>
     <string name="playlist">Плейлист</string>
-    <string name="playlist_empty">Ваш плейлист порожній. Щоб додати епізоди до плейлиста,
-        використовуйте контекстне меню списку епізодів (щоб викликати його, натисніть на будь якому
-        епізоді й утримуйте).
-    </string>
+    <string name="playlist_empty">Ваш плейлист порожній. Щоб додати епізоди до плейлиста, використовуйте контекстне меню списку епізодів (щоб викликати його, натисніть на будь якому епізоді й утримуйте).</string>
     <string name="playlist_add">Додати до плейлиста</string>
     <string name="playlist_remove">Видалити з плейлиста</string>
-    <string name="playlist_swipe_reorder">Використовуйте свайп, щоб змінювати послідовність
-        епізодів
-    </string>
+    <string name="playlist_swipe_reorder">Використовуйте свайп, щоб змінювати послідовність епізодів</string>
     <string name="pref_auto_download_title">Автоматичне завантаження</string>
-    <string name="pref_auto_download_summary">Коли підключено Wi-Fi, робити нові епізоди доступними
-        в офлайн-режимі
-    </string>
+    <string name="pref_auto_download_summary">Коли підключено Wi-Fi, робити нові епізоди доступними в офлайн-режимі</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (рекомендовано)</string>
+    <string name="pref_download_folder_internal_downloads">Завантаження</string>
+    <string name="pref_download_folder_internal_app">Папка програми</string>
+    <string name="pref_download_folder_sdcard">Podcasts на SD-карті</string>
+    <string name="pref_download_folder_sdcard_app">Папка програми на SD-карті</string>
+    <string name="pref_download_folder_advanced">Додатково</string>
     <string name="pref_auto_delete_title">Автоматичне видалення</string>
-    <string name="pref_auto_delete_summary">Видаляти завантажені епізоди, коли їх перегляд
-        завершено
-    </string>
+    <string name="pref_auto_delete_summary">Видаляти завантажені епізоди, коли їх перегляд завершено</string>
     <string name="pref_download_folder_title">Директорія для завантажень</string>
 </resources>

@@ -29,17 +29,19 @@
     <string name="episodes_filter_all">All</string>
     <string name="episodes_filter_new">New</string>
     <string name="playlist">Playlist</string>
-    <string name="playlist_empty">Your playlist is empty. Use the episode list\'s context menu
-        (press and hold any episode to enter) to add episodes to the playlist.
-    </string>
+    <string name="playlist_empty">Your playlist is empty. Use the episode list\'s context menu (press and hold any episode to enter) to add episodes to the playlist.</string>
     <string name="playlist_add">Add to Playlist</string>
     <string name="playlist_remove">Remove from Playlist</string>
     <string name="playlist_swipe_reorder">Swipe episodes to re-order</string>
     <string name="pref_auto_download_title">Auto download</string>
-    <string name="pref_auto_download_summary">When on WiFi, make new episodes available offline
-    </string>
+    <string name="pref_auto_download_summary">When on WiFi, make new episodes available offline</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (recommended)</string>
+    <string name="pref_download_folder_internal_downloads">Downloads</string>
+    <string name="pref_download_folder_internal_app">App folder</string>
+    <string name="pref_download_folder_sdcard">Podcasts on SD card</string>
+    <string name="pref_download_folder_sdcard_app">App folder on SD card</string>
+    <string name="pref_download_folder_advanced">Advanced</string>
     <string name="pref_auto_delete_title">Auto delete</string>
-    <string name="pref_auto_delete_summary">Remove downloaded episodes when playback completes
-    </string>
+    <string name="pref_auto_delete_summary">Remove downloaded episodes when playback completes</string>
     <string name="pref_download_folder_title">Download folder</string>
 </resources>

@@ -221,7 +221,8 @@ public class EpisodeListItemView extends PodcatcherListItemView {
         if (downloading)
             downloadIconView.setImageResource(R.drawable.ic_media_downloading);
         else if (downloaded)
-            downloadIconView.setImageResource(R.drawable.ic_media_downloaded);
+            downloadIconView.setImageResource(episodeManager.isDownloadedToSdCard(episode) ?
+                    R.drawable.ic_sd_card : R.drawable.ic_internal_storage);
 
         playlistPositionView.setText(String.valueOf(position + 1));
 

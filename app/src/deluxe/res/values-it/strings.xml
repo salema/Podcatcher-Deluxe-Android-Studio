@@ -29,20 +29,19 @@
     <string name="episodes_filter_all">Tutto</string>
     <string name="episodes_filter_new">Nuovo</string>
     <string name="playlist">Playlist</string>
-    <string name="playlist_empty">La tua playlist è vuota. Usa l\'elenco episodio dal menu
-        contestuale (tieni premuto su qualsiasi episodio per visualizzarlo) per aggiungere gli
-        episodi alla playlist.
-    </string>
+    <string name="playlist_empty">La tua playlist è vuota. Usa l\'elenco episodio dal menu contestuale (tieni premuto su qualsiasi episodio per visualizzarlo) per aggiungere gli episodi alla playlist.</string>
     <string name="playlist_add">Aggiungi alla playlist</string>
     <string name="playlist_remove">Rimuovi dalla playlist</string>
     <string name="playlist_swipe_reorder">Sposta gli episodi per riordinarli</string>
     <string name="pref_auto_download_title">Download automatico</string>
-    <string name="pref_auto_download_summary">Rendi disponibili gli episodi offline quando uso la
-        connessione WiFi
-    </string>
+    <string name="pref_auto_download_summary">Rendi disponibili gli episodi offline quando uso la connessione WiFi</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (raccomandato)</string>
+    <string name="pref_download_folder_internal_downloads">Downloads</string>
+    <string name="pref_download_folder_internal_app">Cartella di app</string>
+    <string name="pref_download_folder_sdcard">Podcasts su SD card</string>
+    <string name="pref_download_folder_sdcard_app">Cartella di app su SD card</string>
+    <string name="pref_download_folder_advanced">Esperto</string>
     <string name="pref_auto_delete_title">Eliminazione automatica</string>
-    <string name="pref_auto_delete_summary">Rimuovi episodi scaricati dopo averli visti
-        completamente
-    </string>
+    <string name="pref_auto_delete_summary">Rimuovi episodi scaricati dopo averli visti completamente</string>
     <string name="pref_download_folder_title">Cartella download</string>
 </resources>

@@ -97,6 +97,10 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      */
     private boolean downloadIconState = true;
     /**
+     * Flag for the location of the download
+     */
+    private boolean downloadToSdCard = false;
+    /**
      * Flag for the video view visibility
      */
     private boolean showVideo = false;
@@ -283,7 +287,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
         if (currentEpisode != null) {
             setEpisode(currentEpisode);
             setNewIconVisibility(showNewStateIcon);
-            setDownloadIconVisibility(showDownloadIcon, downloadIconState);
+            setDownloadIconVisibility(showDownloadIcon, downloadIconState, downloadToSdCard);
             setShowVideoView(showVideo, videoFillsSpace);
         }
     }
@@ -435,16 +439,18 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      * @param show       Whether to show the download menu item.
      * @param downloaded State of the download menu item (download / delete)
      */
-    public void setDownloadIconVisibility(boolean show, boolean downloaded) {
+    public void setDownloadIconVisibility(boolean show, boolean downloaded, boolean toSdCard) {
         this.showDownloadIcon = show;
         this.downloadIconState = downloaded;
+        this.downloadToSdCard = toSdCard;
 
         // Only do it right away if resumed and menu item is available,
         // otherwise onResume or the menu creation callback will call us.
         if (viewCreated) {
             downloadIconView.setVisibility(show ? VISIBLE : GONE);
-            downloadIconView.setImageResource(downloaded ?
-                    R.drawable.ic_media_downloaded : R.drawable.ic_media_downloading);
+            downloadIconView.setImageResource(downloaded ? toSdCard ?
+                    R.drawable.ic_sd_card : R.drawable.ic_internal_storage
+                    : R.drawable.ic_media_downloading);
         }
     }
 

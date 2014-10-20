@@ -19,9 +19,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="about">À propos Podcatcher Deluxe</string>
     <string name="next">Prochain</string>
-    <string name="podcast_load_multiple_error_some">Le chargement d’un ou plusieurs podcasts a
-        échoué.
-    </string>
+    <string name="podcast_load_multiple_error_some">Le chargement d’un ou plusieurs podcasts a échoué.</string>
     <string name="episodes_no_new">Pas de nouveaux épisodes</string>
     <plurals name="episodes_filtered">
         <item quantity="one" tools:ignore="ImpliedQuantity">Un épisode filtré</item>
@@ -31,19 +29,18 @@
     <string name="episodes_filter_all">Tous</string>
     <string name="episodes_filter_new">Nouveaux</string>
     <string name="playlist">Liste de lecture</string>
-    <string name="playlist_empty">Votre liste de lecture est vide. Pour y ajouter de nouveaux
-        fichiers, utilisez le menu contextuel de la liste d’épisodes (pour y accéder, cliquez sur un
-        épisode et restez appuyé).
-    </string>
+    <string name="playlist_empty">Votre liste de lecture est vide. Pour y ajouter de nouveaux fichiers, utilisez le menu contextuel de la liste d’épisodes (pour y accéder, cliquez sur un épisode et restez appuyé).</string>
     <string name="playlist_add">Ajouter à la liste de lecture</string>
     <string name="playlist_remove">Supprimer de la liste de lecture</string>
-    <string name="playlist_swipe_reorder">Pour réorganiser la liste d’épisodes, posez le doigt sur
-        un épisode et effectuez un balayage vers la gauche ou vers la droite
-    </string>
+    <string name="playlist_swipe_reorder">Pour réorganiser la liste d’épisodes, posez le doigt sur un épisode et effectuez un balayage vers la gauche ou vers la droite</string>
     <string name="pref_auto_download_title">Téléchargement automatique</string>
-    <string name="pref_auto_download_summary">Rendre les nouveaux épisodes disponibles hors
-        connexion lorsque la connexion WiFi est activée
-    </string>
+    <string name="pref_auto_download_summary">Rendre les nouveaux épisodes disponibles hors connexion lorsque la connexion WiFi est activée</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (recommandé)</string>
+    <string name="pref_download_folder_internal_downloads">Téléchargements</string>
+    <string name="pref_download_folder_internal_app">Dossier de app</string>
+    <string name="pref_download_folder_sdcard">Podcasts sur carte SD</string>
+    <string name="pref_download_folder_sdcard_app">Dossier de app sur carte SD</string>
+    <string name="pref_download_folder_advanced">Expert</string>
     <string name="pref_auto_delete_title">Suppression automatique</string>
     <string name="pref_auto_delete_summary">Suppression des épisodes lus</string>
     <string name="pref_download_folder_title">Dossier de téléchargement</string>

@@ -16,15 +16,14 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="about">О Podcatcher Deluxe</string>
     <string name="next">Следующий</string>
-    <string name="podcast_load_multiple_error_some">Загрузка одного или нескольких подкастов не
-        удалась.
-    </string>
+    <string name="podcast_load_multiple_error_some">Загрузка одного или нескольких подкастов не удалась.</string>
     <string name="episodes_no_new">Нет новых эпизодов</string>
     <plurals name="episodes_filtered">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Отфильтрован один старый эпизод</item>
+        <item quantity="one">Отфильтрован %d старый эпизод</item>
+        <item quantity="few">Отфильтровано %d старых эпизода</item>
         <item quantity="many">Отфильтровано %d старых эпизодов</item>
         <item quantity="other">Отфильтровано %d старых эпизодов</item>
     </plurals>
@@ -32,20 +31,19 @@
     <string name="episodes_filter_all">Все</string>
     <string name="episodes_filter_new">Новые</string>
     <string name="playlist">Плейлист</string>
-    <string name="playlist_empty">Ваш плейлист пуст. Вы можете добавить эпизоды в плейлист при
-        помощи контекстного меню списка эпизодов (чтобы открыть его, нажмите на любой эпизод и
-        удерживайте).
-    </string>
+    <string name="playlist_empty">Ваш плейлист пуст. Вы можете добавить эпизоды в плейлист при помощи контекстного меню списка эпизодов (чтобы открыть его, нажмите на любой эпизод и удерживайте).</string>
     <string name="playlist_add">Добавить в плейлист</string>
     <string name="playlist_remove">Удалить из плейлиста</string>
     <string name="playlist_swipe_reorder">Используйте свайп, чтобы менять порядок элементов</string>
     <string name="pref_auto_download_title">Автоматическая загрузка</string>
-    <string name="pref_auto_download_summary">Когда вкючён Wi-Fi, делать новые эпизоды доступными в
-        оффлайн-режиме
-    </string>
+    <string name="pref_auto_download_summary">Когда вкючён Wi-Fi, делать новые эпизоды доступными в оффлайн-режиме</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (рекомендуется)</string>
+    <string name="pref_download_folder_internal_downloads">Загрузки</string>
+    <string name="pref_download_folder_internal_app">Папка приложения</string>
+    <string name="pref_download_folder_sdcard">Podcasts на SD-карте</string>
+    <string name="pref_download_folder_sdcard_app">Папка приложения на SD-карте</string>
+    <string name="pref_download_folder_advanced">Дополнительно</string>
     <string name="pref_auto_delete_title">Автоматическое удаление</string>
-    <string name="pref_auto_delete_summary">Удалять загруженные эпизоды, после того как их
-        воспроизведение завершено
-    </string>
+    <string name="pref_auto_delete_summary">Удалять загруженные эпизоды, после того как их воспроизведение завершено</string>
     <string name="pref_download_folder_title">Папка для загрузок</string>
 </resources>

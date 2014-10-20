@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="divider">Разделитель</string>
     <string name="help">Справка</string>
     <string name="no_browser">Не удалось найти браузер!</string>
@@ -42,7 +42,8 @@
     <string name="podcast_none_selected">Не выбрано ни одного подкаста</string>
     <string name="podcast_select_all">Выбрать все подкасты</string>
     <plurals name="podcasts">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Один подкаст</item>
+        <item quantity="one">%d подкаст</item>
+        <item quantity="few">%d подкаста</item>
         <item quantity="many">%d подкастов</item>
         <item quantity="other">%d подкастов</item>
     </plurals>
@@ -63,7 +64,8 @@
     <string name="episode_no_description">Описание отсутствует.</string>
     <string name="episode_none_selected">Не выбрано ни одного эпизода</string>
     <plurals name="episodes">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Один эпизод</item>
+        <item quantity="one">%d эпизод</item>
+        <item quantity="few">%d эпизода</item>
         <item quantity="many">%d эпизодов</item>
         <item quantity="other">%d эпизодов</item>
     </plurals>
@@ -72,14 +74,16 @@
     <string name="download">Скачать</string>
     <string name="downloads">Загрузки</string>
     <plurals name="downloads_remove_title">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Удалить загрузку</item>
+        <item quantity="one">Удалить %d загрузку</item>
+        <item quantity="few">Удалить %d загрузки</item>
         <item quantity="many">Удалить %d загрузок</item>
         <item quantity="other">Удалить %d загрузок</item>
     </plurals>
     <plurals name="downloads_remove_text">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Вы больше не сможете просматривать этот эпизод без подключения к интернету.</item>
-        <item quantity="many">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
-        <item quantity="other">Вы больше не сможете просматривать эти эпизоды без подключения к интернету.</item>
+        <item quantity="one">Вы больше не сможете просматривать этот %d эпизод без подключения к интернету.</item>
+        <item quantity="few">Вы больше не сможете просматривать эти %d эпизода без подключения к интернету.</item>
+        <item quantity="many">Вы больше не сможете просматривать эти %d эпизодов без подключения к интернету.</item>
+        <item quantity="other">Вы больше не сможете просматривать эти %d эпизодов без подключения к интернету.</item>
     </plurals>
     <string name="downloads_none">Нет загруженных эпизодов. Чтобы загрузить эпизоды, нажмите на иконку загрузки в меню. Так вы сможете просматривать их без подключения к интернету.</string>
     <string name="download_started">Началась загрузка эпизода\n\"%s\"</string>

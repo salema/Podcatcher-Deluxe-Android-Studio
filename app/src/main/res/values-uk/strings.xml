@@ -16,7 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="divider">Дільник</string>
     <string name="help">Довідка</string>
     <string name="no_browser">Немає браузера!</string>
@@ -42,8 +42,8 @@
     <string name="podcast_none_selected">Не обрано жодного подкасту</string>
     <string name="podcast_select_all">Обрати усі подкасти</string>
     <plurals name="podcasts">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Один подкаст</item>
-        <item quantity="few">%d подкастів</item>
+        <item quantity="one">%d подкаст</item>
+        <item quantity="few">%d подкасти</item>
         <item quantity="many">%d подкастів</item>
         <item quantity="other">%d подкастів</item>
     </plurals>
@@ -64,8 +64,8 @@
     <string name="episode_no_description">Опис відсутній.</string>
     <string name="episode_none_selected">Не обрано жодного епізоду</string>
     <plurals name="episodes">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Один епізод</item>
-        <item quantity="few">%d епізодів</item>
+        <item quantity="one">%d епізод</item>
+        <item quantity="few">%d епізоди</item>
         <item quantity="many">%d епізодів</item>
         <item quantity="other">%d епізодів</item>
     </plurals>
@@ -74,16 +74,16 @@
     <string name="download">Завантажити</string>
     <string name="downloads">Завантаження</string>
     <plurals name="downloads_remove_title">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Видалити завантаження</item>
-        <item quantity="few">Видалити %d завантажень</item>
+        <item quantity="one">Видалити %d завантаження</item>
+        <item quantity="few">Видалити %d завантаження</item>
         <item quantity="many">Видалити %d завантажень</item>
         <item quantity="other">Видалити %d завантажень</item>
     </plurals>
     <plurals name="downloads_remove_text">
-        <item quantity="one" tools:ignore="ImpliedQuantity">Цей епізод не можна буде грати без підключення до Інтернету.</item>
-        <item quantity="few">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
-        <item quantity="many">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
-        <item quantity="other">Ці епізоди не можна буде грати без підключення до Інтернету.</item>
+        <item quantity="one">Цей %d епізод не можна буде грати без підключення до Інтернету.</item>
+        <item quantity="few">Ці %d епізоди не можна буде грати без підключення до Інтернету.</item>
+        <item quantity="many">Ці %d епізодів не можна буде грати без підключення до Інтернету.</item>
+        <item quantity="other">Ці %d епізодів не можна буде грати без підключення до Інтернету.</item>
     </plurals>
     <string name="downloads_none">Немає завантажень. Натисніть на іконку \"Завантаження\" у меню, щоб завантажити епізоди та зробити їх доступними без підключення до Інтернету.</string>
     <string name="download_started">Почалося завантаження епізоду\n\"%s\"</string>

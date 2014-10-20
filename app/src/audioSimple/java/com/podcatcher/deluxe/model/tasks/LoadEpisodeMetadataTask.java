@@ -28,7 +28,6 @@ import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.tags.METADATA;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 import com.podcatcher.deluxe.model.types.Progress;
-import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -180,7 +179,7 @@ public class LoadEpisodeMetadataTask extends
         // Find download folder
         File podcastDir = new File(PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(SettingsActivity.KEY_DOWNLOAD_FOLDER,
-                        DownloadFolderPreference.getDefaultDownloadFolder().getAbsolutePath()));
+                        EpisodeDownloadManager.getDefaultDownloadFolder().getAbsolutePath()));
 
         // Handle the case where the download finished while the application was
         // not running. In this case, there would be a downloadId but no

@@ -20,12 +20,11 @@ package com.podcatcher.deluxe.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.preference.Preference;
 import android.util.AttributeSet;
 
-import com.podcatcher.deluxe.SelectFileActivity;
-import com.podcatcher.deluxe.SelectFileActivity.SelectionMode;
+import com.podcatcher.deluxe.SelectDownloadFolderActivity;
+import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 
 import java.io.File;
 
@@ -62,19 +61,13 @@ public class DownloadFolderPreference extends Preference {
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         // The default is the public podcast directory
-        downloadFolder = new File(getPersistedString(getDefaultDownloadFolder().getAbsolutePath()));
+        downloadFolder = new File(getPersistedString(
+                EpisodeDownloadManager.getDefaultDownloadFolder().getAbsolutePath()));
     }
 
     @Override
     protected void onClick() {
-        // Create select folder intent
-        Intent selectFolderIntent = new Intent(getContext(), SelectFileActivity.class);
-        selectFolderIntent
-                .putExtra(SelectFileActivity.SELECTION_MODE_KEY, SelectionMode.FOLDER);
-        selectFolderIntent
-                .putExtra(SelectFileActivity.INITIAL_PATH_KEY, downloadFolder.getAbsolutePath());
-
-        // Start activity. Result will be caught by the SettingsActivity.
+        Intent selectFolderIntent = new Intent(getContext(), SelectDownloadFolderActivity.class);
         ((Activity) getContext()).startActivityForResult(selectFolderIntent, REQUEST_CODE);
     }
 
@@ -93,12 +86,5 @@ public class DownloadFolderPreference extends Preference {
             this.downloadFolder = newFolder;
             persistString(newFolder.getAbsolutePath());
         }
-    }
-
-    /**
-     * @return The default podcast episode download folder.
-     */
-    public static File getDefaultDownloadFolder() {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS);
     }
 }

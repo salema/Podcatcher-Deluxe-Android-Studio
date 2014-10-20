@@ -198,7 +198,7 @@ public class EpisodeListItemView extends PodcatcherListItemView {
         if (downloading)
             downloadIconView.setImageResource(R.drawable.ic_media_downloading);
         else if (downloaded)
-            downloadIconView.setImageResource(R.drawable.ic_media_downloaded);
+            downloadIconView.setImageResource(R.drawable.ic_internal_storage);
 
         downloadIconView.setVisibility(downloading || downloaded ? View.VISIBLE : View.GONE);
     }
