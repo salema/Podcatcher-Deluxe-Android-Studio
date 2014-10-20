@@ -20,7 +20,7 @@
     <item
         android:id="@+id/episode_load_menuitem"
         android:icon="@drawable/ic_media_play"
-        android:orderInCategory="5"
+        android:orderInCategory="10"
         android:showAsAction="always"
         android:title="@string/play"/>
 </menu>
