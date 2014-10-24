@@ -181,17 +181,27 @@ public class LoadPodcastListTask extends AsyncTask<Void, Progress, List<Podcast>
             // Get the podcast name
             String name = parser.getAttributeValue("", OPML.TEXT);
             // Make sure podcast name looks good
-            if (name.equals("null"))
-                name = null;
-            else
+            if (name != null)
                 name = Html.fromHtml(name).toString();
 
             // Create the podcast
             result = new Podcast(name, parser.getAttributeValue("", OPML.XMLURL));
 
+            // Set logo URL if given
+            final String logoUrl = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_LOGO);
+            if (logoUrl != null && logoUrl.startsWith("http"))
+                result.setLogoUrl(logoUrl);
+
             // Set authorization information
-            result.setUsername(parser.getAttributeValue("", OPML.EXTRA_USER));
-            result.setPassword(parser.getAttributeValue("", OPML.EXTRA_PASS));
+            final String user = parser.getAttributeValue("", OPML.PCD_USER);
+            if (user != null) {
+                // Loading old OPML without pcd namespace (can be removed in 2015)
+                result.setUsername(user);
+                result.setPassword(parser.getAttributeValue("", OPML.PCD_PASS));
+            } else {
+                result.setUsername(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_USER));
+                result.setPassword(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_PASS));
+            }
         } catch (XmlPullParserException e) {
             /* Bad outline, skip */
         } catch (IOException e) {

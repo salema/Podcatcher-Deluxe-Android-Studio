@@ -171,26 +171,30 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
     }
 
     private void writePodcast(Podcast podcast) throws IOException {
-        // Skip, if not a valid podcast
+        // Only write out valid podcasts
         if (hasNameAndUrl(podcast)) {
-            String opmlString = String.format("<%s %s=\"%s\" %s=\"%s\" %s=\"%s\" />",
-                    OPML.OUTLINE, OPML.TEXT, htmlEncode(podcast.getName()),
-                    OPML.TYPE, OPML.RSS_TYPE, OPML.XMLURL, htmlEncode(podcast.getUrl()));
+            String opmlString = String.format("<%s %s=\"%s\" %s=\"%s\" %s=\"%s\" %s=\"%s\"",
+                    OPML.OUTLINE,
+                    OPML.TEXT, htmlEncode(podcast.getName()),
+                    OPML.TITLE, htmlEncode(podcast.getName()),
+                    OPML.TYPE, OPML.RSS_TYPE,
+                    OPML.XMLURL, podcast.getUrl());
 
-            if (writeAuthorization && podcast.getAuthorization() != null) {
-                opmlString = opmlString.substring(0, opmlString.length() - 3);
+            if (podcast.hasLogoUrl())
+                opmlString = String.format("%s %s=\"%s\"", opmlString,
+                        OPML.PCD_NS_PREFIX + OPML.PCD_LOGO, podcast.getLogoUrl());
 
+            if (writeAuthorization && podcast.getAuthorization() != null)
                 // We store the podcast password in the app's private folder
                 // (but in the clear). This is justified because it is hard to
                 // attack the file (unless you get your hands on the device) and
                 // the password is not very sensitive since it is only a
                 // podcast we are accessing, not personal information.
-                opmlString = String.format("%s %s=\"%s\" %s=\"%s\" />", opmlString,
-                        OPML.EXTRA_USER, htmlEncode(podcast.getUsername()),
-                        OPML.EXTRA_PASS, htmlEncode(podcast.getPassword()));
-            }
+                opmlString = String.format("%s %s=\"%s\" %s=\"%s\"", opmlString,
+                        OPML.PCD_NS_PREFIX + OPML.PCD_USER, htmlEncode(podcast.getUsername()),
+                        OPML.PCD_NS_PREFIX + OPML.PCD_PASS, htmlEncode(podcast.getPassword()));
 
-            writeLine(2, opmlString);
+            writeLine(2, opmlString + " />");
         }
     }
 
@@ -198,13 +202,13 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
      * @return Whether given podcast has an non-empty name and an URL.
      */
     private boolean hasNameAndUrl(Podcast podcast) {
-        return podcast.getName() != null && podcast.getName().length() > 0
-                && podcast.getUrl() != null;
+        return podcast.getName() != null && podcast.getName().trim().length() > 0
+                && podcast.getUrl() != null && podcast.getUrl().startsWith("http");
     }
 
     private void writeHeader(String fileName) throws IOException {
         writeLine(0, "<?xml version=\"1.0\" encoding=\"" + FILE_ENCODING + "\"?>");
-        writeLine(0, "<opml version=\"2.0\">");
+        writeLine(0, "<opml xmlns:pcd=\"" + OPML.PCD_NAMESPACE + "\" version=\"2.0\">");
         writeLine(1, "<head>");
         writeLine(2, "<title>" + fileName + "</title>");
         writeLine(2, "<dateModified>" + new Date().toString() + "</dateModified>");

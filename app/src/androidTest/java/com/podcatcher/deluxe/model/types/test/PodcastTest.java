@@ -61,7 +61,17 @@ public class PodcastTest extends InstrumentationTestCase {
                 "http://feeds.thisamericanlife.org/talpodcast");
         assertNull(tal.getName());
         Utils.loadAndWait(tal);
-        assertNotNull(tal.getName());
+        assertTrue(tal.getName().length() > 10);
+
+        Podcast tal2 = new Podcast("",
+                "http://feeds.thisamericanlife.org/talpodcast");
+        Utils.loadAndWait(tal2);
+        assertEquals(tal2.getName(), tal.getName());
+
+        Podcast tal3 = new Podcast("    ",
+                "http://feeds.thisamericanlife.org/talpodcast");
+        Utils.loadAndWait(tal3);
+        assertEquals(tal3.getName(), tal.getName());
     }
 
     public final void testToString() {

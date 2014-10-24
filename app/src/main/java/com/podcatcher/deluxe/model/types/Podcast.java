@@ -18,6 +18,8 @@
 package com.podcatcher.deluxe.model.types;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Base64;
 
@@ -113,10 +115,10 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @param name The podcast's name, if you give <code>null</code> the name
      *             will be read from the RSS file on
      *             {@link #parse(XmlPullParser)}.
-     * @param url  The location of the podcast's RSS file.
+     * @param url  The location of the podcast's RSS file (not <code>null</code>).
      * @see #parse(XmlPullParser)
      */
-    public Podcast(String name, String url) {
+    public Podcast(@Nullable String name, @NonNull String url) {
         this.name = name;
         this.url = normalizeUrl(url);
     }
@@ -255,6 +257,18 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         return logoUrl;
     }
 
+    /**
+     * Set the logo to use for this podcast.
+     *
+     * @param logoUrl URL to show logo pic from.
+     */
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    /**
+     * @return Whether the podcast has a valid logo URL.
+     */
     public boolean hasLogoUrl() {
         return logoUrl != null && logoUrl.startsWith("http");
     }
@@ -385,7 +399,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                     final String tagName = parser.getName();
 
                     // Podcast name found and not set yet
-                    if (tagName.equalsIgnoreCase(RSS.TITLE) && name == null)
+                    if (tagName.equalsIgnoreCase(RSS.TITLE) && (name == null || name.trim().isEmpty()))
                         name = Html.fromHtml(parser.nextText().trim()).toString();
                         // Explicit info found
                     else if (tagName.equalsIgnoreCase(RSS.EXPLICIT))

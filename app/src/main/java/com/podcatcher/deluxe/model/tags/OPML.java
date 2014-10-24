@@ -26,10 +26,16 @@ package com.podcatcher.deluxe.model.tags;
 public abstract class OPML {
     public static final String OUTLINE = "outline";
     public static final String TEXT = "text";
+    public static final String TITLE = "title";
     public static final String TYPE = "type";
     public static final String RSS_TYPE = "rss";
     public static final String XMLURL = "xmlUrl";
 
-    public static final String EXTRA_USER = "user";
-    public static final String EXTRA_PASS = "pass";
+    // Podcatcher Deluxe name space
+    public static final String PCD_NAMESPACE = "http://www.podcatcher-deluxe.com/opml-ext";
+    public static final String PCD_NS_PREFIX = "pcd:";
+    // Extra outline attributes defined by Podcatcher Deluxe
+    public static final String PCD_LOGO = "logo";
+    public static final String PCD_USER = "user";
+    public static final String PCD_PASS = "pass";
 }
