@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.1'
+    buildToolsVersion '21.0.2'
 
     defaultConfig {
-        versionCode 203
+        versionCode 204
         minSdkVersion 14
         targetSdkVersion 21
     }
@@ -73,7 +73,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.1"
+            versionName "3.1.1"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -83,14 +83,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.1"
+            versionName "4.1.1"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.1"
+            versionName "5.1.1"
 
             signingConfig videoDeluxeSigningVariable
         }

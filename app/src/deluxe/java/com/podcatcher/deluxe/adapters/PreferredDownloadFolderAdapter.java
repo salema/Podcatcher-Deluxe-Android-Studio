@@ -63,12 +63,12 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
         INTERNAL_APP,
 
         /**
-         * The SD card root folder, only available if SD is present
+         * The SD card generic podcast folder, only available if SD card is present
          */
         SDCARD,
 
         /**
-         * The private app folder on the SD card, only available if SD is present
+         * The private app folder on the SD card, only available if SD card is present
          */
         SDCARD_APP;
 
@@ -119,6 +119,51 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
                     return null;
             }
         }
+
+        /**
+         * @return Whether this download folder option is the one recommended the most.
+         */
+        public boolean isRecommended() {
+            return INTERNAL_PODCASTS.equals(this);
+        }
+    }
+
+    /**
+     * Walk through the preferred download folder enum,
+     * test them in context and add them to the list
+     */
+    private class PopulateListTask extends AsyncTask<Void, Map.Entry<PreferredDownloadFolder, File>, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            for (PreferredDownloadFolder preferredFolder : PreferredDownloadFolder.values()) {
+                final File fileObject = preferredFolder.getFile(context);
+
+                if (fileObject != null &&
+                        // Always include the recommended option, folder will be created
+                        // by the SettingsActivity if selected and not created yet
+                        (preferredFolder.isRecommended() || canWriteToFolder(fileObject)))
+                    //noinspection unchecked
+                    publishProgress(new AbstractMap.SimpleEntry<>(preferredFolder, fileObject));
+            }
+
+            return null;
+        }
+
+        @SafeVarargs
+        @Override
+        protected final void onProgressUpdate(Map.Entry<PreferredDownloadFolder, File>... values) {
+            folders.add(values[0]);
+            notifyDataSetChanged();
+        }
+
+        private boolean canWriteToFolder(File folder) {
+            try {
+                return File.createTempFile("42monkey", "tmp", folder).delete();
+            } catch (IOException e) {
+                return false;
+            }
+        }
     }
 
     /**
@@ -135,34 +180,7 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
         super(context);
 
         // Go async since we test all folders against the file system
-        final AsyncTask populate = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                for (PreferredDownloadFolder preferredFolder : PreferredDownloadFolder.values()) {
-                    final File fileObject = preferredFolder.getFile(context);
-
-                    if (fileObject != null && canWriteToFolder(fileObject))
-                        publishProgress(new AbstractMap.SimpleEntry<>(preferredFolder, fileObject));
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onProgressUpdate(Object[] values) {
-                folders.add((Map.Entry<PreferredDownloadFolder, File>) values[0]);
-                notifyDataSetChanged();
-            }
-
-            private boolean canWriteToFolder(File folder) {
-                try {
-                    return File.createTempFile("test", "tmp", folder).delete();
-                } catch (IOException e) {
-                    return false;
-                }
-            }
-        };
-        populate.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+        new PopulateListTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
     }
 
     @Override

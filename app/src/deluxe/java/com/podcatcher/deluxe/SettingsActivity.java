@@ -117,6 +117,7 @@ public class SettingsActivity extends BaseActivity {
                         settingsFragment.findPreference(KEY_DOWNLOAD_FOLDER);
 
                 // Make sure we can actually write to this folder
+                downloadFolder.mkdirs();
                 File.createTempFile("test", "tmp", downloadFolder).delete();
 
                 // Update the preference
