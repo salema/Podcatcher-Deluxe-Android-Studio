@@ -29,17 +29,6 @@
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
             android:targetPackage="com.podcatcher.deluxe.video"/>
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
-    <PreferenceCategory android:title="@string/pref_category_interface">
-        <net.margaritov.preference.colorpicker.ColorPickerPreference
-            android:defaultValue="@color/theme_dark"
-            android:key="theme_color"
-            android:title="@string/pref_theme_color_title"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="wide_episode_list"
-            android:summary="@string/pref_wide_episode_list_summary"
-            android:title="@string/pref_wide_episode_list_title"/>
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/downloads">
         <CheckBoxPreference
             android:defaultValue="false"

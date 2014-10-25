@@ -3,8 +3,8 @@
  *
  * This file is part of PodCatcher Deluxe.
  *
- * PodCatcher Deluxe is free software: you can redistribute it 
- * and/or modify it under the terms of the GNU General Public License as 
+ * PodCatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,7 +16,6 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<resources>
-    <string name="pref_theme_color_dialog_title">Vybrat barvu motivu</string>
-    <string name="pref_theme_color_dialog_use">Stiskněte, aby se nová barva použila</string>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/theme_light" android:state_pressed="true"/>
+</selector>

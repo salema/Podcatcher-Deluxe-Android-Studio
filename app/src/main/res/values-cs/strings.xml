@@ -125,8 +125,4 @@
     <string name="pref_sync_none">Nyní zakázáno</string>
     <string name="pref_sync_last_run">Poslední plná synchronizace: %1$s</string>
     <string name="pref_sync_now">Synchronizovat</string>
-    <string name="pref_category_interface">Rozhraní</string>
-    <string name="pref_theme_color_title">Barva motivu</string>
-    <string name="pref_wide_episode_list_title">Rozsáhlý seznam dílů</string>
-    <string name="pref_wide_episode_list_summary">Udělat prostor pro více podrobností k dílu</string>
 </resources>

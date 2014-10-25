@@ -87,10 +87,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         findFragments();
         // Add extra fragments needed in some view modes
         plugFragments();
-        // Make sure the podcast list knows about our theme colors.
-        podcastListFragment.setThemeColors(themeColor, lightThemeColor);
-        // Make sure the layout matches the preference
-        updateLayout();
 
         // 2. Register listeners (done after the fragments are available so we
         // do not end up getting call-backs without the possibility to act on
@@ -148,7 +144,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         // On small screens in landscape mode, add the episode list fragment
         if (view.isSmallLandscape() && episodeListFragment == null) {
             episodeListFragment = new EpisodeListFragment();
-            episodeListFragment.setThemeColors(themeColor, lightThemeColor);
 
             getFragmentManager()
                     .beginTransaction()
@@ -458,18 +453,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        super.onSharedPreferenceChanged(sharedPreferences, key);
-
-        if (key.equals(SettingsActivity.KEY_THEME_COLOR) && podcastListFragment != null) {
-            // Make the UI reflect the change
-            podcastListFragment.setThemeColors(themeColor, lightThemeColor);
-        } else if (key.equals(SettingsActivity.KEY_WIDE_EPISODE_LIST)) {
-            updateLayout();
-        }
-    }
-
-    @Override
     public void onDownloadProgress(Episode episode, int percent) {
         // In small portrait mode, there is a separate episode list activity
         // that will handle this
@@ -496,29 +479,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
                 break;
             default:
                 showToast(getString(R.string.download_failed, episode.getName()));
-        }
-    }
-
-    /**
-     * Update the layout to match user's preference
-     */
-    protected void updateLayout() {
-        final boolean useWide = preferences
-                .getBoolean(SettingsActivity.KEY_WIDE_EPISODE_LIST, false);
-
-        switch (view) {
-            case LARGE_PORTRAIT:
-                setMainColumnWidthWeight(episodeListFragment.getView(), useWide ? 3.5f : 3f);
-
-                break;
-            case LARGE_LANDSCAPE:
-                setMainColumnWidthWeight(episodeListFragment.getView(), useWide ? 3.5f : 3f);
-                setMainColumnWidthWeight(findViewById(R.id.right_column), useWide ? 3.5f : 4f);
-
-                break;
-            default:
-                // Nothing to do in small views
-                break;
         }
     }
 
@@ -569,10 +529,5 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-    }
-
-    private void setMainColumnWidthWeight(View view, float weight) {
-        view.setLayoutParams(
-                new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, weight));
     }
 }

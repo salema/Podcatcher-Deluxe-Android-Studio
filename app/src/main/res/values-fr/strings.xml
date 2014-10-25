@@ -121,8 +121,4 @@
     <string name="pref_sync_none">Actuellement hors service</string>
     <string name="pref_sync_last_run">Dernière synchronisation : %1$s</string>
     <string name="pref_sync_now">Synchroniser maintenant</string>
-    <string name="pref_category_interface">Interface</string>
-    <string name="pref_theme_color_title">Thème de couleur</string>
-    <string name="pref_wide_episode_list_title">Grande liste d’épisodes</string>
-    <string name="pref_wide_episode_list_summary">Plus d’espace pour les détails d’épisode</string>
 </resources>

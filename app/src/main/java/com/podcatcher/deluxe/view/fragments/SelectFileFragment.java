@@ -22,8 +22,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,14 +49,7 @@ public class SelectFileFragment extends DialogFragment {
      * The key to store the selected position under
      */
     private static final String SELECTED_POSITION_KEY = "selected_position";
-    /**
-     * The theme color to use for highlighting list items
-     */
-    protected int themeColor;
-    /**
-     * The theme color variant to use for pressed and checked items
-     */
-    protected int lightThemeColor;
+
     /**
      * The file list view adapter
      */
@@ -176,7 +167,6 @@ public class SelectFileFragment extends DialogFragment {
                     updateSelection(position);
             }
         });
-        updateListSelector();
 
         selectButton = (Button) view.findViewById(R.id.select_file);
         selectButton.setOnClickListener(new OnClickListener() {
@@ -223,25 +213,6 @@ public class SelectFileFragment extends DialogFragment {
     }
 
     /**
-     * Set the colors to use in the list for selection, checked item etc.
-     *
-     * @param color        The theme color to use for highlighting list items.
-     * @param variantColor The theme color variant to use for pressed and
-     *                     checked items.
-     */
-    public void setThemeColors(int color, int variantColor) {
-        this.themeColor = color;
-        this.lightThemeColor = variantColor;
-
-        // Set theme colors in adapter
-        if (fileListAdapter != null)
-            fileListAdapter.setThemeColors(themeColor, lightThemeColor);
-        // ...and for the list view
-        if (viewCreated)
-            updateListSelector();
-    }
-
-    /**
      * Set the directory path for the fragment to show. You can call this
      * anytime and assume the latest call to take effect {@link #onResume()}.
      *
@@ -258,7 +229,6 @@ public class SelectFileFragment extends DialogFragment {
 
                 if (fileListAdapter == null) {
                     fileListAdapter = new FileListAdapter(getDialog().getContext(), path);
-                    fileListAdapter.setThemeColors(themeColor, lightThemeColor);
                     fileListView.setAdapter(fileListAdapter);
                 } else
                     fileListAdapter.setPath(path);
@@ -302,18 +272,6 @@ public class SelectFileFragment extends DialogFragment {
             getDialog().setTitle(R.string.file_select_folder);
         else
             getDialog().setTitle(R.string.file_select_file);
-    }
-
-    private void updateListSelector() {
-        // This takes care of the item pressed state and its color
-        StateListDrawable states = new StateListDrawable();
-
-        states.addState(new int[]{
-                android.R.attr.state_pressed
-        }, new ColorDrawable(lightThemeColor));
-
-        // Set the states drawable
-        fileListView.setSelector(states);
     }
 
     /**

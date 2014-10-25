@@ -29,10 +29,6 @@
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
             android:targetPackage="com.podcatcher.deluxe.video"/>
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
-    <net.margaritov.preference.colorpicker.ColorPickerPreference
-        android:defaultValue="@color/theme_dark"
-        android:key="theme_color"
-        android:title="@string/pref_theme_color_title"/>
     <PreferenceCategory android:title="@string/downloads">
         <CheckBoxPreference
             android:defaultValue="false"

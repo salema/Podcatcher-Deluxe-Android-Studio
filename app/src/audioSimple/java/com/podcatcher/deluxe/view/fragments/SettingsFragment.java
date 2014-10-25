@@ -46,8 +46,7 @@ public class SettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (SettingsActivity.KEY_THEME_COLOR.equals(key)
-                || SettingsActivity.KEY_SYNC_ACTIVE.equals(key)
+        if (SettingsActivity.KEY_SYNC_ACTIVE.equals(key)
                 || SettingsActivity.KEY_SYNC_RECEIVE.equals(key))
             // Update the preference UIs to reflect new setting
             ((BaseAdapter) getPreferenceScreen().getRootAdapter()).notifyDataSetChanged();

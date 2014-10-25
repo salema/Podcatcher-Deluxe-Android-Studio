@@ -95,10 +95,6 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         // The episode list fragment
         if (episodeListFragment == null)
             episodeListFragment = (EpisodeListFragment) findByTagId(R.string.episode_list_fragment_tag);
-
-        // Make sure the episode fragment know our theme colors
-        if (episodeListFragment != null)
-            episodeListFragment.setThemeColors(themeColor, lightThemeColor);
     }
 
     @Override
@@ -416,15 +412,6 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             if (ContentMode.DOWNLOADS.equals(selection.getMode()))
                 episodeManager.getDownloadsAsync(this);
         }
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        super.onSharedPreferenceChanged(sharedPreferences, key);
-
-        if (episodeListFragment != null && SettingsActivity.KEY_THEME_COLOR.equals(key))
-            // Make the UI reflect the change
-            episodeListFragment.setThemeColors(themeColor, lightThemeColor);
     }
 
     /**

@@ -50,6 +50,7 @@
             android:id="@id/android:list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:listSelector="@drawable/list_selector"
             tools:listitem="@layout/episode_list_item"/>
 
         <TextView

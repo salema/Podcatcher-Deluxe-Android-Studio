@@ -40,14 +40,6 @@ public class SettingsActivity extends BaseActivity {
      */
     public static final String KEY_SYNC = "synchronization";
     /**
-     * The theme color preference key
-     */
-    public static final String KEY_THEME_COLOR = "theme_color";
-    /**
-     * The episode list width preference key
-     */
-    public static final String KEY_WIDE_EPISODE_LIST = "wide_episode_list";
-    /**
      * The key for the download folder preference
      */
     public static final String KEY_DOWNLOAD_FOLDER = "download_folder";

@@ -1,1 +1,1 @@
-include ':app', ':color_picker', 'gpodder_sync'
+include ':app', 'gpodder_sync'

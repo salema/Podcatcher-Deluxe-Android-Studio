@@ -121,8 +121,4 @@
     <string name="pref_sync_none">Nicht aktiv</string>
     <string name="pref_sync_last_run">Letzte Synchronisation: %1$s</string>
     <string name="pref_sync_now">Jetzt starten</string>
-    <string name="pref_category_interface">Oberfläche</string>
-    <string name="pref_theme_color_title">Farbthema</string>
-    <string name="pref_wide_episode_list_title">Breite Episodenliste</string>
-    <string name="pref_wide_episode_list_summary">Mehr Platz für Episodendetails</string>
 </resources>

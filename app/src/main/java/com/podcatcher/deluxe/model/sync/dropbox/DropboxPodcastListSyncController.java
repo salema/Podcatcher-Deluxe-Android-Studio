@@ -28,7 +28,7 @@ import com.podcatcher.deluxe.model.types.Podcast;
 /**
  * A sync controller for the Dropbox service dealing with the podcast list.
  */
-abstract class DropboxPodcastListSyncController extends DropboxSettingsSyncController {
+abstract class DropboxPodcastListSyncController extends DropboxBaseSyncController {
 
     /**
      * The subscription table name

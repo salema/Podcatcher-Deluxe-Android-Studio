@@ -129,8 +129,4 @@
     <string name="pref_sync_none">Наразі відключено</string>
     <string name="pref_sync_last_run">Остання повна синхронізація: %1$s</string>
     <string name="pref_sync_now">Синхронізуватися</string>
-    <string name="pref_category_interface">Зовнішній вигляд</string>
-    <string name="pref_theme_color_title">Колір теми</string>
-    <string name="pref_wide_episode_list_title">Розширений список епізодів</string>
-    <string name="pref_wide_episode_list_summary">Виділити місце для більш детальної інформації про епізоди</string>
 </resources>

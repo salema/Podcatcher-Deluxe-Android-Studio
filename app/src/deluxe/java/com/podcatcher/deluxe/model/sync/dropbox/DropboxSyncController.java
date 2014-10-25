@@ -40,4 +40,9 @@ public class DropboxSyncController extends DropboxEpisodeMetadataSyncController 
     public ControllerImpl getImpl() {
         return ControllerImpl.DROPBOX;
     }
+
+    @Override
+    public void syncSettings() {
+        // pass, settings are not yet supported by this sync controller
+    }
 }

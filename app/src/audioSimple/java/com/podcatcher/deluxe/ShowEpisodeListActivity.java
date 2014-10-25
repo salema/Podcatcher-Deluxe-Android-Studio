@@ -55,7 +55,6 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
             // During initial setup, plug in the episode list fragment.
             if (savedInstanceState == null && episodeListFragment == null) {
                 episodeListFragment = new EpisodeListFragment();
-                episodeListFragment.setThemeColors(themeColor, lightThemeColor);
 
                 getFragmentManager()
                         .beginTransaction()

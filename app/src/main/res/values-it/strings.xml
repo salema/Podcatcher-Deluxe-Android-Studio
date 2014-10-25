@@ -121,8 +121,4 @@
     <string name="pref_sync_none">Disabilitato correntemente</string>
     <string name="pref_sync_last_run">Ultima sincronizzazione: %1$s</string>
     <string name="pref_sync_now">Sincronizza adesso</string>
-    <string name="pref_category_interface">Interfaccia</string>
-    <string name="pref_theme_color_title">Colore tema</string>
-    <string name="pref_wide_episode_list_title">Elenco episodio ampio</string>
-    <string name="pref_wide_episode_list_summary">Fai spazio per avere più dettagli sull\'episodio</string>
 </resources>

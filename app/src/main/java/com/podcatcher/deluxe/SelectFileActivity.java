@@ -95,9 +95,6 @@ public class SelectFileActivity extends BaseActivity implements SelectFileDialog
             selectFileFragment.setPath(new File(initialPathString));
         else
             selectFileFragment.setPath(Environment.getExternalStorageDirectory());
-
-        // Apply theme color
-        selectFileFragment.setThemeColors(themeColor, lightThemeColor);
     }
 
     @Override

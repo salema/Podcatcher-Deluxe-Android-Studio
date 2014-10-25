@@ -184,7 +184,6 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
         topProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar_top);
 
         infoBoxTextView = (TextView) view.findViewById(R.id.info_box);
-        infoBoxTextView.setBackgroundColor(themeColor);
         infoBoxDivider = view.findViewById(R.id.info_box_divider);
 
         viewCreated = true;
@@ -422,14 +421,6 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
             if (listItemView != null)
                 listItemView.updateProgress(percent);
         }
-    }
-
-    @Override
-    public void setThemeColors(int color, int variantColor) {
-        super.setThemeColors(color, variantColor);
-
-        if (viewCreated)
-            infoBoxTextView.setBackgroundColor(color);
     }
 
     /**

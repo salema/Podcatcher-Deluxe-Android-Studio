@@ -22,6 +22,8 @@ import android.graphics.Color;
 import android.util.SparseBooleanArray;
 import android.view.View;
 
+import com.podcatcher.deluxe.R;
+
 /**
  * Abstract super class for this app's list adapters. Handles the
  * selection/choice parts. All lists are single selection and have their
@@ -47,11 +49,11 @@ public abstract class PodcatcherBaseListAdapter extends PodcatcherBaseAdapter {
     /**
      * The theme color to use for highlighting list items
      */
-    protected int themeColor;
+    protected final int themeColor;
     /**
      * The theme color variant to use for pressed and checked items
      */
-    protected int lightThemeColor;
+    protected final int lightThemeColor;
 
     /**
      * Create new adapter.
@@ -60,19 +62,9 @@ public abstract class PodcatcherBaseListAdapter extends PodcatcherBaseAdapter {
      */
     public PodcatcherBaseListAdapter(Context context) {
         super(context);
-    }
 
-    /**
-     * Set the colors to use in the list for selection, checked item etc. Will
-     * only take effect after the list is redrawn.
-     *
-     * @param color        The theme color to use for highlighting list items.
-     * @param variantColor The theme color variant to use for pressed and
-     *                     checked items.
-     */
-    public void setThemeColors(int color, int variantColor) {
-        this.themeColor = color;
-        this.lightThemeColor = variantColor;
+        themeColor = context.getResources().getColor(R.color.theme_dark);
+        lightThemeColor = context.getResources().getColor(R.color.theme_light);
     }
 
     /**

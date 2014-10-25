@@ -18,8 +18,6 @@
 package com.podcatcher.deluxe.view.fragments;
 
 import android.app.ListFragment;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListAdapter;
@@ -42,15 +40,6 @@ public abstract class PodcatcherListFragment extends ListFragment {
      * The list adapter
      */
     protected PodcatcherBaseListAdapter adapter;
-
-    /**
-     * The theme color to use for highlighting list items
-     */
-    protected int themeColor;
-    /**
-     * The theme color variant to use for pressed and checked items
-     */
-    protected int lightThemeColor;
 
     /**
      * The empty view
@@ -91,7 +80,6 @@ public abstract class PodcatcherListFragment extends ListFragment {
         progressView = (ProgressView) getView().findViewById(R.id.progress);
 
         viewCreated = true;
-        updateListSelector();
     }
 
     @Override
@@ -111,33 +99,7 @@ public abstract class PodcatcherListFragment extends ListFragment {
     @Override
     public void setListAdapter(ListAdapter adapter) {
         this.adapter = (PodcatcherBaseListAdapter) adapter;
-
-        // Set theme colors
-        if (adapter != null)
-            this.adapter.setThemeColors(themeColor, lightThemeColor);
-
         super.setListAdapter(adapter);
-    }
-
-    /**
-     * Set the colors to use in the list for selection, checked item etc.
-     *
-     * @param color        The theme color to use for highlighting list items.
-     * @param variantColor The theme color variant to use for pressed and
-     *                     checked item.
-     */
-    public void setThemeColors(int color, int variantColor) {
-        this.themeColor = color;
-        this.lightThemeColor = variantColor;
-
-        // Set theme colors in adapter
-        if (adapter != null)
-            this.adapter.setThemeColors(themeColor, lightThemeColor);
-        // ...and for the list view
-        if (viewCreated)
-            updateListSelector();
-
-        refresh();
     }
 
     /**
@@ -285,17 +247,5 @@ public abstract class PodcatcherListFragment extends ListFragment {
                 progressView.setVisibility(GONE);
             }
         }
-    }
-
-    private void updateListSelector() {
-        // This takes care of the item pressed state and its color
-        StateListDrawable states = new StateListDrawable();
-
-        states.addState(new int[]{
-                android.R.attr.state_pressed
-        }, new ColorDrawable(lightThemeColor));
-
-        // Set the states drawable
-        getListView().setSelector(states);
     }
 }
