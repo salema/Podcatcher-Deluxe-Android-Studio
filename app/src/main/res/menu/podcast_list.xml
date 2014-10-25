@@ -20,6 +20,7 @@
     <item
         android:id="@+id/podcast_add_menuitem"
         android:icon="@drawable/ic_menu_add"
+        android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/podcast_add_title"/>
 </menu>
