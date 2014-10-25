@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.session.MediaSession;
 import android.os.Build;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
@@ -170,6 +171,24 @@ public class PlayEpisodeNotification implements Target {
             if (!EpisodeManager.getInstance().isPlaylistEmptyBesides(episode))
                 notificationBuilder.addAction(R.drawable.ic_media_next,
                         context.getString(R.string.next), nextPendingIntent);
+        }
+
+        // This will call build(), not available before Android 4.1
+        return notificationBuilder.getNotification();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public Notification build(Episode episode, boolean paused, int position, int duration, MediaSession session) {
+        build(episode, paused, position, duration);
+
+        // Apply new notification features available in Lollipop
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            notificationBuilder.setCategory(Notification.CATEGORY_TRANSPORT);
+            notificationBuilder.setStyle(new Notification.MediaStyle()
+                    .setShowActionsInCompactView(1)  // #1: pause/resume button
+                    .setMediaSession(session.getSessionToken()));
+            // notificationBuilder.setColor()
         }
 
         // This will call build(), not available before Android 4.1

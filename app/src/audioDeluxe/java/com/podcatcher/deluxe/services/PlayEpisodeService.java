@@ -17,6 +17,8 @@
 
 package com.podcatcher.deluxe.services;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
@@ -34,6 +36,7 @@ import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -747,12 +750,20 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         notificationUpdateHandler.removeCallbacksAndMessages(null);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void rebuildNotification() {
-        if (isPrepared() && currentEpisode != null)
-            startForeground(NOTIFICATION_ID,
-                    notification.build(currentEpisode, !player.isPlaying(),
-                            getCurrentPosition(), getDuration())
-            );
+        if (isPrepared() && currentEpisode != null) {
+            Notification note;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && remoteControlClient != null)
+                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
+                        getDuration(), remoteControlClient.getMediaSession());
+            else
+                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
+                        getDuration());
+
+            startForeground(NOTIFICATION_ID, note);
+        }
     }
 
     private void updateAudioManager() {
