@@ -54,6 +54,7 @@ import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -144,6 +145,11 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * The current buffer state
      */
     private int bufferPercent = 0;
+    /**
+     * Time at which the playback has last been paused,
+     * used to determine whether we should rewind on resume.
+     */
+    private Date lastPaused;
 
     /**
      * Our audio manager handle
@@ -176,9 +182,18 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     private static final int NOTIFICATION_ID = 123;
     /**
-     * The amount of seconds used for any forward or rewind event (in millis)
+     * The amount of milli-seconds used for any forward or rewind event
      */
     private static final int SKIP_AMOUNT = (int) TimeUnit.SECONDS.toMillis(10);
+    /**
+     * The amount of milli-seconds playback rewinds on resume (if triggered)
+     */
+    private static final int REWIND_ON_RESUME_DURATION = (int) TimeUnit.SECONDS.toMillis(5);
+    /**
+     * Time elapsed since pause was called that triggers resume on rewind
+     */
+    private static final long REWIND_ON_RESUME_TRIGGER = TimeUnit.MINUTES.toMillis(30);
+
     /**
      * The volume we duck playback to
      */
@@ -206,7 +221,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Binder given to clients
      */
     private final IBinder binder = new PlayServiceBinder();
-
     /**
      * The binder to return to client.
      */
@@ -287,7 +301,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                     final int resumeAt = episodeManager.getResumeAt(currentEpisode);
 
                     if (resumeAt > getCurrentPosition())
-                        player.seekTo(resumeAt);
+                        seekTo(resumeAt);
                     else
                         playNext();
                     break;
@@ -509,6 +523,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             player.pause();
             storeResumeAt();
 
+            this.lastPaused = new Date();
             stopNotificationUpdater();
             updateRemoteControlPlayState(PLAYSTATE_PAUSED);
             rebuildNotification();
@@ -520,6 +535,11 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     public void resume() {
         if (prepared && !player.isPlaying()) {
+            // We might want to rewind a bit after a long pause
+            if (lastPaused != null &&
+                    new Date().getTime() - lastPaused.getTime() > REWIND_ON_RESUME_TRIGGER)
+                seekTo(getCurrentPosition() - REWIND_ON_RESUME_DURATION);
+
             player.start();
 
             startNotificationUpdater();
@@ -536,11 +556,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     /**
      * Seek player to given location in media file.
      *
-     * @param msecs Milliseconds from the start to seek to.
+     * @param msecs Milliseconds from the start to seek to. Giving any
+     *              value <=0 makes the player jump to the beginning.
      */
     public void seekTo(int msecs) {
-        if (prepared && msecs >= 0 && msecs <= getDuration()) {
-            player.seekTo(msecs);
+        if (prepared && msecs <= getDuration()) {
+            player.seekTo(msecs > 0 ? msecs : 0);
 
             startForeground(NOTIFICATION_ID,
                     notification.updateProgress(getCurrentPosition(), getDuration()));
@@ -672,7 +693,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             updateRemoteControlPlayState(PLAYSTATE_PLAYING);
 
             // Start the playback the right point in time
-            player.seekTo(episodeManager.getResumeAt(currentEpisode));
+            player.seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
             // A) If we play audio or do not have a video surface, simply start
             // playback without caring about any video content
             if (!isVideo() || videoSurfaceProvider == null) {
@@ -865,6 +886,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         this.buffering = false;
         this.bufferPercent = 0;
         this.startPlaybackOnSurfaceCreate = false;
+        this.lastPaused = null;
 
         // Release resources
         audioManager.abandonAudioFocus(this);
