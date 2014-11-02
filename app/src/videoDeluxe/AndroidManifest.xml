@@ -20,12 +20,12 @@
 
     <application>
         <activity
-            android:name=".FullscreenVideoActivity"
+            android:name="com.podcatcher.deluxe.FullscreenVideoActivity"
             android:theme="@style/AppFullscreen">
         </activity>
 
         <service
-            android:name=".services.PlayEpisodeService"
+            android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.podcatcher.deluxe.video.action.TOGGLE"/>

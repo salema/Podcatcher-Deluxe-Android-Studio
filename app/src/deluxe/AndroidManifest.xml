@@ -20,7 +20,7 @@
 
     <application>
         <activity
-            android:name=".SelectDownloadFolderActivity"
+            android:name="com.podcatcher.deluxe.SelectDownloadFolderActivity"
             android:theme="@android:style/Theme.NoDisplay"/>
     </application>
 </manifest>

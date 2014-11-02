@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    buildToolsVersion '21.1'
 
     defaultConfig {
         versionCode 204
@@ -37,21 +37,21 @@ android {
             buildConfigField "String", "STORE", "\"Google Play\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard-rules.pro'
         }
         amazon {
             buildConfigField "String", "STORE", "\"Amazon\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"http://www.amazon.com/gp/mas/dl/android?p=\""
 
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard-rules.pro'
         }
         slideme {
             buildConfigField "String", "STORE", "\"SlideMe\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"http://slideme.org/app/\""
 
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard-rules.pro'
         }
         samsung {
@@ -59,7 +59,7 @@ android {
             // Link to Google Play because Samsung does not allow new apps
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard-rules.pro'
         }
     }

@@ -20,7 +20,7 @@
 
     <application>
         <service
-            android:name=".services.PlayEpisodeService"
+            android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.podcatcher.deluxe.action.TOGGLE"/>

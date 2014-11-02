@@ -20,7 +20,7 @@
 
     <application>
         <activity
-            android:name=".ScrapePodcastsActivity"
+            android:name="com.podcatcher.deluxe.ScrapePodcastsActivity"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="com.podcatcher.deluxe.action.IMPORT"/>
@@ -29,7 +29,7 @@
         </activity>
 
         <service
-            android:name=".services.PlayEpisodeService"
+            android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
             android:exported="false">
             <intent-filter>
                 <action android:name="net.alliknow.podcatcher.action.TOGGLE"/>

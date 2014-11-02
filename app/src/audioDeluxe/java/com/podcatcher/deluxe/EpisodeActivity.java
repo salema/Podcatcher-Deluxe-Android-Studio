@@ -477,8 +477,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
             // Show/hide menu item
             playerFragment.setLoadMenuItemVisibility(selection.isEpisodeSet(),
                     !currentEpisodeIsShowing, !currentEpisodeIsShowing
-                            && episodeManager.getResumeAt(selection.getEpisode()) > 0
-            );
+                            && episodeManager.getResumeAt(selection.getEpisode()) > 0);
 
             // Make sure player is shown if and as needed (update the details
             // only if they are actually visible)
