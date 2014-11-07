@@ -16,7 +16,6 @@ import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -132,9 +131,8 @@ public class MygPodderClient extends SimpleClient {
                     _locator.uploadEpisodeActionsUri(), data));
 
             JsonArray updates = response.getAsJsonArray("update_urls");
-            Iterator<JsonElement> it = updates.iterator();
-            while (it.hasNext()) {
-                JsonArray element = it.next().getAsJsonArray();
+            for (JsonElement update : updates) {
+                JsonArray element = update.getAsJsonArray();
 
                 Log.d("UPDATE_URLS", element.get(0) + " to " + element.get(1));
             }

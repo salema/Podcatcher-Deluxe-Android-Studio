@@ -113,7 +113,9 @@ public class EpisodeAction {
 
     @Override
     public int hashCode() {
-        assert false : "hashCode not designed";
-        return 42; // any arbitrary constant will do
+        return 42 + (podcast == null ? 0 : podcast.hashCode()) +
+                (episode == null ? 0 : episode.hashCode()) +
+                (action == null ? 0 : action.hashCode()) +
+                (timestamp == null ? 0 : timestamp.hashCode());
     }
 }
