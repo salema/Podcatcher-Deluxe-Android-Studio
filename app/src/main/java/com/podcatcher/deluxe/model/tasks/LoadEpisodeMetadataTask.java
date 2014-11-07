@@ -25,7 +25,6 @@ import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnLoadEpisodeMetadataListener;
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.tags.METADATA;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 import com.podcatcher.deluxe.model.types.Progress;
 
@@ -41,6 +40,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.podcatcher.deluxe.model.tags.METADATA.DOWNLOAD_ID;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DATE;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DESCRIPTION;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DURATION;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_FILE_SIZE;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_MEDIA_TYPE;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_NAME;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_RESUME_AT;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_STATE;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_URL;
+import static com.podcatcher.deluxe.model.tags.METADATA.LOCAL_FILE_PATH;
+import static com.podcatcher.deluxe.model.tags.METADATA.METADATA;
+import static com.podcatcher.deluxe.model.tags.METADATA.PLAYLIST_POSITION;
+import static com.podcatcher.deluxe.model.tags.METADATA.PODCAST_NAME;
+import static com.podcatcher.deluxe.model.tags.METADATA.PODCAST_URL;
 
 /**
  * Load the episode metadata from the file system.
@@ -97,8 +112,8 @@ public class LoadEpisodeMetadataTask extends
                     String tagName = parser.getName();
 
                     // Metadata found
-                    if (tagName.equalsIgnoreCase(METADATA.METADATA)) {
-                        final String key = parser.getAttributeValue(null, METADATA.EPISODE_URL);
+                    if (tagName.equalsIgnoreCase(METADATA)) {
+                        final String key = parser.getAttributeValue(null, EPISODE_URL);
                         final EpisodeMetadata metadata = readMetadata(parser);
 
                         result.put(key, metadata);
@@ -144,35 +159,50 @@ public class LoadEpisodeMetadataTask extends
         int eventType = parser.next();
 
         // Read till the end of the metadata tag is reached
-        while (!(eventType == XmlPullParser.END_TAG && parser.getName().equalsIgnoreCase(
-                METADATA.METADATA))) {
-
+        while (!(eventType == XmlPullParser.END_TAG && parser.getName().equals(METADATA))) {
             // We only need start tags here
-            if (eventType == XmlPullParser.START_TAG) {
-                String tagName = parser.getName();
-
-                // Metadata detail found
-                if (tagName.equalsIgnoreCase(METADATA.EPISODE_NAME))
-                    result.episodeName = parser.nextText();
-                else if (tagName.equalsIgnoreCase(METADATA.EPISODE_DATE))
-                    result.episodePubDate = new Date(Long.parseLong(parser.nextText()));
-                else if (tagName.equalsIgnoreCase(METADATA.EPISODE_DESCRIPTION))
-                    result.episodeDescription = parser.nextText();
-                else if (tagName.equalsIgnoreCase(METADATA.PODCAST_NAME))
-                    result.podcastName = parser.nextText();
-                else if (tagName.equalsIgnoreCase(METADATA.PODCAST_URL))
-                    result.podcastUrl = parser.nextText();
-                else if (tagName.equalsIgnoreCase(METADATA.DOWNLOAD_ID))
-                    result.downloadId = Long.parseLong(parser.nextText());
-                else if (tagName.equalsIgnoreCase(METADATA.LOCAL_FILE_PATH))
-                    result.filePath = parser.nextText();
-                else if (tagName.equalsIgnoreCase(METADATA.EPISODE_RESUME_AT))
-                    result.resumeAt = Integer.parseInt(parser.nextText());
-                else if (tagName.equalsIgnoreCase(METADATA.EPISODE_STATE))
-                    result.isOld = Boolean.parseBoolean(parser.nextText());
-                else if (tagName.equalsIgnoreCase(METADATA.PLAYLIST_POSITION))
-                    result.playlistPosition = Integer.parseInt(parser.nextText());
-            }
+            if (eventType == XmlPullParser.START_TAG)
+                switch (parser.getName()) {
+                    case EPISODE_NAME:
+                        result.episodeName = parser.nextText();
+                        break;
+                    case EPISODE_DATE:
+                        result.episodePubDate = new Date(Long.parseLong(parser.nextText()));
+                        break;
+                    case EPISODE_DURATION:
+                        result.episodeDuration = Integer.parseInt(parser.nextText());
+                        break;
+                    case EPISODE_FILE_SIZE:
+                        result.episodeFileSize = Long.parseLong(parser.nextText());
+                        break;
+                    case EPISODE_MEDIA_TYPE:
+                        result.episodeMediaType = parser.nextText();
+                        break;
+                    case EPISODE_DESCRIPTION:
+                        result.episodeDescription = parser.nextText();
+                        break;
+                    case PODCAST_NAME:
+                        result.podcastName = parser.nextText();
+                        break;
+                    case PODCAST_URL:
+                        result.podcastUrl = parser.nextText();
+                        break;
+                    case DOWNLOAD_ID:
+                        result.downloadId = Long.parseLong(parser.nextText());
+                        break;
+                    case LOCAL_FILE_PATH:
+                        result.filePath = parser.nextText();
+                        break;
+                    case EPISODE_RESUME_AT:
+                        result.resumeAt = Integer.parseInt(parser.nextText());
+                        break;
+                    case EPISODE_STATE:
+                        result.isOld = Boolean.parseBoolean(parser.nextText());
+                        break;
+                    case PLAYLIST_POSITION:
+                        result.playlistPosition = Integer.parseInt(parser.nextText());
+                        break;
+                }
 
             // Done, get next parsing event
             eventType = parser.next();

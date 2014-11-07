@@ -20,13 +20,9 @@ package com.podcatcher.deluxe;
 import android.app.DialogFragment;
 import android.app.FragmentManager.OnBackStackChangedListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
@@ -505,6 +501,12 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
             updateActionBarSubtitleOnMultipleLoad();
         else
             contentSpinner.setSubtitle(null);
+    }
+
+    @Override
+    protected void updateEpisodeMetadataUi() {
+        if (!view.isSmallPortrait())
+            super.updateEpisodeMetadataUi();
     }
 
     @Override

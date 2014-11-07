@@ -53,6 +53,17 @@ public class ParserUtils {
     }
 
     /**
+     * Format an information given in bytes to the more familiar mega-bytes.
+     *
+     * @param bytes The number of bytes to calculate with
+     * @return A string like "XMB" where X is the numeric representation of the size.
+     */
+    public static String formatFileSize(long bytes) {
+        final int megaBytes = (int) bytes / (1024 * 1024);
+        return megaBytes > 0 ? megaBytes + "MB" : bytes / 1024 + "KB";
+    }
+
+    /**
      * Skip the entire sub tree the given parser is currently pointing at.
      *
      * @param parser Parser to advance.

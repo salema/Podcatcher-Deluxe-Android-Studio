@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * The episode type. Each episode represents an item from a podcast's RSS/XML
@@ -63,6 +64,14 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * The episode's media file location
      */
     protected String mediaUrl;
+    /**
+     * The episode's media file type
+     */
+    protected String mediaType;
+    /**
+     * The episode's media file size
+     */
+    protected long mediaSize = -1;
 
     /**
      * Create a new episode.
@@ -88,14 +97,17 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * @param name        Episode name.
      * @param mediaUrl    The remote URL of this episode.
      * @param pubDate     The publication date.
+     * @param mediaType   The episode's media type.
      * @param description The episode's description.
      */
-    Episode(Podcast podcast, String name, String mediaUrl, Date pubDate, String description) {
+    Episode(Podcast podcast, String name, String mediaUrl, Date pubDate,
+            String mediaType, String description) {
         this(podcast, -1);
 
         this.name = name;
         this.mediaUrl = mediaUrl;
         this.description = description;
+        this.mediaType = mediaType;
         // Publication date might not be present
         if (pubDate != null)
             this.pubDate = new Date(pubDate.getTime());
@@ -117,14 +129,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     }
 
     /**
-     * @return The media content online location.
-     */
-    public String getMediaUrl() {
-        return mediaUrl;
-    }
-
-    /**
-     * @return The publication date for this episode.
+     * @return The publication date for this episode or <code>null</code> if not present.
      */
     public Date getPubDate() {
         if (pubDate == null)
@@ -134,12 +139,30 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     }
 
     /**
-     * @return The episode's duration as given by the podcast feed converted
-     * into a string 00:00:00. This might not be available and therefore
-     * <code>null</code>.
+     * @return The media content online location.
      */
-    public String getDurationString() {
-        return duration > 0 ? ParserUtils.formatTime(duration) : null;
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    /**
+     * @return The media type as given by the feed (e.g. "audio/mpeg")
+     * or <code>null</code> if not available.
+     */
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    /**
+     * @return The media file size as given by the feed in bytes
+     * or -1 if the size is not given.
+     */
+    public long getMediaSize() {
+        return mediaSize;
+    }
+
+    public void setMediaSize(long fileSize) {
+        this.mediaSize = fileSize;
     }
 
     /**
@@ -148,6 +171,10 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      */
     public int getDuration() {
         return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     /**
@@ -234,47 +261,54 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
 
         // Look at all start tags of this item
         while (parser.nextTag() == XmlPullParser.START_TAG) {
-            final String tagName = parser.getName();
+            final String tagName = parser.getName().toLowerCase(Locale.US);
 
-            // Episode title
-            if (tagName.equalsIgnoreCase(RSS.TITLE))
+            if (tagName.equals(RSS.TITLE))
                 name = Html.fromHtml(parser.nextText().trim()).toString();
-                // Episode online location
-            else if (tagName.equalsIgnoreCase(RSS.LINK))
+            else if (tagName.equals(RSS.LINK))
                 url = parser.nextText();
-                // Explicit info found
-            else if (tagName.equalsIgnoreCase(RSS.EXPLICIT))
+            else if (tagName.equals(RSS.EXPLICIT))
                 explicit = parseExplicit(parser.nextText());
-                // Episode media URL
-            else if (tagName.equalsIgnoreCase(RSS.ENCLOSURE)) {
-                // Only set the media URL if it is actually there, this will
-                // prevent overriding it when there are multiple enclosures
-                final String urlAttribute = parser.getAttributeValue("", RSS.URL);
-                if (urlAttribute != null)
-                    mediaUrl = normalizeUrl(urlAttribute);
-
-                parser.nextText();
-            }
-            // Episode publication date (2 options)
-            else if (tagName.equalsIgnoreCase(RSS.DATE) && pubDate == null)
+            else if (tagName.equals(RSS.DATE) && pubDate == null)
                 pubDate = parseDate(parser.nextText());
-            else if (tagName.equalsIgnoreCase(RSS.PUBDATE))
+            else if (tagName.equals(RSS.PUBDATE))
                 pubDate = parseDate(parser.nextText());
-                // Episode duration
-            else if (tagName.equalsIgnoreCase(RSS.DURATION))
+            else if (tagName.equals(RSS.DURATION))
                 duration = parseDuration(parser.nextText());
-                // Episode description
-            else if (tagName.equalsIgnoreCase(RSS.DESCRIPTION))
+            else if (tagName.equals(RSS.DESCRIPTION))
                 description = parser.nextText();
             else if (isContentEncodedTag(parser))
                 content = parser.nextText();
-                // Unneeded node, skip...
+            else if (tagName.equals(RSS.ENCLOSURE))
+                parseEnclosure(parser);
             else
                 ParserUtils.skipSubTree(parser);
         }
 
         // Make sure we end at item tag
         parser.require(XmlPullParser.END_TAG, "", RSS.ITEM);
+    }
+
+    protected void parseEnclosure(XmlPullParser parser) throws XmlPullParserException, IOException {
+        final String urlAttribute = parser.getAttributeValue("", RSS.URL);
+        final String typeAttribute = parser.getAttributeValue("", RSS.MEDIA_TYPE);
+        final String lengthAttribute = parser.getAttributeValue("", RSS.MEDIA_LENGTH);
+
+        // Only set the media URL if it is actually there, this will
+        // prevent overriding it when there are multiple enclosures
+        if (urlAttribute != null) {
+            mediaUrl = normalizeUrl(urlAttribute);
+            mediaType = typeAttribute != null && typeAttribute.trim().length() > 0 ?
+                    typeAttribute.trim() : null;
+            try {
+                mediaSize = Integer.valueOf(lengthAttribute);
+            } catch (NumberFormatException nfe) {
+                // pass, length not available
+                mediaSize = -1;
+            }
+        }
+
+        parser.nextText();
     }
 
     protected int parseDuration(String durationString) {

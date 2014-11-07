@@ -172,11 +172,15 @@ public abstract class EpisodeBaseManager implements OnLoadEpisodeMetadataListene
         if (episode != null && meta != null && episode.getPodcast() != null) {
             meta.episodeName = episode.getName();
             meta.episodePubDate = episode.getPubDate();
+            meta.episodeMediaType = episode.getMediaType();
             meta.episodeDescription = episode.getDescription();
             meta.podcastName = episode.getPodcast().getName();
             meta.podcastUrl = episode.getPodcast().getUrl();
+
+            final int duration = episode.getDuration();
+            meta.episodeDuration = duration > 0 ? duration : null;
+            final long size = episode.getMediaSize();
+            meta.episodeFileSize = size > 0 ? size : null;
         }
     }
-
-
 }

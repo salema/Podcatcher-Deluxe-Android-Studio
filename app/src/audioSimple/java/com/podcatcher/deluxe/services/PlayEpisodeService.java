@@ -198,6 +198,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * Binder given to clients
      */
     private final IBinder binder = new PlayServiceBinder();
+
     /**
      * The binder to return to client.
      */
@@ -494,6 +495,9 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         this.prepared = true;
+        // (Real) duration is now available, update episode metadata information
+        episodeManager.updateDuration(currentEpisode,
+                (int) TimeUnit.MILLISECONDS.toSeconds(getDuration()));
 
         // Try to get audio focus
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,

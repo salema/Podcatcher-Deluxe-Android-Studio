@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.model.tasks.remote;
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 
@@ -170,6 +171,18 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                 // 4. We need to wait here and make sure the episode metadata is
                 // available before we return
                 EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
+
+                // 5. Update additional episode metadata where available, if not
+                // parsed from the feed
+                final EpisodeManager episodeManager = EpisodeManager.getInstance();
+                if (!isCancelled())
+                    for (Episode episode : podcast.getEpisodes()) {
+                        if (episode.getDuration() <= 0)
+                            episode.setDuration(episodeManager.findDuration(episode));
+
+                        if (episode.getMediaSize() <= 0)
+                            episode.setMediaSize(episodeManager.findMediaFileSize(episode));
+                    }
             }
         } catch (XmlPullParserException xppe) {
             errorCode = PodcastLoadError.NOT_PARSABLE;

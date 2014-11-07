@@ -15,21 +15,29 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.podcatcher.deluxe.model.tags;
+package com.podcatcher.deluxe.listeners;
+
+import com.podcatcher.deluxe.model.types.Episode;
 
 /**
- * Defines some constants used in the episode metadata file.
+ * Interface for the controller to implement when it wants to
+ * react on new episode metadata information becoming available.
  */
-@SuppressWarnings("javadoc")
-public class METADATA {
-    public static final String METADATA = "metadata";
+public interface OnEpisodeInformationChangedListener {
 
-    public static final String EPISODE_URL = "episodeUrl";
-    public static final String DOWNLOAD_ID = "downloadId";
-    public static final String EPISODE_NAME = "episodeName";
-    public static final String EPISODE_DATE = "episodeDate";
-    public static final String EPISODE_DESCRIPTION = "episodeDescription";
-    public static final String PODCAST_NAME = "podcastName";
-    public static final String PODCAST_URL = "podcastUrl";
-    public static final String LOCAL_FILE_PATH = "localFilePath";
+    /**
+     * The duration information for the episode given changed.
+     *
+     * @param episode Episode information changed for.
+     * @see Episode#getDuration()
+     */
+    public void onDurationChanged(Episode episode);
+
+    /**
+     * The file size information for the episode given changed.
+     *
+     * @param episode Episode information changed for.
+     * @see Episode#getMediaSize()
+     */
+    public void onMediaFileSizeChanged(Episode episode);
 }

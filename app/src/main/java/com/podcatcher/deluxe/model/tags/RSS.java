@@ -20,22 +20,24 @@ package com.podcatcher.deluxe.model.tags;
 /**
  * Defines some constants used in RSS.
  *
- * @see <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS
- * specification</a>
+ * @see <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS specification</a>
  */
 @SuppressWarnings("javadoc")
 public class RSS {
+    // These should be all lowercase because the parser compares
+    // to the XML tag name when .toLowerCase() is applied!
     public static final String ITEM = "item";
     public static final String IMAGE = "image";
     public static final String TITLE = "title";
     public static final String EXPLICIT = "explicit";
     public static final String ENCLOSURE = "enclosure";
     public static final String URL = "url";
-    public static final String TYPE = "type";
+    public static final String MEDIA_TYPE = "type";
+    public static final String MEDIA_LENGTH = "length";
     public static final String HREF = "href";
     public static final String LINK = "link";
     public static final String DATE = "date";
-    public static final String PUBDATE = "pubDate";
+    public static final String PUBDATE = "pubdate";
     public static final String DURATION = "duration";
     public static final String THUMBNAIL = "thumbnail";
     public static final String DESCRIPTION = "description";

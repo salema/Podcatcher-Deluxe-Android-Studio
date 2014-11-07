@@ -19,7 +19,6 @@ package com.podcatcher.deluxe;
 
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Handler;
@@ -28,6 +27,7 @@ import android.os.Looper;
 import android.widget.SeekBar;
 
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
+import com.podcatcher.deluxe.listeners.OnEpisodeInformationChangedListener;
 import com.podcatcher.deluxe.listeners.OnSelectEpisodeListener;
 import com.podcatcher.deluxe.listeners.PlayServiceListener;
 import com.podcatcher.deluxe.listeners.PlayerListener;
@@ -50,8 +50,8 @@ import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFr
  * or simply show this layout.
  */
 public abstract class EpisodeActivity extends BaseActivity implements
-        PlayerListener, PlayServiceListener, OnSelectEpisodeListener,
-        OnDownloadEpisodeListener {
+        PlayerListener, PlayServiceListener, OnSelectEpisodeListener, OnDownloadEpisodeListener,
+        OnEpisodeInformationChangedListener {
 
     /**
      * Key used to store episode URL in intent or bundle
@@ -127,6 +127,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
         // We have to do this here instead of onCreate since we can only react
         // on the call-backs properly once we have our fragment
+        episodeManager.addInformationChangedListener(this);
         episodeManager.addDownloadListener(this);
     }
 
@@ -160,6 +161,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
         super.onDestroy();
 
         // Disconnect from episode manager
+        episodeManager.removeInformationChangedListener(this);
         episodeManager.removeDownloadListener(this);
 
         // Detach from play service
@@ -197,7 +199,6 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
                 // Set the episode
                 episodeFragment.setEpisode(selectedEpisode);
-                episodeFragment.setShowEpisodeDate(true);
 
                 break;
             case SMALL_PORTRAIT:
@@ -221,6 +222,16 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
         updatePlayerUi();
         updateDownloadUi();
+    }
+
+    @Override
+    public void onDurationChanged(Episode episode) {
+        updateEpisodeMetadataUi();
+    }
+
+    @Override
+    public void onMediaFileSizeChanged(Episode episode) {
+        updateEpisodeMetadataUi();
     }
 
     @Override
@@ -399,6 +410,17 @@ public abstract class EpisodeActivity extends BaseActivity implements
      * Sub-classes need to overwrite.
      */
     protected abstract void updateActionBar();
+
+    /**
+     * Update all UI related to the episode metadata.
+     * Sub-classes might want to extend this.
+     */
+    protected void updateEpisodeMetadataUi() {
+        // The episode fragment might be popped out if we are in small landscape
+        // view mode and the episode list is currently visible
+        if (episodeFragment != null && selection.isEpisodeSet())
+            episodeFragment.updateEpisodeMetadata();
+    }
 
     /**
      * Update all UI related to the download state of the current selection.

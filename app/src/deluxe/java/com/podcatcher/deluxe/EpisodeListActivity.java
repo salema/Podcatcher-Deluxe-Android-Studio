@@ -587,6 +587,14 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     }
 
     @Override
+    protected void updateEpisodeMetadataUi() {
+        if (!view.isSmallPortrait())
+            super.updateEpisodeMetadataUi();
+
+        episodeListFragment.refresh();
+    }
+
+    @Override
     protected void updateDownloadUi() {
         if (!view.isSmallPortrait())
             super.updateDownloadUi();

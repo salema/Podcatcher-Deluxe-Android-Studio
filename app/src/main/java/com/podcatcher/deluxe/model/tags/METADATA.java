@@ -31,6 +31,9 @@ public class METADATA {
     public static final String DOWNLOAD_ID = "downloadId";
     public static final String EPISODE_NAME = "episodeName";
     public static final String EPISODE_DATE = "episodeDate";
+    public static final String EPISODE_DURATION = "episodeDuration";
+    public static final String EPISODE_FILE_SIZE = "episodeFileSize";
+    public static final String EPISODE_MEDIA_TYPE = "episodeMediaType";
     public static final String EPISODE_DESCRIPTION = "episodeDescription";
     public static final String PODCAST_NAME = "podcastName";
     public static final String PODCAST_URL = "podcastUrl";

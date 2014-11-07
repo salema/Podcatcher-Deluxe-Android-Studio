@@ -29,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/episode_none_selected"/>
+        android:text="@string/episode_none_selected"
+        tools:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +52,9 @@
                 android:paddingLeft="@dimen/episode_view_padding"
                 android:textAppearance="?android:textAppearanceLarge"
                 android:textSize="@dimen/font_size_large"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Great Episode Title"/>
 
             <TextView
                 android:id="@+id/podcast_title"
@@ -62,7 +65,9 @@
                 android:paddingLeft="@dimen/episode_view_padding"
                 android:singleLine="true"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Amazing podcast"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -76,7 +81,8 @@
                 android:layout_alignParentTop="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_media_new"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <ImageView
                 android:id="@+id/download_icon"
@@ -95,7 +101,31 @@
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
         android:src="@android:drawable/divider_horizontal_bright"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/metadata_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_dark"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="13:50 * 43MB * audio/mpeg"/>
+
+    <ImageView
+        android:id="@+id/metadata_box_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/divider"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/episode_video"
@@ -121,5 +151,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"/>
 </LinearLayout>

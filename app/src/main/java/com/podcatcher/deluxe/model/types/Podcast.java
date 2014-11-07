@@ -396,23 +396,27 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 // We only need start tags here
                 if (eventType == XmlPullParser.START_TAG) {
-                    final String tagName = parser.getName();
+                    final String tagName = parser.getName().toLowerCase(Locale.US);
 
-                    // Podcast name found and not set yet
-                    if (tagName.equalsIgnoreCase(RSS.TITLE) && (name == null || name.trim().isEmpty()))
-                        name = Html.fromHtml(parser.nextText().trim()).toString();
-                        // Explicit info found
-                    else if (tagName.equalsIgnoreCase(RSS.EXPLICIT))
-                        explicit = parseExplicit(parser.nextText());
-                        // Image found
-                    else if (tagName.equalsIgnoreCase(RSS.IMAGE))
-                        parseLogo(parser);
-                        // Thumbnail found (used by some podcast instead of image)
-                    else if (tagName.equalsIgnoreCase(RSS.THUMBNAIL) && !hasLogoUrl())
-                        logoUrl = parser.getAttributeValue("", RSS.URL);
-                        // Episode found
-                    else if (tagName.equalsIgnoreCase(RSS.ITEM))
-                        parseAndAddEpisode(parser, newEpisodes, episodeIndex++);
+                    switch (tagName) {
+                        case RSS.TITLE:
+                            if (name == null || name.trim().isEmpty())
+                                name = Html.fromHtml(parser.nextText().trim()).toString();
+                            break;
+                        case RSS.EXPLICIT:
+                            explicit = parseExplicit(parser.nextText());
+                            break;
+                        case RSS.IMAGE:
+                            parseLogo(parser);
+                            break;
+                        case RSS.THUMBNAIL:
+                            if (!hasLogoUrl())
+                                logoUrl = parser.getAttributeValue("", RSS.URL);
+                            break;
+                        case RSS.ITEM:
+                            parseAndAddEpisode(parser, newEpisodes, episodeIndex++);
+                            break;
+                    }
                 }
 
                 // Done, get next parsing event

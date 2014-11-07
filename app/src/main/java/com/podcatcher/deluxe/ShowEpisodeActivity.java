@@ -69,7 +69,6 @@ public class ShowEpisodeActivity extends EpisodeActivity {
         super.onEpisodeSelected(selectedEpisode);
 
         episodeFragment.setEpisode(selectedEpisode);
-        episodeFragment.setShowEpisodeDate(true);
     }
 
     @Override

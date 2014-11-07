@@ -23,8 +23,8 @@ import com.podcatcher.deluxe.model.PodcastManager;
 import java.util.Date;
 
 /**
- * Instances of this type represent additional information on episodes that is
- * not derived from the podcast feed, but from the user's interaction with the
+ * Instances of this type represent additional information on episodes that is not
+ * necessarily derived from the podcast feed, but from the user's interaction with the
  * episode, such as downloaded files, resume times, old/new status. This should
  * not be used outside the model, use {@link EpisodeManager} instead.
  */
@@ -38,6 +38,18 @@ public class EpisodeMetadata {
      * The absolute local filepath to the downloaded copy of this episode.
      */
     public String filePath;
+    /**
+     * The time in millis to resume episode playback at
+     */
+    public Integer resumeAt;
+    /**
+     * The state information (old/new) for the episode
+     */
+    public Boolean isOld;
+    /**
+     * The playlist position for the episode
+     */
+    public Integer playlistPosition;
 
     /**
      * Extra information that is only valid when the app runs and is not saved.
@@ -50,7 +62,7 @@ public class EpisodeMetadata {
     /**
      * Extra information to make it possible to actually display an episode not
      * available from any podcast. It is not essential for the metadata record
-     * and is only needed if the episode is downloaded.
+     * and is only needed if the episode is downloaded or in the playlist.
      */
     /**
      * The name of the podcast this episode belongs to
@@ -65,6 +77,18 @@ public class EpisodeMetadata {
      */
     public String episodeName;
     /**
+     * The episode playback duration in seconds
+     */
+    public Integer episodeDuration;
+    /**
+     * The episode media file size in bytes
+     */
+    public Long episodeFileSize;
+    /**
+     * The episode media type
+     */
+    public String episodeMediaType;
+    /**
      * The episode publication date for this metadata
      */
     public Date episodePubDate;
@@ -78,7 +102,10 @@ public class EpisodeMetadata {
      */
     public boolean hasData() {
         return downloadId != null ||
-                filePath != null;
+                filePath != null ||
+                resumeAt != null ||
+                isOld != null ||
+                playlistPosition != null;
     }
 
     /**
@@ -88,7 +115,8 @@ public class EpisodeMetadata {
      */
     public boolean hasOnlyStateData() {
         return downloadId == null &&
-                filePath == null;
+                filePath == null &&
+                playlistPosition == null;
     }
 
     /**
@@ -112,7 +140,11 @@ public class EpisodeMetadata {
 
             // Create the episode
             result = new Episode(podcast, episodeName, episodeUrl, episodePubDate,
-                    episodeDescription);
+                    episodeMediaType, episodeDescription);
+            if (episodeDuration != null)
+                result.setDuration(episodeDuration);
+            if (episodeFileSize != null)
+                result.setMediaSize(episodeFileSize);
         }
 
         return result;

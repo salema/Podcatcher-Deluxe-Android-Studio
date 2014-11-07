@@ -569,6 +569,12 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     }
 
     @Override
+    protected void updateEpisodeMetadataUi() {
+        if (!view.isSmallPortrait())
+            super.updateEpisodeMetadataUi();
+    }
+
+    @Override
     protected void updateDownloadUi() {
         if (!view.isSmallPortrait())
             super.updateDownloadUi();

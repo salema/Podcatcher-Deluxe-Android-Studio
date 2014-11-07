@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;
 
 /**
@@ -39,9 +40,9 @@ public class EpisodeListItemView extends PodcatcherListItemView {
      */
     private static final String NO_TITLE = "???";
     /**
-     * String to use if there is no episode publication date available
+     * String to use if there is no episode information available at all
      */
-    private static final String NO_DATE = "---";
+    private static final String NO_INFO = "---";
     /**
      * Separator for date and podcast name
      */
@@ -162,7 +163,7 @@ public class EpisodeListItemView extends PodcatcherListItemView {
     private String createTitle(Episode episode) {
         String result = episode.getName();
 
-        if (result != null && !result.isEmpty()) {
+        if (result != null && !result.trim().isEmpty()) {
             final String podcastName = episode.getPodcast().getName();
 
             final String redundantPrefix1 = podcastName + ": ";
@@ -187,25 +188,22 @@ public class EpisodeListItemView extends PodcatcherListItemView {
     }
 
     private String createCaption(Episode episode, boolean showPodcastName) {
-        String result = NO_DATE;
+        final StringBuilder builder = new StringBuilder();
 
-        // Episode has no date, should not happen
-        if (episode.getPubDate() == null && showPodcastName)
-            result = episode.getPodcast().getName();
-            // This is the interesting case
-        else if (episode.getPubDate() != null) {
-            // Get a nice time span string for the age of the episode
-            String dateString = Utils.getRelativePubDate(episode);
+        if (episode.getPubDate() != null)
+            builder.append(Utils.getRelativePubDate(episode)).append(SEPARATOR);
+        if (showPodcastName)
+            builder.append(episode.getPodcast().getName()).append(SEPARATOR);
+        if (!showPodcastName && episode.getDuration() > 0)
+            builder.append(ParserUtils.formatTime(episode.getDuration())).append(SEPARATOR);
+        if (!showPodcastName && episode.getMediaSize() > 0)
+            builder.append(ParserUtils.formatFileSize(episode.getMediaSize()));
 
-            // Append podcast name
-            if (showPodcastName)
-                result = dateString + SEPARATOR + episode.getPodcast().getName();
-                // Omit podcast name
-            else
-                result = dateString;
-        }
+        String result = builder.toString();
+        if (result.endsWith(SEPARATOR))
+            result = result.substring(0, result.length() - SEPARATOR.length());
 
-        return result;
+        return result.isEmpty() ? NO_INFO : result;
     }
 
     private void updateMetadata(Episode episode, boolean isOld) {

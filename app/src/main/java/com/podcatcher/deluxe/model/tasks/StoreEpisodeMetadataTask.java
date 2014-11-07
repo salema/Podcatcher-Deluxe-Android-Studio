@@ -36,6 +36,9 @@ import java.util.Map.Entry;
 import static com.podcatcher.deluxe.model.tags.METADATA.DOWNLOAD_ID;
 import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DATE;
 import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DESCRIPTION;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_DURATION;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_FILE_SIZE;
+import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_MEDIA_TYPE;
 import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_NAME;
 import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_RESUME_AT;
 import static com.podcatcher.deluxe.model.tags.METADATA.EPISODE_STATE;
@@ -80,8 +83,7 @@ public class StoreEpisodeMetadataTask extends StoreFileTask<Map<String, EpisodeM
     @Override
     protected final Void doInBackground(Map<String, EpisodeMetadata>... params) {
         try {
-            // 1. Do house keeping and remove all metadata instances without
-            // data
+            // 1. Do house keeping and remove all metadata instances without data
             cleanMetadata(params[0]);
 
             // 2. Open the file and get a writer
@@ -126,9 +128,13 @@ public class StoreEpisodeMetadataTask extends StoreFileTask<Map<String, EpisodeM
     private void writeRecord(String key, EpisodeMetadata value) throws IOException {
         writeLine(1, "<" + METADATA + " " + EPISODE_URL + "=\"" + TextUtils.htmlEncode(key) + "\">");
 
+        // Data will only be written if present, see null checks in writeData()
         writeData(value.episodeName, EPISODE_NAME);
         if (value.episodePubDate != null)
             writeData(value.episodePubDate.getTime(), EPISODE_DATE);
+        writeData(value.episodeDuration, EPISODE_DURATION);
+        writeData(value.episodeFileSize, EPISODE_FILE_SIZE);
+        writeData(value.episodeMediaType, EPISODE_MEDIA_TYPE);
         writeData(value.episodeDescription, EPISODE_DESCRIPTION);
         writeData(value.podcastName, PODCAST_NAME);
         writeData(value.podcastUrl, PODCAST_URL);
@@ -136,7 +142,7 @@ public class StoreEpisodeMetadataTask extends StoreFileTask<Map<String, EpisodeM
         writeData(value.filePath, LOCAL_FILE_PATH);
         writeData(value.resumeAt, EPISODE_RESUME_AT);
         if (value.isOld != null && value.isOld)
-            writeData("true", EPISODE_STATE);
+            writeData(Boolean.TRUE.toString(), EPISODE_STATE);
         writeData(value.playlistPosition, PLAYLIST_POSITION);
 
         writeLine(1, "</" + METADATA + ">");

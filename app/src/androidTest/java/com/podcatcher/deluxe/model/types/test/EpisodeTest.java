@@ -74,23 +74,6 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertEquals(12 * 3600 + 59 * 60 + 33, e.parseDuration("12:59:33"));
     }
 
-    public final void testGetDuration() {
-        Podcast dummy = new Podcast(null, null);
-        EpisodeForTesting e = new EpisodeForTesting(dummy, 1);
-        e.setDuration(0);
-        assertEquals(null, e.getDurationString());
-        e.setDuration(-1);
-        assertEquals(null, e.getDurationString());
-        e.setDuration(1);
-        assertEquals("0:01", e.getDurationString());
-        e.setDuration(60);
-        assertEquals("1:00", e.getDurationString());
-        e.setDuration(3600 + 60 + 1);
-        assertEquals("1:01:01", e.getDurationString());
-        e.setDuration(12 * 3600 + 59 * 60 + 33);
-        assertEquals("12:59:33", e.getDurationString());
-    }
-
     public final void testIsExplicit() {
         Podcast wtf = new Podcast("Adam Carolla",
                 "http://feeds.feedburner.com/TheAdamCarollaPodcast");

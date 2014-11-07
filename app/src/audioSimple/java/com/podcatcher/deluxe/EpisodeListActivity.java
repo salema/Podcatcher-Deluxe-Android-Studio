@@ -19,7 +19,6 @@ package com.podcatcher.deluxe;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.podcatcher.deluxe.listeners.OnLoadDownloadsListener;
@@ -431,6 +430,14 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     protected void updateSortingUi() {
         episodeListFragment.setSortMenuItemVisibility(
                 currentEpisodeSet.size() > 1, selection.isEpisodeOrderReversed());
+    }
+
+    @Override
+    protected void updateEpisodeMetadataUi() {
+        if (!view.isSmallPortrait())
+            super.updateEpisodeMetadataUi();
+
+        episodeListFragment.refresh();
     }
 
     @Override

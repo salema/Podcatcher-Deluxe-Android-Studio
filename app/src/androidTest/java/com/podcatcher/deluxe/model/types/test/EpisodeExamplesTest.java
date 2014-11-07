@@ -106,6 +106,39 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
     }
 
     @SmallTest
+    public final void testGetDuration() {
+        for (Podcast podcast : examplePodcasts)
+            for (Episode episode : podcast.getEpisodes()) {
+                final String episodeName = "Episode " + episode.getName() + " in Podcast "
+                        + episode.getPodcast().getName();
+
+                assertFalse(episodeName, episode.getDuration() == 0);
+            }
+    }
+
+    @SmallTest
+    public final void testGetMediaLength() {
+        for (Podcast podcast : examplePodcasts) {
+            for (Episode episode : podcast.getEpisodes()) {
+                String messageStart = "Episode " + episode.getName() + "(" + episode.getPodcast().getName() + ")";
+
+                assertTrue(messageStart + " has no media file size information", episode.getMediaSize() > 0);
+            }
+        }
+    }
+
+    @SmallTest
+    public final void testGetMediaType() {
+        for (Podcast podcast : examplePodcasts) {
+            for (Episode episode : podcast.getEpisodes()) {
+                String messageStart = "Episode " + episode.getName() + "(" + episode.getPodcast().getName() + ")";
+
+                assertNotNull(messageStart + " has null media type", episode.getMediaType());
+            }
+        }
+    }
+
+    @SmallTest
     public final void testGetPodcastName() {
         for (Podcast podcast : examplePodcasts) {
             for (Episode episode : podcast.getEpisodes()) {
@@ -146,18 +179,5 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
                         new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7)));
             }
         }
-    }
-
-    @SmallTest
-    public final void testGetDuration() {
-        for (Podcast podcast : examplePodcasts)
-            for (Episode episode : podcast.getEpisodes()) {
-                final String episodeName = "Episode " + episode.getName() + " in Podcast "
-                        + episode.getPodcast().getName();
-
-                assertEquals(episodeName, episode.getDuration() > 0,
-                        episode.getDurationString() != null);
-                assertFalse(episodeName, episode.getDuration() == 0);
-            }
     }
 }

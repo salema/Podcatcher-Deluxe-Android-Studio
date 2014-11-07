@@ -27,6 +27,7 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
 import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.OnDeleteDownloadsConfirmationListener;
@@ -44,6 +45,10 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
      * The maximum number of episodes to download at once
      */
     private static final int MAX_DOWNLOADS = 25;
+    /**
+     * Separator for episode duration total and size total
+     */
+    private static final String SEPARATOR = " • ";
 
     /**
      * The owning fragment
@@ -190,6 +195,7 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
                 final int checkedItemCount = fragment.getListView().getCheckedItemCount();
                 mode.setTitle(fragment.getResources()
                         .getQuantityString(R.plurals.episodes, checkedItemCount, checkedItemCount));
+                mode.setSubtitle(createSubtitle());
             } catch (NullPointerException npe) {
                 // This also avoids crashes when the app has been hidden for
                 // some time while the context mode was activated and (parts of)
@@ -232,5 +238,37 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
         // Hide the select all item if all items are selected
         selectAllMenuItem.setVisible(fragment.getListView().getCheckedItemCount() !=
                 fragment.getListAdapter().getCount());
+    }
+
+    private String createSubtitle() {
+        int totalDuration = 0;
+        int totalSize = 0;
+
+        final SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
+        for (int position = 0; position < fragment.getListAdapter().getCount(); position++) {
+            if (checkedItems.get(position)) {
+                final Episode episode = (Episode) fragment.getListAdapter().getItem(position);
+
+                if (episode.getDuration() > 0)
+                    totalDuration += episode.getDuration();
+                if (episode.getMediaSize() > 0)
+                    totalSize += episode.getMediaSize();
+            }
+        }
+
+        final StringBuilder builder = new StringBuilder();
+
+        if (totalDuration > 0)
+            builder.append(ParserUtils.formatTime(totalDuration)).append(SEPARATOR);
+        if (totalSize > 0)
+            builder.append(ParserUtils.formatFileSize(totalSize));
+
+        String result = builder.toString();
+        if (result.endsWith(SEPARATOR))
+            result = result.substring(0, result.length() - SEPARATOR.length());
+
+        // Only show a subtitle if there is any interesting information, i.e. more than
+        // one episode is selected and duration and size are available non-zero
+        return checkedItems.size() > 1 && !result.isEmpty() ? result : null;
     }
 }

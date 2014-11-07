@@ -69,7 +69,7 @@ import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
  *
  * @see EpisodeManager
  */
-public abstract class EpisodeDownloadManager extends EpisodeBaseManager implements
+public abstract class EpisodeDownloadManager extends EpisodeInformationManager implements
         DownloadTaskListener {
 
     /**
@@ -277,6 +277,7 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
         final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
         if (meta != null) {
             meta.filePath = episodeFile.getAbsolutePath();
+            updateMediaFileSize(episode, episodeFile.length());
 
             for (OnDownloadEpisodeListener listener : downloadListeners)
                 listener.onDownloadSuccess(episode);
@@ -586,15 +587,10 @@ public abstract class EpisodeDownloadManager extends EpisodeBaseManager implemen
                         Intent intent = new Intent(podcatcher.getApplicationContext(),
                                 PodcastActivity.class)
                                 .putExtra(EpisodeListActivity.MODE_KEY, ContentMode.SINGLE_PODCAST)
-                                .putExtra(EpisodeListActivity.PODCAST_URL_KEY,
-                                        download.getPodcast().getUrl())
-                                .putExtra(EpisodeActivity.EPISODE_URL_KEY,
-                                        download.getMediaUrl())
-                                .addFlags(
-                                        Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                                Intent.FLAG_ACTIVITY_NEW_TASK
-                                                | Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                );
+                                .putExtra(EpisodeListActivity.PODCAST_URL_KEY, download.getPodcast().getUrl())
+                                .putExtra(EpisodeActivity.EPISODE_URL_KEY, download.getMediaUrl())
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
                         // Make the app switch to it.
                         podcatcher.startActivity(intent);

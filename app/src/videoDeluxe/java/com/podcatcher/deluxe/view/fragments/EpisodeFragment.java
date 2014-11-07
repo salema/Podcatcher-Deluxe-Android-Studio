@@ -43,6 +43,7 @@ import android.widget.TextView;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.listeners.OnRequestFullscreenListener;
+import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
 
@@ -80,10 +81,6 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      * Flag for the state of the download menu item
      */
     private boolean downloadMenuItemState = true;
-    /**
-     * Flag to indicate whether the episode date should be shown
-     */
-    private boolean showEpisodeDate = false;
     /**
      * Flag for show new icon state
      */
@@ -160,6 +157,14 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      * The divider view between title and description
      */
     private View dividerView;
+    /**
+     * The metadata box label
+     */
+    private TextView metadataBoxTextView;
+    /**
+     * The metadata box label divider
+     */
+    private View metadataBoxDivider;
     /**
      * The episode video view
      */
@@ -255,6 +260,8 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
         stateIconView = (ImageView) view.findViewById(R.id.state_icon);
         downloadIconView = (ImageView) view.findViewById(R.id.download_icon);
         dividerView = view.findViewById(R.id.episode_divider);
+        metadataBoxTextView = (TextView) view.findViewById(R.id.metadata_box);
+        metadataBoxDivider = view.findViewById(R.id.metadata_box_divider);
 
         // Get and configure the web view showing the episode description
         descriptionView = (WebView) view.findViewById(R.id.episode_description);
@@ -339,13 +346,12 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
             titleView.setText(currentEpisode.getName());
             subtitleView.setText(currentEpisode.getPodcast().getName());
             // Episode publication data
-            if (showEpisodeDate && currentEpisode.getPubDate() != null)
+            if (currentEpisode.getPubDate() != null)
                 subtitleView.setText(subtitleView.getText() + SEPARATOR
                         + Utils.getRelativePubDate(currentEpisode));
-            // Episode duration
-            if (currentEpisode.getDurationString() != null)
-                subtitleView.setText(subtitleView.getText() + SEPARATOR
-                        + currentEpisode.getDurationString());
+
+            // Episode metadata
+            metadataBoxTextView.setText(createMetadataBoxText());
 
             // Set episode description
             final boolean isNewWebView = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -455,14 +461,14 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
     }
 
     /**
-     * Set whether the fragment should show the episode date for the episode
-     * shown. Change will be reflected upon next call of
-     * {@link #setEpisode(Episode)}
-     *
-     * @param show Whether to show the episode date.
+     * Update the episode metadata displayed. This will check the metadata for the
+     * currently set episode and make sure any updated values are shown.
      */
-    public void setShowEpisodeDate(boolean show) {
-        this.showEpisodeDate = show;
+    public void updateEpisodeMetadata() {
+        if (viewCreated && currentEpisode != null) {
+            metadataBoxTextView.setText(createMetadataBoxText());
+            updateUiElementVisibility();
+        }
     }
 
     /**
@@ -518,9 +524,31 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
             titleView.setVisibility(currentEpisode == null ? GONE : VISIBLE);
             subtitleView.setVisibility(currentEpisode == null ? GONE : VISIBLE);
             dividerView.setVisibility(currentEpisode == null ? GONE : VISIBLE);
+            metadataBoxTextView.setVisibility(currentEpisode == null ? GONE :
+                    metadataBoxTextView.getText().length() == 0 ? GONE : VISIBLE);
+            metadataBoxDivider.setVisibility(currentEpisode == null ? GONE :
+                    metadataBoxTextView.getText().length() == 0 || showVideo ? GONE : VISIBLE);
             videoView.setVisibility(showVideo ? VISIBLE : GONE);
             descriptionView.setVisibility(currentEpisode == null ||
                     (showVideo && videoFillsSpace) ? GONE : VISIBLE);
         }
+    }
+
+    private String createMetadataBoxText() {
+        final StringBuilder builder = new StringBuilder();
+
+        if (currentEpisode.getDuration() > 0)
+            builder.append(ParserUtils.formatTime(currentEpisode.getDuration())).append(SEPARATOR);
+        if (currentEpisode.getMediaSize() > 0)
+            builder.append(ParserUtils.formatFileSize(currentEpisode.getMediaSize())).append(SEPARATOR);
+        if (currentEpisode.getMediaType() != null)
+            builder.append(currentEpisode.getMediaType());
+
+        String result = builder.toString();
+        if (result.endsWith(SEPARATOR))
+            result = result.substring(0, result.length() - SEPARATOR.length());
+
+        // At least one numerical information should be there, otherwise return null
+        return currentEpisode.getDuration() > 0 || currentEpisode.getMediaSize() > 0 ? result : null;
     }
 }
