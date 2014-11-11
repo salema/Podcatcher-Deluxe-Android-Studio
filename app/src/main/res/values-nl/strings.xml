@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of PodCatcher Deluxe.
+ *
+ * PodCatcher Deluxe is free software: you can redistribute it 
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * PodCatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Verdeler</string>
+    <string name="help">Help</string>
+    <string name="no_browser">Geen brpwser beschikbaar!</string>
+    <string name="wait">Wacht</string>
+    <string name="connect">Verbind</string>
+    <string name="load">Laden</string>
+    <string name="stop">Stop</string>
+    <string name="cancel">Annuleer</string>
+    <string name="remove">Verwijderen</string>
+    <string name="parse">Lezen</string>
+    <string name="play">Afspelen</string>
+    <string name="pause">Pauzeren</string>
+    <string name="resume">Hervatten</string>
+    <string name="first_run_title">Welkom</string>
+    <string name="first_run_text">De eerste stap is om 1 of meer podcasts toe te voegen. Gebruik de groene knop onderaan om de podcasts toe te voegen. Deze functie biedt tevens podcast suggesties en OPML import mogelijkheden.</string>
+    <string name="first_run_add">Voeg podcasts toe</string>
+    <string name="player_buffering">Bufferen</string>
+    <string name="player_label">op %1$s van %2$s</string>
+    <string name="player_label_short">%1$s van %2$s</string>
+    <string name="player_error">Afspelen mislukt</string>
+    <string name="podcast_image">Podcast logo</string>
+    <string name="podcast_none">Geen podcast toegevoegd</string>
+    <string name="podcast_none_selected">Geen podcast geselecteerd</string>
+    <string name="podcast_select_all">Selecteer alle podcasts</string>
+    <plurals name="podcasts">
+        <item quantity="one">1 podcast</item>
+        <item quantity="other">%d podcasts</item>
+    </plurals>
+    <string name="podcast_add_title">Nieuwe podcast</string>
+    <string name="podcast_add_button">Toevoegen</string>
+    <string name="podcast_enter_url_here">Kopieer podcast adres hier</string>
+    <string name="podcast_load_error">Laden van podcast is mislukt!</string>
+    <string name="podcast_load_error_access_denied">Laden van podcast is mislukt omdat de toegang tot de feed is geweigerd.</string>
+    <string name="podcast_load_error_explicit">Laden van podcast is mislukt omdat de toegang tot expliciete content is geblokkeerd in dit gebruikersprofiel.</string>
+    <string name="podcast_load_error_not_reachable">Laden van podcast is mislukt omdat de server niet kon worden bereikt of omdat het adres niet klopt.</string>
+    <string name="podcast_load_error_not_parsable">Laden van podcast is mislukt omdat het adres niet naar een juiste podcast feed verwijst.</string>
+    <string name="podcast_load_multiple_progress">%1$d van %2$d podcasts</string>
+    <string name="podcast_load_multiple_error">The podcast\n\"%s\"\nkon niet worden geladen</string>
+    <string name="podcast_load_multiple_error_all">Dowloaden van alle podcasts is mislukt, check uw internetverbinding</string>
+    <string name="podcast_block_explicit">Blokkeer podcasts met expliciete content</string>
+    <string name="episode_none">Geen afleveringen in deze podcast</string>
+    <string name="episode_none_all_podcasts">Geen afleveringen</string>
+    <string name="episode_no_description">Geen omschrijving beschikbaar</string>
+    <string name="episode_none_selected">Geen aflevering geselecteerd</string>
+    <plurals name="episodes">
+        <item quantity="one">1 aflevering</item>
+        <item quantity="other">%d afleveringen</item>
+    </plurals>
+    <string name="episodes_select_all">Selecteer alles</string>
+    <string name="episodes_sort_toggle">Omgekeerde volgorde</string>
+    <string name="download">Download</string>
+    <string name="downloads">Downloads</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="one">Verwijder download</item>
+        <item quantity="other">Verwijder %d downloads</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="one">Deze aflevering is niet langer offline beschikbaar</item>
+        <item quantity="other">Deze afleveringen zijn niet langer offline beschikbaar</item>
+    </plurals>
+    <string name="downloads_none">Geen downloads. Gebruik het download icoon in het menu om afleveringen offline beschikbaar maken</string>
+    <string name="download_started">Download gestart voor \n\"%s\"</string>
+    <string name="download_failed">Download mislukt voor \n\"%s\"</string>
+    <string name="download_failed_cannot_write">Download mislukt voor \n\"%s\"\nomdat het bestand niet kan worden weggeschreven in de download map.</string>
+    <string name="download_failed_no_space">Download mislukt voor \n\"%s\"\nomdat er niet voldoende opslagruimte is.</string>
+    <string name="download_failed_download_app_disabled">Download mislukt voor \n\"%s\"\nomdat de Android download app is uitgeschakeld.</string>
+    <string name="auth">Authorisatie</string>
+    <string name="auth_edit">Wijzig authorisatie</string>
+    <string name="auth_username">Gebruikersnaam</string>
+    <string name="auth_password">Wachtwoord</string>
+    <string name="auth_submit">Verzenden</string>
+    <string name="file_select">Selecteren</string>
+    <string name="file_select_file">Selecteer bestand</string>
+    <string name="file_select_folder">Selecteer map</string>
+    <string name="file_select_folder_empty">De map is leeg</string>
+    <string name="file_select_access_denied">Toegang geweigerd</string>
+    <string name="opml_import">Importeer OPML</string>
+    <string name="opml_import_failed">OPML import mislukt</string>
+    <string name="opml_export">Exporteer OPML</string>
+    <string name="opml_export_success">OPML bestand opgeslagen</string>
+    <string name="opml_export_success_at">OPML bestand opgeslagen in\n%s</string>
+    <string name="opml_export_failed">OPML export mislukt</string>
+    <string name="suggestions">Suggesties</string>
+    <string name="suggested_podcasts">Voorgestelde podcasts</string>
+    <string name="suggestion_listen">Beluisteren</string>
+    <string name="suggestion_watch">Bekijken</string>
+    <string name="suggestion_confirm_explicit">Deze podcast bevat expliciete content. Weet u zeker dat u deze wilt toevoegen?</string>
+    <string name="suggestions_none">Geen suggesties. Pas uw filters aan alstublieft</string>
+    <string name="suggestions_reset_filters">Reset filters</string>
+    <string name="suggestions_load_error">Suggesties konden niet worden geladen. Check alstublieft uw internetverbinding!</string>
+    <string name="suggestions_send">Geef podcast suggesties</string>
+    <string name="sync_dropbox_unlink_title">Ontkoppel Dropbox</string>
+    <string name="sync_dropbox_unlink_message">Wilt u echt uw Dropbox account ontkoppelen van deze app? Hoewel dit alle synchronisaties via Dropbox voor nu zal beeindigen, kunt u dit herstellen door deze app later weer aan Dropbox te koppelen.</string>
+    <string name="sync_dropbox_unlink_button">Ontkoppel</string>
+    <string name="sync_gpodder_config_title">Configureer gpodder.net</string>
+    <string name="sync_gpodder_login_invalid">Inloggen bij gpodder.net mislukt, check alstublieft uw login!</string>
+    <string name="sync_gpodder_device_id">Apparaat ID</string>
+    <string name="preferences">Voorkeursinstellingen</string>
+    <string name="pref_select_all_on_start_title">Selecteer alles bij opstarten</string>
+    <string name="pref_select_all_on_start_summary">Laad alle afleveringen als de app opstart</string>
+    <string name="pref_sync_title">Synchronisatie</string>
+    <string name="pref_sync_none">Momenteel uitgeschakeld</string>
+    <string name="pref_sync_last_run">Laatste volledige synchronisatie: %1$s</string>
+    <string name="pref_sync_now">Nu synchroniseren</string>
+</resources>
