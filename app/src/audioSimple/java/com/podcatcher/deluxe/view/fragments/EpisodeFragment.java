@@ -275,12 +275,13 @@ public class EpisodeFragment extends Fragment {
                             WebSettings.LayoutAlgorithm.NORMAL :
                     WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
+            final String webViewData = (!hasHtmlDescription ?
+                    currentEpisode.getDescription() == null ?
+                            getString(R.string.episode_no_description) :
+                            currentEpisode.getDescription() :
+                    currentEpisode.getLongDescription()) + ad;
             descriptionView.loadDataWithBaseURL(null, // Even a null baseURL somehow helps
-                    !hasHtmlDescription ?
-                            currentEpisode.getDescription() == null ?
-                                    getString(R.string.episode_no_description) :
-                                    currentEpisode.getDescription() :
-                            currentEpisode.getLongDescription(),
+                    webViewData,
                     EPISODE_DESCRIPTION_MIME_TYPE,
                     encoding != null ? encoding : EPISODE_DESCRIPTION_DEFAULT_ENCODING,
                     null);
