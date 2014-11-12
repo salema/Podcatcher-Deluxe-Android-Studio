@@ -109,8 +109,10 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
      * credentials for all podcasts in the list. The default is
      * <code>false</code>. Use with care!
      *
-     * @param write Whether credentials should be written to output.
+     * @param write Whether credentials should be written to output,
+     *              defaults to <code>false</code>.
      */
+    @SuppressWarnings("SameParameterValue")
     public void setWriteAuthorization(boolean write) {
         this.writeAuthorization = write;
     }

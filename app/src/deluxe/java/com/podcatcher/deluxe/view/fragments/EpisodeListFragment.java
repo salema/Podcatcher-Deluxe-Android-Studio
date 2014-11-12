@@ -445,8 +445,10 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
      * Set to <code>true</code> to make list items (episodes) "flingable". Uses
      * the {@link SwipeReorderListViewTouchListener} and its callback methods.
      *
-     * @param enable Whether list item can be swiped.
+     * @param enable Whether list item can be swiped. This will switch back to
+     *               <code>false</code> every time the fragment is reset.
      */
+    @SuppressWarnings("SameParameterValue")
     public void setEnableSwipeReorder(boolean enable) {
         this.enableSwipeReorder = enable;
     }

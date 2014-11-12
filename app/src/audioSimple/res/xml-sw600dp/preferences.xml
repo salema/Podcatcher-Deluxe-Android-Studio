@@ -21,12 +21,12 @@
         android:defaultValue="false"
         android:key="select_all_on_startup"
         android:summary="@string/pref_select_all_on_start_summary"
-        android:title="@string/pref_select_all_on_start_title"/>
+        android:title="@string/pref_select_all_on_start_title" />
     <com.podcatcher.deluxe.preferences.SynchronizationPreference
         android:key="synchronization"
         android:title="@string/pref_sync_title">
         <intent
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:targetPackage="net.alliknow.podcatcher"/>
+            android:targetPackage="net.alliknow.podcatcher" />
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
 </PreferenceScreen>

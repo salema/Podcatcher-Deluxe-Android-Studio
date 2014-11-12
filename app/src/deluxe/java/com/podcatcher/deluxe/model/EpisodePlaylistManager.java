@@ -29,7 +29,6 @@ import com.podcatcher.deluxe.model.types.Podcast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -78,10 +77,7 @@ public abstract class EpisodePlaylistManager extends EpisodeDownloadManager {
         // This is only possible if the metadata is available
         if (metadata != null) {
             // Find playlist entries from metadata
-            Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, EpisodeMetadata> entry = iterator.next();
-
+            for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                 // Find records for playlist entries
                 if (entry.getValue().playlistPosition != null) {
                     // Create and add the downloaded episode
@@ -269,11 +265,9 @@ public abstract class EpisodePlaylistManager extends EpisodeDownloadManager {
             // Find the metadata information holder
             EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
             if (meta != null && meta.playlistPosition != null) {
-                // Update the playlist positions for all entries beyond the one
-                // we are removing
-                Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    EpisodeMetadata other = iterator.next().getValue();
+                // Update the playlist positions for all entries beyond the one we are removing
+                for (Entry<String, EpisodeMetadata> stringEpisodeMetadataEntry : metadata.entrySet()) {
+                    EpisodeMetadata other = stringEpisodeMetadataEntry.getValue();
 
                     // Find records for playlist entries
                     if (other.playlistPosition != null

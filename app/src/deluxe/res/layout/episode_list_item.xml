@@ -16,8 +16,7 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<com.podcatcher.deluxe.view.EpisodeListItemView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.podcatcher.deluxe.view.EpisodeListItemView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,7 +33,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_media_new"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/playlist_position"
@@ -51,7 +50,7 @@
         android:textColor="@color/text_secondary"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:text="13"/>
+        tools:text="13" />
 
     <ImageView
         android:id="@+id/resume_icon"
@@ -63,7 +62,7 @@
         android:scaleType="centerInside"
         android:src="@drawable/ic_media_resume_dark"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/download_icon"
@@ -75,7 +74,7 @@
         android:scaleType="centerInside"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:src="@drawable/ic_media_downloading"/>
+        tools:src="@drawable/ic_media_downloading" />
 
     <LinearLayout
         android:id="@+id/list_item_main_content"
@@ -91,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
-            tools:text="Episode title"/>
+            tools:text="Episode title" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -103,7 +102,7 @@
                 android:id="@+id/list_item_caption"
                 style="@style/ListItem.SubTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <ProgressBar
                 android:id="@+id/list_item_progress"
@@ -115,7 +114,7 @@
                 android:layout_marginRight="@dimen/list_item_padding"
                 android:indeterminate="true"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
         </FrameLayout>
     </LinearLayout>
 </com.podcatcher.deluxe.view.EpisodeListItemView>

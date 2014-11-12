@@ -17,15 +17,15 @@
  */
 -->
 <com.podcatcher.deluxe.view.FileListItemView xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/file_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerInside"/>
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/file_name"
@@ -33,5 +33,5 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:ellipsize="middle"/>
+        android:ellipsize="middle" />
 </com.podcatcher.deluxe.view.FileListItemView>

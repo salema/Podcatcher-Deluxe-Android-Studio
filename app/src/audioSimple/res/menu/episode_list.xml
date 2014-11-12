@@ -16,11 +16,13 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/sort_menuitem"
         android:icon="@drawable/ic_menu_sort"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="@string/episodes_sort_toggle"/>
+        android:title="@string/episodes_sort_toggle"
+        tools:ignore="AlwaysShowAction" />
 </menu>

@@ -17,10 +17,10 @@
  */
 -->
 <com.podcatcher.deluxe.view.DownloadFolderItemView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content"
-                                                   android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/download_folder_icon"
@@ -29,7 +29,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_internal_storage"/>
+        android:src="@drawable/ic_internal_storage" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
-            tools:text="Internal storage (recommended)"/>
+            tools:text="Internal storage (recommended)" />
 
         <TextView
             android:id="@+id/download_folder_path"
@@ -54,6 +54,6 @@
             android:layout_height="0dp"
             android:layout_weight="3"
             android:ellipsize="middle"
-            tools:text="/storage/internal/really/very/long/path/to/the/Podcasts/dir"/>
+            tools:text="/storage/internal/really/very/long/path/to/the/Podcasts/dir" />
     </LinearLayout>
 </com.podcatcher.deluxe.view.DownloadFolderItemView>

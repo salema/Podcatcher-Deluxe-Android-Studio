@@ -34,7 +34,7 @@ public class Utils {
      *                <code>null</code> and needs valid publication date.
      * @return A relative date string describing the relation between 'now' and
      * the episode's release time or an empty string ("") if the
-     * publication date cannot be determinated for the episode.
+     * publication date cannot be determined for the episode.
      */
     public static String getRelativePubDate(Episode episode) {
         if (episode != null && episode.getPubDate() != null) {

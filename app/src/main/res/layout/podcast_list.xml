@@ -17,13 +17,13 @@
  */
 -->
 <com.podcatcher.deluxe.view.DropShadowLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   xmlns:pcd="http://schemas.android.com/apk/res-auto"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:orientation="vertical"
-                                                   pcd:shadowBottom="@bool/podcast_list_shadow_bottom"
-                                                   pcd:shadowRight="@bool/podcast_list_shadow_right">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:pcd="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    pcd:shadowBottom="@bool/podcast_list_shadow_bottom"
+    pcd:shadowRight="@bool/podcast_list_shadow_right">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
 
         <ListView
             android:id="@id/android:list"
@@ -42,14 +42,14 @@
             android:layout_height="match_parent"
             android:choiceMode="multipleChoiceModal"
             android:listSelector="@drawable/list_selector"
-            tools:listitem="@android:layout/simple_list_item_2"/>
+            tools:listitem="@android:layout/simple_list_item_2" />
 
         <ViewStub
             android:id="@+id/empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout="@layout/podcast_list_empty"/>
+            android:layout="@layout/podcast_list_empty" />
     </FrameLayout>
 
     <ImageView
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/divider"
         android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright"/>
+        android:src="@android:drawable/divider_horizontal_bright" />
 
     <ImageView
         android:id="@+id/podcast_image"
@@ -68,5 +68,5 @@
         android:scaleType="center"
         android:src="@drawable/default_podcast_logo"
         tools:layout_height="200dp"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 </com.podcatcher.deluxe.view.DropShadowLinearLayout>

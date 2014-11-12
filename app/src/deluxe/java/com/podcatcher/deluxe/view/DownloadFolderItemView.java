@@ -68,8 +68,8 @@ public class DownloadFolderItemView extends RelativeLayout {
     /**
      * Make the view update all its children to represent input given.
      *
-     * @param folder The file to represent
-     * @param file
+     * @param folder The download folder to represent (enum value)
+     * @param file   The actual filesystem object to retrieve path from
      */
     public void show(PreferredDownloadFolderAdapter.PreferredDownloadFolder folder, File file) {
         switch (folder) {

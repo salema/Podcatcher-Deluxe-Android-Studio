@@ -225,7 +225,7 @@ public class AddPodcastFragment extends DialogFragment {
         ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
                 Context.CLIPBOARD_SERVICE);
 
-        // Get the value to paste (make this failsafe)
+        // Get the value to paste (make this fail safe)
         if (clipboard != null && clipboard.hasPrimaryClip()
                 && clipboard.getPrimaryClip().getItemCount() > 0) {
             CharSequence candidate = clipboard.getPrimaryClip().getItemAt(0).getText();

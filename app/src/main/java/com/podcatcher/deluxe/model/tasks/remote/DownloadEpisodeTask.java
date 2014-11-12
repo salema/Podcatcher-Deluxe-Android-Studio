@@ -191,7 +191,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
             localFile.getParentFile().mkdirs();
 
             // Create the request
-            Request download = null;
+            Request download;
             try {
                 download = new Request(Uri.parse(episode.getMediaUrl()))
                         .setDestinationUri(Uri.fromFile(localFile))

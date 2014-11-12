@@ -17,17 +17,17 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:orientation="vertical"
-              android:padding="20dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
         style="@style/ListView.Empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/suggestions_none"/>
+        android:text="@string/suggestions_none" />
 
     <Button
         android:id="@+id/reset_filters_button"
@@ -39,5 +39,5 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="@string/suggestions_reset_filters"
-        android:textColor="@drawable/button_label"/>
+        android:textColor="@drawable/button_label" />
 </LinearLayout>

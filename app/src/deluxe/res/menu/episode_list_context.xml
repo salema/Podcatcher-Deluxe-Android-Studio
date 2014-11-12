@@ -16,39 +16,44 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/episode_new_contextmenuitem"
         android:icon="@drawable/ic_menu_new"
         android:showAsAction="always"
-        android:title="@string/episodes_filter_new"/>
+        android:title="@string/episodes_filter_new"
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/episode_old_contextmenuitem"
         android:icon="@drawable/ic_menu_old"
         android:showAsAction="always"
-        android:title="@string/episodes_old"/>
+        android:title="@string/episodes_old"
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/episode_add_to_playlist_contextmenuitem"
         android:icon="@drawable/ic_menu_playlist_add"
         android:showAsAction="always"
-        android:title="@string/playlist_add"/>
+        android:title="@string/playlist_add"
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/episode_remove_from_playlist_contextmenuitem"
         android:icon="@drawable/ic_menu_playlist_remove"
         android:showAsAction="always"
-        android:title="@string/playlist_remove"/>
+        android:title="@string/playlist_remove"
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/episode_download_contextmenuitem"
         android:icon="@drawable/ic_menu_download"
         android:showAsAction="ifRoom"
-        android:title="@string/download"/>
+        android:title="@string/download" />
     <item
         android:id="@+id/episode_remove_contextmenuitem"
         android:icon="@drawable/ic_menu_delete"
         android:showAsAction="ifRoom"
-        android:title="@string/remove"/>
+        android:title="@string/remove" />
     <item
         android:id="@+id/episode_select_all_contextmenuitem"
         android:showAsAction="never"
-        android:title="@string/episodes_select_all"/>
+        android:title="@string/episodes_select_all" />
 </menu>

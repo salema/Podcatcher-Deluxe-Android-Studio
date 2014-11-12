@@ -21,27 +21,27 @@
         android:defaultValue="false"
         android:key="select_all_on_startup"
         android:summary="@string/pref_select_all_on_start_summary"
-        android:title="@string/pref_select_all_on_start_title"/>
+        android:title="@string/pref_select_all_on_start_title" />
     <com.podcatcher.deluxe.preferences.SynchronizationPreference
         android:key="synchronization"
         android:title="@string/pref_sync_title">
         <intent
             android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:targetPackage="com.podcatcher.deluxe"/>
+            android:targetPackage="com.podcatcher.deluxe" />
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
     <PreferenceCategory android:title="@string/downloads">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="auto_download"
             android:summary="@string/pref_auto_download_summary"
-            android:title="@string/pref_auto_download_title"/>
+            android:title="@string/pref_auto_download_title" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="auto_delete"
             android:summary="@string/pref_auto_delete_summary"
-            android:title="@string/pref_auto_delete_title"/>
+            android:title="@string/pref_auto_delete_title" />
         <com.podcatcher.deluxe.preferences.DownloadFolderPreference
             android:key="download_folder"
-            android:title="@string/pref_download_folder_title"/>
+            android:title="@string/pref_download_folder_title" />
     </PreferenceCategory>
 </PreferenceScreen>

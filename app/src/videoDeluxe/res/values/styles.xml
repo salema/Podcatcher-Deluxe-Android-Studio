@@ -18,5 +18,5 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppFullscreen" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen"/>
+    <style name="AppFullscreen" parent="android:Theme.Holo.Light.NoActionBar.Fullscreen" />
 </resources>

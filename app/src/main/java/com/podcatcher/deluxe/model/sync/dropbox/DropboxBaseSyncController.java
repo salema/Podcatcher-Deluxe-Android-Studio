@@ -37,7 +37,6 @@ import com.podcatcher.deluxe.model.sync.SyncController;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -221,10 +220,8 @@ abstract class DropboxBaseSyncController extends SyncController
             Log.d(TAG, "Table: " + table.getId());
 
             try {
-                final Iterator<DbxRecord> records = table.query().iterator();
-
-                while (records.hasNext())
-                    Log.d(TAG, "Record: " + records.next());
+                for (DbxRecord dbxRecord : table.query())
+                    Log.d(TAG, "Record: " + dbxRecord);
             } catch (DbxException e) {
                 Log.d(TAG, "Exception while printing local store", e);
             }
@@ -234,12 +231,8 @@ abstract class DropboxBaseSyncController extends SyncController
     private void clearStore() throws DbxException {
         Set<DbxTable> tables = store.getTables();
 
-        for (DbxTable table : tables) {
-            final Iterator<DbxRecord> records = table.query().iterator();
-
-            while (records.hasNext())
-                records.next().deleteRecord();
-        }
+        for (DbxTable table : tables)
+            for (DbxRecord dbxRecord : table.query()) dbxRecord.deleteRecord();
 
         syncStore();
         Log.d(TAG, "Dropbox Datastore cleared.");

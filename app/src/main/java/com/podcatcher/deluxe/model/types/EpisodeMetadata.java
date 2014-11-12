@@ -35,7 +35,7 @@ public class EpisodeMetadata {
      */
     public Long downloadId;
     /**
-     * The absolute local filepath to the downloaded copy of this episode.
+     * The absolute local file path to the downloaded copy of this episode.
      */
     public String filePath;
     /**

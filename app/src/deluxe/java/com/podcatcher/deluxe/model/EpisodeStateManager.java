@@ -30,7 +30,6 @@ import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -242,13 +241,8 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
                 public void run() {
                     Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND);
 
-                    // Clean all state meta data information for episodes of the
-                    // deleted feed
-                    Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet()
-                            .iterator();
-                    while (iterator.hasNext()) {
-                        final Entry<String, EpisodeMetadata> entry = iterator.next();
-
+                    // Clean all state meta data information for episodes of the deleted feed
+                    for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                         // Find metadata records with matching podcast
                         if (podcast.getUrl().equals(entry.getValue().podcastUrl)
                                 && entry.getValue().hasOnlyStateData()) {
@@ -285,11 +279,7 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
 
                     // Clean all state meta data information for episodes no
                     // longer present in the podcast feed
-                    Iterator<Entry<String, EpisodeMetadata>> iterator = metadata.entrySet()
-                            .iterator();
-                    while (iterator.hasNext()) {
-                        final Entry<String, EpisodeMetadata> entry = iterator.next();
-
+                    for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                         // Podcast matches
                         if (podcast.getUrl().equals(entry.getValue().podcastUrl)) {
                             boolean stillInPodcast = false;

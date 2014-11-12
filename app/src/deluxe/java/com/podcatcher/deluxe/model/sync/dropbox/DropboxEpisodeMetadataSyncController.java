@@ -28,7 +28,6 @@ import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 
 import java.util.AbstractMap;
-import java.util.Iterator;
 import java.util.Map.Entry;
 
 /**
@@ -89,10 +88,7 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
                 episodeManager.blockUntilEpisodeMetadataIsLoaded();
 
                 // Walk through all the records and see what we need to do
-                final Iterator<DbxRecord> iterator = episodeTable.query().iterator();
-                while (iterator.hasNext()) {
-                    final DbxRecord record = iterator.next();
-
+                for (DbxRecord record : episodeTable.query()) {
                     // Only act if we know the podcast
                     if (!record.hasField(PODCAST_URL) ||
                             podcastManager.findPodcastForUrl(record.getString(PODCAST_URL)) == null)

@@ -18,7 +18,7 @@
 package com.podcatcher.deluxe.model.types;
 
 /**
- * Language a podcast is broadcasted in.
+ * Language a podcast is published in.
  */
 @SuppressWarnings("javadoc")
 public enum Language {

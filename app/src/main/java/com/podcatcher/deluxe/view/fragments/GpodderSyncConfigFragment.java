@@ -125,7 +125,7 @@ public class GpodderSyncConfigFragment extends DialogFragment {
         final SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        // Find the widgets and prefill them
+        // Find the widgets and pre-fill them
         this.usernameEditText = (EditText) content.findViewById(R.id.username);
         usernameEditText.setText(preferences.getString(GpodderSyncController.USERNAME_KEY, ""));
         this.passwordEditText = (EditText) content.findViewById(R.id.password);

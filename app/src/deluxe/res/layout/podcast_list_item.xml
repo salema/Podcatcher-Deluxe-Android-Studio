@@ -17,9 +17,9 @@
  */
 -->
 <com.podcatcher.deluxe.view.PodcastListItemView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:paddingRight="@dimen/podcast_list_shadow_padding">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="@dimen/podcast_list_shadow_padding">
 
     <ImageView
         android:id="@+id/podcast_logo"
@@ -29,7 +29,7 @@
         android:contentDescription="@string/podcast_image"
         android:padding="1dp"
         android:scaleType="fitXY"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             style="@style/ListItem.Title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"/>
+            android:layout_weight="4" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                     style="@style/ListItem.SubTitle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/list_item_caption_count"
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingRight="4dp"
-                    android:textColor="@color/text_secondary"/>
+                    android:textColor="@color/text_secondary" />
             </LinearLayout>
 
             <com.podcatcher.deluxe.view.HorizontalProgressView
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:indeterminate="true"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
 </com.podcatcher.deluxe.view.PodcastListItemView>

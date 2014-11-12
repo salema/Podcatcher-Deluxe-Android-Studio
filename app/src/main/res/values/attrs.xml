@@ -18,7 +18,7 @@
 -->
 <resources>
     <declare-styleable name="DropShadowLinearLayout">
-        <attr name="shadowRight" format="reference|boolean"/>
-        <attr name="shadowBottom" format="reference|boolean"/>
+        <attr name="shadowRight" format="reference|boolean" />
+        <attr name="shadowBottom" format="reference|boolean" />
     </declare-styleable>
 </resources>

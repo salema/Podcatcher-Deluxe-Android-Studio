@@ -16,29 +16,31 @@
  * along with PodCatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/podcast_remove_contextmenuitem"
         android:icon="@drawable/ic_menu_delete"
         android:orderInCategory="1"
         android:showAsAction="always"
-        android:title="@string/remove"/>
+        android:title="@string/remove"
+        tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/edit_auth_contextmenuitem"
         android:icon="@drawable/ic_menu_authorization"
         android:orderInCategory="10"
         android:showAsAction="ifRoom"
-        android:title="@string/auth_edit"/>
+        android:title="@string/auth_edit" />
     <item
         android:id="@+id/opml_export_contextmenuitem"
         android:icon="@drawable/ic_menu_export"
         android:orderInCategory="11"
         android:showAsAction="ifRoom"
-        android:title="@string/opml_export"/>
+        android:title="@string/opml_export" />
     <item
         android:id="@+id/suggest_podcast_contextmenuitem"
         android:icon="@drawable/ic_menu_email"
         android:orderInCategory="12"
         android:showAsAction="ifRoom"
-        android:title="@string/suggestions_send"/>
+        android:title="@string/suggestions_send" />
 </menu>
