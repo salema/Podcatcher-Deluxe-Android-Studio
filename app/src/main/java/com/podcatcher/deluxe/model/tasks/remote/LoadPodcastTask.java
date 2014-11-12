@@ -106,7 +106,12 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         /**
          * The URL does not point at a valid feed file.
          */
-        NOT_PARSABLE
+        NOT_PARSABLE,
+
+        /**
+         * The feed file was too big to be loaded
+         */
+        TOO_LARGE
     }
 
     /**
@@ -194,6 +199,12 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         } catch (InterruptedException ie) {
             // Cannot wait of metadata, should not be an issue most of the time
             // pass
+        } catch (OutOfMemoryError me) {
+            errorCode = PodcastLoadError.TOO_LARGE;
+            cancel(true);
+        } catch (Throwable th) {
+            // We do not want the task to ever make the app crash
+            cancel(true);
         } finally {
             publishProgress(Progress.DONE);
         }

@@ -148,8 +148,12 @@ public class FullscreenVideoActivity extends BaseActivity implements VideoSurfac
 
     @Override
     protected void onDestroy() {
-        videoView.getHolder().removeCallback(videoCallback);
-        videoView.setOnSystemUiVisibilityChangeListener(null);
+        try {
+            videoView.setOnSystemUiVisibilityChangeListener(null);
+            videoView.getHolder().removeCallback(videoCallback);
+        } catch (NullPointerException npe) {
+            // VideoView is already gone, pass
+        }
 
         // Detach from play service (prevents leaking)
         if (service != null) {
