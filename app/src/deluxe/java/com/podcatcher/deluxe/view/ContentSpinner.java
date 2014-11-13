@@ -84,6 +84,15 @@ public class ContentSpinner extends Spinner implements OnItemSelectedListener {
     }
 
     /**
+     * Dummy constructor, used by tools only
+     *
+     * @param context Context the view lives in.
+     */
+    public ContentSpinner(Context context) {
+        this(context, null);
+    }
+
+    /**
      * Set the main text for the closed spinner view.
      *
      * @param title Text to show.
@@ -153,11 +162,9 @@ public class ContentSpinner extends Spinner implements OnItemSelectedListener {
             // For the closed view, no padding is needed
             closedView.setPadding(0, 0, 0, 0);
 
-            // Set the initial name and status
+            // Set the initial name and hide unneeded views
             ((TextView) closedView.findViewById(R.id.title)).setText(R.string.app_name);
-            ((TextView) closedView.findViewById(R.id.subtitle)).setVisibility(View.GONE);
-
-            // Hide icon view for the closed view
+            closedView.findViewById(R.id.subtitle).setVisibility(View.GONE);
             closedView.findViewById(R.id.icon).setVisibility(View.GONE);
         }
 

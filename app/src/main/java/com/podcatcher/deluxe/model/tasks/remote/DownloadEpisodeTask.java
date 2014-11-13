@@ -181,6 +181,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
                 TimeUnit.MILLISECONDS.sleep(podcatcher.getResources().getInteger(
                         android.R.integer.config_longAnimTime));
             } catch (InterruptedException e) {
+                // pass
             }
 
             this.episodeFile = localFile;
@@ -188,6 +189,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
         // Start download because the episode is not there
         else {
             // Make sure podcast directory exists
+            // noinspection ResultOfMethodCallIgnored
             localFile.getParentFile().mkdirs();
 
             // Create the request
@@ -387,6 +389,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
                     // pass
                 }
 
+            // noinspection ResultOfMethodCallIgnored
             from.delete();
         }
 

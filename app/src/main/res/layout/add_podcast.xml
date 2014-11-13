@@ -17,10 +17,10 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:orientation="vertical">
 
     <EditText
         android:id="@+id/podcast_url"
@@ -28,13 +28,13 @@
         android:layout_height="wrap_content"
         android:hint="@string/podcast_enter_url_here"
         android:imeOptions="actionGo"
-        android:inputType="textUri|textNoSuggestions" />
+        android:inputType="textUri|textNoSuggestions"/>
 
     <com.podcatcher.deluxe.view.HorizontalProgressView
         android:id="@+id/add_podcast_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:background="@drawable/button_orange"
@@ -56,7 +58,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/suggestions"
-            android:textColor="@drawable/button_label" />
+            android:textColor="@drawable/button_label"/>
 
         <Button
             android:id="@+id/podcast_add_button"
@@ -70,7 +72,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/podcast_add_button"
-            android:textColor="@drawable/button_label" />
+            android:textColor="@drawable/button_label"/>
     </LinearLayout>
 
     <Button
@@ -82,12 +84,15 @@
         android:layout_marginRight="4dp"
         android:layout_marginTop="0dp"
         android:background="@drawable/button_blue"
+        android:drawableLeft="@drawable/ic_menu_import"
         android:drawableStart="@drawable/ic_menu_import"
         android:ellipsize="marquee"
         android:gravity="center"
         android:paddingLeft="8dp"
+        android:paddingStart="8dp"
         android:paddingRight="40dp"
+        android:paddingEnd="40dp"
         android:singleLine="true"
         android:text="@string/opml_import"
-        android:textColor="@drawable/button_label" />
+        android:textColor="@drawable/button_label"/>
 </LinearLayout>

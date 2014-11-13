@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
@@ -112,7 +113,7 @@ public class DropShadowLinearLayout extends LinearLayout {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
+    protected void dispatchDraw(@NonNull Canvas canvas) {
         super.dispatchDraw(canvas);
 
         // Draw right hand side shadow

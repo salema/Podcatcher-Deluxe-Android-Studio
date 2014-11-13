@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.UserManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.GetRestrictionsReceiver;
@@ -163,7 +164,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         this.loadPodcastExecutor = Executors.newFixedThreadPool(threadCount, new ThreadFactory() {
             private final AtomicInteger count = new AtomicInteger(1);
 
-            public Thread newThread(Runnable r) {
+            public Thread newThread(@NonNull Runnable r) {
                 return new Thread(r, "LoadPodcastTask #" + count.getAndIncrement());
             }
         });
@@ -178,6 +179,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @param podcatcher Application handle.
      * @return The singleton instance.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static PodcastManager getInstance(Podcatcher podcatcher) {
         // If not done, create single instance
         if (manager == null)

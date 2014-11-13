@@ -285,7 +285,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
 
         surfaceView = (SurfaceView) view.findViewById(R.id.surface);
         surfaceView.getHolder().addCallback(videoCallback);
-        fullscreenButton = (ImageView) view.findViewById(R.id.fullscreen);
+        fullscreenButton = (ImageView) view.findViewById(R.id.fullscreen_overlay);
 
         viewCreated = true;
 

@@ -28,6 +28,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
+import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
 import com.podcatcher.deluxe.EpisodeActivity;
@@ -145,7 +146,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
                 new ThreadFactory() {
                     private final AtomicInteger count = new AtomicInteger(1);
 
-                    public Thread newThread(Runnable r) {
+                    public Thread newThread(@NonNull Runnable r) {
                         return new Thread(r, "DownloadEpisodeTask #" + count.getAndIncrement());
                     }
                 });
@@ -338,6 +339,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
                         // Make sure the file is deleted since this might not
                         // have taken care of by DownloadManager.remove() above
                         if (filePath != null)
+                            // noinspection ResultOfMethodCallIgnored
                             new File(filePath).delete();
                     }
                 }.start();

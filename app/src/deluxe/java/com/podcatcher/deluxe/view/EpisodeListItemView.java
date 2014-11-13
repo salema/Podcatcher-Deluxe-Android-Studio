@@ -93,7 +93,7 @@ public class EpisodeListItemView extends PodcatcherListItemView {
 
         titleTextView = (TextView) findViewById(R.id.list_item_title);
         captionTextView = (TextView) findViewById(R.id.list_item_caption);
-        progressBarView = (ProgressBar) findViewById(R.id.list_item_progress);
+        progressBarView = (ProgressBar) findViewById(R.id.episode_list_item_progress);
         playlistPositionView = (TextView) findViewById(R.id.playlist_position);
         downloadIconView = (ImageView) findViewById(R.id.download_icon);
         resumeIconView = (ImageView) findViewById(R.id.resume_icon);

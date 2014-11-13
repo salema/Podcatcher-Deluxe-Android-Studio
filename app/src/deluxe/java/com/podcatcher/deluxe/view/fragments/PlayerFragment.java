@@ -315,7 +315,7 @@ public class PlayerFragment extends Fragment {
         this.showPlayer = show;
 
         // Only do it right away if resumed, otherwise onResume will call us.
-        if (isResumed())
+        if (isResumed() && getView() != null)
             getView().setVisibility(show ? VISIBLE : GONE);
     }
 

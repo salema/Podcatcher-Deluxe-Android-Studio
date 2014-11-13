@@ -17,20 +17,22 @@
  */
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
-        android:scaleType="centerInside" />
+        android:layout_alignParentStart="true"
+        android:scaleType="centerInside"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_toRightOf="@id/icon"
+        android:layout_toEndOf="@id/icon"
         android:minHeight="48dp"
         android:orientation="vertical">
 
@@ -42,7 +44,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@android:color/primary_text_dark" />
+            android:textColor="@android:color/primary_text_dark"/>
 
         <TextView
             android:id="@+id/subtitle"
@@ -51,6 +53,6 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/primary_text_dark" />
+            android:textColor="@android:color/primary_text_dark"/>
     </LinearLayout>
 </RelativeLayout>

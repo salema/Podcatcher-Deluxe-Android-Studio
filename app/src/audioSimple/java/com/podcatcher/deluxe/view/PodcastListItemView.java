@@ -67,7 +67,7 @@ public class PodcastListItemView extends PodcatcherListItemView {
         titleTextView = (TextView) findViewById(R.id.list_item_title);
         captionTextView = (TextView) findViewById(R.id.list_item_caption);
         logoView = (ImageView) findViewById(R.id.podcast_logo);
-        progressView = (HorizontalProgressView) findViewById(R.id.list_item_progress);
+        progressView = (HorizontalProgressView) findViewById(R.id.podcast_list_item_progress);
     }
 
     /**

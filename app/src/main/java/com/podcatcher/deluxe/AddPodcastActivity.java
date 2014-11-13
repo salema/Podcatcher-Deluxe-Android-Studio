@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
@@ -96,7 +97,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // Make sure we know which podcast we are loading (if any)

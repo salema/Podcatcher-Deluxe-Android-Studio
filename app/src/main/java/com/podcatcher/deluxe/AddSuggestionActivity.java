@@ -20,6 +20,7 @@ package com.podcatcher.deluxe;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.SuggestionManager;
@@ -100,7 +101,7 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         if (suggestionToBeConfirmed != null) {

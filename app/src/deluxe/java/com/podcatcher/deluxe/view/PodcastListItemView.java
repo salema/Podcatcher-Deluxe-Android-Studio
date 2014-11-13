@@ -83,7 +83,7 @@ public class PodcastListItemView extends PodcatcherListItemView {
         captionTextView = (TextView) findViewById(R.id.list_item_caption_text);
         countTextView = (TextView) findViewById(R.id.list_item_caption_count);
         logoView = (ImageView) findViewById(R.id.podcast_logo);
-        progressView = (HorizontalProgressView) findViewById(R.id.list_item_progress);
+        progressView = (HorizontalProgressView) findViewById(R.id.podcast_list_item_progress);
 
         // Create the class handle to star drawable if we are first
         if (starDrawable == null) {

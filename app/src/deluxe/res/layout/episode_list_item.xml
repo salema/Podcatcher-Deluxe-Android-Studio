@@ -17,23 +17,25 @@
  */
 -->
 <com.podcatcher.deluxe.view.EpisodeListItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="@dimen/episode_list_shadow_padding"
-    tools:context=".view.EpisodeListItemView"
-    tools:layout_height="48dp">
+                                                xmlns:tools="http://schemas.android.com/tools"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:paddingRight="@dimen/episode_list_shadow_padding"
+                                                android:paddingEnd="@dimen/episode_list_shadow_padding"
+                                                tools:context=".view.EpisodeListItemView"
+                                                tools:layout_height="48dp">
 
     <ImageView
         android:id="@+id/state_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerInside"
         android:src="@drawable/ic_media_new"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/playlist_position"
@@ -41,16 +43,18 @@
         android:layout_height="24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@id/state_icon"
         android:gravity="center"
         android:includeFontPadding="false"
         android:minWidth="24dp"
         android:paddingRight="2dp"
+        android:paddingEnd="2dp"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/text_secondary"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:text="13" />
+        tools:text="13"/>
 
     <ImageView
         android:id="@+id/resume_icon"
@@ -59,10 +63,11 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/state_icon"
         android:layout_toLeftOf="@id/playlist_position"
+        android:layout_toStartOf="@id/playlist_position"
         android:scaleType="centerInside"
         android:src="@drawable/ic_media_resume_dark"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"/>
 
     <ImageView
         android:id="@+id/download_icon"
@@ -71,16 +76,18 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/state_icon"
         android:layout_toLeftOf="@id/resume_icon"
+        android:layout_toStartOf="@id/resume_icon"
         android:scaleType="centerInside"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:src="@drawable/ic_media_downloading" />
+        tools:src="@drawable/ic_media_downloading"/>
 
     <LinearLayout
         android:id="@+id/list_item_main_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/download_icon"
+        android:layout_toStartOf="@id/download_icon"
         android:minHeight="48dp"
         android:orientation="vertical">
 
@@ -90,7 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
-            tools:text="Episode title" />
+            tools:text="Episode title"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -102,10 +109,10 @@
                 android:id="@+id/list_item_caption"
                 style="@style/ListItem.SubTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
 
             <ProgressBar
-                android:id="@+id/list_item_progress"
+                android:id="@+id/episode_list_item_progress"
                 style="@style/ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/progress_bar_horizontal_height"
@@ -114,7 +121,7 @@
                 android:layout_marginRight="@dimen/list_item_padding"
                 android:indeterminate="true"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"/>
         </FrameLayout>
     </LinearLayout>
 </com.podcatcher.deluxe.view.EpisodeListItemView>

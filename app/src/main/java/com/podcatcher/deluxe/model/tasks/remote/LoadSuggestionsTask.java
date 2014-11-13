@@ -264,10 +264,12 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         FileInputStream input = null;
         try {
             input = new FileInputStream(cachedFile);
+            // noinspection ResultOfMethodCallIgnored
             input.read(result);
         } finally {
             try {
-                input.close();
+                if (input != null)
+                    input.close();
             } catch (Throwable e) {
                 // Nothing more we could do here
             }
@@ -281,6 +283,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
 
         // If this fails, we have no cached version, but that's okay
         try {
+            // noinspection ResultOfMethodCallIgnored
             context.getCacheDir().mkdirs();
 
             out = new FileOutputStream(getSuggestionsCacheFile());
@@ -290,7 +293,8 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
             // pass
         } finally {
             try {
-                out.close();
+                if (out != null)
+                    out.close();
             } catch (Throwable e) {
                 // Nothing more we could do here
             }

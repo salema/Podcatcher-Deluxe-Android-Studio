@@ -17,10 +17,10 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:orientation="vertical">
 
     <TextView
         style="?android:attr/textAppearanceMedium"
@@ -30,7 +30,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/first_run_text" />
+        android:text="@string/first_run_text"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:background="@drawable/button_blue"
@@ -52,7 +54,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/help"
-            android:textColor="@drawable/button_label" />
+            android:textColor="@drawable/button_label"/>
 
         <Button
             android:id="@+id/first_run_add_button"
@@ -66,6 +68,6 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/first_run_add"
-            android:textColor="@drawable/button_label" />
+            android:textColor="@drawable/button_label"/>
     </LinearLayout>
 </LinearLayout>

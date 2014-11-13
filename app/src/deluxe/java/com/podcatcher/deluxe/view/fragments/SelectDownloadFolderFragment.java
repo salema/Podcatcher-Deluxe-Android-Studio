@@ -57,11 +57,6 @@ public class SelectDownloadFolderFragment extends DialogFragment {
     private Button advancedButton;
 
     /**
-     * Status flag indicating that our view is created
-     */
-    private boolean viewCreated = false;
-
-    /**
      * The call back we work on
      */
     private SelectDownloadFolderListener listener;
@@ -143,14 +138,10 @@ public class SelectDownloadFolderFragment extends DialogFragment {
                 listener.onShowAdvanced();
             }
         });
-
-        viewCreated = true;
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        viewCreated = false;
-
         // Make sure the parent activity knows when we are closing
         listener.onCancel(dialog);
 

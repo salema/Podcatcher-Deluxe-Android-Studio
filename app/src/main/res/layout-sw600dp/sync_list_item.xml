@@ -17,10 +17,10 @@
  */
 -->
 <com.podcatcher.deluxe.view.SyncListItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+                                             android:layout_width="match_parent"
+                                             android:layout_height="56dp"
+                                             android:gravity="center_vertical"
+                                             android:orientation="horizontal">
 
     <ProgressBar
         android:id="@+id/sync_progress"
@@ -28,29 +28,32 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:indeterminate="true"
-        android:padding="8dp" />
+        android:padding="8dp"/>
 
     <ImageView
         android:id="@+id/sync_controller_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerInside" />
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/sync_controller_name"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:textAppearance="?android:textAppearanceMedium"/>
 
     <RadioGroup
         android:id="@+id/sync_controller_mode"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -59,28 +62,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_off" />
+            android:drawableLeft="@drawable/ic_sync_off"
+            android:drawableStart="@drawable/ic_sync_off"/>
 
         <RadioButton
             android:id="@+id/sync_controller_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_out" />
+            android:drawableLeft="@drawable/ic_sync_out"
+            android:drawableStart="@drawable/ic_sync_out"/>
 
         <RadioButton
             android:id="@+id/sync_controller_in_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_in_out" />
+            android:drawableLeft="@drawable/ic_sync_in_out"
+            android:drawableStart="@drawable/ic_sync_in_out"/>
     </RadioGroup>
 
     <View
         android:id="@+id/sync_controller_settings_divider"
         android:layout_width="1px"
         android:layout_height="48dp"
-        android:background="@color/divider" />
+        android:background="@color/divider"/>
 
     <ImageButton
         android:id="@+id/sync_controller_settings"
@@ -88,5 +94,5 @@
         android:layout_height="48dp"
         android:layout_margin="4dp"
         android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_settings" />
+        android:src="@drawable/ic_settings"/>
 </com.podcatcher.deluxe.view.SyncListItemView>

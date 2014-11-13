@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.1'
+    buildToolsVersion '21.1.1'
 
     defaultConfig {
         versionCode 204
@@ -105,13 +105,13 @@ android {
 }
 
 dependencies {
-    // These are the libs to include
-    // gpodder connector (local lib module) and Dropbox
+    // These are the libs to include:
+    // 1) gpodder.net connector (local lib module)
     compile project(':gpodder_sync')
-    // Dropbox Sync API (see https://www.dropbox.com/developers/blog/57/using-the-sync-api-with-android-studio
+    // 2) Dropbox Sync API (see https://www.dropbox.com/developers/blog/57/using-the-sync-api-with-android-studio)
     compile files('libs/dropbox-sync-sdk-android.jar')
     compile files("$buildDir/native-libs/native-libs.jar")
-    // Picasso (podcast logo loading)
+    // 3) Picasso (podcast logo loading)
     compile 'com.squareup.picasso:picasso:2.3.+'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')

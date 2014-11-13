@@ -202,10 +202,8 @@ public class LoadPodcastListTask extends AsyncTask<Void, Progress, List<Podcast>
                 result.setUsername(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_USER));
                 result.setPassword(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_PASS));
             }
-        } catch (XmlPullParserException e) {
+        } catch (XmlPullParserException | IOException e) {
             /* Bad outline, skip */
-        } catch (IOException e) {
-            /* pass */
         }
 
         return result;

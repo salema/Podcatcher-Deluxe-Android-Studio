@@ -113,7 +113,7 @@ public class SuggestionListItemView extends RelativeLayout {
         // 4. Find and prepare the add button
         if (alreadyAdded) {
             addButton.setEnabled(false);
-            addButton.setBackgroundDrawable(null);
+            addButton.setBackgroundResource(0);
             addButton.setText(null);
             addButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_checkmark, 0);
         } else {

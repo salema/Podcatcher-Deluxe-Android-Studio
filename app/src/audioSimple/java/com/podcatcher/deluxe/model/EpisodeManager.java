@@ -49,6 +49,7 @@ public class EpisodeManager extends EpisodeDownloadManager {
      * @param podcatcher Application handle.
      * @return The singleton instance.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static EpisodeManager getInstance(Podcatcher podcatcher) {
         // If not done, create single instance
         if (manager == null)

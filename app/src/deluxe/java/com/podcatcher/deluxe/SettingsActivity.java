@@ -41,10 +41,6 @@ public class SettingsActivity extends BaseActivity {
      */
     public static final String KEY_SELECT_ALL_ON_START = "select_all_on_startup";
     /**
-     * The key for the sync preference
-     */
-    public static final String KEY_SYNC = "synchronization";
-    /**
      * The preference key for the auto download flag
      */
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
@@ -109,7 +105,9 @@ public class SettingsActivity extends BaseActivity {
                         settingsFragment.findPreference(KEY_DOWNLOAD_FOLDER);
 
                 // Make sure we can actually write to this folder
+                // noinspection ResultOfMethodCallIgnored
                 downloadFolder.mkdirs();
+                // noinspection ResultOfMethodCallIgnored
                 File.createTempFile("test", "tmp", downloadFolder).delete();
 
                 // Update the preference

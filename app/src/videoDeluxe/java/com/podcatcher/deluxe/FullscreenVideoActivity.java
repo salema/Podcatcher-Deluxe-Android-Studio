@@ -86,7 +86,7 @@ public class FullscreenVideoActivity extends BaseActivity implements VideoSurfac
         if (selection.isFullscreenEnabled()) {
             setContentView(R.layout.fullscreen_video);
 
-            videoView = (SurfaceView) findViewById(R.id.episode_video);
+            videoView = (SurfaceView) findViewById(R.id.fullscreen_video);
             videoView.getHolder().addCallback(videoCallback);
 
             // Needed for dimming/hiding of the system UI

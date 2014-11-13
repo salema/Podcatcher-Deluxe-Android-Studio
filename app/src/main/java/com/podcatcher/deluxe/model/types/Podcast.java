@@ -327,7 +327,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     @Override
-    public int compareTo(Podcast another) {
+    public int compareTo(@NonNull Podcast another) {
         if (name != null && another.name != null)
             return name.compareToIgnoreCase(another.name);
         else if (name == null && another.name != null)

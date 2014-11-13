@@ -76,8 +76,8 @@ public abstract class PodcatcherListFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emptyView = getView().findViewById(R.id.empty);
-        progressView = (ProgressView) getView().findViewById(R.id.progress);
+        emptyView = view.findViewById(R.id.empty);
+        progressView = (ProgressView) view.findViewById(R.id.progress);
 
         viewCreated = true;
     }

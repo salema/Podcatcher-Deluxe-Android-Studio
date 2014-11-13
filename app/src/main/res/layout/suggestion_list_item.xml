@@ -17,8 +17,8 @@
  */
 -->
 <com.podcatcher.deluxe.view.SuggestionListItemView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/suggestion_name"
@@ -26,21 +26,25 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/suggestion_add_button"
+        android:layout_toStartOf="@id/suggestion_add_button"
         android:ellipsize="marquee"
         android:paddingLeft="@dimen/list_item_padding"
+        android:paddingStart="@dimen/list_item_padding"
         android:singleLine="true"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:textAppearance="?android:textAppearanceLarge"/>
 
     <ImageView
         android:id="@+id/suggestion_featured"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@id/suggestion_name"
         android:paddingLeft="@dimen/list_item_padding"
+        android:paddingStart="@dimen/list_item_padding"
         android:scaleType="centerInside"
         android:src="@drawable/ic_suggestion_featured"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/suggestion_meta"
@@ -48,24 +52,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/suggestion_name"
         android:layout_toLeftOf="@id/suggestion_add_button"
+        android:layout_toStartOf="@id/suggestion_add_button"
         android:layout_toRightOf="@id/suggestion_featured"
+        android:layout_toEndOf="@id/suggestion_featured"
         android:ellipsize="marquee"
         android:paddingLeft="@dimen/list_item_padding"
+        android:paddingStart="@dimen/list_item_padding"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceMedium"
-        android:textColor="@color/text_secondary" />
+        android:textColor="@color/text_secondary"/>
 
     <Button
         android:id="@+id/suggestion_add_button"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/list_item_padding"
         android:background="@drawable/button_green"
         android:paddingLeft="@dimen/suggestion_add_padding"
         android:paddingRight="@dimen/suggestion_add_padding"
         android:singleLine="true"
-        android:textColor="@drawable/button_label" />
+        android:textColor="@drawable/button_label"/>
 
     <TextView
         android:id="@+id/suggestion_description"
@@ -75,5 +83,5 @@
         android:paddingBottom="2dp"
         android:paddingLeft="@dimen/list_item_padding"
         android:paddingRight="@dimen/list_item_padding"
-        android:textAppearance="?android:textAppearanceSmall" />
+        android:textAppearance="?android:textAppearanceSmall"/>
 </com.podcatcher.deluxe.view.SuggestionListItemView>

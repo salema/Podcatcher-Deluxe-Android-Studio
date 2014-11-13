@@ -89,6 +89,7 @@ public class Suggestion extends Podcast {
         this.explicit = explicit;
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public boolean equals(Object o) {
         // We do not need to do anything special here, suggestions are equal if
@@ -96,6 +97,7 @@ public class Suggestion extends Podcast {
         return super.equals(o);
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public int hashCode() {
         // dito

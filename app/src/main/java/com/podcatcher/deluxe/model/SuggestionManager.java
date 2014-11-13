@@ -74,6 +74,7 @@ public class SuggestionManager implements OnLoadSuggestionListener {
      * @param podcatcher The main app object.
      * @return The suggestion manager handle.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static SuggestionManager getInstance(Podcatcher podcatcher) {
         if (manager == null)
             manager = new SuggestionManager(podcatcher);

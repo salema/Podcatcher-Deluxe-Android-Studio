@@ -147,6 +147,7 @@ public class SyncManager implements SyncControllerListener {
      * @param podcatcher Application handle.
      * @return The singleton instance.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static SyncManager getInstance(Podcatcher podcatcher) {
         // If not done, create single instance
         if (manager == null)

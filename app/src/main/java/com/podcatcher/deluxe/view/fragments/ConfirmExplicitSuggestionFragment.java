@@ -17,6 +17,7 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -71,6 +72,7 @@ public class ConfirmExplicitSuggestionFragment extends DialogFragment {
 
         // Inflate our custom view
         final LayoutInflater inflater = LayoutInflater.from(context);
+        @SuppressLint("InflateParams")
         final View content = inflater.inflate(R.layout.confirm, null);
 
         // Set message

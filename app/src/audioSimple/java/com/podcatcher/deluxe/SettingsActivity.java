@@ -36,10 +36,6 @@ public class SettingsActivity extends BaseActivity {
      */
     public static final String KEY_SELECT_ALL_ON_START = "select_all_on_startup";
     /**
-     * The key for the sync preference
-     */
-    public static final String KEY_SYNC = "synchronization";
-    /**
      * The key for the download folder preference
      */
     public static final String KEY_DOWNLOAD_FOLDER = "download_folder";

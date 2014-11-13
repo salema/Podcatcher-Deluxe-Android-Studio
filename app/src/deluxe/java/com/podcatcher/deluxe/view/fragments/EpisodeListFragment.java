@@ -19,6 +19,7 @@ package com.podcatcher.deluxe.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -171,7 +172,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.episode_list, container, false);

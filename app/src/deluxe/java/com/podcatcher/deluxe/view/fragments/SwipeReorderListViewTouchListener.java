@@ -21,6 +21,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -284,7 +285,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
         }
 
         @Override
-        public int compareTo(PendingReorderData other) {
+        public int compareTo(@NonNull PendingReorderData other) {
             // Sort by descending position
             return other.position - position;
         }

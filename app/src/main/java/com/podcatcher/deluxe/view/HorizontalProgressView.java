@@ -29,11 +29,6 @@ import com.podcatcher.deluxe.model.types.Progress;
 public class HorizontalProgressView extends ProgressView {
 
     /**
-     * The layout id to inflate for this view.
-     */
-    protected static int LAYOUT = R.layout.progress_horizontal;
-
-    /**
      * Create progress view.
      *
      * @param context Context view lives in.

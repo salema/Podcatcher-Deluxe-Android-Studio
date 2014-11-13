@@ -17,6 +17,7 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import android.support.annotation.NonNull;
 import android.text.Html;
 
 import com.podcatcher.deluxe.model.ParserUtils;
@@ -208,7 +209,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     }
 
     @Override
-    public int compareTo(Episode another) {
+    public int compareTo(@NonNull Episode another) {
         // We need to be "consistent with equals": only return 0 (zero) for
         // equal episodes. Failing to do so will cause episodes with equal
         // pubDates to mysteriously disappear when put in a SortedSet. At the
