@@ -18,6 +18,7 @@
 package com.podcatcher.deluxe.services;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -34,7 +35,11 @@ public class BecomingNoisyReceiver extends BroadcastReceiver {
         // Only react if this actually is a become noisy event
         if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction()))
             try {
-                context.startService(new Intent(ACTION_PAUSE));
+                // Construct the intent and make sure it is explicit (required for API >= 21)
+                final Intent pauseIntent = new Intent(ACTION_PAUSE);
+                pauseIntent.setComponent(new ComponentName(context, PlayEpisodeService.class));
+
+                context.startService(pauseIntent);
             } catch (SecurityException se) {
                 // This might happen if called from the outside since our
                 // service is not exported, just do nothing.
