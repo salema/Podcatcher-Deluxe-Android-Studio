@@ -150,18 +150,20 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
             // Go change local model as needed
             final Episode episode = values[0].getKey();
             final EpisodeAction episodeAction = values[0].getValue();
-            final Action action = Action
-                    .valueOf(episodeAction.action.toUpperCase(Locale.US).trim());
+            final Action action = Action.valueOf(episodeAction.action.toUpperCase(Locale.US).trim());
 
             // Make sure we do not pick up the same action again
             ignoreNewActions = true;
             switch (action) {
                 case PLAY:
-                    final int remoteValue = episodeAction.position * 1000;
-                    final int localValue = episodeManager.getResumeAt(episode);
-                    // Only act if the remote value differs by more than one sec
-                    if (Math.abs(remoteValue - localValue) > 1000)
-                        episodeManager.setResumeAt(episode, remoteValue);
+                    // If no position is given there is nothing to do
+                    if (episodeAction.position != null) {
+                        final int remoteValue = episodeAction.position * 1000;
+                        final int localValue = episodeManager.getResumeAt(episode);
+                        // Only act if the remote value differs by more than one sec
+                        if (Math.abs(remoteValue - localValue) > 1000)
+                            episodeManager.setResumeAt(episode, remoteValue);
+                    }
                     break;
                 case NEW:
                     // Only act if the value is not set yet
