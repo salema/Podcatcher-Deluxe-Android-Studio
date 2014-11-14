@@ -179,7 +179,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     /**
      * The amount of milli-seconds playback rewinds on resume (if triggered)
      */
-    private static final int REWIND_ON_RESUME_DURATION = (int) TimeUnit.SECONDS.toMillis(5);
+    private static final int REWIND_ON_RESUME_DURATION = SKIP_AMOUNT;
     /**
      * Time elapsed since pause was called that triggers resume on rewind
      */
