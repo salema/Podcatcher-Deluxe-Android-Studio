@@ -658,7 +658,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         podcastList.add(new Podcast("Freakonomics",
                 "http://feeds.feedburner.com/freakonomicsradio"));
         podcastList.add(new Podcast("Anstalt",
-                "http://www.zdf.de/ZDFmediathek/podcast/222630?view=podcast"));
+                "http://www.zdf.de/ZDFmediathek/podcast/2085930?view=podcast"));
         podcastList.add(new Podcast("Radio Ambulante",
                 "http://feeds.feedburner.com/RadioAmbulante-English"));
 

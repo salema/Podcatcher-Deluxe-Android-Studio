@@ -138,7 +138,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         this.podcast = podcasts[0];
 
         // Update the thread name to include the podcast working on
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG && podcast != null)
             Thread.currentThread().setName(Thread.currentThread().getName() +
                     " [" + podcast.getName() + "]");
 

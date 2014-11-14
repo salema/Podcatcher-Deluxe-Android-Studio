@@ -159,7 +159,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
         this.episode = params[0];
 
         // Update the thread name to include the episode working on
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG && episode != null)
             Thread.currentThread().setName(Thread.currentThread().getName() +
                     " [" + episode.getName() + "]");
 
