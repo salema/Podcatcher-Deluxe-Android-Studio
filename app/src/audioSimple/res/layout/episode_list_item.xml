@@ -21,7 +21,6 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:paddingRight="@dimen/episode_list_shadow_padding"
-                                                android:paddingEnd="@dimen/episode_list_shadow_padding"
                                                 tools:context=".view.EpisodeListItemView"
                                                 tools:layout_height="48dp">
 
@@ -31,7 +30,6 @@
         android:layout_height="24dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:scaleType="centerInside"
         android:visibility="gone"
         tools:visibility="visible"
@@ -42,7 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/download_icon"
-        android:layout_toStartOf="@id/download_icon"
         android:minHeight="48dp"
         android:orientation="vertical">
 

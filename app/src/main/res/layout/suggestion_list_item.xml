@@ -26,10 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/suggestion_add_button"
-        android:layout_toStartOf="@id/suggestion_add_button"
         android:ellipsize="marquee"
         android:paddingLeft="@dimen/list_item_padding"
-        android:paddingStart="@dimen/list_item_padding"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceLarge"/>
 
@@ -38,10 +36,8 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_below="@id/suggestion_name"
         android:paddingLeft="@dimen/list_item_padding"
-        android:paddingStart="@dimen/list_item_padding"
         android:scaleType="centerInside"
         android:src="@drawable/ic_suggestion_featured"
         android:visibility="gone"/>
@@ -52,12 +48,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/suggestion_name"
         android:layout_toLeftOf="@id/suggestion_add_button"
-        android:layout_toStartOf="@id/suggestion_add_button"
         android:layout_toRightOf="@id/suggestion_featured"
-        android:layout_toEndOf="@id/suggestion_featured"
         android:ellipsize="marquee"
         android:paddingLeft="@dimen/list_item_padding"
-        android:paddingStart="@dimen/list_item_padding"
         android:singleLine="true"
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@color/text_secondary"/>
@@ -67,7 +60,6 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/list_item_padding"
         android:background="@drawable/button_green"
         android:paddingLeft="@dimen/suggestion_add_padding"

@@ -45,7 +45,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:textAppearance="?android:textAppearanceMedium"/>
@@ -69,23 +68,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_off"
-            android:drawableStart="@drawable/ic_sync_off"/>
+            android:drawableLeft="@drawable/ic_sync_off"/>
 
         <RadioButton
             android:id="@+id/sync_controller_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_out"
-            android:drawableStart="@drawable/ic_sync_out"/>
+            android:drawableLeft="@drawable/ic_sync_out"/>
 
         <RadioButton
             android:id="@+id/sync_controller_in_out"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_sync_in_out"
-            android:drawableStart="@drawable/ic_sync_in_out"/>
+            android:drawableLeft="@drawable/ic_sync_in_out"/>
     </RadioGroup>
 </com.podcatcher.deluxe.view.SyncListItemView>

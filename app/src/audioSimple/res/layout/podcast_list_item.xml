@@ -19,15 +19,13 @@
 <com.podcatcher.deluxe.view.PodcastListItemView xmlns:android="http://schemas.android.com/apk/res/android"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:paddingRight="@dimen/podcast_list_shadow_padding"
-                                                android:paddingEnd="@dimen/podcast_list_shadow_padding">
+                                                android:paddingRight="@dimen/podcast_list_shadow_padding">
 
-    <ImageView
+<ImageView
         android:id="@+id/podcast_logo"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:contentDescription="@string/podcast_image"
         android:padding="1dp"
         android:scaleType="fitXY"
@@ -37,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/podcast_logo"
-        android:layout_toStartOf="@id/podcast_logo"
         android:minHeight="48dp"
         android:orientation="vertical">
 
