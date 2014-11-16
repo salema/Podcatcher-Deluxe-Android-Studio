@@ -940,9 +940,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         if (isPrepared() && currentEpisode != null) {
             Notification note;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && remoteControlClient != null)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration(), remoteControlClient.getMediaSession());
+                        getDuration(), remoteControlClient == null ? null : remoteControlClient.getMediaSession());
             else
                 note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
                         getDuration());
