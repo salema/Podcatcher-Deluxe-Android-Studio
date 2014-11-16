@@ -5,7 +5,7 @@ android {
     buildToolsVersion '21.1.1'
 
     defaultConfig {
-        versionCode 204
+        versionCode 205
         minSdkVersion 14
         targetSdkVersion 21
     }
@@ -73,7 +73,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.2"
+            versionName "3.2.1"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -83,14 +83,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.2"
+            versionName "4.2.1"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.2"
+            versionName "5.2.1"
 
             signingConfig videoDeluxeSigningVariable
         }
