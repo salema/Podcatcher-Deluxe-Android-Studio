@@ -180,7 +180,7 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
                     OPML.TEXT, htmlEncode(podcast.getName()),
                     OPML.TITLE, htmlEncode(podcast.getName()),
                     OPML.TYPE, OPML.RSS_TYPE,
-                    OPML.XMLURL, podcast.getUrl());
+                    OPML.XMLURL, htmlEncode(podcast.getUrl()));
 
             if (podcast.hasLogoUrl())
                 opmlString = String.format("%s %s=\"%s\"", opmlString,
