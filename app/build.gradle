@@ -49,7 +49,9 @@ android {
         }
         slideme {
             buildConfigField "String", "STORE", "\"SlideMe\""
-            buildConfigField "String", "STORE_URL_PREFIX", "\"http://slideme.org/app/\""
+            // The SlideMe market app (SAM) also supports this link, selection
+            // dialog is shown if both Google Play and SAM are installed
+            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
             minifyEnabled true
             proguardFiles 'proguard-rules.pro'
