@@ -5,7 +5,7 @@ android {
     buildToolsVersion '21.1.1'
 
     defaultConfig {
-        versionCode 207
+        versionCode 208
         minSdkVersion 14
         targetSdkVersion 21
     }
@@ -75,7 +75,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.2.3"
+            versionName "3.2.4"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -85,14 +85,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.2.3"
+            versionName "4.2.4"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.2.3"
+            versionName "5.2.4"
 
             signingConfig videoDeluxeSigningVariable
         }
@@ -114,11 +114,11 @@ dependencies {
     compile files('libs/dropbox-sync-sdk-android.jar')
     compile files("$buildDir/native-libs/native-libs.jar")
     // 3) Picasso (podcast logo loading)
-    compile 'com.squareup.picasso:picasso:2.3.+'
+    compile 'com.squareup.picasso:picasso:+'
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:support-v4:21+'
+    compile 'com.android.support:support-v4:+'
     compile 'com.android.support:support-annotations:+'
 }
 
