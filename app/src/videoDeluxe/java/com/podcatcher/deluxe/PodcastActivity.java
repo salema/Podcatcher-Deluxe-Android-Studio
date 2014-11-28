@@ -314,6 +314,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
             onAllPodcastsSelected();
             selection.setEpisodeFilterEnabled(true);
         }
+
+        this.isInitialAppStart = false;
     }
 
     @Override
@@ -342,8 +344,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
             // If nothing is there, show add podcasts dialog
             if (needsAddPodcastDialog) {
-                isInitialAppStart = false;
-
                 // On the very first start of the app, show the first run dialog
                 if (preferences.getBoolean(SettingsActivity.KEY_FIRST_RUN, true))
                     startActivity(new Intent(this, FirstRunActivity.class));

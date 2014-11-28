@@ -17,7 +17,6 @@
 
 package com.podcatcher.deluxe;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -73,24 +72,21 @@ public class ShowEpisodeActivity extends EpisodeActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // Deselect episode
-                selection.resetEpisode();
+        if (item.getItemId() == android.R.id.home) {
+            // Deselect episode (prevents the activity from being immediately re-opened)
+            selection.resetEpisode();
 
-                // This is called when the Home (Up) button is pressed
-                NavUtils.navigateUpTo(this, new Intent(this, ShowEpisodeListActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+            NavUtils.navigateUpFromSameTask(this);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-        // Deselect episode
+        // Deselect episode (prevents the activity from being immediately re-opened)
         selection.resetEpisode();
 
         super.onBackPressed();

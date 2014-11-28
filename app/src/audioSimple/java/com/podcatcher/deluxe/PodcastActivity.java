@@ -285,8 +285,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
         // If podcast list is empty we show a dialog on startup
         if (podcastManager.size() == 0 && isInitialAppStart && !hasPodcastToAdd) {
-            isInitialAppStart = false;
-
             // On the very first start of the app, show the first run dialog
             if (preferences.getBoolean(SettingsActivity.KEY_FIRST_RUN, true))
                 startActivity(new Intent(this, FirstRunActivity.class));
@@ -299,6 +297,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
                 && ((Podcatcher) getApplication()).isOnline()
                 && preferences.getBoolean(SettingsActivity.KEY_SELECT_ALL_ON_START, false))
             onAllPodcastsSelected();
+
+        this.isInitialAppStart = false;
     }
 
     @Override
