@@ -19,6 +19,7 @@ package com.podcatcher.deluxe.model.tasks;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Base64;
 
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnStorePodcastListListener;
@@ -184,17 +185,19 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
 
             if (podcast.hasLogoUrl())
                 opmlString = String.format("%s %s=\"%s\"", opmlString,
-                        OPML.PCD_NS_PREFIX + OPML.PCD_LOGO, podcast.getLogoUrl());
+                        OPML.PCD_NS_PREFIX + OPML.PCD_LOGO, htmlEncode(podcast.getLogoUrl()));
 
             if (writeAuthorization && podcast.getAuthorization() != null)
-                // We store the podcast password in the app's private folder
-                // (but in the clear). This is justified because it is hard to
-                // attack the file (unless you get your hands on the device) and
-                // the password is not very sensitive since it is only a
+                // We store the podcast password in the app's private folder base64
+                // encoded (but in the clear). This is justified because it is hard to
+                // attack the file (unless you get your hands on the device) and the
+                // password is not very sensitive since it is only a
                 // podcast we are accessing, not personal information.
                 opmlString = String.format("%s %s=\"%s\" %s=\"%s\"", opmlString,
-                        OPML.PCD_NS_PREFIX + OPML.PCD_USER, htmlEncode(podcast.getUsername()),
-                        OPML.PCD_NS_PREFIX + OPML.PCD_PASS, htmlEncode(podcast.getPassword()));
+                        OPML.PCD_NS_PREFIX + OPML.PCD_USER,
+                        Base64.encodeToString(podcast.getUsername().getBytes(), Base64.NO_WRAP),
+                        OPML.PCD_NS_PREFIX + OPML.PCD_PASS,
+                        Base64.encodeToString(podcast.getPassword().getBytes(), Base64.NO_WRAP));
 
             writeLine(2, opmlString + " />");
         }

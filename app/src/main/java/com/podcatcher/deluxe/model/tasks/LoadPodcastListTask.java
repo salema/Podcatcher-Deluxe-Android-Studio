@@ -21,6 +21,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Html;
+import android.util.Base64;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.PodcastManager;
@@ -40,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.podcatcher.deluxe.model.PodcastManager.OPML_FILENAME;
+import static com.podcatcher.deluxe.model.PodcastManager.OPML_FILE_ENCODING;
 
 /**
  * Loads the default podcast list from the file system asynchronously. Use
@@ -190,18 +192,20 @@ public class LoadPodcastListTask extends AsyncTask<Void, Progress, List<Podcast>
             // Set logo URL if given
             final String logoUrl = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_LOGO);
             if (logoUrl != null && logoUrl.startsWith("http"))
-                result.setLogoUrl(logoUrl);
+                result.setLogoUrl(Html.fromHtml(logoUrl).toString());
 
             // Set authorization information
-            final String user = parser.getAttributeValue("", OPML.PCD_USER);
-            if (user != null) {
-                // Loading old OPML without pcd namespace (can be removed in 2015)
-                result.setUsername(user);
-                result.setPassword(parser.getAttributeValue("", OPML.PCD_PASS));
-            } else {
-                result.setUsername(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_USER));
-                result.setPassword(parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_PASS));
-            }
+            final String userAttribute = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_USER);
+            final String passAttribute = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_PASS);
+            if (userAttribute != null && passAttribute != null)
+                try {
+                    result.setUsername(new String(Base64.decode(userAttribute, Base64.NO_WRAP), OPML_FILE_ENCODING));
+                    result.setPassword(new String(Base64.decode(passAttribute, Base64.NO_WRAP), OPML_FILE_ENCODING));
+                } catch (Throwable re) {
+                    /* Cannot recover auth information, do not use it */
+                    result.setUsername(null);
+                    result.setPassword(null);
+                }
         } catch (XmlPullParserException | IOException e) {
             /* Bad outline, skip */
         }
