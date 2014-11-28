@@ -69,10 +69,6 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get suggestions manager and register call-back
-        suggestionManager = SuggestionManager.getInstance();
-        suggestionManager.addLoadSuggestionListListener(this);
-
         // Create and show suggestion fragment
         if (savedInstanceState == null) {
             this.suggestionFragment = new SuggestionFragment();
@@ -90,6 +86,10 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
                         savedInstanceState.getString(TO_BE_CONFIRMED_NAME_KEY),
                         savedInstanceState.getString(TO_BE_CONFIRMED_URL_KEY));
         }
+
+        // Get suggestions manager and register call-back
+        suggestionManager = SuggestionManager.getInstance();
+        suggestionManager.addLoadSuggestionListListener(this);
     }
 
     @Override
@@ -112,9 +112,9 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         suggestionManager.removeLoadSuggestionListListener(this);
+
+        super.onDestroy();
     }
 
     @Override
