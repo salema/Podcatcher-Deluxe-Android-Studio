@@ -34,4 +34,5 @@
     <color name="text_error">@android:color/holo_red_dark</color>
     <color name="text_secondary">@android:color/darker_gray</color>
     <color name="divider">#ddd</color>
+    <color name="recent_tasks_background">#222222</color>
 </resources>

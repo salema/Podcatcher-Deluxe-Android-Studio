@@ -18,7 +18,9 @@
 package com.podcatcher.deluxe;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -26,6 +28,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -280,10 +283,16 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         }
     }
 
-    @SuppressLint("ShowToast")
     @Override
+    @SuppressLint("ShowToast")
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // On Android 5.0 and later, make sure the app looks nice in "Recent Tasks"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
+                    null, getResources().getColor(R.color.recent_tasks_background)));
 
         // This will suggest to the Android system, that the volume to be
         // changed for this app (all its activities) is the music stream
