@@ -42,10 +42,6 @@ import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFr
 public class EpisodeListContextListener implements MultiChoiceModeListener {
 
     /**
-     * The maximum number of episodes to download at once
-     */
-    private static final int MAX_DOWNLOADS = 25;
-    /**
      * Separator for episode duration total and size total
      */
     private static final String SEPARATOR = " • ";
@@ -204,10 +200,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
     }
 
     private void updateMenuItems() {
-        // Initialize counters for the number of downloads the current selection
-        // would trigger
+        // Initialize counter for the number of deletes the current selection would trigger
         this.deletesTriggered = 0;
-        int downloadsTriggered = 0;
 
         // Make all menu items invisible
         downloadMenuItem.setVisible(false);
@@ -215,8 +209,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
 
         SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
 
-        // Check which option apply to current selection and make corresponding
-        // menu items visible
+        // Check which option apply to current selection and
+        // make corresponding menu items visible
         for (int position = 0; position < fragment.getListAdapter().getCount(); position++) {
             if (checkedItems.get(position)) {
                 Episode episode = (Episode) fragment.getListAdapter().getItem(position);
@@ -224,16 +218,10 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
                 if (episodeManager.isDownloadingOrDownloaded(episode)) {
                     deletesTriggered++;
                     deleteMenuItem.setVisible(true);
-                } else {
-                    downloadsTriggered++;
+                } else
                     downloadMenuItem.setVisible(true);
-                }
             }
         }
-
-        // Do not show some actions if too many episodes are selected
-        if (downloadsTriggered > MAX_DOWNLOADS)
-            downloadMenuItem.setVisible(false);
 
         // Hide the select all item if all items are selected
         selectAllMenuItem.setVisible(fragment.getListView().getCheckedItemCount() !=
