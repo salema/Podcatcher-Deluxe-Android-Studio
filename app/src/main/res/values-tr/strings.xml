@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Ayırıcı</string>
+    <string name="review">Görüntüle</string>
+    <string name="help">Yardım</string>
+    <string name="no_browser">Tarayıcı mevcut değil!</string>
+    <string name="wait">Bekle</string>
+    <string name="connect">Bağlan</string>
+    <string name="load">Yükle</string>
+    <string name="stop">Durdur</string>
+    <string name="cancel">İptal</string>
+    <string name="remove">Sil</string>
+    <string name="parse">Oku</string>
+    <string name="play">Oynat</string>
+    <string name="pause">Duraklat</string>
+    <string name="resume">Devam et</string>
+    <string name="first_run_title">Hoşgeldin</string>
+    <string name="first_run_text">İlk adım, bir veya daha fazla podcast aboneliği eklemektir. Lütfen podcast ekle iletişim kutusunu açmak için aşağıdaki yeşil düğmeyi kullanın. İletişim kutusu ayrıca podcast öneriler sunar ve OPML abonelik listesini alır.</string>
+    <string name="first_run_add">Podcast ekle</string>
+    <string name="player_buffering">Yazılıyor&#8230;</string>
+    <string name="player_label">%1$s - %2$s</string>
+    <string name="player_label_short">%1$s - %2$s</string>
+    <string name="player_error">Oynatma hatası</string>
+    <string name="podcast_image">Podcast logosu</string>
+    <string name="podcast_none">Hiçbir podcast eklenmedi</string>
+    <string name="podcast_none_selected">Hiçbir podcast seçilmedi</string>
+    <string name="podcast_select_all">Tüm podcastları seç</string>
+    <plurals name="podcasts">
+        <item quantity="other">%d podcast</item>
+    </plurals>
+    <string name="podcast_add_title">Yeni podcast</string>
+    <string name="podcast_add_button">Ekle</string>
+    <string name="podcast_enter_url_here">Burada podcast adresini kopyala</string>
+    <string name="podcast_load_error">Podcast yüklenemedi!</string>
+    <string name="podcast_load_error_access_denied">Podcast beslemesine erişim engellendiğinden yüklenemedi.</string>
+    <string name="podcast_load_error_explicit">Podcast, bu kullanıcı profiline açık içeriğe erişimi engellendiği için yüklenemedi.</string>
+    <string name="podcast_load_error_not_reachable">Podcast, adresi geçersiz olduğu için yüklenemedi.</string>
+    <string name="podcast_load_error_not_parsable">Podcast adresi geçerli bir podcast beslemesi göstermiyor yüklenemedi.</string>
+    <string name="podcast_load_multiple_progress">%1$d - %2$d podcast</string>
+    <string name="podcast_load_multiple_error">Podcast\n\"%s\"\nyüklenemedi.</string>
+    <string name="podcast_load_multiple_error_all">Tüm podcastleri yüklemek başarısız lütfen internet bağlantınızı kontrol edin!</string>
+    <string name="podcast_block_explicit">Açık içerik ile engelli podcast</string>
+    <string name="episode_none">Bu podcast bölüm yok</string>
+    <string name="episode_none_all_podcasts">Bölüm yok</string>
+    <string name="episode_no_description">Açıklama mevcut değil.</string>
+    <string name="episode_none_selected">Bölüm seçilmedi</string>
+    <plurals name="episodes">
+        <item quantity="other">%d bölüm</item>
+    </plurals>
+    <string name="episodes_select_all">Tümünü seç</string>
+    <string name="episodes_sort_toggle">Ters sırala</string>
+    <string name="download">İndir</string>
+    <string name="downloads">İndirmeler</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="other">%d indirme sil</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="other">Bu bölüm artık çevrimdışı kullanılabilir.</item>
+    </plurals>
+    <string name="downloads_none">İndirme yok. İndirme kullanılarak bölüm çevrimdışı kullanılabilir duruma getirmek sağlanabilir.</string>
+    <string name="download_started">İndirme başladı\n\"%s\"</string>
+    <string name="download_failed">İndirme hatalı\n\"%s\"</string>
+    <string name="download_failed_cannot_write">\n\"%s\"\nindirme başarısız oldu.</string>
+    <string name="download_failed_no_space">\n\"%s\"\nindirme başarısız oldu çünkü yeterli alan mevcut değil.</string>
+    <string name="download_failed_download_app_disabled">\n\"%s\"\nindirme başarısız oldu çünkü Android indirme uygulaması devredışı.</string>
+    <string name="auth">Yetkilendirme</string>
+    <string name="auth_edit">Yetkilendirme Düzenle</string>
+    <string name="auth_username">Kullanıcı adı</string>
+    <string name="auth_password">Şifre</string>
+    <string name="auth_submit">Onayla</string>
+    <string name="file_select">Seç</string>
+    <string name="file_select_file">Dosya Seç</string>
+    <string name="file_select_folder">Klasör Seç</string>
+    <string name="file_select_folder_empty">Bu klasör boş.</string>
+    <string name="file_select_access_denied">Erişim reddedildi!</string>
+    <string name="opml_import">OPML aktar</string>
+    <string name="opml_import_failed">OPML aktarma hatalı</string>
+    <string name="opml_export">OPML çıkart</string>
+    <string name="opml_export_success">OPML dosyası alındı</string>
+    <string name="opml_export_success_at">OPML dosyası\n%s</string>
+    <string name="opml_export_failed">OPML çıkartma hatalı</string>
+    <string name="suggestions">Öneriler</string>
+    <string name="suggested_podcasts">Önerilen podcastler</string>
+    <string name="suggestion_listen">Dinle</string>
+    <string name="suggestion_watch">İzle</string>
+    <string name="suggestion_confirm_explicit">Bu podcast açıkça işaretlenir. Podcast listenize eklemek istediğinizden emin misiniz?</string>
+    <string name="suggestions_none">Öneri yok, filtreni değiştir.</string>
+    <string name="suggestions_reset_filters">Filtreyi sıfırla</string>
+    <string name="suggestions_load_error">Öneriler yüklenemedi, internet bağlantısını kontrol edin!</string>
+    <string name="suggestions_send">Podcast öneri</string>
+    <string name="sync_dropbox_unlink_title">Dropbox iptal et</string>
+    <string name="sync_dropbox_unlink_message">Dropbox hesabınızı uygulamadan kaldırmak istiyor musunuz? Bu işlem ile tüm senkronizasyonlar sona erecek, daha sonra tekrar ekleyip kullanabilirsiniz.</string>
+    <string name="sync_dropbox_unlink_button">Ayır</string>
+    <string name="sync_gpodder_config_title">gpodder.net ayarla</string>
+    <string name="sync_gpodder_login_invalid">gpodder.net oturum başarısız oldu, lütfen kimlik bilgilerinizi kontrol edin!</string>
+    <string name="sync_gpodder_device_id">Aygıt ID</string>
+    <string name="preferences">Tercihler</string>
+    <string name="pref_select_all_on_start_title">Tüm seçimi başlat</string>
+    <string name="pref_select_all_on_start_summary">Uygulama başlangıcında tüm abonelikleri yükle</string>
+    <string name="pref_sync_title">Senkronizasyon</string>
+    <string name="pref_sync_none">Şu anda devre dışı</string>
+    <string name="pref_sync_last_run">Son tam eşitleme: %1$s</string>
+    <string name="pref_sync_now">Şimdi eşitle</string>
+</resources>

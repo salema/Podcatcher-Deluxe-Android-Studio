@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="wildcard">Tüm</string>
+    <string-array name="languages">
+        <item>İngilizce</item>
+        <item>Fransızca</item>
+        <item>Almanca</item>
+        <item>İspanyolca</item>
+    </string-array>
+    <string-array name="types">
+        <item>Ses</item>
+        <item>Video</item>
+    </string-array>
+    <string-array name="genres">
+        <item>Sanat</item>
+        <item>İş</item>
+        <item>Komedi</item>
+        <item>Eğitim</item>
+        <item>Oyun &amp; Hobi</item>
+        <item>Yönetim &amp; Organizasyonlar</item>
+        <item>Sağlık</item>
+        <item>Çocuk &amp; Aile</item>
+        <item>Müzik</item>
+        <item>Haberler &amp; Politika</item>
+        <item>Din &amp; Maneviyat</item>
+        <item>Bilim &amp; Tıp</item>
+        <item>Toplum &amp; Kültür</item>
+        <item>Spor &amp; Rekreasyon</item>
+        <item>Teknoloji</item>
+        <item>TV &amp; Film</item>
+    </string-array>
+</resources>
