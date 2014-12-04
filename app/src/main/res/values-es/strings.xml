@@ -18,6 +18,7 @@
 -->
 <resources>
     <string name="divider">Divisor</string>
+    <string name="review">Evaluar</string>
     <string name="help">Ayuda</string>
     <string name="no_browser">No hay ningún explorador disponible</string>
     <string name="wait">Esperar</string>

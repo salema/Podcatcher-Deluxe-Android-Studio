@@ -18,6 +18,7 @@
 -->
 <resources>
     <string name="divider">Разделитель</string>
+    <string name="review">Oбзор</string>
     <string name="help">Справка</string>
     <string name="no_browser">Не удалось найти браузер!</string>
     <string name="wait">Подождите</string>

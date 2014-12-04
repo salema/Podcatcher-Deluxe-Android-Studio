@@ -18,6 +18,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="divider">Séparateur</string>
+    <string name="review">Evaluer</string>
     <string name="help">Aide</string>
     <string name="no_browser">Aucun navigateur disponible!</string>
     <string name="wait">Attendre</string>

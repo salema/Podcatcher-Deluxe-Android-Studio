@@ -18,6 +18,7 @@
 -->
 <resources>
     <string name="divider">Trenner</string>
+    <string name="review">App bewerten</string>
     <string name="help">Hilfe</string>
     <string name="no_browser">Kein Browser verfügbar!</string>
     <string name="wait">Warten</string>

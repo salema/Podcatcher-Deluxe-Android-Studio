@@ -18,6 +18,7 @@
 -->
 <resources>
     <string name="divider">Divisore</string>
+    <string name="review">Recensisci</string>
     <string name="help">Aiuto</string>
     <string name="no_browser">Nessun browser disponibile!</string>
     <string name="wait">Attendi</string>

@@ -18,6 +18,7 @@
 -->
 <resources>
     <string name="divider">Rozdělovač</string>
+    <string name="review">Ohodnotit aplikaci</string>
     <string name="help">Nápověda</string>
     <string name="no_browser">Není dostupný žádný prohlížeč!</string>
     <string name="wait">Čekat</string>

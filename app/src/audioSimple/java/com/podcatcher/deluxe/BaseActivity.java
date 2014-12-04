@@ -87,6 +87,19 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     protected SharedPreferences preferences;
 
     /**
+     * Key to activity creation counter in preferences
+     */
+    private static final String APP_USAGE_COUNT_KEY = "app_usage_count";
+    /**
+     * Number of minimum activity creations to reveal the review menu item.
+     */
+    private static final int APP_USAGE_REVIEW_TRIGGER = 50;
+    /**
+     * Key to preference flag indicating whether the user ever tapped the review menu item
+     */
+    private static final String REVIEW_MENU_ITEM_CLICKED_KEY = "review_menu_item_clicked";
+
+    /**
      * The currently active view mode
      */
     protected ViewMode view;
@@ -312,6 +325,10 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.registerOnSharedPreferenceChangeListener(this);
 
+        // Increment app usage count
+        preferences.edit().putInt(APP_USAGE_COUNT_KEY,
+                preferences.getInt(APP_USAGE_COUNT_KEY, 0) + 1).apply();
+
         // Create and configure toast member (not shown here, ignore lint
         // warning). We use only one toast object to avoid stacked notifications
         toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
@@ -325,6 +342,11 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         // Add generic menu items (help, web site...)
         getMenuInflater().inflate(R.menu.podcatcher, menu);
 
+        // Show/hide review menu item depending on app usage
+        final MenuItem reviewMenuItem = menu.findItem(R.id.review_menuitem);
+        reviewMenuItem.setVisible(!preferences.getBoolean(REVIEW_MENU_ITEM_CLICKED_KEY, false) &&
+                preferences.getInt(APP_USAGE_COUNT_KEY, 0) > APP_USAGE_REVIEW_TRIGGER);
+
         return true;
     }
 
@@ -333,6 +355,19 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         switch (item.getItemId()) {
             case R.id.settings_menuitem:
                 startActivity(new Intent(this, SettingsActivity.class));
+
+                return true;
+            case R.id.review_menuitem:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(BuildConfig.STORE_URL_PREFIX + BuildConfig.APPLICATION_ID)));
+
+                    // Make sure the menu item is not shown again
+                    preferences.edit().putBoolean(REVIEW_MENU_ITEM_CLICKED_KEY, true).apply();
+                } catch (ActivityNotFoundException e) {
+                    // We are in a restricted profile without a browser
+                    showToast(getString(R.string.no_browser));
+                }
 
                 return true;
             case R.id.about_menuitem:
