@@ -25,8 +25,6 @@ import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
 
-import java.util.Locale;
-
 /**
  * The list of current {@link SyncController} implementations. This enum also
  * allows access to some meta and state information that should be available
@@ -109,9 +107,10 @@ public enum ControllerImpl {
      */
     public boolean isAvailable(Context context) {
         switch (this) {
-            case DROPBOX:
+            // Disabling check for now, the stores do that for us
+            /* case DROPBOX:
                 final String arch = System.getProperty("os.arch");
-                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US));
+                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US)); */
             default:
                 return true;
         }
