@@ -34,7 +34,7 @@
     <string name="first_run_title">Welkom</string>
     <string name="first_run_text">De eerste stap is om 1 of meer podcasts toe te voegen. Gebruik de groene knop onderaan om de podcasts toe te voegen. Deze functie biedt tevens podcast suggesties en OPML import mogelijkheden.</string>
     <string name="first_run_add">Voeg podcasts toe</string>
-    <string name="player_buffering">Bufferen</string>
+    <string name="player_buffering">Bufferen&#8230;</string>
     <string name="player_label">op %1$s van %2$s</string>
     <string name="player_label_short">%1$s van %2$s</string>
     <string name="player_error">Afspelen mislukt</string>
