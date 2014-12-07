@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="about">Sobre Podcatcher Deluxe</string>
+    <string name="next">Próximo</string>
+    <string name="podcast_load_multiple_error_some">Um ou mais podcasts falharam ao carregar.</string>
+    <string name="episodes_no_new">Sem novos episódios</string>
+    <plurals name="episodes_filtered">
+        <item quantity="one">Um episódio antigo filtrado</item>
+        <item quantity="other">%d episódios antigos filtrados</item>
+    </plurals>
+    <string name="episodes_old">Antigos</string>
+    <string name="episodes_filter_all">Todos</string>
+    <string name="episodes_filter_new">Novo</string>
+    <string name="playlist">Lista de reprodução</string>
+    <string name="playlist_empty">Sua lista está vazia. Use o menu de contexto da lista de episódio (pressione e segure qualquer episódio para entrar) para adicionar episódios à lista de reprodução.</string>
+    <string name="playlist_add">Adicionar à Lista de reprodução</string>
+    <string name="playlist_remove">Remover da Lista</string>
+    <string name="playlist_swipe_reorder">Deslize os episódios para os reordenar</string>
+    <string name="pref_auto_download_title">Download automático</string>
+    <string name="pref_auto_download_summary">Ao se conectar na WiFi, os novos episódios são disponibilizados offline</string>
+    <string name="pref_download_folder_internal_podcasts">Podcasts (recomendado)</string>
+    <string name="pref_download_folder_internal_downloads">Downloads</string>
+    <string name="pref_download_folder_internal_app">Pasta de aplicativos</string>
+    <string name="pref_download_folder_sdcard">Podcasts no cartão</string>
+    <string name="pref_download_folder_sdcard_app">Pasta de aplicativos no cartão</string>
+    <string name="pref_download_folder_advanced">Avançado</string>
+    <string name="pref_auto_delete_title">Exclusão automática</string>
+    <string name="pref_auto_delete_summary">Remover episódios baixados quando a reprodução é concluída</string>
+    <string name="pref_download_folder_title">Pasta de download</string>
+</resources>
