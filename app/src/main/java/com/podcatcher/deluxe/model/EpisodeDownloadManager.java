@@ -381,9 +381,14 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public boolean isDownloadedToSdCard(Episode episode) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
-                isDownloaded(episode) && Environment.isExternalStorageRemovable(
-                new File(metadata.get(episode.getMediaUrl()).filePath));
+        try {
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                    isDownloaded(episode) && Environment.isExternalStorageRemovable(
+                    new File(metadata.get(episode.getMediaUrl()).filePath));
+        } catch (IllegalArgumentException iae) {
+            // path not found/invalid
+            return false;
+        }
     }
 
     /**
