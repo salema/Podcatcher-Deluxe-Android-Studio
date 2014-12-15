@@ -75,7 +75,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.3"
+            versionName "3.2.6"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -85,14 +85,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.3"
+            versionName "4.2.6"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.3"
+            versionName "5.2.6"
 
             signingConfig videoDeluxeSigningVariable
         }
