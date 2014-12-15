@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="divider">Delare</string>
+    <string name="review">Betygsätt</string>
+    <string name="help">Hjälp</string>
+    <string name="no_browser">Ingen webbläsare tillgänglig!</string>
+    <string name="wait">Vänta</string>
+    <string name="connect">Anslut</string>
+    <string name="load">Ladda</string>
+    <string name="stop">Stoppa</string>
+    <string name="cancel">Avbryt</string>
+    <string name="remove">Radera</string>
+    <string name="parse">Läs</string>
+    <string name="play">Spela upp</string>
+    <string name="pause">Pausa</string>
+    <string name="resume">Återuppta</string>
+    <string name="first_run_title">Välkommen</string>
+    <string name="first_run_text">Det första steget är att lägga till en eller flera podcastprenumerationer. Använd den gröna knappen nedanför för att lägga till podcastdialog. Dialogen ger dig också förslag till podcaster och import av OPML-prenumerationer.</string>
+    <string name="first_run_add">Lägg till podcaster</string>
+    <string name="player_buffering">Buffrar&#8230;</string>
+    <string name="player_label">på %1$s av %2$s</string>
+    <string name="player_label_short">%1$s av %2$s</string>
+    <string name="player_error">Uppspelning misslyckades</string>
+    <string name="podcast_image">Podcastlogga</string>
+    <string name="podcast_none">Ingen podcast tillagd</string>
+    <string name="podcast_none_selected">Ingen podcast är vald</string>
+    <string name="podcast_select_all">Välj alla podcaster</string>
+    <plurals name="podcasts">
+        <item quantity="one">En podcast</item>
+        <item quantity="other">%d podcaster</item>
+    </plurals>
+    <string name="podcast_add_title">Ny podcast</string>
+    <string name="podcast_add_button">Lägg till</string>
+    <string name="podcast_enter_url_here">Klistra in podcastadress här</string>
+    <string name="podcast_load_error">Podcasten kunde inte laddas!</string>
+    <string name="podcast_load_error_access_denied">Podcasten kunde inte laddas eftersom åtkomst till strömmen nekades.</string>
+    <string name="podcast_load_error_explicit">Podcasten kunde inte laddas eftersom åtkomst till uttrycksfullt innehåll är blockerat för den här användaren.</string>
+    <string name="podcast_load_error_not_reachable">Podcasten kunde inte laddas eftersom servern inte kunde nås eller för att adressen är ogiltig.</string>
+    <string name="podcast_load_error_not_parsable">Podcasten kunde inte laddas eftersom adressen inte leder till en giltig podcastfeed.</string>
+    <string name="podcast_load_multiple_progress">%1$d av %2$d podcaster</string>
+    <string name="podcast_load_multiple_error">Podcasten\n\"%s\"\nkunde inte laddas.</string>
+    <string name="podcast_load_multiple_error_all">Ingen podcast kunde laddas, kontrollera din internetanslutning!</string>
+    <string name="podcast_block_explicit">Blockera podcaster med explicit innehåll</string>
+    <string name="episode_none">Inga avsnitt i den här podcasten</string>
+    <string name="episode_none_all_podcasts">Inga avsnitt</string>
+    <string name="episode_no_description">Ingen beskrivning tillgänglig.</string>
+    <string name="episode_none_selected">Inga avsnitt valda</string>
+    <plurals name="episodes">
+        <item quantity="one">Ett avsnitt</item>
+        <item quantity="other">%d avsnitt</item>
+    </plurals>
+    <string name="episodes_select_all">Välj alla</string>
+    <string name="episodes_sort_toggle">Omvänd ordning</string>
+    <string name="download">Ladda ner</string>
+    <string name="downloads">Hämtningar</string>
+    <plurals name="downloads_remove_title">
+        <item quantity="one">Radera nedladdning</item>
+        <item quantity="other">Radera %d hätmningar</item>
+    </plurals>
+    <plurals name="downloads_remove_text">
+        <item quantity="one">Det här avsnittet kommer inte längre kunna spelas upp offline.</item>
+        <item quantity="other">Dessa avsnitt kommer int elängre kunna spelas offline.</item>
+    </plurals>
+    <string name="downloads_none">Inga hämtningar. Använda hämtningsikonen i menyn för att göra avsnitt tillgängliga offline.</string>
+    <string name="download_started">Nedladdning startad för\n\"%s\"</string>
+    <string name="download_failed">Nedladdning misslyckades för\n\"%s\"</string>
+    <string name="download_failed_cannot_write">Nedladdning av\n\"%s\"\nmisslyckades för att nedladdningsmappen inte kan skrivas till.</string>
+    <string name="download_failed_no_space">Hämtning av\n\"%s\"\nmisslyckades eftersom du inte tillräckligt mycket lagring.</string>
+    <string name="download_failed_download_app_disabled">Nedladdning misslyckades för\n\"%s\"\neftersom nedladdningsapplikationen på Android är avaktiverad.</string>
+    <string name="auth">Auktorisering</string>
+    <string name="auth_edit">Hantera auktorisering</string>
+    <string name="auth_username">Användarnamn</string>
+    <string name="auth_password">Lösenord</string>
+    <string name="auth_submit">Skicka in</string>
+    <string name="file_select">Välj</string>
+    <string name="file_select_file">Välj Fil</string>
+    <string name="file_select_folder">Välj Mapp</string>
+    <string name="file_select_folder_empty">Den här mappen är tom.</string>
+    <string name="file_select_access_denied">Åtkomst nekad!</string>
+    <string name="opml_import">Importera OPML</string>
+    <string name="opml_import_failed">OPML-import misslyckades</string>
+    <string name="opml_export">Exportera OPML</string>
+    <string name="opml_export_success">OPML-fil lagrad</string>
+    <string name="opml_export_success_at">OPML-fil lagrad på\n%s</string>
+    <string name="opml_export_failed">OPML-export misslyckades</string>
+    <string name="suggestions">Förslag</string>
+    <string name="suggested_podcasts">Föreslagna podcaster</string>
+    <string name="suggestion_listen">Lyssna</string>
+    <string name="suggestion_watch">Titta</string>
+    <string name="suggestion_confirm_explicit">Den här podcasten har merkerats som explicit. Är du säker på att du vill lägga till den i din podcastlista?</string>
+    <string name="suggestions_none">Inga förslag, var god ändra dina filter.</string>
+    <string name="suggestions_reset_filters">Återställ filter</string>
+    <string name="suggestions_load_error">Förslag kunde inte laddas, kontrollera din internetanslutning!</string>
+    <string name="suggestions_send">Föreslå podcast</string>
+    <string name="sync_dropbox_unlink_title">Koppla ifrån Dropbox</string>
+    <string name="sync_dropbox_unlink_message">Vill du verkligen koppla ifrån ditt Dropbox-konto från den här applikationen? Även om det här kommer att stoppa all synkronisering via Dropbox kan du alltid ångra dig genom att återansluta till applikationen.</string>
+    <string name="sync_dropbox_unlink_button">Koppla ifrån</string>
+    <string name="sync_gpodder_config_title">Konfigurera gpodder.net</string>
+    <string name="sync_gpodder_login_invalid">Kunde inte logga in på gpodder.net, var god kolla dina uppgifter!</string>
+    <string name="sync_gpodder_device_id">Enhets-ID</string>
+    <string name="preferences">Inställningar</string>
+    <string name="pref_select_all_on_start_title">Välj alla vid uppstart</string>
+    <string name="pref_select_all_on_start_summary">Ladda alla prenumerationer när applikationen startas</string>
+    <string name="pref_sync_title">Synkronisering</string>
+    <string name="pref_sync_none">Avaktiverad för närvarande</string>
+    <string name="pref_sync_last_run">Senast fulla synkronisering: %1$s</string>
+    <string name="pref_sync_now">Synkronisera nu</string>
+</resources>

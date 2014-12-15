@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="about">Om Podcatcher Deluxe</string>
+    <string name="next">Nästa</string>
+    <string name="podcast_load_multiple_error_some">En eller flera podcaster kunde inte laddas.</string>
+    <string name="episodes_no_new">Inga nya avsnitt</string>
+    <plurals name="episodes_filtered">
+        <item quantity="one">Ett gammalt avsnitt filtrerat</item>
+        <item quantity="other">%d gamla avsnitt filtrerade</item>
+    </plurals>
+    <string name="episodes_old">Gammal</string>
+    <string name="episodes_filter_all">Allt</string>
+    <string name="episodes_filter_new">Ny</string>
+    <string name="playlist">Spellista</string>
+    <string name="playlist_empty">Din spellista är tom. Använd avsnittets innehållsmeny (tryck på och håll ner ett avsnitt för att komma åt menyn) för att lägga till avsnitt till spellistan.</string>
+    <string name="playlist_add">Lägg till i spellista</string>
+    <string name="playlist_remove">Radera från spellista</string>
+    <string name="playlist_swipe_reorder">Svep avsnitt för att återbeställa</string>
+    <string name="pref_auto_download_title">Ladda ner automatiskt</string>
+    <string name="pref_auto_download_summary">När det finns en anslutning till WiFi, gör nya avsnitt tillgängliga offline</string>
+    <string name="pref_download_folder_internal_podcasts">Podcaster (rekommenderade)</string>
+    <string name="pref_download_folder_internal_downloads">Hämtningar</string>
+    <string name="pref_download_folder_internal_app">Applikationsmapp</string>
+    <string name="pref_download_folder_sdcard">Podcaster på SD-kort</string>
+    <string name="pref_download_folder_sdcard_app">Applikationsmapp på SD-kort</string>
+    <string name="pref_download_folder_advanced">Avancerat</string>
+    <string name="pref_auto_delete_title">Radera automatiskt</string>
+    <string name="pref_auto_delete_summary">Radera nedladdade avsnitt när uppselning är klar</string>
+    <string name="pref_download_folder_title">Hätmningsmapp</string>
+</resources>

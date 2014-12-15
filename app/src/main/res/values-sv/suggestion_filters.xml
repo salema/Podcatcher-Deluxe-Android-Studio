@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2014 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="wildcard">Allt</string>
+    <string-array name="languages">
+        <item>Engelska</item>
+        <item>Franska</item>
+        <item>Tyska</item>
+        <item>Spanska</item>
+    </string-array>
+    <string-array name="types">
+        <item>Ljud</item>
+        <item>Bild</item>
+    </string-array>
+    <string-array name="genres">
+        <item>Konst</item>
+        <item>Affärsverksamhet</item>
+        <item>Komedi</item>
+        <item>Utbildning</item>
+        <item>Spel &amp; Hobby</item>
+        <item>Regering &amp; Organisationer</item>
+        <item>Hälsa</item>
+        <item>Barn &amp; Familj</item>
+        <item>Musik</item>
+        <item>Nyheter &amp; Politik</item>
+        <item>Religion &amp; Andlighet</item>
+        <item>Vetenskap &amp; Medicin</item>
+        <item>Samhälle &amp; Kultur</item>
+        <item>Sport &amp; Fritid</item>
+        <item>Teknologi</item>
+        <item>TV &amp; Film</item>
+    </string-array>
+</resources>
