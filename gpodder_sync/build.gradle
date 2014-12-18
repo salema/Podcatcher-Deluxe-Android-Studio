@@ -1,10 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.code.gson:gson:2.3+'
 }
