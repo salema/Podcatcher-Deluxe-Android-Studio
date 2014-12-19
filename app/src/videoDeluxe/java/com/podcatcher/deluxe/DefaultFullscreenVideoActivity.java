@@ -31,13 +31,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.MediaController;
 
 /**
@@ -58,11 +59,17 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     /**
      * Milli-seconds to wait for system UI to be hidden
      */
-    private static final int HIDE_SYSTEM_UI_DELAY = 5000;
+    private static final int HIDE_SYSTEM_UI_DELAY = 3000;
     /**
-     * The system UI flags we want to set
+     * The handler that delays the system UI hiding
      */
-    private int systemUiFlags;
+    private Handler hideSystemUIHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            hideSystemUI();
+        }
+    };
 
     /**
      * Flag to indicate whether video surface is available
@@ -79,7 +86,6 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     private SurfaceView videoView;
 
     @Override
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -92,14 +98,16 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
             // Needed for dimming/hiding of the system UI
             videoView.setOnSystemUiVisibilityChangeListener(this);
-            // Set system UI flags depending on Android version
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                systemUiFlags = View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            else
-                systemUiFlags |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
+            videoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    showSystemUI();
+                    delayedHide();
+                    showMediaControllerOverlay();
+
+                    return true;
+                }
+            });
 
             // Attach to play episode service
             Intent intent = new Intent(this, PlayEpisodeService.class);
@@ -111,34 +119,32 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
-        videoView.setSystemUiVisibility(systemUiFlags);
-        showMediaControllerOverlay();
+        // We need to initially set the view's system UI flags
+        showSystemUI();
+        // Hide system UI after some time
+        delayedHide();
     }
 
     @Override
-    public void onSystemUiVisibilityChange(int visibility) {
-        if (visibility == View.SYSTEM_UI_FLAG_VISIBLE) {
-            showMediaControllerOverlay();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    videoView.setSystemUiVisibility(systemUiFlags);
-                }
-            }, HIDE_SYSTEM_UI_DELAY);
-        }
+    public void onSystemUiVisibilityChange(int flags) {
+        Log.d("FULL", "VISI CHANGED: " + flags);
+        // Bit-wise and with the flag is zero iff navigation is shown
+        if ((flags & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0)
+            delayedHide();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        showMediaControllerOverlay();
-
-        return false;
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//
+//        if (hasFocus)
+//            delayedHide();
+//        else
+//            hideSystemUIHandler.removeMessages(0);
+//    }
 
     @Override
     public void finish() {
@@ -173,19 +179,12 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
     @Override
     public void onPlaybackStarted() {
-        // If we go to the next episode and that one has no video content, close
-        // the activity.
+        // If we go to the next episode and that one has no video content, close the activity.
         if (service != null && !service.isVideo())
             finish();
+        else {
             // Update the controller
-        else if (controller != null) {
-            try {
-                controller.show();
-            } catch (WindowManager.BadTokenException bte) {
-                // This happens of the Amazon devices a lot, not sure why
-                // pass
-            }
-
+            showMediaControllerOverlay();
             attachPrevNextListeners();
         }
     }
@@ -242,9 +241,41 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
         videoView.setLayoutParams(layoutParams);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void hideSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            videoView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        else
+            videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void showSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            videoView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
+    private void delayedHide() {
+        Log.d("FULL", "Delayed hide triggered");
+        hideSystemUIHandler.removeMessages(0);
+        hideSystemUIHandler.sendEmptyMessageDelayed(0, HIDE_SYSTEM_UI_DELAY);
+    }
+
     private void showMediaControllerOverlay() {
-        if (controller != null)
-            controller.show();
+        try {
+            controller.show(HIDE_SYSTEM_UI_DELAY);
+        } catch (Throwable th) {
+            // Cannot show controller, pass
+            Log.d("FULL", "Exception: " + th.toString());
+        }
     }
 
     /**
@@ -263,6 +294,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward());
             controller.setMediaPlayer(service);
             controller.setAnchorView(videoView);
+            showMediaControllerOverlay();
 
             attachPrevNextListeners();
         }
@@ -313,7 +345,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
                 service.seekTo(0);
 
                 // This will make sure the progress bar is updated
-                controller.show();
+                showMediaControllerOverlay();
             }
         }
     }
