@@ -99,6 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/theme_dark"
+        android:elevation="@dimen/metadata_box_elevation"
         android:gravity="center"
         android:paddingBottom="2dp"
         android:textAppearance="?android:textAppearanceSmall"

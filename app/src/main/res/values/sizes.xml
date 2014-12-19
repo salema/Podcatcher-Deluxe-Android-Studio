@@ -28,6 +28,7 @@
     <dimen name="progress_bar_horizontal_height">6dp</dimen>
     <dimen name="podcast_list_shadow_padding">4dp</dimen>
     <dimen name="episode_list_shadow_padding">0dp</dimen>
+    <dimen name="metadata_box_elevation">4dp</dimen>
     <dimen name="logo_size">200dp</dimen>
     <integer name="progress_bar_horizontal_weight">3</integer>
 </resources>
