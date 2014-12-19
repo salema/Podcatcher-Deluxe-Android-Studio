@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        versionCode 210
+        versionCode 211
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
@@ -25,6 +25,7 @@ android {
     buildTypes {
         debug {
             versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
 
             buildConfigField "String", "STORE", "\"Debug Store\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
@@ -71,7 +72,7 @@ android {
         simple {
             flavorDimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.2.6"
+            versionName "3.2.7"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -81,14 +82,14 @@ android {
         audio {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.2.6"
+            versionName "4.2.7"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             flavorDimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.2.6"
+            versionName "5.2.7"
 
             signingConfig videoDeluxeSigningVariable
         }
