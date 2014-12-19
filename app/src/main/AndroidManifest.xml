@@ -179,6 +179,21 @@
             android:name="com.dropbox.sync.android.DbxSyncService"
             android:enabled="true"
             android:exported="false"
-            android:label="Dropbox Sync"/>
+            android:label="Dropbox Sync">
+        </service>
+        <service
+            android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="${applicationId}.action.TOGGLE"/>
+                <action android:name="${applicationId}.action.PLAY"/>
+                <action android:name="${applicationId}.action.PAUSE"/>
+                <action android:name="${applicationId}.action.PREVIOUS"/>
+                <action android:name="${applicationId}.action.SKIP"/>
+                <action android:name="${applicationId}.action.REWIND"/>
+                <action android:name="${applicationId}.action.FORWARD"/>
+                <action android:name="${applicationId}.action.STOP"/>
+            </intent-filter>
+        </service>
     </application>
 </manifest>

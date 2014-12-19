@@ -23,20 +23,5 @@
             android:name="com.podcatcher.deluxe.FullscreenVideoActivity"
             android:theme="@style/AppFullscreen">
         </activity>
-
-        <service
-            android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.podcatcher.deluxe.video.action.TOGGLE"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PLAY"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PAUSE"/>
-                <action android:name="com.podcatcher.deluxe.video.action.PREVIOUS"/>
-                <action android:name="com.podcatcher.deluxe.video.action.SKIP"/>
-                <action android:name="com.podcatcher.deluxe.video.action.REWIND"/>
-                <action android:name="com.podcatcher.deluxe.video.action.FORWARD"/>
-                <action android:name="com.podcatcher.deluxe.video.action.STOP"/>
-            </intent-filter>
-        </service>
     </application>
 </manifest>
