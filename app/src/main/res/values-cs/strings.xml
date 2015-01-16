@@ -31,6 +31,7 @@
     <string name="play">Přehrát</string>
     <string name="pause">Pozastavit</string>
     <string name="resume">Pokračovat</string>
+    <string name="select_all">Vybrat vše</string>
     <string name="first_run_title">Vítejte</string>
     <string name="first_run_text">Vaším prvním krokem je přidání odběru jednoho nebo více záznamů (podcast), zvukových a obrazových. Použijte, prosím, zelené tlačítko níže k otevření dialogu Přidat záznam. Dialog nabízí i návrhy záznamů a seznam odběrů OPML.</string>
     <string name="first_run_add">Přidat záznamy</string>
@@ -68,7 +69,6 @@
         <item quantity="few">%d díly</item>
         <item quantity="other">%d dílů</item>
     </plurals>
-    <string name="episodes_select_all">Vybrat vše</string>
     <string name="episodes_sort_toggle">Obrátit pořadí</string>
     <string name="download">Stahování</string>
     <string name="downloads">Stahování</string>

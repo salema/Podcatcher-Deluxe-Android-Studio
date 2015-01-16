@@ -31,6 +31,7 @@
     <string name="play">Spela upp</string>
     <string name="pause">Pausa</string>
     <string name="resume">Återuppta</string>
+    <string name="select_all">Välj alla</string>
     <string name="first_run_title">Välkommen</string>
     <string name="first_run_text">Det första steget är att lägga till en eller flera podcastprenumerationer. Använd den gröna knappen nedanför för att lägga till podcastdialog. Dialogen ger dig också förslag till podcaster och import av OPML-prenumerationer.</string>
     <string name="first_run_add">Lägg till podcaster</string>
@@ -66,7 +67,6 @@
         <item quantity="one">Ett avsnitt</item>
         <item quantity="other">%d avsnitt</item>
     </plurals>
-    <string name="episodes_select_all">Välj alla</string>
     <string name="episodes_sort_toggle">Omvänd ordning</string>
     <string name="download">Ladda ner</string>
     <string name="downloads">Hämtningar</string>

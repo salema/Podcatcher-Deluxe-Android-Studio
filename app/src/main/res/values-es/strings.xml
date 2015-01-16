@@ -31,6 +31,7 @@
     <string name="play">Reproducir</string>
     <string name="pause">Pausar</string>
     <string name="resume">Reanudar</string>
+    <string name="select_all">Seleccionar todos</string>
     <string name="first_run_title">Bienvenidos</string>
     <string name="first_run_text">En primer lugar, añada uno o más podcasts a su lista de podcasts. Para ello, haga clic en el botón verde. En la ventana que aparecerá podrá ver también podcasts recomendados e importar listas OPML.</string>
     <string name="first_run_add">Agregar podcasts</string>
@@ -66,7 +67,6 @@
         <item quantity="one">Un episodio</item>
         <item quantity="other">%d episodios</item>
     </plurals>
-    <string name="episodes_select_all">Seleccionar todos</string>
     <string name="episodes_sort_toggle">Invertir orden</string>
     <string name="download">Descargar</string>
     <string name="downloads">Descargas</string>

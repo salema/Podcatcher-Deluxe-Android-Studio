@@ -63,6 +63,16 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
      * The send suggestion menu item
      */
     private MenuItem sendSuggestionMenuItem;
+    /**
+     * The select all menu item
+     */
+    private MenuItem selectAllMenuItem;
+
+    /**
+     * Flag to indicate whether the mode should do potentially expensive UI
+     * updates when a list item is checked
+     */
+    private boolean updateUi = true;
 
     /**
      * Create new listener for the podcast list context mode.
@@ -79,6 +89,7 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
 
         editAuthMenuItem = menu.findItem(R.id.edit_auth_contextmenuitem);
         sendSuggestionMenuItem = menu.findItem(R.id.suggest_podcast_contextmenuitem);
+        selectAllMenuItem = menu.findItem(R.id.podcast_select_all_contextmenuitem);
 
         return true;
     }
@@ -182,6 +193,16 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 // Action picked, so close the CAB
                 mode.finish();
                 return true;
+            case R.id.podcast_select_all_contextmenuitem:
+                // Disable expensive UI updates
+                updateUi = false;
+                for (int index = 0; index < fragment.getListAdapter().getCount(); index++)
+                    fragment.getListView().setItemChecked(index, true);
+
+                // Re-enable UI updates
+                updateUi = true;
+                update(mode);
+                return true;
             default:
                 return false;
         }
@@ -198,23 +219,28 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
     }
 
     private void update(ActionMode mode) {
-        try {
-            // Let list adapter know which items to mark checked (row color)
-            ((PodcastListAdapter) fragment.getListAdapter()).setCheckedPositions(
-                    fragment.getListView().getCheckedItemPositions());
+        // Only run if UI updates are enabled
+        if (updateUi)
+            try {
+                // Let list adapter know which items to mark checked (row color)
+                ((PodcastListAdapter) fragment.getListAdapter()).setCheckedPositions(
+                        fragment.getListView().getCheckedItemPositions());
 
-            // Update the mode title text
-            final int checkedItemCount = fragment.getListView().getCheckedItemCount();
-            mode.setTitle(fragment.getResources()
-                    .getQuantityString(R.plurals.podcasts, checkedItemCount, checkedItemCount));
+                // Update the mode title text
+                final int checkedItemCount = fragment.getListView().getCheckedItemCount();
+                mode.setTitle(fragment.getResources()
+                        .getQuantityString(R.plurals.podcasts, checkedItemCount, checkedItemCount));
 
-            // Show/hide edit auth menu item
-            editAuthMenuItem.setVisible(checkedItemCount == 1);
-            sendSuggestionMenuItem.setVisible(checkedItemCount == 1);
-        } catch (NullPointerException npe) {
-            // pass, this happens when some of the parts (fragment or listview)
-            // are not there yet, we simply ignore this since update will be
-            // called again.
-        }
+                // Show/hide edit auth menu item
+                editAuthMenuItem.setVisible(checkedItemCount == 1);
+                sendSuggestionMenuItem.setVisible(checkedItemCount == 1);
+                // Hide the select all item if all items are selected
+                selectAllMenuItem.setVisible(fragment.getListView().getCheckedItemCount() !=
+                        fragment.getListAdapter().getCount());
+            } catch (NullPointerException npe) {
+                // pass, this happens when some of the parts (fragment or listview)
+                // are not there yet, we simply ignore this since update will be
+                // called again.
+            }
     }
 }

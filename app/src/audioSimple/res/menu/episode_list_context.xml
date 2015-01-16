@@ -30,5 +30,5 @@
     <item
         android:id="@+id/episode_select_all_contextmenuitem"
         android:showAsAction="never"
-        android:title="@string/episodes_select_all" />
+        android:title="@string/select_all" />
 </menu>

@@ -31,6 +31,7 @@
     <string name="play">Oynat</string>
     <string name="pause">Duraklat</string>
     <string name="resume">Devam et</string>
+    <string name="select_all">Tümünü seç</string>
     <string name="first_run_title">Hoşgeldin</string>
     <string name="first_run_text">İlk adım, bir veya daha fazla podcast aboneliği eklemektir. Lütfen podcast ekle iletişim kutusunu açmak için aşağıdaki yeşil düğmeyi kullanın. İletişim kutusu ayrıca podcast öneriler sunar ve OPML abonelik listesini alır.</string>
     <string name="first_run_add">Podcast ekle</string>
@@ -64,7 +65,6 @@
     <plurals name="episodes">
         <item quantity="other">%d bölüm</item>
     </plurals>
-    <string name="episodes_select_all">Tümünü seç</string>
     <string name="episodes_sort_toggle">Ters sırala</string>
     <string name="download">İndir</string>
     <string name="downloads">İndirmeler</string>

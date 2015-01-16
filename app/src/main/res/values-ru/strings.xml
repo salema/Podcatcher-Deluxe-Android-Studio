@@ -31,6 +31,7 @@
     <string name="play">Воспроизвести</string>
     <string name="pause">Пауза</string>
     <string name="resume">Продолжить</string>
+    <string name="select_all">Выбрать все</string>
     <string name="first_run_title">Добро пожаловать</string>
     <string name="first_run_text">Прежде всего добавьте одну или несколько подписок. Нажмите на зелёную кнопку внизу, чтобы открыть окно добавления. С его помощью вы также можете выбрать подкасты из списка рекомендуемых или импортировать список подкастов в формате OPML.</string>
     <string name="first_run_add">Добавить подкасты</string>
@@ -70,7 +71,6 @@
         <item quantity="many">%d эпизодов</item>
         <item quantity="other">%d эпизодов</item>
     </plurals>
-    <string name="episodes_select_all">Выбрать все</string>
     <string name="episodes_sort_toggle">В обратном порядке</string>
     <string name="download">Скачать</string>
     <string name="downloads">Загрузки</string>
