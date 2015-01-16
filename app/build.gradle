@@ -107,26 +107,12 @@ dependencies {
     // These are the libs to include:
     // 1) gpodder.net connector (local lib module)
     compile project(':gpodder_sync')
-    // 2) Dropbox Sync API (see https://www.dropbox.com/developers/blog/57/using-the-sync-api-with-android-studio)
+    // 2) Dropbox Sync
     compile files('libs/dropbox-sync-sdk-android.jar')
-    compile files("$buildDir/native-libs/native-libs.jar")
     // 3) Picasso (podcast logo loading)
     compile 'com.squareup.picasso:picasso:+'
 
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-
+    //compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:support-annotations:+'
-}
-
-task nativeLibsToJar(type: Zip) {
-    destinationDir file("$buildDir/native-libs")
-    baseName 'native-libs'
-    extension 'jar'
-    from fileTree(dir: 'libs', include: '**/*.so')
-    into 'lib/'
-}
-
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }
