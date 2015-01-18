@@ -24,6 +24,13 @@ package com.podcatcher.deluxe.listeners;
 public interface OnSyncListener {
 
     /**
+     * Called on a call-back to indicate that the sync configuration
+     * has changed, e.g. a {@link com.podcatcher.deluxe.model.sync.SyncController}
+     * was activated or disabled.
+     */
+    public void onSyncConfigChanged();
+
+    /**
      * Called on a call-back to indicate that a sync action started.
      */
     public void onSyncStarted();

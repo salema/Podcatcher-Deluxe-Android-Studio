@@ -23,10 +23,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Toast;
 
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
+import com.podcatcher.deluxe.listeners.OnSyncListener;
 import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.types.Episode;
@@ -44,7 +46,8 @@ import java.util.List;
  * state, other activities cooperate.
  */
 public class PodcastActivity extends EpisodeListActivity implements OnBackStackChangedListener,
-        OnLoadPodcastListListener, OnChangePodcastListListener {
+        OnLoadPodcastListListener, OnChangePodcastListListener, OnSyncListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * The current podcast list fragment
@@ -140,7 +143,6 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         // On small screens in landscape mode, add the episode list fragment
         if (view.isSmallLandscape() && episodeListFragment == null) {
             episodeListFragment = new EpisodeListFragment();
-
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.right, episodeListFragment,
@@ -153,9 +155,10 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     protected void registerListeners() {
         super.registerListeners();
 
-        // Register as listener to the podcast data manager
+        // Register as listener to the podcast data and sync managers
         podcastManager.addLoadPodcastListListener(this);
         podcastManager.addChangePodcastListListener(this);
+        syncManager.addSyncListener(this);
     }
 
     @Override
@@ -263,6 +266,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         // Unregister the listeners
         podcastManager.removeLoadPodcastListListener(this);
         podcastManager.removeChangePodcastListListener(this);
+        syncManager.removeSyncListener(this);
     }
 
     @Override
@@ -415,6 +419,28 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
             // Update UI
             updateLogoViewMode();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (!syncManager.isSyncRunning())
+            syncManager.syncAll();
+
+        showToast(getString(R.string.pref_sync_title), Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onSyncConfigChanged() {
+        // Enable swipe refresh in podcast list if sync is active
+        podcastListFragment.setEnableSwipeRefresh(syncManager.getActiveControllerCount() > 0);
+    }
+
+    @Override
+    public void onSyncStarted() {}
+
+    @Override
+    public void onSyncCompleted() {
+        podcastListFragment.alertRefreshComplete();
     }
 
     @Override

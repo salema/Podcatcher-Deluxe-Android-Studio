@@ -306,9 +306,9 @@ public class SyncManager implements SyncControllerListener {
 
         // Make sure to store the new configuration
         writeToSyncPreferences();
-
-        for (SyncController controller : activeControllers)
-            Log.d(TAG, "Controller " + controller.getImpl() + ", mode " + controller.getMode());
+        // Alert listeners that the sync configuration might have changed
+        for (OnSyncListener listener : syncListeners)
+            listener.onSyncConfigChanged();
     }
 
     @Override
@@ -323,8 +323,7 @@ public class SyncManager implements SyncControllerListener {
 
     @Override
     public void onSyncCompleted(ControllerImpl impl) {
-        Log.d(TAG, "Controller " + impl + " completed sync.");
-
+        // Keep track of the last sync completed (shown in UI)
         preferences.edit()
                 .putLong(SettingsActivity.KEY_LAST_SYNC, new Date().getTime())
                 .apply();
@@ -332,7 +331,7 @@ public class SyncManager implements SyncControllerListener {
 
     @Override
     public void onSyncFailed(ControllerImpl impl, Throwable cause) {
-        Log.d(TAG, "Controller " + impl + " failed to sync.", cause);
+        Log.w(TAG, "Controller " + impl + " failed to sync.", cause);
     }
 
     /**

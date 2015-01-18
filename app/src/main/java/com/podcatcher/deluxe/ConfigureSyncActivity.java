@@ -120,6 +120,11 @@ public class ConfigureSyncActivity extends BaseActivity implements ConfigureSync
     }
 
     @Override
+    public void onSyncConfigChanged() {
+        // pass, nothing needs to be done here
+    }
+
+    @Override
     public void onSyncStarted() {
         configureSyncFragment.refresh();
     }

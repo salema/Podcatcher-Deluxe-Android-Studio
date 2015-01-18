@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +44,7 @@ import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.PodcastListAdapter;
 import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
 import com.podcatcher.deluxe.listeners.PodcastListContextListener;
+import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.PodcastListItemView;
@@ -60,12 +62,21 @@ public class PodcastListFragment extends PodcatcherListFragment {
      * The listener call-back to alert on podcast selection
      */
     private OnSelectPodcastListener podcastSelectionListener;
+    /**
+     * The listener call-back to alert when the user swiped to refresh
+     */
+    private SwipeRefreshLayout.OnRefreshListener refreshListener;
+
 
     /**
      * The list of podcasts currently shown
      */
     private List<Podcast> currentPodcastList;
 
+    /**
+     * The swipe-to-refresh layout
+     */
+    private SwipeRefreshLayout refreshLayout;
     /**
      * The divider view between list and the logo
      */
@@ -127,9 +138,10 @@ public class PodcastListFragment extends PodcatcherListFragment {
         // Make sure our listener is present
         try {
             this.podcastSelectionListener = (OnSelectPodcastListener) activity;
+            this.refreshListener = (SwipeRefreshLayout.OnRefreshListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnSelectPodcastListener");
+            throw new ClassCastException(activity.toString() + " must implement " +
+                    "OnSelectPodcastListener and SwipeRefreshLayout.OnRefreshListener");
         }
 
         this.addRemoveDuration = getResources().getInteger(android.R.integer.config_mediumAnimTime);
@@ -156,6 +168,12 @@ public class PodcastListFragment extends PodcatcherListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Get and configure the swipe-to-refresh layout
+        refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.podcast_list_swipe_refresh));
+        refreshLayout.setOnRefreshListener(refreshListener);
+        refreshLayout.setColorSchemeResources(R.color.theme_dark, R.color.theme_light);
+        refreshLayout.setEnabled(SyncManager.getInstance().getActiveControllerCount() > 0);
 
         ((ViewStub) emptyView).setOnInflateListener(new ViewStub.OnInflateListener() {
 
@@ -357,6 +375,24 @@ public class PodcastListFragment extends PodcatcherListFragment {
             if (listItemView != null)
                 listItemView.updateProgress(progress);
         }
+    }
+
+    /**
+     * Enable/disable swipe to refresh for the podcast list.
+     *
+     * @param enabled Flag to set.
+     */
+    public void setEnableSwipeRefresh(boolean enabled) {
+        if (viewCreated)
+            refreshLayout.setEnabled(enabled);
+    }
+
+    /**
+     * Notify the podcast list that the refresh action trigger by swipe down is done.
+     */
+    public void alertRefreshComplete() {
+        if (viewCreated)
+            refreshLayout.setRefreshing(false);
     }
 
     /**
