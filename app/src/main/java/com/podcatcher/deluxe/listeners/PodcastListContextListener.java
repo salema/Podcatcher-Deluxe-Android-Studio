@@ -235,10 +235,9 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 editAuthMenuItem.setVisible(checkedItemCount == 1);
                 sendSuggestionMenuItem.setVisible(checkedItemCount == 1);
                 // Hide the select all item if all items are selected
-                selectAllMenuItem.setVisible(fragment.getListView().getCheckedItemCount() !=
-                        fragment.getListAdapter().getCount());
+                selectAllMenuItem.setVisible(checkedItemCount != fragment.getListAdapter().getCount());
             } catch (NullPointerException npe) {
-                // pass, this happens when some of the parts (fragment or listview)
+                // pass, this happens when some of the parts (fragment or list view)
                 // are not there yet, we simply ignore this since update will be
                 // called again.
             }
