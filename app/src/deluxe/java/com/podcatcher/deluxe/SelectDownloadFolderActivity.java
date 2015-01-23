@@ -17,12 +17,16 @@
 
 package com.podcatcher.deluxe;
 
+import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
@@ -90,27 +94,56 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onShowAdvanced() {
         if (selectDownloadFolderFragment != null)
             selectDownloadFolderFragment.dismiss();
 
-        // Create select folder intent
-        Intent selectFolderIntent = new Intent(this, SelectFileActivity.class);
-        selectFolderIntent.putExtra(SelectFileActivity.SELECTION_MODE_KEY,
-                SelectFileActivity.SelectionMode.FOLDER);
-        selectFolderIntent.putExtra(SelectFileActivity.INITIAL_PATH_KEY,
-                getPreferences(MODE_PRIVATE).getString(SettingsActivity.KEY_DOWNLOAD_FOLDER,
-                        EpisodeDownloadManager.getDefaultDownloadFolder().getAbsolutePath()));
+        Intent selectFolderIntent;
+        // Create intent depending on system version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            // Use the system UI for folder selection on Android 5.0 and later
+            selectFolderIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        else {
+            // Use old custom UI on older Android versions
+            selectFolderIntent = new Intent(this, SelectFileActivity.class);
+            selectFolderIntent.putExtra(SelectFileActivity.SELECTION_MODE_KEY,
+                    SelectFileActivity.SelectionMode.FOLDER);
+            selectFolderIntent.putExtra(SelectFileActivity.INITIAL_PATH_KEY,
+                    getPreferences(MODE_PRIVATE).getString(SettingsActivity.KEY_DOWNLOAD_FOLDER,
+                            EpisodeDownloadManager.getDefaultDownloadFolder().getAbsolutePath()));
+        }
 
-        // Start activity. Result will be pushed down to the SettingsActivity.
+        // Start activity. Result will be caught below and pushed down to the SettingsActivity.
         startActivityForResult(selectFolderIntent, DownloadFolderPreference.REQUEST_CODE);
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         if (resultCode == RESULT_OK && requestCode == DownloadFolderPreference.REQUEST_CODE)
-            onSelectFolder(result.getData().getPath());
-        else finish();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // On Android 5.0 and later, we need to convert the resulting URI
+                // to a local path. This is not trivial and the current solution is
+                // probably incomplete. In particular, it does not handle URIs not
+                // representing a folder on the primary external storage.
+                final Uri resultUri = result.getData();
+                final String documentId = DocumentsContract.getTreeDocumentId(resultUri);
+                final String[] idParts = documentId.split(":"); // e.g. "primary:Podcasts"
+
+                if (idParts.length > 1 && "primary".equals(idParts[0]) &&
+                        "com.android.externalstorage.documents".equals(resultUri.getAuthority()))
+                    onSelectFolder(Environment.getExternalStorageDirectory() + File.separator + idParts[1]);
+                else {
+                    showToast(getString(R.string.file_select_access_denied));
+                    onCancel(null);
+                }
+            } else
+                // On Android < 5.0, we simply forward the selected path to the SettingsActivity
+                onSelectFolder(result.getData().getPath());
+
+        else onCancel(null);
     }
 
     @Override

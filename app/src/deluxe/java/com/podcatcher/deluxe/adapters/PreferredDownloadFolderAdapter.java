@@ -87,7 +87,7 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
          * or <code>null</code> if the enum value does not translate to
          * a valid file under the current conditions (e.g. no SD card).
          */
-        @TargetApi(Build.VERSION_CODES.KITKAT)
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         public File getFile(Context context) {
             switch (this) {
                 case INTERNAL_PODCASTS:
@@ -95,7 +95,13 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
                 case INTERNAL_DOWNLOADS:
                     return Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
                 case INTERNAL_APP:
-                    return context.getExternalFilesDir(DIRECTORY_PODCASTS);
+                    final File internalAppFolder = context.getExternalFilesDir(DIRECTORY_PODCASTS);
+                    // We prefer /Android/media over /Android/data on API >= 21,
+                    // because it is scanned by the media indexer of the Android system
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        final File[] dirs = context.getExternalMediaDirs();
+                        return dirs != null && dirs.length > 0 ? dirs[0] : internalAppFolder;
+                    } else return internalAppFolder;
                 case SDCARD:
                     // Check all paths and select the first that exists
                     for (String path : sdCardPaths) {
@@ -109,9 +115,14 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
 
                     return null;
                 case SDCARD_APP:
-                    // The second folder should be the one on the sd card,
+                    // The second folder ([1]) should be the one on the sd card,
                     // only show on KITKAT and later
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        // We prefer /Android/media over /Android/data on API >= 21,
+                        // because it is scanned by the media indexer of the Android system
+                        final File[] dirs = context.getExternalMediaDirs();
+                        return dirs != null && dirs.length > 1 ? dirs[1] : null;
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         final File[] dirs = context.getExternalFilesDirs(DIRECTORY_PODCASTS);
                         return dirs != null && dirs.length > 1 ? dirs[1] : null;
                     } else return null;
