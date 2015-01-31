@@ -127,15 +127,10 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
                 // On Android 5.0 and later, we need to convert the resulting URI
                 // to a local path. This is not trivial and the current solution is
                 // probably incomplete. In particular, it does not handle URIs not
-                // representing a folder on the primary external storage.
-                final Uri resultUri = result.getData();
-                final String documentId = DocumentsContract.getTreeDocumentId(resultUri);
-                final String[] idParts = documentId.split(":"); // e.g. "primary:Podcasts"
-
-                if (idParts.length > 1 && "primary".equals(idParts[0]) &&
-                        "com.android.externalstorage.documents".equals(resultUri.getAuthority()))
-                    onSelectFolder(Environment.getExternalStorageDirectory() + File.separator + idParts[1]);
-                else {
+                // representing a folder on the primary external storage or the SD card.
+                try {
+                    onSelectFolder(getAbsolutePathFromFolderPickerResultUri(result.getData()));
+                } catch (RuntimeException iae) {
                     showToast(getString(R.string.file_select_access_denied));
                     onCancel(null);
                 }
@@ -150,5 +145,23 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
     public void onCancel(DialogInterface dialog) {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private String getAbsolutePathFromFolderPickerResultUri(Uri resultUri) {
+        if ("com.android.externalstorage.documents".equals(resultUri.getAuthority())) {
+            final String documentId = DocumentsContract.getTreeDocumentId(resultUri);
+            final String[] idParts = documentId.split(":"); // e.g. "primary:Podcasts"
+            // Default: internal storage
+            String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+            // If not on internal storage -> SD card
+            if (!"primary".equals(idParts[0]))
+                // Set root path to absolute path for SD card
+                rootPath = getExternalMediaDirs()[1].getAbsolutePath().split("/Android")[0];
+
+            return rootPath + File.separator + idParts[1];
+        } else
+            throw new IllegalArgumentException("Not a real local folder");
     }
 }
