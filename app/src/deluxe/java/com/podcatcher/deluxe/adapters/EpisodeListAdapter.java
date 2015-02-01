@@ -109,14 +109,12 @@ public class EpisodeListAdapter extends PodcatcherBaseListAdapter {
         final boolean isOld = episodeManager.getState(item);
 
         // Make sure the coloring is right
-        if (checkedPositions.get(position))
-            returnView.setBackgroundDrawable(createBackground(lightThemeColor));
-        else if (selectedPositions.get(position))
-            returnView.setBackgroundDrawable(createBackground(themeColor));
-        else if (!isOld)
-            returnView.setBackgroundDrawable(createBackground(Color.WHITE));
-        else
-            returnView.setBackgroundDrawable(createBackground(Color.TRANSPARENT));
+        //noinspection deprecation
+        returnView.setBackgroundDrawable(createBackground(
+                checkedPositions.get(position) ? resources.getColor(R.color.theme_light) :
+                        selectedPositions.get(position) ? resources.getColor(R.color.theme_dark) :
+                                isOld ? Color.TRANSPARENT : Color.WHITE
+        ));
 
         // Make the view represent episode at given position
         returnView.show(item, showPodcastNames, isOld);

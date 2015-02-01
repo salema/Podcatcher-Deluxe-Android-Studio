@@ -47,24 +47,12 @@ public abstract class PodcatcherBaseListAdapter extends PodcatcherBaseAdapter {
     protected boolean selectAll = false;
 
     /**
-     * The theme color to use for highlighting list items
-     */
-    protected final int themeColor;
-    /**
-     * The theme color variant to use for pressed and checked items
-     */
-    protected final int lightThemeColor;
-
-    /**
      * Create new adapter.
      *
      * @param context The current context.
      */
     public PodcatcherBaseListAdapter(Context context) {
         super(context);
-
-        themeColor = context.getResources().getColor(R.color.theme_dark);
-        lightThemeColor = context.getResources().getColor(R.color.theme_light);
     }
 
     /**
@@ -125,12 +113,8 @@ public abstract class PodcatcherBaseListAdapter extends PodcatcherBaseAdapter {
      */
     protected void setBackgroundColorForPosition(View view, int position) {
         // This handles the selected, checked and none states
-        if (checkedPositions.get(position))
-            view.setBackgroundColor(lightThemeColor);
-        else if (selectedPositions.get(position))
-            view.setBackgroundColor(themeColor);
-        else {
-            view.setBackgroundColor(Color.TRANSPARENT);
-        }
+        view.setBackgroundColor(checkedPositions.get(position) ?
+                resources.getColor(R.color.theme_light) : selectedPositions.get(position) ?
+                resources.getColor(R.color.theme_dark) : Color.TRANSPARENT);
     }
 }
