@@ -80,7 +80,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * Flag to indicate the max age that would trigger re-load.
      */
-    private int maxAge = (int) TimeUnit.DAYS.toSeconds(3);
+    private int maxAge = (int) TimeUnit.DAYS.toMinutes(3);
 
     /**
      * Create new task.
