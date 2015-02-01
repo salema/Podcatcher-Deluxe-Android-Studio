@@ -230,6 +230,7 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 final int checkedItemCount = fragment.getListView().getCheckedItemCount();
                 mode.setTitle(fragment.getResources()
                         .getQuantityString(R.plurals.podcasts, checkedItemCount, checkedItemCount));
+                mode.setSubtitle(null);
 
                 // Show/hide edit auth menu item
                 editAuthMenuItem.setVisible(checkedItemCount == 1);
