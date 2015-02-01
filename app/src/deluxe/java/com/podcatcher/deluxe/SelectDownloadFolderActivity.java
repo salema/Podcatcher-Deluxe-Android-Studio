@@ -157,8 +157,12 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
 
             // If not on internal storage -> SD card
             if (!"primary".equals(idParts[0]))
-                // Set root path to absolute path for SD card
-                rootPath = getExternalMediaDirs()[1].getAbsolutePath().split("/Android")[0];
+                // Make sure there is only one storage besides the internal one (i.e. the SD card),
+                // other setups are just too complicated and rare for us to care about
+                if (getExternalMediaDirs().length == 2)
+                    // Set root path to absolute path for SD card
+                    rootPath = getExternalMediaDirs()[1].getAbsolutePath().split("/Android")[0];
+                else throw new IllegalArgumentException("Unknown storage setup");
 
             return rootPath + File.separator + idParts[1];
         } else
