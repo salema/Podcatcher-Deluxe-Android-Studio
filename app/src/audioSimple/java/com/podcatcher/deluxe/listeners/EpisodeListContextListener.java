@@ -239,8 +239,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
 
                 if (episode.getDuration() > 0)
                     totalDuration += episode.getDuration();
-                if (episode.getMediaSize() > 0)
-                    totalSize += episode.getMediaSize();
+                if (episode.getFileSize() > 0)
+                    totalSize += episode.getFileSize();
             }
         }
 

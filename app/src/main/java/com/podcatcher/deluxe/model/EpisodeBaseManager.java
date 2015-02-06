@@ -179,7 +179,7 @@ public abstract class EpisodeBaseManager implements OnLoadEpisodeMetadataListene
 
             final int duration = episode.getDuration();
             meta.episodeDuration = duration > 0 ? duration : null;
-            final long size = episode.getMediaSize();
+            final long size = episode.getFileSize();
             meta.episodeFileSize = size > 0 ? size : null;
         }
     }

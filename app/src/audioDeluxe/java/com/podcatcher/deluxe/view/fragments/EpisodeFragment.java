@@ -398,8 +398,8 @@ public class EpisodeFragment extends Fragment {
 
         if (currentEpisode.getDuration() > 0)
             builder.append(ParserUtils.formatTime(currentEpisode.getDuration())).append(SEPARATOR);
-        if (currentEpisode.getMediaSize() > 0)
-            builder.append(ParserUtils.formatFileSize(currentEpisode.getMediaSize())).append(SEPARATOR);
+        if (currentEpisode.getFileSize() > 0)
+            builder.append(ParserUtils.formatFileSize(currentEpisode.getFileSize())).append(SEPARATOR);
         if (currentEpisode.getMediaType() != null)
             builder.append(currentEpisode.getMediaType());
 
@@ -408,6 +408,6 @@ public class EpisodeFragment extends Fragment {
             result = result.substring(0, result.length() - SEPARATOR.length());
 
         // At least one numerical information should be there, otherwise return null
-        return currentEpisode.getDuration() > 0 || currentEpisode.getMediaSize() > 0 ? result : null;
+        return currentEpisode.getDuration() > 0 || currentEpisode.getFileSize() > 0 ? result : null;
     }
 }

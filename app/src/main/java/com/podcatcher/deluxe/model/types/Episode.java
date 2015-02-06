@@ -69,10 +69,6 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * The episode's media file type
      */
     protected String mediaType;
-    /**
-     * The episode's media file size
-     */
-    protected long mediaSize = -1;
 
     /**
      * Create a new episode.
@@ -152,18 +148,6 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      */
     public String getMediaType() {
         return mediaType;
-    }
-
-    /**
-     * @return The media file size as given by the feed in bytes
-     * or -1 if the size is not given.
-     */
-    public long getMediaSize() {
-        return mediaSize;
-    }
-
-    public void setMediaSize(long fileSize) {
-        this.mediaSize = fileSize;
     }
 
     /**
@@ -302,10 +286,10 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
             mediaType = typeAttribute != null && typeAttribute.trim().length() > 0 ?
                     typeAttribute.trim() : null;
             try {
-                mediaSize = Integer.valueOf(lengthAttribute);
+                fileSize = Integer.valueOf(lengthAttribute);
             } catch (NumberFormatException nfe) {
                 // pass, length not available
-                mediaSize = -1;
+                fileSize = -1;
             }
         }
 

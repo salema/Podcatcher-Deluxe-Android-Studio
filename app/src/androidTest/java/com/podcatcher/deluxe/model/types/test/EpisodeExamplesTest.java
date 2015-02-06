@@ -139,7 +139,7 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
             for (Episode episode : podcast.getEpisodes()) {
                 String messageStart = "Episode " + episode.getName() + "(" + episode.getPodcast().getName() + ")";
 
-                assertTrue(messageStart + " has no media file size information", episode.getMediaSize() > 0);
+                assertTrue(messageStart + " has no media file size information", episode.getFileSize() > 0);
             }
         }
     }

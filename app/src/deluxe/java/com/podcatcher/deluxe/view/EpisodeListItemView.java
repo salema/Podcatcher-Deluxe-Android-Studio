@@ -196,8 +196,8 @@ public class EpisodeListItemView extends PodcatcherListItemView {
             builder.append(episode.getPodcast().getName()).append(SEPARATOR);
         if (!showPodcastName && episode.getDuration() > 0)
             builder.append(ParserUtils.formatTime(episode.getDuration())).append(SEPARATOR);
-        if (!showPodcastName && episode.getMediaSize() > 0)
-            builder.append(ParserUtils.formatFileSize(episode.getMediaSize()));
+        if (!showPodcastName && episode.getFileSize() > 0)
+            builder.append(ParserUtils.formatFileSize(episode.getFileSize()));
 
         String result = builder.toString();
         if (result.endsWith(SEPARATOR))

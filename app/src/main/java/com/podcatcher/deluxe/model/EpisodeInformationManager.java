@@ -115,7 +115,7 @@ public abstract class EpisodeInformationManager extends EpisodeBaseManager {
                 metadataChanged = true;
             }
 
-            episode.setMediaSize(newSize);
+            episode.setFileSize(newSize);
 
             // Alert listeners
             for (OnEpisodeInformationChangedListener listener : changedListeners)

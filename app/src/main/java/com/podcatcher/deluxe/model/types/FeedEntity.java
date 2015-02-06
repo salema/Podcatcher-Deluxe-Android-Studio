@@ -69,6 +69,10 @@ public abstract class FeedEntity {
      * Whether the element contains explicit language or pics
      */
     protected boolean explicit = false;
+    /**
+     * The element's file size
+     */
+    protected long fileSize = -1;
 
     /**
      * @return The entity's title. This might by empty or <code>null</code>.
@@ -97,6 +101,23 @@ public abstract class FeedEntity {
      */
     public boolean isExplicit() {
         return explicit;
+    }
+
+    /**
+     * @return The elements file size as downloaded or
+     * given by the feed in bytes. Value of -1 if the size is not available.
+     */
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    /**
+     * Set new file size for the feed entity.
+     *
+     * @param fileSize Size in bytes.
+     */
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 
     /**

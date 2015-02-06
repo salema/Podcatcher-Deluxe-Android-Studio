@@ -70,12 +70,12 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The time podcast content is buffered on non-mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIFE = (int) TimeUnit.MINUTES.toMillis(30);
+    public static final int TIME_TO_LIVE = (int) TimeUnit.MINUTES.toMillis(30);
     /**
      * The minimum time podcast content is buffered on mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIFE_MOBILE = (int) TimeUnit.MINUTES.toMillis(120);
+    public static final int TIME_TO_LIVE_MOBILE = (int) TimeUnit.MINUTES.toMillis(120);
     /**
      * The name of the file we store our saved podcasts in (as OPML)
      */
@@ -603,16 +603,17 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * never been loaded.
      */
     private boolean shouldReload(Podcast podcast) {
-        // Has never been loaded
         if (podcast.getLastLoaded() == null)
-            return true;
-            // Has been loaded and we are now offline
+            return true; // Has never been loaded
         else if (!podcatcher.isOnline())
-            return false;
-            // Check age
+            return false; // Has been loaded and we are now offline
         else {
+            // Check age and size, scale time-to-live on mobile data with feed size
             final long age = new Date().getTime() - podcast.getLastLoaded().getTime();
-            return age > (podcatcher.isOnMeteredConnection() ? TIME_TO_LIFE_MOBILE : TIME_TO_LIFE);
+            final float size = Math.abs(podcast.getFileSize()) / (float)(1024 * 1024); // to MBs
+
+            return age > (podcatcher.isOnMeteredConnection() ?
+                    TIME_TO_LIVE_MOBILE * (1 + 3 * size) /* scale factor */ : TIME_TO_LIVE);
         }
     }
 
@@ -678,11 +679,10 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                 // There are some conditions here: We need to be online
                 // and no podcasts are currently loading
                 if (podcatcher.isOnline() && loadingPodcasts.isEmpty()) {
-                    // This is the current time minus the time to life for the podcast
-                    // minus some extra time to make sure we refresh before it is
-                    // actually due
+                    // This is the current time minus the time to live for the podcast minus
+                    // some extra time to make sure we refresh before it is actually due
                     final Date triggerIfLoadedBefore = new Date(new Date().getTime() -
-                            TIME_TO_LIFE - TimeUnit.MINUTES.toMillis(6)); // six minutes before reload
+                            TIME_TO_LIVE - TimeUnit.MINUTES.toMillis(6)); // six minutes before reload
 
                     // Test each podcast and schedule reload as needed
                     for (Podcast podcast : podcastList)

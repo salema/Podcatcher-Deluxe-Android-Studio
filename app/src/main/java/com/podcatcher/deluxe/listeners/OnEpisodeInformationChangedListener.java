@@ -37,7 +37,7 @@ public interface OnEpisodeInformationChangedListener {
      * The file size information for the episode given changed.
      *
      * @param episode Episode information changed for.
-     * @see Episode#getMediaSize()
+     * @see Episode#getFileSize()
      */
     public void onMediaFileSizeChanged(Episode episode);
 }

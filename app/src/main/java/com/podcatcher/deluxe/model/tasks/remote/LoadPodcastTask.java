@@ -150,6 +150,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             this.authorization = podcast.getAuthorization();
             // ... and go get the file
             byte[] podcastRssFile = loadFile(new URL(podcast.getUrl()));
+            podcast.setFileSize(podcastRssFile.length);
 
             if (!isCancelled()) {
                 publishProgress(Progress.PARSE);
@@ -185,8 +186,8 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                         if (episode.getDuration() <= 0)
                             episode.setDuration(episodeManager.findDuration(episode));
 
-                        if (episode.getMediaSize() <= 0)
-                            episode.setMediaSize(episodeManager.findMediaFileSize(episode));
+                        if (episode.getFileSize() <= 0)
+                            episode.setFileSize(episodeManager.findMediaFileSize(episode));
                     }
             }
         } catch (XmlPullParserException xppe) {

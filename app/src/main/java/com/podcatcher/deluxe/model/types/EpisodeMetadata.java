@@ -144,7 +144,7 @@ public class EpisodeMetadata {
             if (episodeDuration != null)
                 result.setDuration(episodeDuration);
             if (episodeFileSize != null)
-                result.setMediaSize(episodeFileSize);
+                result.setFileSize(episodeFileSize);
         }
 
         return result;
