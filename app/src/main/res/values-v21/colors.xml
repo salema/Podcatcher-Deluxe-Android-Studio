@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/** Copyright 2012-2015 Kevin Hausmann
+ *
+ * This file is part of Podcatcher Deluxe.
+ *
+ * Podcatcher Deluxe is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License as 
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * Podcatcher Deluxe is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <!-- Color definitions inspired by http://www.google.com/design/spec/style/color.html -->
+    <color name="button_green_light">#8BC34A</color>
+    <color name="button_green_dark">#689F38</color>
+    <!-- 54% alpha -->
+    <color name="button_green_dark_disabled">#8A689F38</color>
+    <color name="button_red_light">#EF5350</color>
+    <color name="button_red_dark">#C62828</color>
+    <!-- 54% alpha -->
+    <color name="button_red_dark_disabled">#8AD32F2F</color>
+    <color name="button_orange_light">#FFA726</color>
+    <color name="button_orange_dark">#F57C00</color>
+    <color name="button_blue_light">#03A9F4</color>
+    <color name="button_blue_dark">#2196F3</color>
+    <color name="button_label_enabled">@android:color/white</color>
+    <!-- 26% alpha black -->
+    <color name="button_label_disabled">#42000000</color>
+    <!-- 54% alpha black -->
+    <color name="text_secondary">#8A000000</color>
+    <color name="text_error">#B71C1C</color>
+    <!-- 12% alpha black -->
+    <color name="divider">#20000000</color>
+    <!-- Color used for the Android >= 5.0 system task switcher -->
+    <color name="recent_tasks_background">#222222</color>
+</resources>
