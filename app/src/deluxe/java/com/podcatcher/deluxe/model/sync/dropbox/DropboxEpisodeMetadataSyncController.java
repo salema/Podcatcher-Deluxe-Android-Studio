@@ -145,14 +145,16 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
         protected void onPostExecute(Void nothing) {
             syncRunning = false;
 
-            listener.onSyncCompleted(getImpl());
+            if (listener != null)
+                listener.onSyncCompleted(getImpl());
         }
 
         @Override
         protected void onCancelled(Void nothing) {
             syncRunning = false;
 
-            listener.onSyncFailed(getImpl(), cause);
+            if (listener != null)
+                listener.onSyncFailed(getImpl(), cause);
         }
     }
 
