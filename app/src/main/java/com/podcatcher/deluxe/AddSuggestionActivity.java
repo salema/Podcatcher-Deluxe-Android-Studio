@@ -93,8 +93,8 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         // Load suggestions (this has to be called after UI fragment is created)
         suggestionManager.load();
