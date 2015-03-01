@@ -26,7 +26,6 @@
         android:key="synchronization"
         android:title="@string/pref_sync_title">
         <intent
-            android:targetClass="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:targetPackage="net.alliknow.podcatcher" />
+            android:action="com.podcatcher.deluxe.CONFIGURE_SYNC"/>
     </com.podcatcher.deluxe.preferences.SynchronizationPreference>
 </PreferenceScreen>

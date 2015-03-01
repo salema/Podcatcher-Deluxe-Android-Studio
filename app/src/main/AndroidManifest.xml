@@ -138,7 +138,13 @@
             android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name="com.podcatcher.deluxe.ConfigureSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay"/>
+            android:theme="@android:style/Theme.NoDisplay"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.podcatcher.deluxe.CONFIGURE_SYNC"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <receiver android:name="com.podcatcher.deluxe.services.MediaButtonReceiver">
             <intent-filter>
