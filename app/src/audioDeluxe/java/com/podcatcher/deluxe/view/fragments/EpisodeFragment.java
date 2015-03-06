@@ -275,11 +275,7 @@ public class EpisodeFragment extends Fragment {
                     WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
             descriptionView.loadDataWithBaseURL(null, // Even a null baseURL somehow helps
-                    !hasHtmlDescription ?
-                            currentEpisode.getDescription() == null ?
-                                    getString(R.string.episode_no_description) :
-                                    currentEpisode.getDescription() :
-                            currentEpisode.getLongDescription(),
+                    getCurrentEpisodeDescription(),
                     EPISODE_DESCRIPTION_MIME_TYPE,
                     encoding != null ? encoding : EPISODE_DESCRIPTION_DEFAULT_ENCODING,
                     null);
@@ -409,5 +405,24 @@ public class EpisodeFragment extends Fragment {
 
         // At least one numerical information should be there, otherwise return null
         return currentEpisode.getDuration() > 0 || currentEpisode.getFileSize() > 0 ? result : null;
+    }
+
+    private String getCurrentEpisodeDescription() {
+        StringBuilder builder = new StringBuilder();
+
+        // Prefer HTML description over text/plain over placeholder
+        builder.append(currentEpisode.getLongDescription() == null ?
+                currentEpisode.getDescription() == null ?
+                        getString(R.string.episode_no_description) :
+                        currentEpisode.getDescription() :
+                currentEpisode.getLongDescription());
+
+        // Add link to website if given
+        final String websiteUrl = currentEpisode.getWebsiteUrl();
+        if (websiteUrl != null)
+            builder.append(" <a href=\"" + websiteUrl + "\"" + "style=\"text-decoration: none\">")
+                    .append("&#10149;" + getString(R.string.episode_description_website_link_label) + "</a>");
+
+        return builder.toString();
     }
 }

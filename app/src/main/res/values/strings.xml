@@ -67,6 +67,7 @@
     <string name="episode_none">No episodes in this podcast</string>
     <string name="episode_none_all_podcasts">No episodes</string>
     <string name="episode_no_description">No description available.</string>
+    <string name="episode_description_website_link_label">Website</string>
     <string name="episode_none_selected">No episode selected</string>
     <plurals name="episodes">
         <item quantity="one">One episode</item>

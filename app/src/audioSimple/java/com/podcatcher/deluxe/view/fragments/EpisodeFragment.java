@@ -160,9 +160,9 @@ public class EpisodeFragment extends Fragment {
 
         // Prepare the ad
         String audioLink = "<a href=\"" + BuildConfig.STORE_URL_PREFIX +
-                "com.podcatcher.deluxe\">Podcatcher Deluxe</a>";
+                "com.podcatcher.deluxe\" style=\"color: #9C27B0; font-weight: bold\">Podcatcher Deluxe</a>";
         String videoLink = "<a href=\"" + BuildConfig.STORE_URL_PREFIX +
-                "com.podcatcher.deluxe.video\">Video Podcatcher Deluxe</a>";
+                "com.podcatcher.deluxe.video\" style=\"color: #C62828; font-weight: bold\">Video Podcatcher Deluxe</a>";
         ad = "<hr style=\"color: gray; width: 100%\">" +
                 "<div style=\"color: gray; font-size: smaller; text-align: center; width: 100%\">" +
                 getString(R.string.ad, audioLink, videoLink) + "</div>";
@@ -275,13 +275,8 @@ public class EpisodeFragment extends Fragment {
                             WebSettings.LayoutAlgorithm.NORMAL :
                     WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-            final String webViewData = (!hasHtmlDescription ?
-                    currentEpisode.getDescription() == null ?
-                            getString(R.string.episode_no_description) :
-                            currentEpisode.getDescription() :
-                    currentEpisode.getLongDescription()) + ad;
             descriptionView.loadDataWithBaseURL(null, // Even a null baseURL somehow helps
-                    webViewData,
+                    getCurrentEpisodeDescription() + ad,
                     EPISODE_DESCRIPTION_MIME_TYPE,
                     encoding != null ? encoding : EPISODE_DESCRIPTION_DEFAULT_ENCODING,
                     null);
@@ -396,5 +391,24 @@ public class EpisodeFragment extends Fragment {
 
         // At least one numerical information should be there, otherwise return null
         return currentEpisode.getDuration() > 0 || currentEpisode.getFileSize() > 0 ? result : null;
+    }
+
+    private String getCurrentEpisodeDescription() {
+        StringBuilder builder = new StringBuilder();
+
+        // Prefer HTML description over text/plain over placeholder
+        builder.append(currentEpisode.getLongDescription() == null ?
+                currentEpisode.getDescription() == null ?
+                        getString(R.string.episode_no_description) :
+                        currentEpisode.getDescription() :
+                currentEpisode.getLongDescription());
+
+        // Add link to website if given
+        final String websiteUrl = currentEpisode.getWebsiteUrl();
+        if (websiteUrl != null)
+            builder.append(" <a href=\"" + websiteUrl + "\"" + "style=\"text-decoration: none\">")
+                    .append("&#10149;" + getString(R.string.episode_description_website_link_label) + "</a>");
+
+        return builder.toString();
     }
 }

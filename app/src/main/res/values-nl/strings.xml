@@ -66,6 +66,7 @@
     <string name="episode_none">Geen afleveringen in deze podcast</string>
     <string name="episode_none_all_podcasts">Geen afleveringen</string>
     <string name="episode_no_description">Geen omschrijving beschikbaar</string>
+    <string name="episode_description_website_link_label">Webpagina</string>
     <string name="episode_none_selected">Geen aflevering geselecteerd</string>
     <plurals name="episodes">
         <item quantity="one">1 aflevering</item>

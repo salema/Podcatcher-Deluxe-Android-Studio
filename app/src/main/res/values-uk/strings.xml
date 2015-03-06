@@ -68,6 +68,7 @@
     <string name="episode_none">Жодного епізоду у цьому подкасті</string>
     <string name="episode_none_all_podcasts">Немає жодного епізоду</string>
     <string name="episode_no_description">Опис відсутній.</string>
+    <string name="episode_description_website_link_label">Веб-Сторінка</string>
     <string name="episode_none_selected">Не обрано жодного епізоду</string>
     <plurals name="episodes">
         <item quantity="one">%d епізод</item>

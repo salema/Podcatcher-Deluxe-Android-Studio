@@ -65,6 +65,7 @@
     <string name="episode_none">Bu podcast bölüm yok</string>
     <string name="episode_none_all_podcasts">Bölüm yok</string>
     <string name="episode_no_description">Açıklama mevcut değil.</string>
+    <string name="episode_description_website_link_label">Web Sayfası</string>
     <string name="episode_none_selected">Bölüm seçilmedi</string>
     <plurals name="episodes">
         <item quantity="other">%d bölüm</item>

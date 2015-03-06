@@ -17,6 +17,9 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.podcatcher.deluxe.model.tags.RSS;
 
 import java.net.MalformedURLException;
@@ -77,6 +80,7 @@ public abstract class FeedEntity {
     /**
      * @return The entity's title. This might by empty or <code>null</code>.
      */
+    @Nullable
     public String getName() {
         return name;
     }
@@ -84,6 +88,7 @@ public abstract class FeedEntity {
     /**
      * @return The entity's online location.
      */
+    @Nullable
     public String getUrl() {
         return url;
     }
@@ -91,6 +96,7 @@ public abstract class FeedEntity {
     /**
      * @return The entity's description.
      */
+    @Nullable
     public String getDescription() {
         return description;
     }
@@ -104,8 +110,8 @@ public abstract class FeedEntity {
     }
 
     /**
-     * @return The elements file size as downloaded or
-     * given by the feed in bytes. Value of -1 if the size is not available.
+     * @return The elements file size as downloaded or given by the feed in bytes.
+     * Value of -1 if the size is not available.
      */
     public long getFileSize() {
         return fileSize;
@@ -114,10 +120,11 @@ public abstract class FeedEntity {
     /**
      * Set new file size for the feed entity.
      *
-     * @param fileSize Size in bytes.
+     * @param fileSize Size in bytes, values below or equal zero are ignored.
      */
     public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
+        if (fileSize > 0)
+            this.fileSize = fileSize;
     }
 
     /**
@@ -129,7 +136,8 @@ public abstract class FeedEntity {
      * syntax. When not a valid URL or <code>null</code>, the string
      * given is returned unaltered.
      */
-    protected String normalizeUrl(final String spec) {
+    @Nullable
+    protected String normalizeUrl(final @Nullable String spec) {
         try {
             // Trim white spaces, normalize path, throw exception if mal-formed
             final URL url = new URI(spec.trim()).normalize().toURL();
@@ -165,10 +173,10 @@ public abstract class FeedEntity {
      * Check whether the given string values indicated that the feed entity is
      * considered explicit.
      *
-     * @param value The string value from the feed.
+     * @param value The string value from the feed, <code>null</code> results in <code>false</code>.
      * @return The explicit flag.
      */
-    protected boolean parseExplicit(String value) {
+    protected boolean parseExplicit(@Nullable String value) {
         return value != null
                 && value.trim().toLowerCase(Locale.US).equals(RSS.EXPLICIT_POSITIVE_VALUE);
     }
@@ -180,7 +188,8 @@ public abstract class FeedEntity {
      * @param dateString The string from the RSS/XML feed to parse.
      * @return The date or <code>null</code> if the string could not be parsed.
      */
-    protected Date parseDate(String dateString) {
+    @Nullable
+    protected Date parseDate(@NonNull String dateString) {
         try {
             // SimpleDateFormat is not thread safe
             synchronized (DATE_FORMATTER) {

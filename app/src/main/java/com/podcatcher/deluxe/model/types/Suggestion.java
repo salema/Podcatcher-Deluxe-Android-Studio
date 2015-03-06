@@ -17,6 +17,8 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import android.support.annotation.NonNull;
+
 /**
  * The podcast suggestion type. Extends {@link Podcast} by a few fields and
  * methods specific to suggestions.
@@ -24,7 +26,8 @@ package com.podcatcher.deluxe.model.types;
 public class Suggestion extends Podcast {
 
     /**
-     * Whether the podcast is featured
+     * Whether the podcast is featured.
+     * The UI might later decide to highlight featured suggestions.
      */
     protected boolean featured = false;
 
@@ -34,35 +37,35 @@ public class Suggestion extends Podcast {
      * @param name The name to show.
      * @param url  The URL to load feed from.
      */
-    public Suggestion(String name, String url) {
+    public Suggestion(@NonNull String name, @NonNull String url) {
         super(name, url);
     }
 
     /**
      * @param description The description to set.
      */
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
     /**
      * @param language The language to set.
      */
-    public void setLanguage(Language language) {
+    public void setLanguage(@NonNull Language language) {
         this.language = language;
     }
 
     /**
      * @param genre The genre to set.
      */
-    public void setGenre(Genre genre) {
+    public void setGenre(@NonNull Genre genre) {
         this.genre = genre;
     }
 
     /**
      * @param mediaType The mediaType to set.
      */
-    public void setMediaType(MediaType mediaType) {
+    public void setMediaType(@NonNull MediaType mediaType) {
         this.mediaType = mediaType;
     }
 

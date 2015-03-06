@@ -67,6 +67,7 @@
     <string name="episode_none">Žádné díly v tomto záznamu</string>
     <string name="episode_none_all_podcasts">Žádné díly</string>
     <string name="episode_no_description">Není dostupný žádný popis.</string>
+    <string name="episode_description_website_link_label">Webové stránky</string>
     <string name="episode_none_selected">Nevybrán žádný díl</string>
     <plurals name="episodes">
         <item quantity="one">Jeden díl</item>

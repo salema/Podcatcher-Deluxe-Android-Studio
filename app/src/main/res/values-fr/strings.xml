@@ -66,6 +66,7 @@
     <string name="episode_none">Ce podcast ne contient aucun épisode</string>
     <string name="episode_none_all_podcasts">Aucun épisode disponible</string>
     <string name="episode_no_description">Aucune description disponible.</string>
+    <string name="episode_description_website_link_label">Page Web</string>
     <string name="episode_none_selected">Aucun épisode sélectionné</string>
     <plurals name="episodes">
         <item quantity="one" tools:ignore="ImpliedQuantity">Un épisode</item>

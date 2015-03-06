@@ -124,22 +124,26 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     /**
-     * @return The language.
+     * @return The language as in {@link com.podcatcher.deluxe.model.types.Language}.
      */
+    @Nullable
     public Language getLanguage() {
         return language;
     }
 
     /**
-     * @return The genre.
+     * @return The genre as in {@link com.podcatcher.deluxe.model.types.Genre}.
      */
+    @Nullable
     public Genre getGenre() {
         return genre;
     }
 
     /**
-     * @return The mediaType.
+     * @return The mediaType as in {@link com.podcatcher.deluxe.model.types.MediaType}.
+     * This is <em>not</em> the media file type (e.g. audio/mpeg), you get this from the episodes.
      */
+    @Nullable
     public MediaType getMediaType() {
         return mediaType;
     }
@@ -148,6 +152,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return The user name for this podcast. Maybe <code>null</code> if
      * unknown or unneeded.
      */
+    @Nullable
     public String getUsername() {
         return username;
     }
@@ -157,7 +162,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      *
      * @param username Name to use. Give <code>null</code> to reset.
      */
-    public void setUsername(String username) {
+    public void setUsername(@Nullable String username) {
         this.username = username;
     }
 
@@ -165,6 +170,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return The password for this podcast. Maybe <code>null</code> if unknown
      * or unneeded.
      */
+    @Nullable
     public String getPassword() {
         return password;
     }
@@ -174,7 +180,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      *
      * @param password Password to use. Give <code>null</code> to reset.
      */
-    public void setPassword(String password) {
+    public void setPassword(@Nullable String password) {
         this.password = password;
     }
 
@@ -182,6 +188,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return Authorization string to be used as a HTTP request header or
      * <code>null</code> if user name or password are not set.
      */
+    @Nullable
     public String getAuthorization() {
         String result = null;
 
@@ -203,6 +210,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return The list of episodes as listed in the feed.
      * @see #parse(XmlPullParser)
      */
+    @NonNull
     public List<Episode> getEpisodes() {
         // Need to return a copy, so nobody can change this on us and changes
         // made in the model do not make problems in the UI
@@ -242,6 +250,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * detected by the parser.
      * @see #parse(XmlPullParser)
      */
+    @Nullable
     public String getFeedEncoding() {
         return feedEncoding;
     }
@@ -253,6 +262,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * does not provide a logo or it has not been parsed).
      * @see #parse(XmlPullParser)
      */
+    @Nullable
     public String getLogoUrl() {
         return logoUrl;
     }
@@ -260,10 +270,11 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     /**
      * Set the logo to use for this podcast.
      *
-     * @param logoUrl URL to show logo pic from.
+     * @param logoUrl URL to show logo pic from, <code>null</code> is ignored.
      */
     public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
+        if (logoUrl != null)
+            this.logoUrl = logoUrl;
     }
 
     /**
@@ -277,6 +288,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return The point in time this podcast has last been loaded or
      * <code>null</code> iff it had not been loaded before.
      */
+    @Nullable
     public Date getLastLoaded() {
         return lastLoaded == null ? null : new Date(lastLoaded.getTime());
     }
@@ -348,7 +360,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * is provided, "http://www.example.com/feed/test/pic.jpg" might be
      * returned.
      */
-    public String toAbsoluteUrl(String relativeUrl) {
+    @Nullable
+    public String toAbsoluteUrl(@Nullable String relativeUrl) {
         String result = relativeUrl;
 
         // Rewrite logo url to be absolute
@@ -383,7 +396,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @throws IOException            If we encounter problems read the file.
      * @throws XmlPullParserException On parsing errors.
      */
-    public void parse(XmlPullParser parser) throws XmlPullParserException, IOException {
+    public void parse(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
         final List<Episode> newEpisodes = new ArrayList<>();
 
         try {
@@ -433,7 +446,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
     }
 
-    protected void parseLogo(XmlPullParser parser) throws IOException {
+    protected void parseLogo(@NonNull XmlPullParser parser) throws IOException {
         try {
             // HREF attribute used?
             if (parser.getAttributeValue("", RSS.HREF) != null)
@@ -464,7 +477,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
     }
 
-    protected void parseAndAddEpisode(XmlPullParser parser, List<Episode> list, int index) {
+    protected void parseAndAddEpisode(@NonNull XmlPullParser parser,
+                                      @NonNull List<Episode> list, int index) {
         // Create episode and parse the data
         final Episode newEpisode = new Episode(this, index);
 
@@ -482,7 +496,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     @Override
-    protected String normalizeUrl(String spec) {
+    @Nullable
+    protected String normalizeUrl(@Nullable String spec) {
         // We put some extra bit in here to that only apply to podcast URLs and
         // then call the base class method.
         if (spec != null) {

@@ -18,6 +18,7 @@
 package com.podcatcher.deluxe.model.types;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Html;
 
 import com.podcatcher.deluxe.model.ParserUtils;
@@ -73,17 +74,17 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     /**
      * Create a new episode.
      *
-     * @param podcast The podcast this episode belongs to. Cannot be
-     *                <code>null</code>.
+     * @param podcast The podcast this episode belongs to. Cannot be <code>null</code>.
      * @param index   The index of the episode created in the podcast's feed (used
-     *                for sorting if the publication date is not available).
+     *                for sorting if the publication date is not available). Giving any value
+     *                below zero will have this ignored.
      */
-    public Episode(Podcast podcast, int index) {
+    public Episode(@NonNull Podcast podcast, int index) {
         if (podcast == null)
             throw new NullPointerException("Episode can not have null as the podcast instance!");
 
         this.podcast = podcast;
-        this.index = index;
+        this.index = index < 0 ? -1 : index;
     }
 
     /**
@@ -97,7 +98,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * @param mediaType   The episode's media type.
      * @param description The episode's description.
      */
-    Episode(Podcast podcast, String name, String mediaUrl, Date pubDate,
+    Episode(@NonNull Podcast podcast, String name, String mediaUrl, Date pubDate,
             String mediaType, String description) {
         this(podcast, -1);
 
@@ -113,6 +114,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     /**
      * @return The owning podcast. This will not be <code>null</code>.
      */
+    @NonNull
     public Podcast getPodcast() {
         return podcast;
     }
@@ -128,16 +130,16 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     /**
      * @return The publication date for this episode or <code>null</code> if not present.
      */
+    @Nullable
     public Date getPubDate() {
-        if (pubDate == null)
-            return null;
-        else
-            return new Date(pubDate.getTime());
+        return pubDate == null ? null : new Date(pubDate.getTime());
     }
 
     /**
-     * @return The media content online location.
+     * @return The media content online location. This should not be <code>null</code>
+     * after parsing but could be if the episode is created independently.
      */
+    @Nullable
     public String getMediaUrl() {
         return mediaUrl;
     }
@@ -146,6 +148,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * @return The media type as given by the feed (e.g. "audio/mpeg")
      * or <code>null</code> if not available.
      */
+    @Nullable
     public String getMediaType() {
         return mediaType;
     }
@@ -158,19 +161,37 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         return duration;
     }
 
+    /**
+     * Set the episode duration, potentially overriding the information
+     * read from the podcast feed.
+     *
+     * @param duration The duration in seconds, values below or equal zero will be ignored.
+     */
     public void setDuration(int duration) {
-        this.duration = duration;
+        if (duration > 0)
+            this.duration = duration;
     }
 
     /**
      * @return The long content description for this episode from the
      * content:encoded tag (if any). Might be <code>null</code>.
      */
+    @Nullable
     public String getLongDescription() {
         return content;
     }
 
+    /**
+     * @return A link to the episode's web page. Might be <code>null</code> to
+     * indicate that none is given by the podcast feed.
+     */
+    @Nullable
+    public String getWebsiteUrl() {
+        return url != null && url.startsWith("http") && !url.equals(mediaUrl) ? url : null;
+    }
+
     @Override
+    @Nullable
     public String toString() {
         return name;
     }
@@ -235,12 +256,11 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * Read data from an item node in the RSS/XML podcast file and use it to set
      * this episode's fields.
      *
-     * @param parser Podcast file parser, set to the start tag of the item to
-     *               read.
+     * @param parser Podcast feed file parser, set to the start tag of the item to read.
      * @throws XmlPullParserException On parsing problems.
      * @throws IOException            On I/O problems.
      */
-    void parse(XmlPullParser parser) throws XmlPullParserException, IOException {
+    void parse(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
         // Make sure we start at item tag
         parser.require(XmlPullParser.START_TAG, "", RSS.ITEM);
 
@@ -274,7 +294,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         parser.require(XmlPullParser.END_TAG, "", RSS.ITEM);
     }
 
-    protected void parseEnclosure(XmlPullParser parser) throws XmlPullParserException, IOException {
+    protected void parseEnclosure(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
         final String urlAttribute = parser.getAttributeValue("", RSS.URL);
         final String typeAttribute = parser.getAttributeValue("", RSS.MEDIA_TYPE);
         final String lengthAttribute = parser.getAttributeValue("", RSS.MEDIA_LENGTH);
@@ -296,7 +316,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         parser.nextText();
     }
 
-    protected int parseDuration(String durationString) {
+    protected int parseDuration(@NonNull String durationString) {
         int result = -1;
 
         try {
@@ -323,17 +343,18 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         return result == 0 ? -1 : result;
     }
 
-    protected boolean isContentEncodedTag(XmlPullParser parser) {
+    protected boolean isContentEncodedTag(@NonNull XmlPullParser parser) {
         return RSS.CONTENT_ENCODED.equals(parser.getName()) &&
                 RSS.CONTENT_NAMESPACE.equals(parser.getNamespace(parser.getPrefix()));
     }
 
     @Override
-    protected String normalizeUrl(String spec) {
+    @Nullable
+    protected String normalizeUrl(@Nullable String spec) {
         spec = super.normalizeUrl(spec);
 
         // Try to rescue bad media file URLs
-        if (!spec.startsWith("http"))
+        if (spec != null && !spec.startsWith("http"))
             try {
                 final URL url = new URL(spec);
                 final String scheme = url.getProtocol();
