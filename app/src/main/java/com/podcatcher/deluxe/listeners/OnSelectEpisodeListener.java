@@ -36,4 +36,9 @@ public interface OnSelectEpisodeListener {
      * Called on listener to reflect that no episode is selected anymore.
      */
     public void onNoEpisodeSelected();
+
+    /**
+     * Called on listener to indicate that the user did a swipe-to-refresh on the episode list.
+     */
+    public void onEpisodeListSwipeToRefresh();
 }

@@ -75,7 +75,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * The minimum time podcast content is buffered on mobile connections (in
      * milliseconds). If older, we will to reload.
      */
-    public static final int TIME_TO_LIVE_MOBILE = (int) TimeUnit.MINUTES.toMillis(120);
+    public static final int TIME_TO_LIVE_MOBILE = (int) TimeUnit.MINUTES.toMillis(180);
     /**
      * The name of the file we store our saved podcasts in (as OPML)
      */
@@ -264,7 +264,23 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @see EpisodeManager#blockUntilEpisodeMetadataIsLoaded()
      */
     public void load(Podcast podcast) {
-        if (!shouldReload(podcast))
+        load(podcast, false);
+    }
+
+    /**
+     * Load data for given podcast from its URL. This is an async load, so this
+     * method will return immediately. Implement the appropriate call-back to
+     * monitor the load process and to get its result. Note that the async task
+     * might be held back until the episode metadata has finished loading.
+     *
+     * @param podcast     Podcast to load.
+     * @param forceReload If <code>true</code>, the podcast will be refreshed from the
+     *                    server even if the time-to-live is not up.
+     * @see OnLoadPodcastListener
+     * @see EpisodeManager#blockUntilEpisodeMetadataIsLoaded()
+     */
+    public void load(Podcast podcast, boolean forceReload) {
+        if (!forceReload && !shouldReload(podcast))
             onPodcastLoaded(podcast);
         else synchronized (loadingPodcasts) {
             if (!loadingPodcasts.contains(podcast))
@@ -605,12 +621,12 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     private boolean shouldReload(Podcast podcast) {
         if (podcast.getLastLoaded() == null)
             return true; // Has never been loaded
-        else if (!podcatcher.isOnline())
-            return false; // Has been loaded and we are now offline
+        else if (!podcatcher.isOnline() || podcatcher.isOnSlowMobileData())
+            return false; // Has been loaded and we are now offline/on slow connection
         else {
             // Check age and size, scale time-to-live on mobile data with feed size
             final long age = new Date().getTime() - podcast.getLastLoaded().getTime();
-            final float size = Math.abs(podcast.getFileSize()) / (float)(1024 * 1024); // to MBs
+            final float size = Math.abs(podcast.getFileSize()) / (float) (1024 * 1024); // to MBs
 
             return age > (podcatcher.isOnMeteredConnection() ?
                     TIME_TO_LIVE_MOBILE * (1 + 3 * size) /* scale factor */ : TIME_TO_LIVE);

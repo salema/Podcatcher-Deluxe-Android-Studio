@@ -25,6 +25,7 @@ import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Process;
+import android.telephony.TelephonyManager;
 
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.PodcastManager;
@@ -145,23 +146,32 @@ public class Podcatcher extends Application {
      * Checks whether the device is currently on a fast network (such as wifi)
      * as opposed to a mobile network.
      *
-     * @return <code>true</code> iff we have fast (and potentially free)
-     * Internet access.
+     * @return <code>true</code> iff we have fast (and potentially free) Internet access.
      */
     public boolean isOnFastConnection() {
         final NetworkInfo activeNetwork = getConnectivityManager().getActiveNetworkInfo();
 
-        if (activeNetwork == null)
-            return false;
-        else
-            switch (activeNetwork.getType()) {
-                case ConnectivityManager.TYPE_ETHERNET:
-                case ConnectivityManager.TYPE_WIFI:
-                case ConnectivityManager.TYPE_WIMAX:
-                    return true;
-                default:
-                    return false;
-            }
+        return activeNetwork != null &&
+                (activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET ||
+                        activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
+                        activeNetwork.getType() == ConnectivityManager.TYPE_WIMAX);
+    }
+
+    /**
+     * Checks whether the device is currently on a slow (i.e. 2nd generation)
+     * mobile data connection.
+     *
+     * @return <code>true</code> iff the current data connection is via mobile data and slow.
+     * Note that this will return <code>false</code> when offline.
+     */
+    public boolean isOnSlowMobileData() {
+        final NetworkInfo activeNetwork = getConnectivityManager().getActiveNetworkInfo();
+        final TelephonyManager telephonyManager =
+                (TelephonyManager) getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+
+        return activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE &&
+                (telephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_EDGE ||
+                        telephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_GPRS);
     }
 
     /**

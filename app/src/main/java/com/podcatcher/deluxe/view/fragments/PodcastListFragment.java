@@ -62,11 +62,6 @@ public class PodcastListFragment extends PodcatcherListFragment {
      * The listener call-back to alert on podcast selection
      */
     private OnSelectPodcastListener podcastSelectionListener;
-    /**
-     * The listener call-back to alert when the user swiped to refresh
-     */
-    private SwipeRefreshLayout.OnRefreshListener refreshListener;
-
 
     /**
      * The list of podcasts currently shown
@@ -138,10 +133,8 @@ public class PodcastListFragment extends PodcatcherListFragment {
         // Make sure our listener is present
         try {
             this.podcastSelectionListener = (OnSelectPodcastListener) activity;
-            this.refreshListener = (SwipeRefreshLayout.OnRefreshListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement " +
-                    "OnSelectPodcastListener and SwipeRefreshLayout.OnRefreshListener");
+            throw new ClassCastException(activity.toString() + " must implement OnSelectPodcastListener");
         }
 
         this.addRemoveDuration = getResources().getInteger(android.R.integer.config_mediumAnimTime);
@@ -171,7 +164,12 @@ public class PodcastListFragment extends PodcatcherListFragment {
 
         // Get and configure the swipe-to-refresh layout
         refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.podcast_list_swipe_refresh));
-        refreshLayout.setOnRefreshListener(refreshListener);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                podcastSelectionListener.onPodcastListSwipeToRefresh();
+            }
+        });
         refreshLayout.setColorSchemeResources(R.color.theme_dark, R.color.theme_light);
         refreshLayout.setEnabled(SyncManager.getInstance().getActiveControllerCount() > 0);
 

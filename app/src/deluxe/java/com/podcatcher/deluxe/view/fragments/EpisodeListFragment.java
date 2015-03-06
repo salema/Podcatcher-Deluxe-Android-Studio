@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,7 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.podcatcher.deluxe.R;
@@ -96,9 +96,9 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
      */
     private boolean filterMenuItemState = false;
     /**
-     * Flag for the top progress bar state
+     * Flag for the overlay progress state
      */
-    private boolean showTopProgressBar = false;
+    private boolean showOverlayProgress = false;
     /**
      * Flag for show info box state state
      */
@@ -126,10 +126,6 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
      */
     private MenuItem sortMenuItem;
     /**
-     * The top progress bar
-     */
-    private ProgressBar topProgressBar;
-    /**
      * The filter episodes menu bar item
      */
     private MenuItem filterMenuItem;
@@ -141,6 +137,10 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
      * The info box label divider
      */
     private View infoBoxDivider;
+    /**
+     * The refresh layout
+     */
+    private SwipeRefreshLayout refreshLayout;
 
     /**
      * Status flag indicating that our view is created
@@ -182,10 +182,17 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        topProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar_top);
-
         infoBoxTextView = (TextView) view.findViewById(R.id.info_box);
         infoBoxDivider = view.findViewById(R.id.info_box_divider);
+
+        refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.episode_list_swipe_refresh));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                episodeSelectionListener.onEpisodeListSwipeToRefresh();
+            }
+        });
+        refreshLayout.setColorSchemeResources(R.color.theme_dark, R.color.theme_light);
 
         viewCreated = true;
 
@@ -202,7 +209,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
         if (currentEpisodeList != null) {
             setEpisodeList(currentEpisodeList);
             setShowTopInfoBox(showInfoBox, infoBoxText);
-            setShowTopProgress(showTopProgressBar);
+            setShowOverlayProgress(showOverlayProgress);
         }
     }
 
@@ -455,17 +462,16 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
     }
 
     /**
-     * Set whether the fragment should show the top progress bar. You can call
-     * this any time and can expect it to happen on fragment resume at the
-     * latest.
+     * Set whether the fragment should show the overlay progress indicator. You can call
+     * this any time and can expect it to happen on fragment resume at the latest.
      *
-     * @param show Whether to show the top progress bar.
+     * @param show Whether to show the progress.
      */
-    public void setShowTopProgress(boolean show) {
-        this.showTopProgressBar = show;
+    public void setShowOverlayProgress(boolean show) {
+        this.showOverlayProgress = show;
 
         if (viewCreated)
-            topProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            refreshLayout.setRefreshing(show);
     }
 
     /**
@@ -495,7 +501,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
         if (viewCreated) {
             ((TextView) emptyView).setText(R.string.podcast_none_selected);
             setShowTopInfoBox(false, null);
-            setShowTopProgress(false);
+            setShowOverlayProgress(false);
         }
 
         currentEpisodeList = null;

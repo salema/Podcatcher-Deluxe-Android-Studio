@@ -71,6 +71,11 @@ public class ShowEpisodeActivity extends EpisodeActivity {
     }
 
     @Override
+    public void onEpisodeListSwipeToRefresh() {
+        // Nothing to do here
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             // Deselect episode (prevents the activity from being immediately re-opened)

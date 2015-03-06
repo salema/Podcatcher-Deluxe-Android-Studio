@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Toast;
 
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
@@ -47,8 +46,7 @@ import java.util.List;
  * state, other activities cooperate.
  */
 public class PodcastActivity extends EpisodeListActivity implements OnBackStackChangedListener,
-        OnLoadPodcastListListener, OnChangePodcastListListener, OnSyncListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        OnLoadPodcastListListener, OnChangePodcastListListener, OnSyncListener {
 
     /**
      * The request code to identify import calls
@@ -224,9 +222,9 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
             // Restore UI to match selection:
             // Re-select previously selected podcast(s)
             if (selection.isAll())
-                onAllPodcastsSelected(true);
+                onAllPodcastsSelected(true, false);
             else if (selection.isSingle() && selection.isPodcastSet())
-                onPodcastSelected(selection.getPodcast(), true);
+                onPodcastSelected(selection.getPodcast(), true, false);
             else if (ContentMode.DOWNLOADS.equals(selection.getMode()))
                 onDownloadsSelected();
             else if (ContentMode.PLAYLIST.equals(selection.getMode()))
@@ -399,17 +397,17 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         if (podcast.equals(selection.getPodcast()))
             onNoPodcastSelected();
         else if (selection.isPodcastSet())
-            onPodcastSelected(selection.getPodcast(), true);
+            onPodcastSelected(selection.getPodcast(), true, false);
     }
 
     @Override
     public void onPodcastSelected(Podcast podcast) {
-        onPodcastSelected(podcast, false);
+        onPodcastSelected(podcast, false, false);
     }
 
-    private void onPodcastSelected(Podcast podcast, boolean forceReload) {
-        if (forceReload || !podcast.equals(selection.getPodcast())) {
-            super.onPodcastSelected(podcast);
+    protected void onPodcastSelected(Podcast podcast, boolean forceUiRefresh, boolean forceReload) {
+        if (forceUiRefresh || !podcast.equals(selection.getPodcast())) {
+            super.onPodcastSelected(podcast, forceReload);
 
             if (view.isSmallPortrait())
                 showEpisodeListActivity();
@@ -424,12 +422,12 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     public void onAllPodcastsSelected() {
-        onAllPodcastsSelected(false);
+        onAllPodcastsSelected(false, false);
     }
 
-    private void onAllPodcastsSelected(boolean forceReload) {
-        if (forceReload || !selection.isAll()) {
-            super.onAllPodcastsSelected();
+    private void onAllPodcastsSelected(boolean forceUiRefresh, boolean forceReload) {
+        if (forceUiRefresh || !selection.isAll()) {
+            super.onAllPodcastsSelected(forceReload);
 
             // Prepare podcast list fragment
             podcastListFragment.selectAll();
@@ -487,7 +485,23 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     }
 
     @Override
-    public void onRefresh() {
+    public void onEpisodeListSwipeToRefresh() {
+        if (!view.isSmallPortrait()) {
+            if (selection.isSingle() && selection.getPodcast() != null)
+                onPodcastSelected(selection.getPodcast(), true, true);
+            else if (selection.isAll())
+                onAllPodcastsSelected(true, true);
+            else if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+                onDownloadsSelected();
+            else if (ContentMode.PLAYLIST.equals(selection.getMode()))
+                onPlaylistSelected();
+            else
+                episodeListFragment.setShowOverlayProgress(false);
+        }
+    }
+
+    @Override
+    public void onPodcastListSwipeToRefresh() {
         if (!syncManager.isSyncRunning())
             syncManager.syncAll();
 
@@ -501,7 +515,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     }
 
     @Override
-    public void onSyncStarted() {}
+    public void onSyncStarted() {
+    }
 
     @Override
     public void onSyncCompleted() {

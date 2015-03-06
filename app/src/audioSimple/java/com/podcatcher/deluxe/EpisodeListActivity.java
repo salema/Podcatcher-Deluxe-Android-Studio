@@ -128,8 +128,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         updateSortingUi();
     }
 
-    @Override
-    public void onPodcastSelected(Podcast podcast) {
+    protected void onPodcastSelected(Podcast podcast, boolean forceReload) {
         selection.setPodcast(podcast);
         selection.setMode(ContentMode.SINGLE_PODCAST);
 
@@ -150,7 +149,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 updateSortingUi();
 
                 // Load podcast...
-                podcastManager.load(podcast);
+                podcastManager.load(podcast, forceReload);
                 // ... and special episodes
                 episodeManager.getDownloadsAsync(this, podcast);
 
@@ -161,8 +160,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         }
     }
 
-    @Override
-    public void onAllPodcastsSelected() {
+    protected void onAllPodcastsSelected(boolean forceReload) {
         selection.resetPodcast();
         selection.setMode(ContentMode.ALL_PODCASTS);
 
@@ -191,7 +189,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 episodeManager.getDownloadsAsync(this);
                 // ... and all other podcast data
                 for (Podcast podcast : podcastManager.getPodcastList())
-                    podcastManager.load(podcast);
+                    podcastManager.load(podcast, forceReload);
 
                 // Action bar needs update after loading has started
                 updateActionBar();
@@ -334,6 +332,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
         // Update other UI
         updateActionBar();
         updateSortingUi();
+        if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+            episodeListFragment.setShowOverlayProgress(false);
     }
 
     @Override

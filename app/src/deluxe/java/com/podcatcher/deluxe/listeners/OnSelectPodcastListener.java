@@ -51,4 +51,9 @@ public interface OnSelectPodcastListener {
      * Called on listener to reflect that no podcast is selected anymore.
      */
     public void onNoPodcastSelected();
+
+    /**
+     * Called on listener to indicate that the user did a swipe-to-refresh on the podcast list.
+     */
+    public void onPodcastListSwipeToRefresh();
 }

@@ -107,19 +107,28 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
 
     @Override
     public void onPodcastSelected(Podcast podcast) {
-        super.onPodcastSelected(podcast);
+        onPodcastSelected(podcast, false);
+    }
+
+    @Override
+    protected void onPodcastSelected(Podcast podcast, boolean forceReload) {
+        super.onPodcastSelected(podcast, forceReload);
 
         // Init the list view...
         episodeListFragment.resetAndSpin();
         // ... and start loading
-        podcastManager.load(podcast);
+        podcastManager.load(podcast, forceReload);
         // ... plus special episodes
         episodeManager.getDownloadsAsync(this, podcast);
     }
 
     @Override
     public void onAllPodcastsSelected() {
-        super.onAllPodcastsSelected();
+        onAllPodcastsSelected(false);
+    }
+
+    public void onAllPodcastsSelected(boolean forceReload) {
+        super.onAllPodcastsSelected(forceReload);
 
         // Init the list view...
         if (podcastManager.size() > 0)
@@ -132,7 +141,7 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
         episodeManager.getDownloadsAsync(this);
         // ... and go get the podcast data
         for (Podcast podcast : podcastManager.getPodcastList())
-            podcastManager.load(podcast);
+            podcastManager.load(podcast, forceReload);
 
         updateActionBar();
     }
@@ -148,17 +157,34 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
     }
 
     @Override
+    public void onPodcastListSwipeToRefresh() {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void onEpisodeListSwipeToRefresh() {
+        if (selection.isSingle() && selection.getPodcast() != null)
+            onPodcastSelected(selection.getPodcast(), true);
+        else if (selection.isAll())
+            onAllPodcastsSelected(true);
+        else if (ContentMode.DOWNLOADS.equals(selection.getMode()))
+            onDownloadsSelected();
+        else
+            episodeListFragment.setShowOverlayProgress(false);
+    }
+
+    @Override
     public void onPodcastLoaded(Podcast podcast) {
         super.onPodcastLoaded(podcast);
 
-        updateTopProgress();
+        updateProgress();
     }
 
     @Override
     public void onPodcastLoadFailed(Podcast failedPodcast, PodcastLoadError code) {
         super.onPodcastLoadFailed(failedPodcast, code);
 
-        updateTopProgress();
+        updateProgress();
     }
 
     @Override
@@ -166,7 +192,7 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
         super.onDownloadsLoaded(downloads);
 
         if (!downloads.isEmpty())
-            updateTopProgress();
+            updateProgress();
     }
 
     @Override
@@ -209,11 +235,11 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
     }
 
     /**
-     * Update the progress bar above list view.
+     * Update the progress indication for the list view.
      */
-    protected void updateTopProgress() {
+    protected void updateProgress() {
         // This should show if there is still a podcast loading.
-        episodeListFragment.setShowTopProgress(selection.isAll()
+        episodeListFragment.setShowOverlayProgress(selection.isAll()
                 && podcastManager.getLoadCount() > 0);
     }
 
