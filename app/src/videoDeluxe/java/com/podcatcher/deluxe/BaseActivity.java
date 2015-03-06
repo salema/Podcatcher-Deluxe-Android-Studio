@@ -58,6 +58,10 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * The podcatcher help website URL
      */
     public static final String PODCATCHER_HELPSITE = "http://www.podcatcher-deluxe.com/help";
+    /**
+     * Twitter account page URL
+     */
+    public static final String PODCATCHER_TWITTER = "http://twitter.com/PodcatchDeluxe";
 
     /**
      * Key to find the podcast positions under
@@ -98,6 +102,10 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * Key to preference flag indicating whether the user ever tapped the review menu item
      */
     private static final String REVIEW_MENU_ITEM_CLICKED_KEY = "review_menu_item_clicked";
+    /**
+     * Key to preference flag indicating whether the user ever tapped the follow menu item
+     */
+    private static final String FOLLOW_MENU_ITEM_CLICKED_KEY = "follow_menu_item_clicked";
 
     /**
      * The currently active view mode
@@ -392,49 +400,53 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         reviewMenuItem.setVisible(!preferences.getBoolean(REVIEW_MENU_ITEM_CLICKED_KEY, false) &&
                 preferences.getInt(APP_USAGE_COUNT_KEY, 0) > APP_USAGE_REVIEW_TRIGGER);
 
+        // Show/hide follow menu item depending on app usage
+        final MenuItem followMenuItem = menu.findItem(R.id.follow_menuitem);
+        followMenuItem.setVisible(preferences.getBoolean(REVIEW_MENU_ITEM_CLICKED_KEY, false) &&
+                !preferences.getBoolean(FOLLOW_MENU_ITEM_CLICKED_KEY, false));
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.settings_menuitem:
-                startActivity(new Intent(this, SettingsActivity.class));
+        try {
+            switch (item.getItemId()) {
+                case R.id.settings_menuitem:
+                    startActivity(new Intent(this, SettingsActivity.class));
 
-                return true;
-            case R.id.review_menuitem:
-                try {
+                    return true;
+                case R.id.review_menuitem:
                     startActivity(new Intent(Intent.ACTION_VIEW,
                             Uri.parse(BuildConfig.STORE_URL_PREFIX + BuildConfig.APPLICATION_ID)));
 
-                    // Make sure the menu item is not shown again
+                    // Make sure the rate and review menu item is not shown again
                     preferences.edit().putBoolean(REVIEW_MENU_ITEM_CLICKED_KEY, true).apply();
-                } catch (ActivityNotFoundException e) {
-                    // We are in a restricted profile without a browser
-                    showToast(getString(R.string.no_browser));
-                }
 
-                return true;
-            case R.id.about_menuitem:
-                try {
+                    return true;
+                case R.id.follow_menuitem:
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_TWITTER)));
+
+                    // Make sure the follow on twitter menu item is not shown again
+                    preferences.edit().putBoolean(FOLLOW_MENU_ITEM_CLICKED_KEY, true).apply();
+
+                    return true;
+                case R.id.about_menuitem:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_WEBSITE)));
-                } catch (ActivityNotFoundException e) {
-                    // We are in a restricted profile without a browser
-                    showToast(getString(R.string.no_browser));
-                }
 
-                return true;
-            case R.id.help_menuitem:
-                try {
+                    return true;
+                case R.id.help_menuitem:
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_HELPSITE)));
-                } catch (ActivityNotFoundException e) {
-                    // We are in a restricted profile without a browser
-                    showToast(getString(R.string.no_browser));
-                }
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        } catch (ActivityNotFoundException e) {
+            // We are in a restricted profile without a browser
+            showToast(getString(R.string.no_browser));
+
+            return true;
         }
     }
 

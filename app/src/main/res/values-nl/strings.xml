@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Verdeler</string>
     <string name="review">Post beoordeling</string>
+    <string name="follow">Volgen @PodcatchDeluxe</string>
     <string name="help">Help</string>
     <string name="no_browser">Geen brpwser beschikbaar!</string>
     <string name="wait">Wacht</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Podcast logo</string>
     <string name="podcast_none">Geen podcast toegevoegd</string>
     <string name="podcast_none_selected">Geen podcast geselecteerd</string>
+    <string name="podcast_share">Feed link delen</string>
+    <string name="podcast_share_template">%1$s (Feed URL: %2$s)</string>
     <string name="podcast_select_all">Selecteer alle podcasts</string>
     <plurals name="podcasts">
         <item quantity="one">1 podcast</item>
@@ -59,6 +62,7 @@
     <string name="podcast_load_multiple_error">The podcast\n\"%s\"\nkon niet worden geladen</string>
     <string name="podcast_load_multiple_error_all">Dowloaden van alle podcasts is mislukt, check uw internetverbinding</string>
     <string name="podcast_block_explicit">Blokkeer podcasts met expliciete content</string>
+    <string name="episode_share">Delen</string>
     <string name="episode_none">Geen afleveringen in deze podcast</string>
     <string name="episode_none_all_podcasts">Geen afleveringen</string>
     <string name="episode_no_description">Geen omschrijving beschikbaar</string>

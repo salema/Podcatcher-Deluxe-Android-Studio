@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Divider</string>
     <string name="review">Rate &amp; Review</string>
+    <string name="follow">Follow @PodcatchDeluxe</string>
     <string name="help">Help</string>
     <string name="no_browser">No browser available!</string>
     <string name="wait">Wait</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Podcast logo</string>
     <string name="podcast_none">No podcast added</string>
     <string name="podcast_none_selected">No podcast selected</string>
+    <string name="podcast_share">Share feed link</string>
+    <string name="podcast_share_template">%1$s (Feed URL: %2$s)</string>
     <string name="podcast_select_all">Select all podcasts</string>
     <plurals name="podcasts">
         <item quantity="one">One podcast</item>
@@ -59,6 +62,8 @@
     <string name="podcast_load_multiple_error">The podcast\n\"%s\"\nfailed to load.</string>
     <string name="podcast_load_multiple_error_all">All podcasts failed to load, please check your Internet connection!</string>
     <string name="podcast_block_explicit">Block podcasts with explicit content</string>
+    <string name="episode_share">Share</string>
+    <string name="episode_share_template" translatable="false">%1$s (%2$s) %3$s</string>
     <string name="episode_none">No episodes in this podcast</string>
     <string name="episode_none_all_podcasts">No episodes</string>
     <string name="episode_no_description">No description available.</string>

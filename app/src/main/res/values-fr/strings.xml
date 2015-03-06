@@ -19,6 +19,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="divider">Séparateur</string>
     <string name="review">Evaluer</string>
+    <string name="follow">Suivre @PodcatchDeluxe</string>
     <string name="help">Aide</string>
     <string name="no_browser">Aucun navigateur disponible!</string>
     <string name="wait">Attendre</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Logo du podcast</string>
     <string name="podcast_none">Aucun podcast disponible</string>
     <string name="podcast_none_selected">Aucun podcast sélectionné</string>
+    <string name="podcast_share">Partager le flux</string>
+    <string name="podcast_share_template">%1$s (URL du flux: %2$s)</string>
     <string name="podcast_select_all">Sélectionner tous</string>
     <plurals name="podcasts">
         <item quantity="one" tools:ignore="ImpliedQuantity">Un podcast</item>
@@ -59,6 +62,7 @@
     <string name="podcast_load_multiple_error">Le podcast\n\"%s\"\nne peut pas être chargé.</string>
     <string name="podcast_load_multiple_error_all">Le chargement des podcasts a échoué. Vérifiez votre connexion Internet!</string>
     <string name="podcast_block_explicit">Bloquer tous les podcasts présentant du contenu réservé aux adultes</string>
+    <string name="episode_share">Partager</string>
     <string name="episode_none">Ce podcast ne contient aucun épisode</string>
     <string name="episode_none_all_podcasts">Aucun épisode disponible</string>
     <string name="episode_no_description">Aucune description disponible.</string>

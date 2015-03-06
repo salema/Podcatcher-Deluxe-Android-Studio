@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Ayırıcı</string>
     <string name="review">Görüntüle</string>
+    <string name="follow">\@PodcatchDeluxe takip et</string>
     <string name="help">Yardım</string>
     <string name="no_browser">Tarayıcı mevcut değil!</string>
     <string name="wait">Bekle</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Podcast logosu</string>
     <string name="podcast_none">Hiçbir podcast eklenmedi</string>
     <string name="podcast_none_selected">Hiçbir podcast seçilmedi</string>
+    <string name="podcast_share">Paylaş</string>
+    <string name="podcast_share_template">%1$s (Besleme Adresi: %2$s)</string>
     <string name="podcast_select_all">Tüm podcastları seç</string>
     <plurals name="podcasts">
         <item quantity="other">%d podcast</item>
@@ -58,6 +61,7 @@
     <string name="podcast_load_multiple_error">Podcast\n\"%s\"\nyüklenemedi.</string>
     <string name="podcast_load_multiple_error_all">Tüm podcastleri yüklemek başarısız lütfen internet bağlantınızı kontrol edin!</string>
     <string name="podcast_block_explicit">Açık içerik ile engelli podcast</string>
+    <string name="episode_share">Paylaş</string>
     <string name="episode_none">Bu podcast bölüm yok</string>
     <string name="episode_none_all_podcasts">Bölüm yok</string>
     <string name="episode_no_description">Açıklama mevcut değil.</string>

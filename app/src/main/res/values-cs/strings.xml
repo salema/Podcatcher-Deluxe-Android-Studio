@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Rozdělovač</string>
     <string name="review">Ohodnotit aplikaci</string>
+    <string name="follow">Follow @PodcatchDeluxe</string>
     <string name="help">Nápověda</string>
     <string name="no_browser">Není dostupný žádný prohlížeč!</string>
     <string name="wait">Čekat</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Logo záznamu</string>
     <string name="podcast_none">Nepřidán žádný záznam</string>
     <string name="podcast_none_selected">Nevybrán žádný záznam</string>
+    <string name="podcast_share">Sdílet adresu kanálu</string>
+    <string name="podcast_share_template">%1$s (URL kanálu: %2$s)</string>
     <string name="podcast_select_all">Vybrat všechny záznamy</string>
     <plurals name="podcasts">
         <item quantity="one">Jeden záznam</item>
@@ -60,6 +63,7 @@
     <string name="podcast_load_multiple_error">Záznam\n\"%s\"\nse nepodařilo nahrát.</string>
     <string name="podcast_load_multiple_error_all">Všechn záznamy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
     <string name="podcast_block_explicit">Blokovat záznamy s určitým obsahem</string>
+    <string name="episode_share">Sdílet</string>
     <string name="episode_none">Žádné díly v tomto záznamu</string>
     <string name="episode_none_all_podcasts">Žádné díly</string>
     <string name="episode_no_description">Není dostupný žádný popis.</string>

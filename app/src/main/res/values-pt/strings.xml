@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Divisor</string>
     <string name="review">Avaliar &amp; Revisar</string>
+    <string name="follow">Seguir @PodcatchDeluxe</string>
     <string name="help">Ajuda</string>
     <string name="no_browser">Nenhum navegador está disponível!</string>
     <string name="wait">Esperar</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Logo do podcast</string>
     <string name="podcast_none">Nenhum podcast adicionado</string>
     <string name="podcast_none_selected">Nenhum podcast selecionado</string>
+    <string name="podcast_share">Partilhar ligação</string>
+    <string name="podcast_share_template">%1$s (URL da fonte: %2$s)</string>
     <string name="podcast_select_all">Selecionar todos os podcasts</string>
     <plurals name="podcasts">
         <item quantity="one">Um podcast</item>
@@ -59,6 +62,7 @@
     <string name="podcast_load_multiple_error">O podcast\n\"%s\"\nfalhou no carregamento.</string>
     <string name="podcast_load_multiple_error_all">Não conseguiu carregar todos os podcasts, por favor, verifique sua conexão com a Internet!</string>
     <string name="podcast_block_explicit">Bloquear podcasts com conteúdo explícito</string>
+    <string name="episode_share">Partilhar</string>
     <string name="episode_none">Nenhum episódio em este podcast</string>
     <string name="episode_none_all_podcasts">Nenhuns episódios</string>
     <string name="episode_no_description">Nenhuma descrição disponível.</string>

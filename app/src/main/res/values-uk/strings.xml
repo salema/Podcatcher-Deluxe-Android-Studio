@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Дільник</string>
     <string name="review">Обзор</string>
+    <string name="follow">Читати @PodcatchDeluxe</string>
     <string name="help">Довідка</string>
     <string name="no_browser">Немає браузера!</string>
     <string name="wait">Зачекайте</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Логотип подкасту</string>
     <string name="podcast_none">Не додано жодного подкасту</string>
     <string name="podcast_none_selected">Не обрано жодного подкасту</string>
+    <string name="podcast_share">Поділитися URL каналу</string>
+    <string name="podcast_share_template">%1$s (Посилання на канал: %2$s)</string>
     <string name="podcast_select_all">Обрати усі подкасти</string>
     <plurals name="podcasts">
         <item quantity="one">%d подкаст</item>
@@ -61,6 +64,7 @@
     <string name="podcast_load_multiple_error">Не вдалося завантажити подкаст\n\"%s\"</string>
     <string name="podcast_load_multiple_error_all">Не вдалося завантажити жодного подкасту. Будь ласка, перевірте підключення до Інтернету.</string>
     <string name="podcast_block_explicit">Блокувати подкасти з відвертим змістом.</string>
+    <string name="episode_share">Поділитися</string>
     <string name="episode_none">Жодного епізоду у цьому подкасті</string>
     <string name="episode_none_all_podcasts">Немає жодного епізоду</string>
     <string name="episode_no_description">Опис відсутній.</string>

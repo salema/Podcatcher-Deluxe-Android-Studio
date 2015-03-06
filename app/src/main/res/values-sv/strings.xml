@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Delare</string>
     <string name="review">Betygsätt</string>
+    <string name="follow">Följ @PodcatchDeluxe</string>
     <string name="help">Hjälp</string>
     <string name="no_browser">Ingen webbläsare tillgänglig!</string>
     <string name="wait">Vänta</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Podcastlogga</string>
     <string name="podcast_none">Ingen podcast tillagd</string>
     <string name="podcast_none_selected">Ingen podcast är vald</string>
+    <string name="podcast_share">Dela flödeslänk</string>
+    <string name="podcast_share_template">%1$s (Flödets URL: %2$s)</string>
     <string name="podcast_select_all">Välj alla podcaster</string>
     <plurals name="podcasts">
         <item quantity="one">En podcast</item>
@@ -59,6 +62,7 @@
     <string name="podcast_load_multiple_error">Podcasten\n\"%s\"\nkunde inte laddas.</string>
     <string name="podcast_load_multiple_error_all">Ingen podcast kunde laddas, kontrollera din internetanslutning!</string>
     <string name="podcast_block_explicit">Blockera podcaster med explicit innehåll</string>
+    <string name="episode_share">Dela</string>
     <string name="episode_none">Inga avsnitt i den här podcasten</string>
     <string name="episode_none_all_podcasts">Inga avsnitt</string>
     <string name="episode_no_description">Ingen beskrivning tillgänglig.</string>

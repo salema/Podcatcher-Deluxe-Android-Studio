@@ -26,6 +26,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.ShareActionProvider;
 
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.ExportOpmlActivity;
@@ -48,12 +49,22 @@ import static com.podcatcher.deluxe.view.fragments.AuthorizationFragment.USERNAM
 /**
  * Listener for the podcast list context mode.
  */
-public class PodcastListContextListener implements MultiChoiceModeListener {
+public class PodcastListContextListener implements MultiChoiceModeListener,
+        ShareActionProvider.OnShareTargetSelectedListener {
 
+    /**
+     * The action mode handle
+     */
+    private ActionMode actionMode;
     /**
      * The owning fragment
      */
     private final PodcastListFragment fragment;
+
+    /**
+     * The share podcast menu item
+     */
+    private MenuItem sharePodcastMenuItem;
 
     /**
      * The edit authorization menu item
@@ -85,11 +96,17 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        this.actionMode = mode;
         mode.getMenuInflater().inflate(R.menu.podcast_list_context, menu);
 
+        sharePodcastMenuItem = menu.findItem(R.id.podcast_share_menuitem);
         editAuthMenuItem = menu.findItem(R.id.edit_auth_contextmenuitem);
         sendSuggestionMenuItem = menu.findItem(R.id.suggest_podcast_contextmenuitem);
         selectAllMenuItem = menu.findItem(R.id.podcast_select_all_contextmenuitem);
+
+        // Make sure we are notified when the share action is selected
+        // so we can finish the action mode and close the context menu
+        ((ShareActionProvider) sharePodcastMenuItem.getActionProvider()).setOnShareTargetSelectedListener(this);
 
         return true;
     }
@@ -102,22 +119,23 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
     }
 
     @Override
+    public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+        if (actionMode != null)
+            actionMode.finish();
+
+        return false;
+    }
+
+    @Override
     public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
         // Get the checked positions
-        SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
-        ArrayList<Integer> positions = new ArrayList<>();
+        ArrayList<Integer> positions = getCheckedPositions();
 
-        // Prepare list of podcast positions to send to the triggered activity
-        for (int index = 0; index < fragment.getListView().getCount(); index++)
-            if (checkedItems.get(index))
-                positions.add(index);
-
+        // Act on the selected menu item
         switch (item.getItemId()) {
             case R.id.edit_auth_contextmenuitem:
                 // There is only one podcast checked...
-                final Podcast podcast =
-                        (Podcast) fragment.getListAdapter().getItem(positions.get(0));
-
+                final Podcast podcast = (Podcast) fragment.getListAdapter().getItem(positions.get(0));
                 // Show dialog for authorization
                 final AuthorizationFragment authorizationFragment = new AuthorizationFragment();
 
@@ -146,8 +164,7 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 });
 
                 // Finally show the dialog
-                authorizationFragment
-                        .show(fragment.getFragmentManager(), AuthorizationFragment.TAG);
+                authorizationFragment.show(fragment.getFragmentManager(), AuthorizationFragment.TAG);
 
                 return true;
             case R.id.suggest_podcast_contextmenuitem:
@@ -216,6 +233,9 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         update(mode);
+
+        if (fragment.getListView().getCheckedItemCount() == 1)
+            updateShareIntent((Podcast) fragment.getListAdapter().getItem(getCheckedPositions().get(0)));
     }
 
     private void update(ActionMode mode) {
@@ -233,6 +253,7 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 mode.setSubtitle(null);
 
                 // Show/hide edit auth menu item
+                sharePodcastMenuItem.setVisible(checkedItemCount == 1);
                 editAuthMenuItem.setVisible(checkedItemCount == 1);
                 sendSuggestionMenuItem.setVisible(checkedItemCount == 1);
                 // Hide the select all item if all items are selected
@@ -242,5 +263,27 @@ public class PodcastListContextListener implements MultiChoiceModeListener {
                 // are not there yet, we simply ignore this since update will be
                 // called again.
             }
+    }
+
+    private void updateShareIntent(Podcast podcast) {
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, fragment.getString(R.string.podcast_share_template,
+                podcast.getName(), podcast.getUrl()));
+        sendIntent.setType("text/plain");
+
+        final ShareActionProvider provider = (ShareActionProvider) sharePodcastMenuItem.getActionProvider();
+        provider.setShareIntent(sendIntent);
+    }
+
+    private ArrayList<Integer> getCheckedPositions() {
+        // Get the list of checked positions from the boolean array
+        SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        for (int index = 0; index < fragment.getListView().getCount(); index++)
+            if (checkedItems.get(index))
+                positions.add(index);
+
+        return positions;
     }
 }

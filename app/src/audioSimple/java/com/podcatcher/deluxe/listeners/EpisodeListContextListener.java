@@ -17,12 +17,14 @@
 
 package com.podcatcher.deluxe.listeners;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.ShareActionProvider;
 
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
@@ -33,19 +35,26 @@ import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.OnDeleteDownloadsConfirmationListener;
 import com.podcatcher.deluxe.view.fragments.EpisodeListFragment;
 
+import java.util.ArrayList;
+
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.EPISODE_COUNT_KEY;
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
 /**
  * Listener for the episode list context mode.
  */
-public class EpisodeListContextListener implements MultiChoiceModeListener {
+public class EpisodeListContextListener implements MultiChoiceModeListener,
+        ShareActionProvider.OnShareTargetSelectedListener {
 
     /**
      * Separator for episode duration total and size total
      */
     private static final String SEPARATOR = " • ";
 
+    /**
+     * The action mode handle
+     */
+    private ActionMode actionMode;
     /**
      * The owning fragment
      */
@@ -63,6 +72,10 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
      * The delete menu item
      */
     private MenuItem deleteMenuItem;
+    /**
+     * The share episode menu item
+     */
+    private MenuItem shareEpisodeMenuItem;
     /**
      * The select all menu item
      */
@@ -91,11 +104,17 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        this.actionMode = mode;
         mode.getMenuInflater().inflate(R.menu.episode_list_context, menu);
 
         downloadMenuItem = menu.findItem(R.id.episode_download_contextmenuitem);
         deleteMenuItem = menu.findItem(R.id.episode_remove_contextmenuitem);
+        shareEpisodeMenuItem = menu.findItem(R.id.episode_share_contextmenuitem);
         selectAllMenuItem = menu.findItem(R.id.episode_select_all_contextmenuitem);
+
+        // Make sure we are notified when the share action is selected
+        // so we can finish the action mode and close the context menu
+        ((ShareActionProvider) shareEpisodeMenuItem.getActionProvider()).setOnShareTargetSelectedListener(this);
 
         return true;
     }
@@ -108,22 +127,29 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
     }
 
     @Override
+    public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+        if (actionMode != null)
+            actionMode.finish();
+
+        return false;
+    }
+
+    @Override
     public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-        final SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
+        // Get the list of checked positions
+        final ArrayList<Integer> positions = getCheckedPositions();
 
         switch (item.getItemId()) {
             case R.id.episode_download_contextmenuitem:
-                for (int position = 0; position < fragment.getListAdapter().getCount(); position++)
-                    if (checkedItems.get(position))
-                        episodeManager.download(
-                                (Episode) fragment.getListAdapter().getItem(position));
+                for (Integer position : positions)
+                    episodeManager.download((Episode) fragment.getListAdapter().getItem(position));
 
                 // Action picked, so close the CAB
                 mode.finish();
                 return true;
             case R.id.episode_remove_contextmenuitem:
-                final DeleteDownloadsConfirmationFragment confirmationDialog =
-                        new DeleteDownloadsConfirmationFragment();
+                final DeleteDownloadsConfirmationFragment confirmationDialog = new DeleteDownloadsConfirmationFragment();
+
                 // Create bundle to make dialog aware of selection count
                 final Bundle args = new Bundle();
                 args.putInt(EPISODE_COUNT_KEY, deletesTriggered);
@@ -134,10 +160,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
                     @Override
                     public void onConfirmDeletion() {
                         // Go delete the downloads
-                        for (int position = 0; position < fragment.getListAdapter().getCount(); position++)
-                            if (checkedItems.get(position))
-                                episodeManager.deleteDownload(
-                                        (Episode) fragment.getListAdapter().getItem(position));
+                        for (Integer position : positions)
+                            episodeManager.deleteDownload((Episode) fragment.getListAdapter().getItem(position));
 
                         // Action picked, so close the CAB
                         mode.finish();
@@ -148,6 +172,7 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
                         // Nothing to do here
                     }
                 });
+
                 // Finally show the dialog
                 confirmationDialog.show(fragment.getFragmentManager(), TAG);
 
@@ -175,6 +200,9 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         update(mode);
+
+        if (fragment.getListView().getCheckedItemCount() == 1)
+            updateShareIntent((Episode) fragment.getListAdapter().getItem(getCheckedPositions().get(0)));
     }
 
     private void update(ActionMode mode) {
@@ -223,6 +251,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
             }
         }
 
+        // Show share menu item if only one episode is selected
+        shareEpisodeMenuItem.setVisible(fragment.getListView().getCheckedItemCount() == 1);
         // Hide the select all item if all items are selected
         selectAllMenuItem.setVisible(fragment.getListView().getCheckedItemCount() !=
                 fragment.getListAdapter().getCount());
@@ -258,5 +288,27 @@ public class EpisodeListContextListener implements MultiChoiceModeListener {
         // Only show a subtitle if there is any interesting information, i.e. more than
         // one episode is selected and duration and size are available non-zero
         return checkedItems.size() > 1 && !result.isEmpty() ? result : null;
+    }
+
+    private void updateShareIntent(Episode episode) {
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, fragment.getString(R.string.episode_share_template,
+                episode.getName(), episode.getPodcast().getName(), episode.getMediaUrl()));
+        sendIntent.setType("text/plain");
+
+        final ShareActionProvider provider = (ShareActionProvider) shareEpisodeMenuItem.getActionProvider();
+        provider.setShareIntent(sendIntent);
+    }
+
+    private ArrayList<Integer> getCheckedPositions() {
+        // Get the list of checked positions from the boolean array
+        SparseBooleanArray checkedItems = fragment.getListView().getCheckedItemPositions();
+        ArrayList<Integer> positions = new ArrayList<>();
+
+        for (int index = 0; index < fragment.getListView().getCount(); index++)
+            if (checkedItems.get(index))
+                positions.add(index);
+
+        return positions;
     }
 }

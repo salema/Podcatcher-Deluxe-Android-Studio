@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Trenner</string>
     <string name="review">App bewerten</string>
+    <string name="follow">Folge @PodcatchDeluxe</string>
     <string name="help">Hilfe</string>
     <string name="no_browser">Kein Browser verfügbar!</string>
     <string name="wait">Warten</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Podcast Logo</string>
     <string name="podcast_none">Kein Podcast vorhanden</string>
     <string name="podcast_none_selected">Kein Podcast ausgewählt</string>
+    <string name="podcast_share">Adresse teilen</string>
+    <string name="podcast_share_template">%1$s (Podcast-Feed URL: %2$s)</string>
     <string name="podcast_select_all">Alle Podcasts auswählen</string>
     <plurals name="podcasts">
         <item quantity="one">Ein Podcast</item>
@@ -59,6 +62,7 @@
     <string name="podcast_load_multiple_error">Der Podcast\n\"%s\"\nkonnte nicht geladen werden.</string>
     <string name="podcast_load_multiple_error_all">Keiner der Podcasts kann geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
     <string name="podcast_block_explicit">Podcasts mit nicht jugendfreien Inhalten blockieren</string>
+    <string name="episode_share">Teilen</string>
     <string name="episode_none">Dieser Podcast enthält keine Episoden</string>
     <string name="episode_none_all_podcasts">Keine Episoden</string>
     <string name="episode_no_description">Keine Beschreibung verfügbar.</string>

@@ -19,6 +19,7 @@
 <resources>
     <string name="divider">Разделитель</string>
     <string name="review">Oбзор</string>
+    <string name="follow">Читать @PodcatchDeluxe</string>
     <string name="help">Справка</string>
     <string name="no_browser">Не удалось найти браузер!</string>
     <string name="wait">Подождите</string>
@@ -42,6 +43,8 @@
     <string name="podcast_image">Логотип подкаста</string>
     <string name="podcast_none">Не добавлено ни одного подкаста</string>
     <string name="podcast_none_selected">Не выбрано ни одного подкаста</string>
+    <string name="podcast_share">Ссылка на каналk</string>
+    <string name="podcast_share_template">%1$s (URL канала: %2$s)</string>
     <string name="podcast_select_all">Выбрать все подкасты</string>
     <plurals name="podcasts">
         <item quantity="one">%d подкаст</item>
@@ -61,6 +64,7 @@
     <string name="podcast_load_multiple_error">Не удалось загрузить подкаст\n\"%s\"</string>
     <string name="podcast_load_multiple_error_all">Не удалось загрузить ни одного подкаста. Пожалуйста, проверьте подключение к Интернету.</string>
     <string name="podcast_block_explicit">Блокировать подкасты с откровенным содержанием</string>
+    <string name="episode_share">Поделиться</string>
     <string name="episode_none">В этом подкасте нет ни одного эпизода</string>
     <string name="episode_none_all_podcasts">Нет эпизодов</string>
     <string name="episode_no_description">Описание отсутствует.</string>
