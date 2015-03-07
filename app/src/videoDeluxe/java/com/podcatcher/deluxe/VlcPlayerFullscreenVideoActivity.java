@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?><!--
 /** Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
@@ -15,21 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
--->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application>
-        <activity
-            android:name="com.podcatcher.deluxe.MxPlayerFullscreenVideoActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-        </activity>
-        <activity
-            android:name="com.podcatcher.deluxe.VlcPlayerFullscreenVideoActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-        </activity>
-        <activity
-            android:name="com.podcatcher.deluxe.DefaultFullscreenVideoActivity"
-            android:theme="@style/AppFullscreen">
-        </activity>
-    </application>
-</manifest>
+package com.podcatcher.deluxe;
+
+import android.content.Context;
+
+/**
+ * Show fullscreen video activity. Uses the VLC player.
+ */
+public class VlcPlayerFullscreenVideoActivity extends BaseActivity {
+
+    public static boolean isAvailable(Context context) {
+        /*try {
+            final ComponentName componentName = new ComponentName("org.videolan.vlc.betav7neon",
+                "org.videolan.vlc.betav7neon.gui.video.VideoPlayerActivity");
+            context.getPackageManager().getActivityInfo(componentName, 0);
+
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }*/
+
+        return false;
+    }
+}

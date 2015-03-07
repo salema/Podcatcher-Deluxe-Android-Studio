@@ -185,7 +185,19 @@ public abstract class EpisodeActivity extends BaseActivity implements
         if (!selection.isFullscreenEnabled()) {
             selection.setFullscreenEnabled(true);
 
-            startActivity(new Intent(this, FullscreenVideoActivity.class));
+            // Try MX Player first, then VLC
+            if (MxPlayerFullscreenVideoActivity.isAvailable(this)) {
+                startActivity(new Intent(this, MxPlayerFullscreenVideoActivity.class));
+
+                // This unloads the playing episode from our own service,
+                // so it does not interfere with the MX Player
+                onToggleLoad();
+            } else if (VlcPlayerFullscreenVideoActivity.isAvailable(this))
+                // TODO Not implemented, VLC Player does not currently support this properly
+                startActivity(new Intent(this, VlcPlayerFullscreenVideoActivity.class));
+            else
+                // No external player available, use our own implementation
+                startActivity(new Intent(this, DefaultFullscreenVideoActivity.class));
         }
     }
 

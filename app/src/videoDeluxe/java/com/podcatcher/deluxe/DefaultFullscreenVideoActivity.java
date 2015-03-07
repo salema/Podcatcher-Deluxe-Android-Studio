@@ -42,7 +42,7 @@ import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 /**
  * Show fullscreen video activity.
  */
-public class FullscreenVideoActivity extends BaseActivity implements VideoSurfaceProvider,
+public class DefaultFullscreenVideoActivity extends BaseActivity implements VideoSurfaceProvider,
         PlayServiceListener, OnSystemUiVisibilityChangeListener {
 
     /**
@@ -254,11 +254,11 @@ public class FullscreenVideoActivity extends BaseActivity implements VideoSurfac
         public void onServiceConnected(ComponentName className, IBinder serviceBinder) {
             service = ((PlayServiceBinder) serviceBinder).getService();
             // Attach the listeners and provide our surface
-            service.setVideoSurfaceProvider(FullscreenVideoActivity.this);
-            service.addPlayServiceListener(FullscreenVideoActivity.this);
+            service.setVideoSurfaceProvider(DefaultFullscreenVideoActivity.this);
+            service.addPlayServiceListener(DefaultFullscreenVideoActivity.this);
 
             // Create the media controller to show when the surface is touched
-            controller = new MediaController(FullscreenVideoActivity.this);
+            controller = new MediaController(DefaultFullscreenVideoActivity.this);
             controller.setMediaPlayer(service);
             controller.setAnchorView(videoView);
 
