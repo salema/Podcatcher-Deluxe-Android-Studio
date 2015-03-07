@@ -58,7 +58,10 @@
     <string name="podcast_load_error_explicit">Der Podcast konnte nicht geladen werden, da in diesem Profil nicht jugendfreie Inhalte gesperrt sind.</string>
     <string name="podcast_load_error_not_reachable">Der Podcast kann nicht geladen werden, da der Server nicht erreicht wurde oder die Adresse ungültig ist.</string>
     <string name="podcast_load_error_not_parsable">Der Podcast kann nicht geladen werden, da die Adresse nicht auf einen gültigen Podcast-Feed zeigt.</string>
-    <string name="podcast_load_multiple_progress">%1$d von %2$d Podcasts</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d von %2$d Podcast</item>
+        <item quantity="other">%1$d von %2$d Podcasts</item>
+    </plurals>
     <string name="podcast_load_multiple_error">Der Podcast\n\"%s\"\nkonnte nicht geladen werden.</string>
     <string name="podcast_load_multiple_error_all">Keiner der Podcasts kann geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
     <string name="podcast_block_explicit">Podcasts mit nicht jugendfreien Inhalten blockieren</string>

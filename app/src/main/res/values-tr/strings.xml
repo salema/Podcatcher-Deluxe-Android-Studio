@@ -47,6 +47,7 @@
     <string name="podcast_share_template">%1$s (Besleme Adresi: %2$s)</string>
     <string name="podcast_select_all">Tüm podcastları seç</string>
     <plurals name="podcasts">
+        <item quantity="one">%d podcast</item>
         <item quantity="other">%d podcast</item>
     </plurals>
     <string name="podcast_add_title">Yeni podcast</string>
@@ -57,7 +58,10 @@
     <string name="podcast_load_error_explicit">Podcast, bu kullanıcı profiline açık içeriğe erişimi engellendiği için yüklenemedi.</string>
     <string name="podcast_load_error_not_reachable">Podcast, adresi geçersiz olduğu için yüklenemedi.</string>
     <string name="podcast_load_error_not_parsable">Podcast adresi geçerli bir podcast beslemesi göstermiyor yüklenemedi.</string>
-    <string name="podcast_load_multiple_progress">%1$d - %2$d podcast</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d - %2$d podcast</item>
+        <item quantity="other">%1$d - %2$d podcast</item>
+    </plurals>
     <string name="podcast_load_multiple_error">Podcast\n\"%s\"\nyüklenemedi.</string>
     <string name="podcast_load_multiple_error_all">Tüm podcastleri yüklemek başarısız lütfen internet bağlantınızı kontrol edin!</string>
     <string name="podcast_block_explicit">Açık içerik ile engelli podcast</string>
@@ -68,15 +72,18 @@
     <string name="episode_description_website_link_label">Web Sayfası</string>
     <string name="episode_none_selected">Bölüm seçilmedi</string>
     <plurals name="episodes">
+        <item quantity="one">%d bölüm</item>
         <item quantity="other">%d bölüm</item>
     </plurals>
     <string name="episodes_sort_toggle">Ters sırala</string>
     <string name="download">İndir</string>
     <string name="downloads">İndirmeler</string>
     <plurals name="downloads_remove_title">
+        <item quantity="one">%d indirme sil</item>
         <item quantity="other">%d indirme sil</item>
     </plurals>
     <plurals name="downloads_remove_text">
+        <item quantity="one">Bu bölüm artık çevrimdışı kullanılabilir.</item>
         <item quantity="other">Bu bölüm artık çevrimdışı kullanılabilir.</item>
     </plurals>
     <string name="downloads_none">İndirme yok. İndirme kullanılarak bölüm çevrimdışı kullanılabilir duruma getirmek sağlanabilir.</string>

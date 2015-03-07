@@ -59,7 +59,11 @@
     <string name="podcast_load_error_explicit">Záznam se nepodařilo nahrát, protože přístup k určitému obsahu je v tomto uživatelském profilu blokován.</string>
     <string name="podcast_load_error_not_reachable">Záznam se nepodařilo nahrát, protože se nepodařilo spojit se se serverem, nebo je adresa neplatná.</string>
     <string name="podcast_load_error_not_parsable">Záznam se nepodařilo nahrát, protože adresa neukazuje na platný kanál záznamu.</string>
-    <string name="podcast_load_multiple_progress">%1$d z %2$d záznamů</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d z %2$d záznam</item>
+        <item quantity="few">%1$d z %2$d záznamy</item>
+        <item quantity="other">%1$d z %2$d záznamů</item>
+    </plurals>
     <string name="podcast_load_multiple_error">Záznam\n\"%s\"\nse nepodařilo nahrát.</string>
     <string name="podcast_load_multiple_error_all">Všechn záznamy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
     <string name="podcast_block_explicit">Blokovat záznamy s určitým obsahem</string>

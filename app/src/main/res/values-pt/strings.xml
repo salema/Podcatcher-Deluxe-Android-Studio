@@ -48,7 +48,7 @@
     <string name="podcast_select_all">Selecionar todos os podcasts</string>
     <plurals name="podcasts">
         <item quantity="one">Um podcast</item>
-        <item quantity="other"> %d podcasts</item>
+        <item quantity="other">%d podcasts</item>
     </plurals>
     <string name="podcast_add_title">Novo podcast</string>
     <string name="podcast_add_button">Adicionar</string>
@@ -58,7 +58,10 @@
     <string name="podcast_load_error_explicit">O podcast não conseguiu carregar porque o acesso a conteúdo explícito é bloqueado neste perfil de usuário.</string>
     <string name="podcast_load_error_not_reachable">O podcast não conseguiu carregar porque o servidor não pôde ser encontrado ou o endereço não é válido.</string>
     <string name="podcast_load_error_not_parsable">O podcast não conseguiu carregar porque o endereço não aponta para um feed de podcast válido.</string>
-    <string name="podcast_load_multiple_progress"> %1$d de %2$d podcasts</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d de %2$d podcast</item>
+        <item quantity="other">%1$d de %2$d podcasts</item>
+    </plurals>
     <string name="podcast_load_multiple_error">O podcast\n\"%s\"\nfalhou no carregamento.</string>
     <string name="podcast_load_multiple_error_all">Não conseguiu carregar todos os podcasts, por favor, verifique sua conexão com a Internet!</string>
     <string name="podcast_block_explicit">Bloquear podcasts com conteúdo explícito</string>

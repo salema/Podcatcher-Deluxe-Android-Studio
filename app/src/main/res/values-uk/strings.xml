@@ -60,7 +60,12 @@
     <string name="podcast_load_error_explicit">Не вдалося завантажити подкаст. Для цього профілю заборонено доступ до контенту з відвертим змістом.</string>
     <string name="podcast_load_error_not_reachable">Не вдалося завантажити подкаст. Сервер недосяжний або посилання недійсне.</string>
     <string name="podcast_load_error_not_parsable">Не вдалося завантажити подкаст. Введена адреса не вказує на дійсну новинну стрічку.</string>
-    <string name="podcast_load_multiple_progress">%1$d з %2$d подкастів</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d з %2$d подкаст</item>
+        <item quantity="few">%1$d з %2$d подкасти</item>
+        <item quantity="many">%1$d з %2$d подкастів</item>
+        <item quantity="other">%1$d з %2$d подкастів</item>
+    </plurals>
     <string name="podcast_load_multiple_error">Не вдалося завантажити подкаст\n\"%s\"</string>
     <string name="podcast_load_multiple_error_all">Не вдалося завантажити жодного подкасту. Будь ласка, перевірте підключення до Інтернету.</string>
     <string name="podcast_block_explicit">Блокувати подкасти з відвертим змістом.</string>

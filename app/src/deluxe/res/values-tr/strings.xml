@@ -22,6 +22,7 @@
     <string name="podcast_load_multiple_error_some">Bir veya daha fazla podcast yüklenemedi.</string>
     <string name="episodes_no_new">Yeni bölüm yok</string>
     <plurals name="episodes_filtered">
+        <item quantity="one">%d eski bölümler filtrelendi</item>
         <item quantity="other">%d eski bölümler filtrelendi</item>
     </plurals>
     <string name="episodes_old">Eski</string>

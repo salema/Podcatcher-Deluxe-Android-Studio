@@ -58,7 +58,10 @@
     <string name="podcast_load_error_explicit">No se ha podido cargar el podcast porque en su perfil se bloquea el contenido no apto para menores. </string>
     <string name="podcast_load_error_not_reachable">No se ha podido cargar el podcast porque no se ha podido contactar con el servidor o porque la URL no es válida.</string>
     <string name="podcast_load_error_not_parsable">No se ha podido cargar el podcast porque la URL no corresponde a ningún canal de podcasts válido.</string>
-    <string name="podcast_load_multiple_progress">%1$d de %2$d podcasts</string>
+    <plurals name="podcast_load_multiple_progress">
+        <item quantity="one">%1$d de %2$d podcast</item>
+        <item quantity="other">%1$d de %2$d podcasts</item>
+    </plurals>
     <string name="podcast_load_multiple_error">El podcast\n\"%s\"\nno se ha podido cargar.</string>
     <string name="podcast_load_multiple_error_all">Los podcasts no se han podido cargar. Comprobar la conexión a Internet!</string>
     <string name="podcast_block_explicit">Bloquear los podcasts de contenido explícito</string>
