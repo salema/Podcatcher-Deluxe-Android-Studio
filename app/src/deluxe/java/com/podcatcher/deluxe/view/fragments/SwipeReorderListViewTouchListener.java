@@ -21,6 +21,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -57,7 +58,9 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
     private List<PendingReorderData> mPendingDismisses = new ArrayList<>();
     private int mDismissAnimationRefCount = 0;
     private float mDownX;
+    private float mDownY;
     private boolean mSwiping;
+    private int mSwipingSlop;
     private VelocityTracker mVelocityTracker;
     private int mDownPosition;
     private View mDownView;
@@ -174,6 +177,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
 
                 if (mDownView != null) {
                     mDownX = motionEvent.getRawX();
+                    mDownY = motionEvent.getRawY();
                     mDownPosition = mListView.getPositionForView(mDownView);
                     if (mCallbacks.canReorder(mDownPosition)) {
                         mVelocityTracker = VelocityTracker.obtain();
@@ -182,8 +186,30 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                         mDownView = null;
                     }
                 }
-                view.onTouchEvent(motionEvent);
-                return true;
+                return false;
+            }
+
+            case MotionEvent.ACTION_CANCEL: {
+                if (mVelocityTracker == null) {
+                    break;
+                }
+
+                if (mDownView != null && mSwiping) {
+                    // cancel
+                    mDownView.animate()
+                            .translationX(0)
+                            .alpha(1)
+                            .setDuration(mAnimationTime)
+                            .setListener(null);
+                }
+                mVelocityTracker.recycle();
+                mVelocityTracker = null;
+                mDownX = 0;
+                mDownY = 0;
+                mDownView = null;
+                mDownPosition = ListView.INVALID_POSITION;
+                mSwiping = false;
+                break;
             }
 
             case MotionEvent.ACTION_UP: {
@@ -199,20 +225,18 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                 float absVelocityY = Math.abs(mVelocityTracker.getYVelocity());
                 boolean dismiss = false;
                 boolean dismissRight = false;
-                if (Math.abs(deltaX) > mViewWidth / 2) {
+                if (Math.abs(deltaX) > mViewWidth / 2 && mSwiping) {
                     dismiss = true;
                     dismissRight = deltaX > 0;
                 } else if (mMinFlingVelocity <= absVelocityX && absVelocityX <= mMaxFlingVelocity
-                        && absVelocityY < absVelocityX) {
-                    // dismiss only if flinging in the same direction as
-                    // dragging
+                        && absVelocityY < absVelocityX && mSwiping) {
+                    // dismiss only if flinging in the same direction as dragging
                     dismiss = (velocityX < 0) == (deltaX < 0);
                     dismissRight = mVelocityTracker.getXVelocity() > 0;
                 }
-                if (dismiss) {
+                if (dismiss && mDownPosition != ListView.INVALID_POSITION) {
                     // dismiss
-                    final View downView = mDownView; // mDownView gets null'd
-                    // before animation ends
+                    final View downView = mDownView; // mDownView gets null'd before animation ends
                     final int downPosition = mDownPosition;
                     final boolean up = !dismissRight;
                     ++mDismissAnimationRefCount;
@@ -237,6 +261,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
                 mDownX = 0;
+                mDownY = 0;
                 mDownView = null;
                 mDownPosition = ListView.INVALID_POSITION;
                 mSwiping = false;
@@ -250,8 +275,10 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
 
                 mVelocityTracker.addMovement(motionEvent);
                 float deltaX = motionEvent.getRawX() - mDownX;
-                if (Math.abs(deltaX) > mSlop) {
+                float deltaY = motionEvent.getRawY() - mDownY;
+                if (Math.abs(deltaX) > mSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
                     mSwiping = true;
+                    mSwipingSlop = (deltaX > 0 ? mSlop : -mSlop);
                     mListView.requestDisallowInterceptTouchEvent(true);
 
                     // Cancel ListView's touch (un-highlighting the item)
@@ -264,7 +291,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                 }
 
                 if (mSwiping) {
-                    mDownView.setTranslationX(deltaX);
+                    mDownView.setTranslationX(deltaX - mSwipingSlop);
                     mDownView.setAlpha(Math.max(0f, Math.min(1f,
                             1f - 2f * Math.abs(deltaX) / mViewWidth)));
                     return true;
@@ -315,7 +342,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
         // do something smarter and more performant.
 
         final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
-        final int originalHeight = lp.height;
+        final int originalHeight = dismissView.getHeight();
 
         ValueAnimator animator = ValueAnimator.ofInt(originalHeight, 1).setDuration(mAnimationTime);
 
@@ -338,6 +365,9 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                     else
                         mCallbacks.onMoveDown(dismissPositions);
 
+                    // Reset mDownPosition to avoid MotionEvent.ACTION_UP trying to start a dismiss
+                    // animation with a stale position
+                    mDownPosition = ListView.INVALID_POSITION;
                     ViewGroup.LayoutParams lp;
                     for (PendingReorderData pendingDismiss : mPendingDismisses) {
                         // Reset view presentation
@@ -347,6 +377,12 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                         lp.height = originalHeight;
                         pendingDismiss.view.setLayoutParams(lp);
                     }
+
+                    // Send a cancel event
+                    long time = SystemClock.uptimeMillis();
+                    MotionEvent cancelEvent = MotionEvent.obtain(time, time,
+                            MotionEvent.ACTION_CANCEL, 0, 0, 0);
+                    mListView.dispatchTouchEvent(cancelEvent);
 
                     mPendingDismisses.clear();
                 }
