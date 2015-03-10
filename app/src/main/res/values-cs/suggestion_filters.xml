@@ -25,25 +25,25 @@
         <item>Španělština</item>
     </string-array>
     <string-array name="types">
-        <item>Zvukový záznam</item>
-        <item>Obrazový záznam</item>
+        <item>Zvukový</item>
+        <item>Obrazový</item>
     </string-array>
     <string-array name="genres">
         <item>Umění</item>
         <item>Obchod</item>
         <item>Komedie</item>
-        <item>Výchova a vzdělávání</item>
-        <item>Hry a koníčky</item>
-        <item>Vláda a organizace</item>
+        <item>Výchova</item>
+        <item>Hry a Koníčky</item>
+        <item>Vláda a Organizace</item>
         <item>Zdraví</item>
-        <item>Děti a rodina</item>
+        <item>Děti a Rodina</item>
         <item>Hudba</item>
-        <item>Zprávy a politika</item>
-        <item>Náboženství a duchovno</item>
-        <item>Věda a lékařství</item>
-        <item>Společnost a kultura</item>
-        <item>Sport a odpočinek</item>
+        <item>Zprávy a Politika</item>
+        <item>Náboženství a Duchovno</item>
+        <item>Věda a Lékařství</item>
+        <item>Společnost a Kultura</item>
+        <item>Sport a Odpočinek</item>
         <item>Technika</item>
-        <item>Televize a film</item>
+        <item>Televize a Film</item>
     </string-array>
 </resources>
