@@ -429,6 +429,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                         case RSS.ITEM:
                             parseAndAddEpisode(parser, newEpisodes, episodeIndex++);
                             break;
+                        default:
+                            parse(parser, tagName);
                     }
                 }
 
@@ -446,16 +448,29 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
     }
 
+    /**
+     * Called for tags not consumed by the podcast parsing. Use this in sub-classes,
+     * if you need to get more data from the podcast feed. This will <em>not</em> be
+     * called for tags the podcast consumes itself.
+     *
+     * @param parser  The current parser. Make sure to only consume the current tag!
+     * @param tagName The current tag's name, all lower case.
+     */
+    protected void parse(XmlPullParser parser, String tagName) throws XmlPullParserException, IOException {
+        // Do nothing, subclass might want to use this hook
+        // to read other information they care about from the feed
+    }
+
     protected void parseLogo(@NonNull XmlPullParser parser) throws IOException {
         try {
-            // HREF attribute used?
-            if (parser.getAttributeValue("", RSS.HREF) != null)
-                logoUrl = toAbsoluteUrl(parser.getAttributeValue("", RSS.HREF));
-                // URL tag used! We do not override any previous setting, because
-                // the HREF is from the <itunes:image> tag which tends to have
-                // better pics.
+            // Check for href attribute (of <itunes:image> tag)
+            final String href = parser.getAttributeValue("", RSS.HREF);
+
+            if (href != null)
+                logoUrl = toAbsoluteUrl(href);
             else if (logoUrl == null) {
-                // Make sure we start at image tag
+                // URL tag used instead. We do not override any previous setting, because
+                // the href is from the <itunes:image> tag which tends to have better pics.
                 parser.require(XmlPullParser.START_TAG, "", RSS.IMAGE);
 
                 // Look at all start tags of this image

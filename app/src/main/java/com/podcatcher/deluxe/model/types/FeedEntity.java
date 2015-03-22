@@ -52,7 +52,7 @@ public abstract class FeedEntity {
      * feeds, these are all tried in the given order if the default fails
      */
     private static final String[] DATE_FORMAT_TEMPLATE_ALTERNATIVES = {
-            "EEE, dd MMM yy", "yy-MM-dd"
+            "EEE, dd MMM yy", "yy-MM-dd", "EEE,dd MMM yy HH:mm:ss zzz"
     };
 
     /**
