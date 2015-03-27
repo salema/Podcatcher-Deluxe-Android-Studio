@@ -36,6 +36,9 @@ public class RSS {
     public static final String MEDIA_LENGTH = "length";
     public static final String HREF = "href";
     public static final String LINK = "link";
+    public static final String CATEGORY = "category";
+    public static final String LANGUAGE = "language";
+    public static final String KEYWORDS = "keywords";
     public static final String DATE = "date";
     public static final String PUBDATE = "pubdate";
     public static final String DURATION = "duration";

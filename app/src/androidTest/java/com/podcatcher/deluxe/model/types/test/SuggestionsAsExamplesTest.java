@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.model.types.Suggestion;
 
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
 @SuppressWarnings("javadoc")
 public abstract class SuggestionsAsExamplesTest extends InstrumentationTestCase {
 
-    protected static List<Podcast> examplePodcasts;
+    protected static List<Suggestion> examplePodcasts;
     protected static int sampleSize = 5;
 
     @Override

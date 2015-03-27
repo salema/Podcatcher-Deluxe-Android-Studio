@@ -24,6 +24,7 @@ import android.util.Log;
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.model.types.Suggestion;
 
 import java.util.Date;
 
@@ -166,14 +167,14 @@ public class EpisodeExamplesTest extends SuggestionsAsExamplesTest {
 
     @SmallTest
     public final void testGetPubDate() {
-        Podcast extra = new Podcast("Skip Heinzig", "http://skipheitzig.com/podcast/tv");
+        Suggestion extra = new Suggestion("Skip Heinzig", "http://skipheitzig.com/podcast/tv");
         Utils.loadAndWait(extra);
-        Podcast wtf = new Podcast("WTFPod", "http://www.wtfpod.com/podcast/rss");
+        Suggestion wtf = new Suggestion("WTFPod", "http://www.wtfpod.com/podcast/rss");
         Utils.loadAndWait(wtf);
-        Podcast ru = new Podcast("Radio Underground",
+        Suggestion ru = new Suggestion("Radio Underground",
                 "http://feeds.feedburner.com/radiounderground");
         Utils.loadAndWait(ru);
-        Podcast know = new Podcast("To the best of our knowledge",
+        Suggestion know = new Suggestion("To the best of our knowledge",
                 "http://ttbook.org/book/radio/rss/feed");
         Utils.loadAndWait(know);
 

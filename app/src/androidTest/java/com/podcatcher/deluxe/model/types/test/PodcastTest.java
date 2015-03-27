@@ -147,17 +147,15 @@ public class PodcastTest extends InstrumentationTestCase {
     public final void testIsExplicit() {
         assertFalse(new Podcast(null, null).isExplicit());
 
-        Podcast colt = new Podcast("Colt",
-                "http://tsmradio.com/coltcabana/feed");
-        assertFalse(colt.isExplicit());
-        Utils.loadAndWait(colt);
-        assertTrue(colt.isExplicit());
+        Podcast explicit = new Podcast("NoSleep", "http://nosleeppodcast.libsyn.com/rss");
+        assertFalse(explicit.isExplicit());
+        Utils.loadAndWait(explicit);
+        assertTrue(explicit.isExplicit());
 
-        Podcast tal = new Podcast("TAL",
-                "http://feeds.thisamericanlife.org/talpodcast");
-        assertFalse(tal.isExplicit());
-        Utils.loadAndWait(tal);
-        assertFalse(tal.isExplicit());
+        Podcast clean = new Podcast("TAL", "http://feeds.thisamericanlife.org/talpodcast");
+        assertFalse(clean.isExplicit());
+        Utils.loadAndWait(clean);
+        assertFalse(clean.isExplicit());
     }
 
     public final void testGetAuth() {

@@ -117,10 +117,9 @@ public class Utils {
      *                file system, you might want to use
      *                {@link Instrumentation#getTargetContext()}.
      * @return The list of podcast examples. These only contain the name and URL
-     * information, {@link Podcast#parse(XmlPullParser)} has
-     * <em>not</em> been called on them.
+     * information, {@link Podcast#parse(XmlPullParser)} has <em>not</em> been called on them.
      */
-    public static List<Podcast> getExamplePodcasts(final Context context) {
+    public static List<Suggestion> getExamplePodcasts(final Context context) {
         return getExamplePodcasts(context, 0);
     }
 
@@ -134,12 +133,11 @@ public class Utils {
      * @param limit   Limit the result to the given number of podcasts randomly
      *                chosen.
      * @return The list of podcast examples. These only contain the name and URL
-     * information, {@link Podcast#parse(XmlPullParser)} has
-     * <em>not</em> been called on them.
+     * information, {@link Podcast#parse(XmlPullParser)} has <em>not</em> been called on them.
      */
-    public static List<Podcast> getExamplePodcasts(final Context context, final int limit) {
+    public static List<Suggestion> getExamplePodcasts(final Context context, final int limit) {
         final CountDownLatch signal = new CountDownLatch(1);
-        final List<Podcast> examples = new ArrayList<>();
+        final List<Suggestion> examples = new ArrayList<>();
 
         LoadSuggestionsTask task = new LoadSuggestionsTask(context, new OnLoadSuggestionListener() {
 
@@ -147,7 +145,7 @@ public class Utils {
             public void onSuggestionsLoaded(List<Suggestion> suggestions) {
                 Log.d(TEST_STATUS, "Load example podcasts task complete");
                 if (limit <= 0)
-                    for (Podcast podcast : suggestions)
+                    for (Suggestion podcast : suggestions)
                         examples.add(podcast);
                 else {
                     int count = 0;
