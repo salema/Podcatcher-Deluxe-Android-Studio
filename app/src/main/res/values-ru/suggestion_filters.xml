@@ -23,6 +23,7 @@
         <item>Французский</item>
         <item>Немецкий</item>
         <item>Испанский</item>
+        <item>итальянский</item>
     </string-array>
     <string-array name="types">
         <item>Аудио</item>

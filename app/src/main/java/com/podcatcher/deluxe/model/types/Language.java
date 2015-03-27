@@ -22,5 +22,5 @@ package com.podcatcher.deluxe.model.types;
  */
 @SuppressWarnings("javadoc")
 public enum Language {
-    ENGLISH, FRENCH, GERMAN, SPANISH
+    ENGLISH, FRENCH, GERMAN, SPANISH, ITALIAN
 }
