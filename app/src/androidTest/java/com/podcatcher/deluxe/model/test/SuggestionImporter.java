@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
+import com.dragontek.mygpoclient.pub.PublicClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.podcatcher.deluxe.R;
@@ -74,7 +75,8 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
     public final void testCreateImportFile() {
         // Put feed URLs here:
-        final String[] urls = {"http://answermethis.libsyn.com/rss"};
+        final String[] urls = {"http://www.caffe20.it/news/rssitunes.php", "Fisicast", "Freakonomics"};
+        final List<Suggestion> existingSuggestions = Utils.getExamplePodcasts(getInstrumentation().getTargetContext());
         final List<JsonDummy> dummies = new ArrayList<>();
 
         Log.i(TAG, "Setup complete, starting process with " + urls.length + " podcast suggestion(s).");
@@ -82,8 +84,23 @@ public class SuggestionImporter extends InstrumentationTestCase {
             Log.w(TAG, "Device should be switched to English for taxonomy to match!");
 
         for (String url : urls) {
+            // For non-URLs, try resolve via gpodder.net
+            if (!url.startsWith("http"))
+                try {
+                    final String podcastName = url;
+                    url = new PublicClient().searchPodcast(podcastName).get(0).getUrl();
+                    Log.d(TAG, "Found podcast URL " + url + " for search term: " + podcastName);
+                } catch (IOException | IndexOutOfBoundsException ex) {
+                    Log.w(TAG, "Cannot find podcast for search term: " + url, ex);
+                    continue;
+                }
+
+            // Make sure we do not import a duplicate
             final SuggestionImport si = new SuggestionImport(url);
-            Utils.loadAndWait(si);
+            if (existingSuggestions.contains(si)) {
+                Log.w(TAG, "Skipping existing podcast suggestion: " + url);
+                continue;
+            } else Utils.loadAndWait(si);
 
             if (si.getEpisodeCount() > 0) {
                 final List<Episode> episodes = si.getEpisodes();
@@ -139,7 +156,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
         @Override
         protected void parse(XmlPullParser parser, String tagName) throws XmlPullParserException, IOException {
-            Log.d(TAG, "TAGNAME: " + tagName);
+            Log.v(TAG, "TAGNAME: " + tagName);
             final Resources res = getInstrumentation().getTargetContext().getResources();
 
             if (RSS.LINK.equals(tagName) && link == null) // We only want the first one from the header
