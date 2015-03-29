@@ -17,7 +17,12 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Genre (category) of the podcast.
@@ -60,5 +65,29 @@ public enum Genre {
                 return genre;
 
         throw new IllegalArgumentException("Label \"" + label + "\" does not match any genre!");
+    }
+
+    /**
+     * Converts a list of genres to a set of enum values.
+     *
+     * @param list      The plain JSON string to parse, e.g. "Music, Technology".
+     * @param delimiter The delimiter used in the JSON string.
+     * @return A set of parsed genre values. Might be empty, but never <code>null</code>.
+     */
+    @NonNull
+    public static Set<Genre> valueOfJson(@Nullable String list, @Nullable String delimiter) {
+        final HashSet<Genre> result = new HashSet<>();
+
+        if (list != null && delimiter != null) {
+            final String[] genres = list.split(delimiter);
+            for (String genre : genres)
+                try {
+                    result.add(forLabel(genre));
+                } catch (IllegalArgumentException iae) {
+                    // Bad string, skip...
+                }
+        }
+
+        return result;
     }
 }

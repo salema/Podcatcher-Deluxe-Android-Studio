@@ -20,10 +20,17 @@
     <string name="wildcard">Vše</string>
     <string-array name="languages">
         <item>Angličtina</item>
-        <item>Francouzština</item>
-        <item>Němčina</item>
-        <item>Španělština</item>
-        <item>Ital</item>
+        <item>Francouzsky</item>
+        <item>Německy</item>
+        <item>Španělsky</item>
+        <item>Italsky</item>
+        <item>Čeština</item>
+        <item>Holandsky</item>
+        <item>Portugalsky</item>
+        <item>Rusky</item>
+        <item>Švédsky</item>
+        <item>Turecky</item>
+        <item>Ukrajinsky</item>
     </string-array>
     <string-array name="types">
         <item>Zvukový</item>

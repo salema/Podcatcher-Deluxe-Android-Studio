@@ -23,7 +23,14 @@
         <item>Fransızca</item>
         <item>Almanca</item>
         <item>İspanyolca</item>
-        <item>İtalyan</item>
+        <item>İtalyanca</item>
+        <item>Çekçe</item>
+        <item>Hollandaca</item>
+        <item>Portekizce</item>
+        <item>Rusça</item>
+        <item>İsveççe</item>
+        <item>Türkçe</item>
+        <item>Ukraynaca</item>
     </string-array>
     <string-array name="types">
         <item>Ses</item>

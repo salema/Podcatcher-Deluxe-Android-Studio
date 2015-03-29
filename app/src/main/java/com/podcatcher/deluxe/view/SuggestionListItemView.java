@@ -18,7 +18,6 @@
 package com.podcatcher.deluxe.view;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.types.Genre;
+import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.MediaType;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.fragments.SuggestionFragment.AddSuggestionDialogListener;
@@ -46,6 +47,14 @@ public class SuggestionListItemView extends RelativeLayout {
      * The feature icon view
      */
     private ImageView featuredIconView;
+    /**
+     * The explicit icon view
+     */
+    private ImageView explicitIconView;
+    /**
+     * The new icon view
+     */
+    private ImageView newIconView;
     /**
      * The title text view
      */
@@ -78,6 +87,8 @@ public class SuggestionListItemView extends RelativeLayout {
         super.onFinishInflate();
 
         featuredIconView = (ImageView) findViewById(R.id.suggestion_featured);
+        explicitIconView = (ImageView) findViewById(R.id.suggestion_explicit);
+        newIconView = (ImageView) findViewById(R.id.suggestion_new);
         titleTextView = (TextView) findViewById(R.id.suggestion_name);
         metaTextView = (TextView) findViewById(R.id.suggestion_meta);
         addButton = (Button) findViewById(R.id.suggestion_add_button);
@@ -92,20 +103,14 @@ public class SuggestionListItemView extends RelativeLayout {
      * @param alreadyAdded     Whether the suggestion is already added.
      * @param languageWildcard Whether the current filter language setting has a
      *                         wildcard.
-     * @param genreWildcard    Whether the current filter setting has a genre
-     *                         wildcard.
-     * @param typeWildcard     Whether the current filter setting has a type
-     *                         wildcard.
      */
     public void show(final Suggestion suggestion, final AddSuggestionDialogListener listener,
-                     boolean alreadyAdded, boolean languageWildcard, boolean genreWildcard,
-                     boolean typeWildcard) {
+                     boolean alreadyAdded, boolean languageWildcard) {
         // 1. Set the text to display for title
         titleTextView.setText(suggestion.getName());
 
         // 2. Set the text to display for classification
-        metaTextView.setText(createClassificationLabel(suggestion,
-                languageWildcard, genreWildcard, typeWildcard));
+        metaTextView.setText(createClassificationLabel(suggestion, languageWildcard));
 
         // 3. Set the text to display for the description
         descriptionTextView.setText(suggestion.getDescription());
@@ -119,8 +124,8 @@ public class SuggestionListItemView extends RelativeLayout {
         } else {
             addButton.setEnabled(true);
             addButton.setBackgroundResource(R.drawable.button_green);
-            addButton.setText(suggestion.getMediaType().equals(MediaType.AUDIO) ?
-                    R.string.suggestion_listen : R.string.suggestion_watch);
+            addButton.setText(suggestion.getMediaTypes().contains(MediaType.VIDEO) ?
+                    R.string.suggestion_watch : R.string.suggestion_listen);
             addButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -132,30 +137,27 @@ public class SuggestionListItemView extends RelativeLayout {
         }
 
         // 5. Decorate featured and explicit suggestions
-        featuredIconView.setVisibility(suggestion.isFeatured() || suggestion.isExplicit() ?
-                VISIBLE : GONE);
-        featuredIconView.setImageResource(suggestion.isFeatured() ?
-                R.drawable.ic_suggestion_featured : R.drawable.ic_suggestion_explicit);
+        featuredIconView.setVisibility(suggestion.isFeatured() ? VISIBLE : GONE);
+        explicitIconView.setVisibility(suggestion.isExplicit() ? VISIBLE : GONE);
+        newIconView.setVisibility(suggestion.isNew() ? VISIBLE : GONE);
+
         setBackgroundColor(suggestion.isFeatured() ?
                 getResources().getColor(R.color.featured_suggestion) : Color.TRANSPARENT);
     }
 
-    private String createClassificationLabel(Suggestion suggestion,
-                                             boolean languageWildcard, boolean genreWildcard, boolean typeWildcard) {
-        final Resources res = getResources();
+    private String createClassificationLabel(Suggestion suggestion, boolean languageWildcard) {
         String result = "";
 
         if (languageWildcard)
-            result += res.getStringArray(R.array.languages)[suggestion.getLanguage().ordinal()]
-                    + METADATA_SEPARATOR;
+            for (Language language : suggestion.getLanguages())
+                result += getResources().getStringArray(R.array.languages)[language.ordinal()]
+                        + METADATA_SEPARATOR;
 
         // The genre will always be shown
-        result += res.getStringArray(R.array.genres)[suggestion.getGenre().ordinal()];
+        for (Genre genre : suggestion.getGenres())
+            result += getResources().getStringArray(R.array.genres)[genre.ordinal()]
+                    + METADATA_SEPARATOR;
 
-        if (typeWildcard)
-            result += METADATA_SEPARATOR
-                    + res.getStringArray(R.array.types)[suggestion.getMediaType().ordinal()];
-
-        return result;
+        return result.substring(0, result.length() - METADATA_SEPARATOR.length());
     }
 }

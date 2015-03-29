@@ -37,6 +37,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -56,15 +58,27 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * The online resource to find suggestions
      */
-    private static final String SOURCE = "http://www.podcatcher-deluxe.com/podcast_suggestions.json";
+    private static final String SOURCE = "http://www.podcatcher-deluxe.com/podcast-suggestions.v3.json";
     /**
      * The local file name for the cached suggestions
      */
-    private static final String LOCAL_SUGGESTIONS_FILE = "suggestions.json";
+    private static final String LOCAL_SUGGESTIONS_FILE = "suggestions.v3.json";
+    /**
+     * Delimiter value used in JSON strings
+     */
+    private static final String JSON_VALUE_DELIMITER = ", ";
     /**
      * The text that marks isExplicit() == true
      */
     private static final String EXPLICIT_POSITIVE_STRING = "yes";
+    /**
+     * The date format used for the "date added" value
+     */
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+    /**
+     * The date after which an added podcast suggestion is considered recent
+     */
+    private static final Date RECENT_LIMIT = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(30));
     /**
      * Our log tag
      */
@@ -134,21 +148,16 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         try {
             // 2.1 Get result as a document
             publishProgress(Progress.PARSE);
-            JSONObject completeJson = new JSONObject(new String(suggestions, SUGGESTIONS_ENCODING));
+            final JSONArray completeJson = new JSONArray(new String(suggestions, SUGGESTIONS_ENCODING));
             if (isCancelled())
                 return null;
 
-            // 2.2 Add all featured podcasts
-            addSuggestionsFromJsonArray(completeJson.getJSONArray(JSON.FEATURED), result, true);
+            // 2.2 Add all podcast suggestions
+            addSuggestionsFromJsonArray(completeJson, result);
             if (isCancelled())
                 return null;
 
-            // 2.3 Add all suggestions
-            addSuggestionsFromJsonArray(completeJson.getJSONArray(JSON.SUGGESTION), result, false);
-            if (isCancelled())
-                return null;
-
-            // 2.4 Sort the result
+            // 2.3 Sort the result
             Collections.sort(result);
             publishProgress(Progress.DONE);
         } catch (Exception ex) {
@@ -187,46 +196,40 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
      * @param array JSON array to scan.
      * @param list  List to add suggestions to.
      */
-    private void addSuggestionsFromJsonArray(JSONArray array, List<Suggestion> list,
-                                             boolean featured) {
+    private void addSuggestionsFromJsonArray(JSONArray array, List<Suggestion> list) {
         for (int index = 0; index < array.length(); index++) {
-            JSONObject object;
 
             try {
-                object = array.getJSONObject(index);
+                final Suggestion suggestion = createSuggestion(array.getJSONObject(index));
+                // Might be null if parsing failed -> do not add to result list
+                if (suggestion != null)
+                    list.add(suggestion);
             } catch (JSONException e) {
-                continue; // If an index fails, try the next one...
-            }
-
-            Suggestion suggestion = createSuggestion(object);
-            if (suggestion != null) {
-                suggestion.setFeatured(featured);
-                list.add(suggestion);
+                Log.d(TAG, "Cannot create JSON object for index: " + index, e);
             }
         }
     }
 
     /**
-     * Create a podcast suggestion for the given JSON object and set its
-     * properties.
+     * Create a podcast suggestion for the given JSON object and set its properties.
      *
      * @param json The JSON object to work on.
-     * @return The podcast suggestion or <code>null</code> if any problem
-     * occurs.
+     * @return The podcast suggestion or <code>null</code> if any problem occurs.
      */
     private Suggestion createSuggestion(JSONObject json) {
         Suggestion suggestion = null;
 
         try {
-            suggestion = new Suggestion(json.getString(JSON.TITLE), json.getString(JSON.URL));
+            suggestion = new Suggestion(json.getString(JSON.TITLE).trim(),
+                    json.getString(JSON.FEED).split(JSON_VALUE_DELIMITER)[0]);
             suggestion.setDescription(json.getString(JSON.DESCRIPTION).trim());
-            suggestion.setLanguage(Language.valueOf(json.getString(JSON.LANGUAGE)
-                    .toUpperCase(Locale.US).trim()));
-            suggestion.setMediaType(MediaType.valueOf(json.getString(JSON.TYPE)
-                    .toUpperCase(Locale.US).trim()));
-            suggestion.setGenre(Genre.forLabel(json.getString(JSON.CATEGORY)));
-            suggestion.setExplicit(EXPLICIT_POSITIVE_STRING.equals(json.getString(JSON.EXPLICIT)
-                    .toLowerCase(Locale.US)));
+            suggestion.setLanguages(Language.valueOfJson(json.getString(JSON.LANGUAGE), JSON_VALUE_DELIMITER));
+            suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON_VALUE_DELIMITER));
+            suggestion.setGenres(Genre.valueOfJson(json.getString(JSON.CATEGORY), JSON_VALUE_DELIMITER));
+            suggestion.setExplicit(EXPLICIT_POSITIVE_STRING.equals(json.getString(JSON.EXPLICIT).toLowerCase(Locale.US).trim()));
+            suggestion.setFeatured(json.getInt(JSON.VOTES) >= 10);
+            suggestion.setNew(json.has(JSON.DATE_ADDED) && isRecentDate(json.getString(JSON.DATE_ADDED)));
+            // TODO keywords, feeds, feed labels, logo, website
         } catch (JSONException e) {
             Log.d(TAG, "JSON parsing failed for: " + suggestion, e);
 
@@ -238,6 +241,14 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         }
 
         return suggestion;
+    }
+
+    private boolean isRecentDate(String dateAdded) {
+        try {
+            return DATE_FORMATTER.parse(dateAdded).after(RECENT_LIMIT);
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
     private File getSuggestionsCacheFile() {

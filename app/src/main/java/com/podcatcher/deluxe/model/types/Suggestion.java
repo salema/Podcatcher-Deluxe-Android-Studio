@@ -19,6 +19,8 @@ package com.podcatcher.deluxe.model.types;
 
 import android.support.annotation.NonNull;
 
+import java.util.Set;
+
 /**
  * The podcast suggestion type. Extends {@link Podcast} by a few fields and
  * methods specific to suggestions.
@@ -30,6 +32,12 @@ public class Suggestion extends Podcast {
      * The UI might later decide to highlight featured suggestions.
      */
     protected boolean featured = false;
+
+    /**
+     * Whether the podcast suggestion is new.
+     * The UI might later decide to highlight new suggestions.
+     */
+    protected boolean recent = false;
 
     /**
      * Create new suggestion. See {@link Podcast} for details.
@@ -49,24 +57,24 @@ public class Suggestion extends Podcast {
     }
 
     /**
-     * @param language The language to set.
+     * @param languages The podcast content language(s) to set.
      */
-    public void setLanguage(@NonNull Language language) {
-        this.language = language;
+    public void setLanguages(@NonNull Set<Language> languages) {
+        this.languages = languages;
     }
 
     /**
-     * @param genre The genre to set.
+     * @param genres The podcast categories to set.
      */
-    public void setGenre(@NonNull Genre genre) {
-        this.genre = genre;
+    public void setGenres(@NonNull Set<Genre> genres) {
+        this.genres = genres;
     }
 
     /**
-     * @param mediaType The mediaType to set.
+     * @param mediaTypes The media type(s) to set.
      */
-    public void setMediaType(@NonNull MediaType mediaType) {
-        this.mediaType = mediaType;
+    public void setMediaTypes(@NonNull Set<MediaType> mediaTypes) {
+        this.mediaTypes = mediaTypes;
     }
 
     /**
@@ -81,6 +89,20 @@ public class Suggestion extends Podcast {
      */
     public void setFeatured(boolean featured) {
         this.featured = featured;
+    }
+
+    /**
+     * @return Whether this suggestion has been added lately.
+     */
+    public boolean isNew() {
+        return recent;
+    }
+
+    /**
+     * @param recent What to set the flag to.
+     */
+    public void setNew(boolean recent) {
+        this.recent = recent;
     }
 
     /**

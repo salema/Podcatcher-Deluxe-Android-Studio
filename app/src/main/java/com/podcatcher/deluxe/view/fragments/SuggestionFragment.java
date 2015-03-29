@@ -43,6 +43,7 @@ import com.podcatcher.deluxe.adapters.GenreSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.LanguageSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.MediaTypeSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.SuggestionListAdapter;
+import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.ProgressView;
@@ -287,23 +288,21 @@ public class SuggestionFragment extends DialogFragment {
 
     private void setInitialFilterSelection() {
         // Set according to locale
-        final Locale currentLocale = getActivity().getResources().getConfiguration().locale;
-        if (currentLocale.getLanguage().equalsIgnoreCase(Locale.ENGLISH.getLanguage()))
-            languageFilter.setSelection(1);
-        else if (currentLocale.getLanguage().equalsIgnoreCase(Locale.FRENCH.getLanguage()))
-            languageFilter.setSelection(4);
-        else if (currentLocale.getLanguage().equalsIgnoreCase(Locale.GERMAN.getLanguage()))
-            languageFilter.setSelection(1);
-        else if (currentLocale.getLanguage().equalsIgnoreCase("es"))
-            languageFilter.setSelection(2);
-            // No filter for this language, set to "all"
-        else
+        try {
+            final Locale currentLocale = getActivity().getResources().getConfiguration().locale;
+            final Language currentLanguage = Language.forTwoLetterIsoCode(currentLocale.getLanguage());
+            for (int index = 0; index < languageFilter.getCount(); index++)
+                if (languageFilter.getItemAtPosition(index).equals(currentLanguage))
+                    languageFilter.setSelection(index);
+        } catch (IllegalArgumentException iae) {
+            // Unknown language, set to wildcard
             languageFilter.setSelection(0);
+        }
 
-        // Set to "all"
+        // Set to wildcard
         genreFilter.setSelection(0);
         // Set according to media type flavor (audio/video)
-        mediaTypeFilter.setSelection(BuildConfig.FLAVOR_media.equals(VIDEO_MEDIA_TYPE_FLAVOR) ? 2 : 1);
+        mediaTypeFilter.setSelection(BuildConfig.FLAVOR_media.equals(VIDEO_MEDIA_TYPE_FLAVOR) ? 0 : 1);
     }
 
     private void updateList() {
@@ -321,10 +320,7 @@ public class SuggestionFragment extends DialogFragment {
             // Set filtered list
             suggestionListAdapter = new SuggestionListAdapter(
                     getDialog().getContext(), filteredSuggestionList, listener);
-            suggestionListAdapter.setFilterConfiguration(
-                    languageFilter.getSelectedItemPosition() == 0,
-                    genreFilter.getSelectedItemPosition() == 0,
-                    mediaTypeFilter.getSelectedItemPosition() == 0);
+            suggestionListAdapter.setFilterConfiguration(languageFilter.getSelectedItemPosition() == 0);
             suggestionsListView.setAdapter(suggestionListAdapter);
 
             // As soon as the list is available, hide progress and switch to the
@@ -342,11 +338,11 @@ public class SuggestionFragment extends DialogFragment {
      */
     private boolean matchesFilter(Suggestion suggestion) {
         return (languageFilter.getSelectedItemPosition() == 0 ||
-                languageFilter.getSelectedItem().equals(suggestion.getLanguage())) &&
+                suggestion.getLanguages().contains(languageFilter.getSelectedItem())) &&
                 (genreFilter.getSelectedItemPosition() == 0 ||
-                        genreFilter.getSelectedItem().equals(suggestion.getGenre())) &&
+                        suggestion.getGenres().contains(genreFilter.getSelectedItem())) &&
                 (mediaTypeFilter.getSelectedItemPosition() == 0 ||
-                        mediaTypeFilter.getSelectedItem().equals(suggestion.getMediaType()));
+                        suggestion.getMediaTypes().contains(mediaTypeFilter.getSelectedItem()));
     }
 
     /**

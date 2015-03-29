@@ -24,6 +24,13 @@
         <item>Alemán</item>
         <item>Español</item>
         <item>Italiano</item>
+        <item>Checo</item>
+        <item>Holandés</item>
+        <item>Portugués</item>
+        <item>Ruso</item>
+        <item>Sueco</item>
+        <item>Turco</item>
+        <item>Ucraniano</item>
     </string-array>
     <string-array name="types">
         <item>Audio</item>

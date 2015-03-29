@@ -47,14 +47,6 @@ public class SuggestionListAdapter extends PodcatcherBaseListAdapter {
      * The language filter disabled flag
      */
     private boolean languageWildcard;
-    /**
-     * The genre filter disabled flag
-     */
-    private boolean genreWildcard;
-    /**
-     * The media type filter disabled flag
-     */
-    private boolean typeWildcard;
 
     /**
      * Create new adapter.
@@ -74,17 +66,10 @@ public class SuggestionListAdapter extends PodcatcherBaseListAdapter {
     /**
      * Update the adapter on the current filter settings.
      *
-     * @param languageWildcard Give <code>true</code> if the all languages are
-     *                         shown.
-     * @param genreWildcard    Give <code>true</code> if the all genres are shown.
-     * @param typeWildcard     Give <code>true</code> if the all media types are
-     *                         shown.
+     * @param languageWildcard Give <code>true</code> if the all languages are shown.
      */
-    public void setFilterConfiguration(boolean languageWildcard, boolean genreWildcard,
-                                       boolean typeWildcard) {
+    public void setFilterConfiguration(boolean languageWildcard) {
         this.languageWildcard = languageWildcard;
-        this.genreWildcard = genreWildcard;
-        this.typeWildcard = typeWildcard;
     }
 
     @Override
@@ -110,8 +95,7 @@ public class SuggestionListAdapter extends PodcatcherBaseListAdapter {
         // Make the view represent podcast suggestion at given position
         final Suggestion suggestion = (Suggestion) getItem(position);
         returnView.show(suggestion, listener,
-                PodcastManager.getInstance().contains(suggestion),
-                languageWildcard, genreWildcard, typeWildcard);
+                PodcastManager.getInstance().contains(suggestion), languageWildcard);
 
         return returnView;
     }

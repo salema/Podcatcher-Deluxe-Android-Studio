@@ -31,11 +31,13 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * The podcast type. This represents the most important type in the podcatcher
@@ -62,17 +64,17 @@ import java.util.Locale;
 public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
     /**
-     * Broadcast language
+     * Broadcast language(s)
      */
-    protected Language language;
+    protected Set<Language> languages;
     /**
-     * Podcast genre
+     * Podcast genres
      */
-    protected Genre genre;
+    protected Set<Genre> genres;
     /**
-     * Podcast media type
+     * Podcast media type(s)
      */
-    protected MediaType mediaType;
+    protected Set<MediaType> mediaTypes;
 
     /**
      * The podcast feed file encoding
@@ -124,28 +126,28 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     /**
-     * @return The language as in {@link com.podcatcher.deluxe.model.types.Language}.
+     * @return The language as in {@link Language}. Usually only one value.
      */
     @Nullable
-    public Language getLanguage() {
-        return language;
+    public Set<Language> getLanguages() {
+        return languages;
     }
 
     /**
-     * @return The genre as in {@link com.podcatcher.deluxe.model.types.Genre}.
+     * @return The podcast's categories as in {@link Genre}.
      */
     @Nullable
-    public Genre getGenre() {
-        return genre;
+    public Set<Genre> getGenres() {
+        return genres;
     }
 
     /**
-     * @return The mediaType as in {@link com.podcatcher.deluxe.model.types.MediaType}.
+     * @return The media type(s) as in {@link MediaType}. Usually only one value.
      * This is <em>not</em> the media file type (e.g. audio/mpeg), you get this from the episodes.
      */
     @Nullable
-    public MediaType getMediaType() {
-        return mediaType;
+    public Set<MediaType> getMediaTypes() {
+        return mediaTypes;
     }
 
     /**
@@ -341,7 +343,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     @Override
     public int compareTo(@NonNull Podcast another) {
         if (name != null && another.name != null)
-            return name.compareToIgnoreCase(another.name);
+            return Collator.getInstance().compare(name, another.name);
         else if (name == null && another.name != null)
             return -1;
         else if (name != null) // Always true: && another.name == null)

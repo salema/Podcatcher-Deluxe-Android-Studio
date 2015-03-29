@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.podcatcher.deluxe.R;
 
+import java.text.Collator;
 import java.util.TreeMap;
 
 /**
@@ -37,7 +38,7 @@ public abstract class SuggestionFilterSpinnerAdapter extends PodcatcherBaseAdapt
      * The sorted map to store our values in, this is needed to account for the
      * sorting in different languages.
      */
-    protected final TreeMap<String, Object> values = new TreeMap<>();
+    protected final TreeMap<String, Object> values = new TreeMap<>(Collator.getInstance());
 
     /**
      * Create the adapter.

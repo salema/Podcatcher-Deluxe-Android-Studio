@@ -24,6 +24,13 @@
         <item>Duits</item>
         <item>Spaans</item>
         <item>Italiaans</item>
+        <item>Tsjechisch</item>
+        <item>Nederlands</item>
+        <item>Portugees</item>
+        <item>Russisch</item>
+        <item>Zweeds</item>
+        <item>Turks</item>
+        <item>Oekraïens</item>
     </string-array>
     <string-array name="types">
         <item>Audio</item>

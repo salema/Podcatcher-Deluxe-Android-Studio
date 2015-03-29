@@ -17,10 +17,52 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
 /**
  * Podcast media type.
  */
 @SuppressWarnings("javadoc")
 public enum MediaType {
-    AUDIO, VIDEO
+    AUDIO, VIDEO;
+
+    /**
+     * Get media type for a given mime type.
+     *
+     * @param mimeType The mime type string, e.g. "audio/mpeg3".
+     * @return The corresponding media type.
+     * @throws IllegalArgumentException If the mime type is not recognized.
+     */
+    public static MediaType forMimeType(String mimeType) {
+        return MediaType.valueOf(mimeType.split("/")[0].toUpperCase(Locale.US).trim());
+    }
+
+    /**
+     * Converts a list of media types to a set of enum values.
+     *
+     * @param list      The plain JSON string to parse, e.g. "Audio, Video".
+     * @param delimiter The delimiter used in the JSON string.
+     * @return A set of parsed type values. Might be empty, but never <code>null</code>.
+     */
+    @NonNull
+    public static Set<MediaType> valueOfJson(@Nullable String list, @Nullable String delimiter) {
+        final HashSet<MediaType> result = new HashSet<>();
+
+        if (list != null && delimiter != null) {
+            final String[] types = list.split(delimiter);
+            for (String type : types)
+                try {
+                    result.add(MediaType.valueOf(type.toUpperCase(Locale.US).trim()));
+                } catch (IllegalArgumentException iae) {
+                    // Bad string, skip...
+                }
+        }
+
+        return result;
+    }
 }
