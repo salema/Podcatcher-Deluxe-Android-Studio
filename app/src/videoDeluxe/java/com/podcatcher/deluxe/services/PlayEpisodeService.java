@@ -182,13 +182,17 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     private static final int NOTIFICATION_ID = 123;
     /**
-     * The amount of milli-seconds used for any forward or rewind event
+     * The amount of milli-seconds used for any fast-forward event
      */
-    private static final int SKIP_AMOUNT = (int) TimeUnit.SECONDS.toMillis(10);
+    private static final int SKIP_AMOUNT_FF = (int) TimeUnit.SECONDS.toMillis(30);
+    /**
+     * The amount of milli-seconds used for any rewind event
+     */
+    private static final int SKIP_AMOUNT_REW = (int) TimeUnit.SECONDS.toMillis(10);
     /**
      * The amount of milli-seconds playback rewinds on resume (if triggered)
      */
-    private static final int REWIND_ON_RESUME_DURATION = SKIP_AMOUNT;
+    private static final int REWIND_ON_RESUME_DURATION = SKIP_AMOUNT_REW;
     /**
      * Time elapsed since pause was called that triggers resume on rewind
      */
@@ -573,7 +577,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Rewind the playback 10 secs.
      */
     public void rewind() {
-        final int newPosition = getCurrentPosition() - SKIP_AMOUNT;
+        final int newPosition = getCurrentPosition() - SKIP_AMOUNT_REW;
         seekTo(newPosition <= 0 ? 0 : newPosition);
     }
 
@@ -581,7 +585,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Fast forward 10 secs.
      */
     public void fastForward() {
-        final int newPosition = getCurrentPosition() + SKIP_AMOUNT;
+        final int newPosition = getCurrentPosition() + SKIP_AMOUNT_FF;
 
         if (newPosition < getDuration())
             seekTo(newPosition);
