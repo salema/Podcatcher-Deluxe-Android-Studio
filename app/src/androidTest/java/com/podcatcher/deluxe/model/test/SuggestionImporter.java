@@ -30,7 +30,6 @@ import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.tags.RSS;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Genre;
-import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -39,6 +38,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,13 +75,16 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
     public final void testCreateImportFile() {
         // Put feed URLs here:
-        final String[] urls = {"http://www.caffe20.it/news/rssitunes.php", "Fisicast", "Freakonomics"};
+        final String[] urls = {"http://feeds.feedburner.com/braincastmp3", "http://feeds.feedburner.com/tecnoblogpodcast", "http://feeds.feedburner.com/americhka/oBlg",
+                "http://feeds.feedburner.com/Galyonkin-pod", "http://hromadskeradio.org/category/all-podcasts/antena-irini-slavinskoyi-podkasti/feed",
+                "http://hromadskeradio.org/category/all-podcasts/filosofskiy-baraban-podkasti/feed"};
         final List<Suggestion> existingSuggestions = Utils.getExamplePodcasts(getInstrumentation().getTargetContext());
+        Log.i(TAG, "List of existing suggestions loaded: " + existingSuggestions.size() + " podcasts");
         final List<JsonDummy> dummies = new ArrayList<>();
 
         Log.i(TAG, "Setup complete, starting process with " + urls.length + " podcast suggestion(s).");
         if (!"en".equals(Locale.getDefault().getLanguage()))
-            Log.w(TAG, "Device should be switched to English for taxonomy to match!");
+            Log.w(TAG, "Device should be set to English for taxonomy to match!");
 
         for (String url : urls) {
             // For non-URLs, try resolve via gpodder.net
@@ -143,8 +146,17 @@ public class SuggestionImporter extends InstrumentationTestCase {
         }
     }
 
+    private static String cleanUp(String text) {
+        if (text != null)
+            return text.trim()
+                    .replaceAll("\\p{C}", " ") // Control characters
+                    .replaceAll(" +", " "); // Multiple whitespaces
+        else return null;
+    }
+
     private class SuggestionImport extends Suggestion {
 
+        String summary;
         String keywords;
         String link;
         String language;
@@ -162,38 +174,21 @@ public class SuggestionImporter extends InstrumentationTestCase {
             if (RSS.LINK.equals(tagName) && link == null) // We only want the first one from the header
                 link = normalizeUrl(parser.nextText().trim());
             else if (RSS.DESCRIPTION.equals(tagName) && description == null)
-                description = parser.nextText();
+                description = cleanUp(parser.nextText());
+            else if (RSS.SUMMARY.equals(tagName) && summary == null)
+                summary = cleanUp(parser.nextText());
             else if (RSS.KEYWORDS.equals(tagName) && keywords == null)
-                keywords = parser.nextText();
-            else if (RSS.LANGUAGE.equals(tagName) && language == null) {
-                final String langCode = parser.nextText().substring(0, 2).toLowerCase(Locale.US);
-
-                switch (langCode) {
-                    case "en":
-                        language = res.getStringArray(R.array.languages)[Language.ENGLISH.ordinal()];
-                        break;
-                    case "de":
-                        language = res.getStringArray(R.array.languages)[Language.GERMAN.ordinal()];
-                        break;
-                    case "fr":
-                        language = res.getStringArray(R.array.languages)[Language.FRENCH.ordinal()];
-                        break;
-                    case "es":
-                        language = res.getStringArray(R.array.languages)[Language.SPANISH.ordinal()];
-                        break;
-                    case "it":
-                        language = res.getStringArray(R.array.languages)[Language.ITALIAN.ordinal()];
-                        break;
-                    default:
-                        Log.w(TAG, "Unknown language: " + langCode);
-                }
-            } else if (RSS.CATEGORY.equals(tagName)) {
+                keywords = cleanUp(parser.nextText());
+            else if (RSS.LANGUAGE.equals(tagName) && language == null)
+                // We need to two letter code here, because that's what the importer understands
+                language = parser.nextText().trim().substring(0, 2).toLowerCase(Locale.US);
+            else if (RSS.CATEGORY.equals(tagName)) {
                 String category = parser.getAttributeValue("", "text");
                 if (category == null || category.length() < 2)
                     category = parser.nextText();
 
                 try {
-                    category = category.replace("&amp;", "&").split("/")[0];
+                    category = cleanUp(category).replace("&amp;", "&").split("/")[0];
 
                     final Genre genre = Genre.forLabel(category);
                     categories.add(res.getStringArray(R.array.genres)[genre.ordinal()]);
@@ -206,6 +201,8 @@ public class SuggestionImporter extends InstrumentationTestCase {
                 }
             }
         }
+
+
     }
 
     private class JsonDummy {
@@ -226,9 +223,9 @@ public class SuggestionImporter extends InstrumentationTestCase {
         private String path;
 
         public JsonDummy(SuggestionImport si) {
-            this.title = si.getName().trim();
+            this.title = cleanUp(si.getName());
 
-            this.keywords = si.keywords == null || si.keywords.length() == 0 ? NO_VALUE : si.keywords.trim();
+            this.keywords = si.keywords == null || si.keywords.length() == 0 ? NO_VALUE : si.keywords;
             if (si.keywords != null && si.keywords.length() > 160)
                 Log.w(TAG, "Podcast " + title + " keywords are too long!");
 
@@ -241,8 +238,18 @@ public class SuggestionImporter extends InstrumentationTestCase {
             this.site = si.link != null && si.link.length() > 5 ?
                     si.link.endsWith("/") ? si.link.substring(0, si.link.length() - 1) : si.link : NO_VALUE;
 
-            this.description = si.getDescription().trim();
+            if (si.getDescription() == null)
+                this.description = si.summary;
+            else if (si.summary == null)
+                this.description = si.getDescription();
+            else
+                this.description = si.getDescription().length() > si.summary.length() ?
+                        si.getDescription() : si.summary;
+
             this.language = si.language;
+            if ("pt".equalsIgnoreCase(language))
+                this.language = "pt-br"; // Drupal needs this
+
             this.category = si.categories.toArray();
             if (category.length == 0)
                 Log.w(TAG, "Podcast " + title + " has no category");
@@ -256,11 +263,22 @@ public class SuggestionImporter extends InstrumentationTestCase {
             } catch (Throwable th) {
                 Log.w(TAG, "Cannot get media type from episodes for " + title);
             }
+
             this.explicit = si.isExplicit() ? "Yes" : "No";
-            this.path = EpisodeDownloadManager.sanitizeAsFilename(title).replace(" ", "-").replace("%", "");
+
+            this.path = cleanUpAsPath(title);
             if (path.length() < 5)
                 Log.w(TAG, "Podcast " + title + " has short path:" + path);
+
             this.added = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(new Date());
+        }
+
+        private String cleanUpAsPath(String text) {
+            text = Normalizer.normalize(text, Normalizer.Form.NFD)
+                    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+            return EpisodeDownloadManager.sanitizeAsFilename(text)
+                    .replace("-", " ").replaceAll(" +", " ").replace(" ", "-").replace("%", "");
         }
     }
 }
