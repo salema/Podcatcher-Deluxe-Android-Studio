@@ -33,7 +33,8 @@ import java.util.List;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 
 /**
- * Show fullscreen video activity. Uses the MX Player Pro.
+ * Show fullscreen video activity. Uses the MX Player Pro, see
+ * https://sites.google.com/site/mxvpen/api
  */
 public class MxPlayerFullscreenVideoActivity extends BaseActivity {
 
@@ -54,6 +55,8 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
     public static final String EXTRA_POSITION = "position";
     public static final String EXTRA_RETURN_RESULT = "return_result";
     public static final String EXTRA_HEADERS = "headers";
+    public static final String EXTRA_END_BY = "end_by";
+    public static final String EXTRA_PLAYBACK_COMPLETION = "playback_completion";
 
     /**
      * Test whether the MX Player Pro is available for video playback.
@@ -101,7 +104,11 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            final boolean playbackCompleted = !data.hasExtra(EXTRA_POSITION);
+            // Depending on the version of MX Player installed,
+            // there are different ways to determine if playback completed
+            final boolean playbackCompleted = data.hasExtra(EXTRA_END_BY) ? // This should be present for version >= 1.7.19
+                    data.getStringExtra(EXTRA_END_BY).equals(EXTRA_PLAYBACK_COMPLETION) :
+                    !data.hasExtra(EXTRA_POSITION); // This is a good approximation
 
             if (playbackCompleted) {
                 episodeManager.setState(selection.getEpisode(), true);
@@ -110,7 +117,7 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
                 if (PreferenceManager.getDefaultSharedPreferences(this)
                         .getBoolean(SettingsActivity.KEY_AUTO_DELETE, false))
                     episodeManager.deleteDownload(selection.getEpisode());
-            } else
+            } else if (data.hasExtra(EXTRA_POSITION))
                 episodeManager.setResumeAt(selection.getEpisode(), data.getIntExtra(EXTRA_POSITION, 0));
         }
 
