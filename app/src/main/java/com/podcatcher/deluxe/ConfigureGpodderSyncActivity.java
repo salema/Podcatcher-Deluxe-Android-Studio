@@ -3,7 +3,7 @@
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -18,6 +18,7 @@
 package com.podcatcher.deluxe;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.dragontek.mygpoclient.api.MygPodderClient;
@@ -61,36 +62,41 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
         preferences.edit().putString(GpodderSyncController.DEVICE_ID_KEY, deviceId).apply();
 
         // We also need to check the user/pass combination, this has to be
-        // done off the main thread because we need to connect to the
-        // gpodder.net service.
-        // Show progress bar in dialog while checking
+        // done off the main thread because we need to connect to the gpodder.net service.
         configFragment.showProgress(true, false);
         // Create gpodder.net client and run auth check off-thread
-        final MygPodderClient client = new MygPodderClient(username, password);
-        new Thread() {
-            public void run() {
-                if (client.authenticate(username, password)) {
-                    // All fine, store the credentials
-                    preferences.edit()
-                            .putString(GpodderSyncController.USERNAME_KEY, username)
-                            .putString(GpodderSyncController.PASSWORD_KEY, password).apply();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                final MygPodderClient client = new MygPodderClient(username, password);
+                if (!client.authenticate(username, password))
+                    cancel(true);
 
-                    // Reset the current sync controller (if any)
-                    syncManager.setSyncMode(ControllerImpl.GPODDER, null);
-
-                    // Close dialog and end activity
-                    configFragment.dismiss();
-                    setResult(RESULT_OK);
-                    finish();
-                } else
-                    // Hide progress bar in dialog and show error
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            configFragment.showProgress(false, true);
-                        }
-                    });
+                return null;
             }
-        }.start();
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                // All fine, store the credentials
+                preferences.edit()
+                        .putString(GpodderSyncController.USERNAME_KEY, username)
+                        .putString(GpodderSyncController.PASSWORD_KEY, password).apply();
+
+                // Reset the current sync controller (if any)
+                syncManager.setSyncMode(ControllerImpl.GPODDER, null);
+
+                // Close dialog and end activity
+                configFragment.dismiss();
+                setResult(RESULT_OK);
+                finish();
+            }
+
+            @Override
+            protected void onCancelled(Void aVoid) {
+                // Auth failed, show error message
+                configFragment.showProgress(false, true);
+            }
+        }.execute((Void) null);
     }
 
     @Override
