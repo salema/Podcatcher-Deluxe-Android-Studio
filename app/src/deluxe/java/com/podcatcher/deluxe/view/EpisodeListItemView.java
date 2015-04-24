@@ -164,23 +164,14 @@ public class EpisodeListItemView extends PodcatcherListItemView {
         String result = episode.getName();
 
         if (result != null && !result.trim().isEmpty()) {
-            final String podcastName = episode.getPodcast().getName();
-
-            final String redundantPrefix1 = podcastName + ": ";
-            final String redundantPrefix2 = podcastName + " - ";
-            final String redundantPrefix3 = podcastName + ", ";
-            final String redundantPrefix4 = podcastName + " ";
-
             // Remove podcast name from the episode title because it takes too
             // much space and is redundant anyway
-            if (result.startsWith(redundantPrefix1))
-                result = result.substring(redundantPrefix1.length(), result.length());
-            else if (result.startsWith(redundantPrefix2))
-                result = result.substring(redundantPrefix2.length(), result.length());
-            else if (result.startsWith(redundantPrefix3))
-                result = result.substring(redundantPrefix3.length(), result.length());
-            else if (result.startsWith(redundantPrefix4))
-                result = result.substring(redundantPrefix4.length(), result.length());
+            final String podcastName = episode.getPodcast().getName();
+            if (result.startsWith(podcastName))
+                result = result.substring(podcastName.length(), result.length());
+
+            // Also remove all non-alphanumeric stuff at the start
+            result = result.replaceFirst("^(\\s|,|:|-)+", "").trim();
         } else
             result = NO_TITLE;
 
