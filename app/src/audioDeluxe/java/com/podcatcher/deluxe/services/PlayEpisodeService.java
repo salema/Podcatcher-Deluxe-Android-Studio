@@ -475,7 +475,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     }
 
     /**
-     * Rewind the playback 10 secs.
+     * Rewind the playback by XX secs.
      */
     public void rewind() {
         final int newPosition = getCurrentPosition() - SKIP_AMOUNT_REW;
@@ -483,13 +483,11 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     }
 
     /**
-     * Fast forward 10 secs.
+     * Fast forward XX secs.
      */
     public void fastForward() {
         final int newPosition = getCurrentPosition() + SKIP_AMOUNT_FF;
-
-        if (newPosition < getDuration())
-            seekTo(newPosition);
+        seekTo(newPosition < getDuration() ? newPosition : getDuration());
     }
 
     /**
