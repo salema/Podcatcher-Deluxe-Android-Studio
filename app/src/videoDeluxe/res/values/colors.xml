@@ -19,5 +19,4 @@
 <resources>
     <color name="theme_light">@android:color/holo_red_light</color>
     <color name="theme_dark">@android:color/holo_red_dark</color>
-    <color name="featured_suggestion">#ffafaf</color>
 </resources>

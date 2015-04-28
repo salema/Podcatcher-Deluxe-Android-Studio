@@ -21,7 +21,7 @@ import android.content.Context;
 
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Language;
-import com.podcatcher.deluxe.view.fragments.SuggestionFragment;
+import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment;
 
 /**
  * Adapter for the language spinner in the suggestion dialog.
@@ -47,7 +47,7 @@ public class LanguageSpinnerAdapter extends SuggestionFilterSpinnerAdapter {
     @Override
     public Object getItem(int position) {
         if (position == 0)
-            return SuggestionFragment.FILTER_WILDCARD;
+            return AddSuggestionFragment.FILTER_WILDCARD;
         else
             return values.values().toArray()[position - 1];
     }

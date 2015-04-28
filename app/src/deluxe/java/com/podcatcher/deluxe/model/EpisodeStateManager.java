@@ -244,7 +244,7 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
                     // Clean all state meta data information for episodes of the deleted feed
                     for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                         // Find metadata records with matching podcast
-                        if (podcast.getUrl().equals(entry.getValue().podcastUrl)
+                        if (podcast.equalByUrl(entry.getValue().podcastUrl)
                                 && entry.getValue().hasOnlyStateData()) {
                             // This is actually enough since the task storing
                             // the metadata will clean empty records
@@ -281,12 +281,12 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
                     // longer present in the podcast feed
                     for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                         // Podcast matches
-                        if (podcast.getUrl().equals(entry.getValue().podcastUrl)) {
+                        if (podcast.equalByUrl(entry.getValue().podcastUrl)) {
                             boolean stillInPodcast = false;
 
                             // Check whether the episode is still there
                             for (Episode episode : podcast.getEpisodes())
-                                if (episode.getMediaUrl().equals(entry.getKey()))
+                                if (episode.equalByUrl(entry.getKey()))
                                     stillInPodcast = true;
 
                             // If it is not there and the episode metadata does

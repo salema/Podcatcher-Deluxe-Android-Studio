@@ -51,7 +51,9 @@
         <item quantity="other">%d podcast</item>
     </plurals>
     <string name="podcast_add_title">Nuovo podcast</string>
+    <string name="podcast_add_by_url">Aggiungi un Podcast-URL</string>
     <string name="podcast_add_button">Aggiungi</string>
+    <string name="podcast_added">Podcast \"%s\" aggiunto.</string>
     <string name="podcast_enter_url_here">Copia l\'inidirizzo del podcast qui</string>
     <string name="podcast_load_error">Impossibile caricare il podcast</string>
     <string name="podcast_load_error_access_denied">Impossibile caricare il podcast perché è stato negato l\'accesso al feed.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">File OPML salvato</string>
     <string name="opml_export_success_at">File OPML salvato in\n%s</string>
     <string name="opml_export_failed">Esportazione OPML fallita</string>
-    <string name="suggestions">Suggerimenti</string>
     <string name="suggested_podcasts">Podcast suggeriti</string>
-    <string name="suggestion_listen">Ascolta</string>
-    <string name="suggestion_watch">Guarda</string>
+    <string name="suggestion_featured">Favoriti</string>
+    <string name="suggestion_new">Newcomers</string>
+    <string name="suggestion_explicit">Esplicito</string>
     <string name="suggestion_confirm_explicit">Questo podcast è segnalato come esplicito. Sei sicuro di volerlo aggiungere alla tua lista?</string>
+    <string name="suggestion_file_size">%s per episodio</string>
     <string name="suggestions_none">Nessun suggerimento, cambia i tuoi filtri.</string>
     <string name="suggestions_reset_filters">Resetta filtri</string>
     <string name="suggestions_load_error">Impossibile caricare i suggerimenti, controlla la tua connessione ad internet!</string>
     <string name="suggestions_send">Suggerisci podcast</string>
+    <string name="suggestions_search">Cerca dei feed</string>
     <string name="sync_dropbox_unlink_title">Scollega Dropbox</string>
     <string name="sync_dropbox_unlink_message">Vuoi davvero scollegare il tuo account Dropbox da questa app? Anche se questa operazione chiuderà la sincronizzazione a Dropbox adesso, puoi sempre ricollegare quest\' app dopo.</string>
     <string name="sync_dropbox_unlink_button">Scollega</string>

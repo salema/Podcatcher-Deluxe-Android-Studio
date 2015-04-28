@@ -39,6 +39,7 @@ import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
+import com.podcatcher.deluxe.model.types.Suggestion;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -479,21 +480,34 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     }
 
     /**
+     * Check whether a given suggestion is already in the list of podcasts.
+     * This is different from {@link #contains(Podcast)} because a suggestion
+     * can wrap multiple feeds (i.e. URLs).
+     *
+     * @param suggestion Podcast suggestion to check.
+     * @return <code>true</code> iff <em>any</em> of the suggestion's feeds is present in list.
+     */
+    public boolean contains(Suggestion suggestion) {
+        for (String feedUrl : suggestion.getFeeds().values())
+            if (findPodcastForUrl(feedUrl) != null)
+                return true;
+
+        return false;
+    }
+
+    /**
      * Find the podcast object for given URL.
      *
      * @param url URL of podcast to look up.
      * @return The podcast object, or <code>null</code> if not found.
      */
     public Podcast findPodcastForUrl(String url) {
-        // Make sure search only runs once the podcast list is actually
-        // available.
-        if (podcastList != null) {
-
+        // Make sure search only runs once the podcast list is actually available.
+        if (podcastList != null && url != null)
             // Find the podcast object
             for (Podcast podcast : podcastList)
-                if (podcast.getUrl().equals(url))
+                if (podcast.equalByUrl(url))
                     return podcast;
-        }
 
         return null;
     }
@@ -506,15 +520,13 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @return The episode object, or <code>null</code> if not found.
      */
     public Episode findEpisodeForUrl(String url) {
-        // Make sure search only runs once the podcast list is actually
-        // available.
-        if (podcastList != null && url != null) {
+        // Make sure search only runs once the podcast list is actually available.
+        if (podcastList != null && url != null)
             // Go try find the episode
             for (Podcast podcast : podcastList)
                 for (Episode episode : podcast.getEpisodes())
-                    if (episode.getMediaUrl().equals(url))
+                    if (episode.equalByUrl(url))
                         return episode;
-        }
 
         return null;
     }
@@ -528,19 +540,17 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * @return The episode object, or <code>null</code> if not found.
      */
     public Episode findEpisodeForUrl(String episodeUrl, String podcastUrl) {
-        // Make sure search only runs once the podcast list is actually
-        // available.
+        // Make sure search only runs once the podcast list is actually available.
         if (podcastList != null && episodeUrl != null) {
             // No podcast info given, use regular method
             if (podcastUrl == null)
                 return findEpisodeForUrl(episodeUrl);
             else {
                 final Podcast podcast = findPodcastForUrl(podcastUrl);
-
                 // Go try find the episode
                 if (podcast != null)
                     for (Episode episode : podcast.getEpisodes())
-                        if (episode.getMediaUrl().equals(episodeUrl))
+                        if (episode.equalByUrl(episodeUrl))
                             return episode;
             }
         }

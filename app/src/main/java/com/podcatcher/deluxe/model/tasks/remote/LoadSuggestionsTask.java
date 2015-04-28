@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.model.tasks.remote;
 import android.content.Context;
 import android.util.Log;
 
+import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.tags.JSON;
 import com.podcatcher.deluxe.model.types.Genre;
@@ -32,10 +33,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,7 +97,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * Flag to indicate the max age that would trigger re-load.
      */
-    private int maxAge = (int) TimeUnit.DAYS.toMinutes(3);
+    private int maxAge = (int) TimeUnit.DAYS.toMinutes(1);
 
     /**
      * Create new task.
@@ -115,39 +118,39 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         // 1. Load the file from the cache or the Internet
         try {
             publishProgress(Progress.CONNECT);
-            // 1.1 This the simple case where we have the local version and
-            // it is fresh enough. Use that one.
-            if (isCachedLocally() && getCachedLogoAge() <= maxAge)
-                suggestions = restoreSuggestionsFromFileCache();
-                // 1.2 If that is not the case, we need to go over the air.
-            else {
-                // We store a cached version ourselves
-                // useCaches = false;
-                suggestions = loadFile(new URL(SOURCE));
 
+            final int age = getCachedFileAge();
+            if (age >= 0 && age <= maxAge)
+                // 1.1 This the simple case where we have the local version and
+                // it is fresh enough. Use that one.
+                suggestions = restoreSuggestionsFromFileCache();
+            else {
+                // 1.2 If that is not the case, we need to go over the air and
+                // store a cached version ourselves (useCaches = false)
+                suggestions = loadFile(new URL(SOURCE));
                 storeSuggestionsToFileCache(suggestions);
             }
-        } catch (Throwable throwable) {
-            // Use cached version even if it is stale
-            if (isCachedLocally())
+        } catch (IOException ioe1) {
+            try {
+                // 1.3 Use cached version even if it is stale
+                suggestions = restoreSuggestionsFromFileCache();
+            } catch (IOException ioe2) {
                 try {
-                    suggestions = restoreSuggestionsFromFileCache();
-                } catch (IOException ioe) {
-                    cancel(true);
-                    return null; // Nothing more we could do here
-                }
-            else {
-                Log.d(TAG, "Load failed for podcast suggestions file", throwable);
+                    // 1.4 Finally fall back to the version from getResources()
+                    suggestions = restoreSuggestionsFromResources();
+                } catch (IOException ioe3) {
+                    Log.d(TAG, "Loading podcast suggestions failed", ioe3);
 
-                cancel(true);
-                return null;
+                    cancel(true);
+                    return null;
+                }
             }
         }
 
         // 2. Parse the result
+        publishProgress(Progress.PARSE);
         try {
             // 2.1 Get result as a document
-            publishProgress(Progress.PARSE);
             final JSONArray completeJson = new JSONArray(new String(suggestions, SUGGESTIONS_ENCODING));
             if (isCancelled())
                 return null;
@@ -159,7 +162,6 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
 
             // 2.3 Sort the result
             Collections.sort(result);
-            publishProgress(Progress.DONE);
         } catch (Exception ex) {
             Log.d(TAG, "Parse failed for podcast suggestions", ex);
 
@@ -167,6 +169,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
             return null;
         }
 
+        publishProgress(Progress.DONE);
         return result;
     }
 
@@ -220,8 +223,8 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         Suggestion suggestion = null;
 
         try {
-            suggestion = new Suggestion(json.getString(JSON.TITLE).trim(),
-                    json.getString(JSON.FEED).split(JSON_VALUE_DELIMITER)[0]);
+            final String[] feeds = json.getString(JSON.FEED).split(JSON_VALUE_DELIMITER);
+            suggestion = new Suggestion(json.getString(JSON.TITLE).trim(), feeds[0]);
             suggestion.setDescription(json.getString(JSON.DESCRIPTION).trim());
             suggestion.setLanguages(Language.valueOfJson(json.getString(JSON.LANGUAGE), JSON_VALUE_DELIMITER));
             suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON_VALUE_DELIMITER));
@@ -229,14 +232,22 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
             suggestion.setExplicit(EXPLICIT_POSITIVE_STRING.equals(json.getString(JSON.EXPLICIT).toLowerCase(Locale.US).trim()));
             suggestion.setFeatured(json.getInt(JSON.VOTES) >= 10);
             suggestion.setNew(json.has(JSON.DATE_ADDED) && isRecentDate(json.getString(JSON.DATE_ADDED)));
-            // TODO keywords, feeds, feed labels, logo, website
+            suggestion.setLogoUrl(json.getString(JSON.LOGO));
+            suggestion.setKeywords(json.has(JSON.KEYWORDS) ? json.getString(JSON.KEYWORDS) : null);
+            addKeywordsForStatus(suggestion);
+
+            final String[] labels = json.getString(JSON.FEED_LABEL).split(JSON_VALUE_DELIMITER);
+            for (int index = 0; index < labels.length; index++)
+                suggestion.addFeed(labels[index], feeds[index]);
         } catch (JSONException e) {
             Log.d(TAG, "JSON parsing failed for: " + suggestion, e);
-
             return null;
-        } catch (IllegalArgumentException e) {
-            Log.d(TAG, "Enum value missing for: " + suggestion, e);
-
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.d(TAG, "Feed and label counts do not match for: " + suggestion, e);
+            return null;
+        } catch (RuntimeException e) {
+            // We do not want one suggestion to make the whole process fail...
+            Log.d(TAG, "Something went wrong parsing suggestion: " + suggestion, e);
             return null;
         }
 
@@ -251,6 +262,19 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         }
     }
 
+    private void addKeywordsForStatus(Suggestion suggestion) {
+        final String delimiter = ", ";
+        String extraKeywords = suggestion.isFeatured() ?
+                context.getString(R.string.suggestion_featured) + delimiter : "";
+        extraKeywords = extraKeywords + (suggestion.isNew() ?
+                context.getString(R.string.suggestion_new) + delimiter : "");
+        extraKeywords = extraKeywords + (suggestion.isExplicit() ?
+                context.getString(R.string.suggestion_explicit) + delimiter : "");
+
+        suggestion.setKeywords(suggestion.getKeywords() == null ?
+                extraKeywords : suggestion.getKeywords() + delimiter + extraKeywords);
+    }
+
     private File getSuggestionsCacheFile() {
         // Create the complete path leading to where we expect the cached file
         return new File(context.getCacheDir(), LOCAL_SUGGESTIONS_FILE);
@@ -260,7 +284,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         return getSuggestionsCacheFile().exists();
     }
 
-    private int getCachedLogoAge() {
+    private int getCachedFileAge() {
         if (isCachedLocally())
             return (int) ((new Date().getTime() - getSuggestionsCacheFile().lastModified())
                     / TimeUnit.MINUTES.toMillis(1)); // Calculate to minutes
@@ -269,24 +293,45 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     }
 
     private byte[] restoreSuggestionsFromFileCache() throws IOException {
-        final File cachedFile = getSuggestionsCacheFile();
-        final byte[] result = new byte[(int) cachedFile.length()];
+        final FileInputStream input = new FileInputStream(getSuggestionsCacheFile());
 
-        FileInputStream input = null;
         try {
-            input = new FileInputStream(cachedFile);
-            // noinspection ResultOfMethodCallIgnored
-            input.read(result);
+            return readFileToByteArray(input);
         } finally {
             try {
-                if (input != null)
-                    input.close();
+                input.close();
             } catch (Throwable e) {
                 // Nothing more we could do here
             }
         }
+    }
 
-        return result;
+    private byte[] restoreSuggestionsFromResources() throws IOException {
+        final InputStream input = context.getResources().openRawResource(R.raw.podcast_suggestions);
+
+        try {
+            return readFileToByteArray(input);
+        } finally {
+            try {
+                input.close();
+            } catch (Throwable e) {
+                // Nothing more we could do here
+            }
+        }
+    }
+
+    private byte[] readFileToByteArray(InputStream stream) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int nRead;
+        byte[] data = new byte[16384];
+
+        while ((nRead = stream.read(data, 0, data.length)) != -1)
+            buffer.write(data, 0, nRead);
+
+        buffer.flush();
+
+        return buffer.toByteArray();
     }
 
     private void storeSuggestionsToFileCache(byte[] suggestions) {
@@ -300,8 +345,8 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
             out = new FileOutputStream(getSuggestionsCacheFile());
             out.write(suggestions);
             out.flush();
-        } catch (Throwable th) {
-            // pass
+        } catch (IOException ioe) {
+            Log.d(TAG, "Storing podcast suggestions to cache failed", ioe);
         } finally {
             try {
                 if (out != null)

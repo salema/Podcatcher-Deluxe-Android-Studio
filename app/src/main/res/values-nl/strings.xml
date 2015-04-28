@@ -51,7 +51,9 @@
         <item quantity="other">%d podcasts</item>
     </plurals>
     <string name="podcast_add_title">Nieuwe podcast</string>
+    <string name="podcast_add_by_url">Podcast toevoegen bij URL</string>
     <string name="podcast_add_button">Toevoegen</string>
+    <string name="podcast_added">Podcast \"%s\" toegevoegd.</string>
     <string name="podcast_enter_url_here">Kopieer podcast adres hier</string>
     <string name="podcast_load_error">Laden van podcast is mislukt!</string>
     <string name="podcast_load_error_access_denied">Laden van podcast is mislukt omdat de toegang tot de feed is geweigerd.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">OPML bestand opgeslagen</string>
     <string name="opml_export_success_at">OPML bestand opgeslagen in\n%s</string>
     <string name="opml_export_failed">OPML export mislukt</string>
-    <string name="suggestions">Suggesties</string>
     <string name="suggested_podcasts">Voorgestelde podcasts</string>
-    <string name="suggestion_listen">Beluisteren</string>
-    <string name="suggestion_watch">Bekijken</string>
+    <string name="suggestion_featured">Favorieten</string>
+    <string name="suggestion_new">Nieuwkomers</string>
+    <string name="suggestion_explicit">Expliciete</string>
     <string name="suggestion_confirm_explicit">Deze podcast bevat expliciete content. Weet u zeker dat u deze wilt toevoegen?</string>
+    <string name="suggestion_file_size">%s per aflevering</string>
     <string name="suggestions_none">Geen suggesties. Pas uw filters aan alstublieft</string>
     <string name="suggestions_reset_filters">Reset filters</string>
     <string name="suggestions_load_error">Suggesties konden niet worden geladen. Check alstublieft uw internetverbinding!</string>
     <string name="suggestions_send">Geef podcast suggesties</string>
+    <string name="suggestions_search">Feeds zoeken</string>
     <string name="sync_dropbox_unlink_title">Ontkoppel Dropbox</string>
     <string name="sync_dropbox_unlink_message">Wilt u echt uw Dropbox account ontkoppelen van deze app? Hoewel dit alle synchronisaties via Dropbox voor nu zal beeindigen, kunt u dit herstellen door deze app later weer aan Dropbox te koppelen.</string>
     <string name="sync_dropbox_unlink_button">Ontkoppel</string>

@@ -36,11 +36,11 @@ import com.podcatcher.deluxe.R;
 /**
  * A confirmation dialog for the user to make sure he/she really wants the
  * Dropbox sync to be unlinked.
- * <p/>
- * <b>Register call-back:</b> The fragment will use the activity it is part of
+ *
+ * <p><b>Register call-back:</b> The fragment will use the activity it is part of
  * as its listener. To make this work, the activity needs to implement
  * {@link ConfirmUnlinkDropboxDialogListener}.
- * <p/>
+ * </p>
  */
 public class ConfirmUnlinkDropboxFragment extends DialogFragment {
 
@@ -123,6 +123,6 @@ public class ConfirmUnlinkDropboxFragment extends DialogFragment {
         /**
          * The user confirmed the unlink.
          */
-        public void onConfirmUnlink();
+        void onConfirmUnlink();
     }
 }

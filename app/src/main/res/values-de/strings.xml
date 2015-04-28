@@ -51,7 +51,9 @@
         <item quantity="other">%d Podcasts</item>
     </plurals>
     <string name="podcast_add_title">Neuer Podcast</string>
+    <string name="podcast_add_by_url">Podcast per URL hinzufügen</string>
     <string name="podcast_add_button">Hinzufügen</string>
+    <string name="podcast_added">Podcast \"%s\" hinzugefügt.</string>
     <string name="podcast_enter_url_here">Podcast-Adresse hier einfügen</string>
     <string name="podcast_load_error">Der Podcast kann nicht geladen werden!</string>
     <string name="podcast_load_error_access_denied">Der Podcast kann nicht geladen werden, der Zugriff wurde verweigert.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">OPML-Datei gespeichert</string>
     <string name="opml_export_success_at">OPML-Datei gespeichert unter\n%s</string>
     <string name="opml_export_failed">OPML-Export fehlgeschlagen</string>
-    <string name="suggestions">Vorschläge</string>
     <string name="suggested_podcasts">Empfohlene Podcasts</string>
-    <string name="suggestion_listen">Anhören</string>
-    <string name="suggestion_watch">Anschauen</string>
+    <string name="suggestion_featured">Favoriten</string>
+    <string name="suggestion_new">Neueinsteiger</string>
+    <string name="suggestion_explicit">Explizit</string>
     <string name="suggestion_confirm_explicit">Dieser Podcast hat Inhalte, die als nicht jugendfrei markiert sind. Wollen Sie ihn trotzdem hinzufügen?</string>
+    <string name="suggestion_file_size">%s pro Episode</string>
     <string name="suggestions_none">Keine Empfehlungen, bitte ändern Sie Ihre Filter.</string>
     <string name="suggestions_reset_filters">Filter zurücksetzen</string>
     <string name="suggestions_load_error">Empfehlungen können nicht geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
     <string name="suggestions_send">Podcast empfehlen</string>
+    <string name="suggestions_search">Podcast suchen</string>
     <string name="sync_dropbox_unlink_title">Dropbox abmelden</string>
     <string name="sync_dropbox_unlink_message">Wollen Sie die App wirklich von Ihrer Dropbox abmelden? Diese Aktion beendet die Synchronisation, kann aber später wieder zurückgenommen werden.</string>
     <string name="sync_dropbox_unlink_button">Abmelden</string>

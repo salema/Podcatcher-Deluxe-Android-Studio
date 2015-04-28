@@ -51,7 +51,9 @@
         <item quantity="other">%d podcasts</item>
     </plurals>
     <string name="podcast_add_title">Nouveau podcast</string>
+    <string name="podcast_add_by_url">Ajouter podcast par URL</string>
     <string name="podcast_add_button">Ajouter</string>
+    <string name="podcast_added">Le flux \"%s\" a été ajouté.</string>
     <string name="podcast_enter_url_here">Insérez l’URL du podcast ici</string>
     <string name="podcast_load_error">Impossible de charger le podcast.</string>
     <string name="podcast_load_error_access_denied">Le chargement du podcast a échoué car l’accès au flux a été refusé.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">Fichier OPML est enregistré</string>
     <string name="opml_export_success_at">Fichier OPML est enregistré sous\n%s</string>
     <string name="opml_export_failed">L’export a échoué</string>
-    <string name="suggestions">Suggestions</string>
     <string name="suggested_podcasts">Podcasts suggérés</string>
-    <string name="suggestion_listen">Écouter</string>
-    <string name="suggestion_watch">Regarder</string>
+    <string name="suggestion_featured">Favorites</string>
+    <string name="suggestion_new">Nouveaux</string>
+    <string name="suggestion_explicit">Explicite</string>
     <string name="suggestion_confirm_explicit">Ce podcast présente du contenu réservé aux adultes. Êtes-vous sûr de vouloir l’ajouter à votre liste de podcasts?</string>
+    <string name="suggestion_file_size">%s par épisode</string>
     <string name="suggestions_none">Aucune suggestion. Veuillez modifier les critères de filtre.</string>
     <string name="suggestions_reset_filters">Réinitialiser les filtres</string>
     <string name="suggestions_load_error">Impossible de charger les suggestions. Vérifiez votre connexion Internet!</string>
     <string name="suggestions_send">Suggérer podcast</string>
+    <string name="suggestions_search">Chercher des flux</string>
     <string name="sync_dropbox_unlink_title">Se déconnecter de Dropbox</string>
     <string name="sync_dropbox_unlink_message">Êtes-vous sûr de vouloir déconnecter cette app de votre compte Dropbox? Même si avec cette opération la synchronisation avec Dropbox est terminée pour le moment, vous pouvez toujours vous connecter à l’app plus tard. </string>
     <string name="sync_dropbox_unlink_button">Se déconnecter</string>

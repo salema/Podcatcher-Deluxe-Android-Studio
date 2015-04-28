@@ -39,7 +39,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.podcatcher.deluxe.AddPodcastActivity;
+import com.podcatcher.deluxe.AddSuggestionActivity;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.PodcastListAdapter;
 import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
@@ -109,7 +109,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
     /**
      * The options available for the logo view
      */
-    public static enum LogoViewMode {
+    public enum LogoViewMode {
         /**
          * Do not show the podcast logo
          */
@@ -163,7 +163,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Get and configure the swipe-to-refresh layout
-        refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.podcast_list_swipe_refresh));
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.podcast_list_swipe_refresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -183,7 +183,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
 
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(getActivity(), AddPodcastActivity.class));
+                        startActivity(new Intent(getActivity(), AddSuggestionActivity.class));
                     }
                 });
             }
@@ -236,7 +236,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.podcast_add_menuitem:
-                startActivity(new Intent(getActivity(), AddPodcastActivity.class));
+                startActivity(new Intent(getActivity(), AddSuggestionActivity.class));
 
                 return true;
             default:
@@ -386,7 +386,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
     }
 
     /**
-     * Notify the podcast list that the refresh action trigger by swipe down is done.
+     * Notify the podcast list that the refresh action triggered by swipe down has completed.
      */
     public void alertRefreshComplete() {
         if (viewCreated)

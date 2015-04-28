@@ -51,7 +51,9 @@
         <item quantity="other">%d podcast</item>
     </plurals>
     <string name="podcast_add_title">Yeni podcast</string>
+    <string name="podcast_add_by_url">URL ile cep yayını ekle</string>
     <string name="podcast_add_button">Ekle</string>
+    <string name="podcast_added">\"%s\" beslemesi eklendi.</string>
     <string name="podcast_enter_url_here">Burada podcast adresini kopyala</string>
     <string name="podcast_load_error">Podcast yüklenemedi!</string>
     <string name="podcast_load_error_access_denied">Podcast beslemesine erişim engellendiğinden yüklenemedi.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">OPML dosyası alındı</string>
     <string name="opml_export_success_at">OPML dosyası\n%s</string>
     <string name="opml_export_failed">OPML çıkartma hatalı</string>
-    <string name="suggestions">Öneriler</string>
     <string name="suggested_podcasts">Önerilen podcastler</string>
-    <string name="suggestion_listen">Dinle</string>
-    <string name="suggestion_watch">İzle</string>
+    <string name="suggestion_featured">Sık</string>
+    <string name="suggestion_new">Newcomers</string>
+    <string name="suggestion_explicit">Açık</string>
     <string name="suggestion_confirm_explicit">Bu podcast açıkça işaretlenir. Podcast listenize eklemek istediğinizden emin misiniz?</string>
+    <string name="suggestion_file_size">Bölüm başına %s</string>
     <string name="suggestions_none">Öneri yok, filtreni değiştir.</string>
     <string name="suggestions_reset_filters">Filtreyi sıfırla</string>
     <string name="suggestions_load_error">Öneriler yüklenemedi, internet bağlantısını kontrol edin!</string>
     <string name="suggestions_send">Podcast öneri</string>
+    <string name="suggestions_search">Besleme Ara</string>
     <string name="sync_dropbox_unlink_title">Dropbox iptal et</string>
     <string name="sync_dropbox_unlink_message">Dropbox hesabınızı uygulamadan kaldırmak istiyor musunuz? Bu işlem ile tüm senkronizasyonlar sona erecek, daha sonra tekrar ekleyip kullanabilirsiniz.</string>
     <string name="sync_dropbox_unlink_button">Ayır</string>

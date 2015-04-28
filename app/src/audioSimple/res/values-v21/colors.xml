@@ -19,5 +19,4 @@
 <resources>
     <color name="theme_light">#FFA726</color>
     <color name="theme_dark">#F57C00</color>
-    <color name="featured_suggestion">#FFB74D</color>
 </resources>

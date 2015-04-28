@@ -51,7 +51,9 @@
         <item quantity="other">%d podcaster</item>
     </plurals>
     <string name="podcast_add_title">Ny podcast</string>
+    <string name="podcast_add_by_url">Lägg till podcast via URL</string>
     <string name="podcast_add_button">Lägg till</string>
+    <string name="podcast_added">Flödet \"%s\" lades till.</string>
     <string name="podcast_enter_url_here">Klistra in podcastadress här</string>
     <string name="podcast_load_error">Podcasten kunde inte laddas!</string>
     <string name="podcast_load_error_access_denied">Podcasten kunde inte laddas eftersom åtkomst till strömmen nekades.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">OPML-fil lagrad</string>
     <string name="opml_export_success_at">OPML-fil lagrad på\n%s</string>
     <string name="opml_export_failed">OPML-export misslyckades</string>
-    <string name="suggestions">Förslag</string>
     <string name="suggested_podcasts">Föreslagna podcaster</string>
-    <string name="suggestion_listen">Lyssna</string>
-    <string name="suggestion_watch">Titta</string>
+    <string name="suggestion_featured">Favoriter</string>
+    <string name="suggestion_new">Nykomlingar</string>
+    <string name="suggestion_explicit">Explicit</string>
     <string name="suggestion_confirm_explicit">Den här podcasten har merkerats som explicit. Är du säker på att du vill lägga till den i din podcastlista?</string>
+    <string name="suggestion_file_size">%s per avsnitt</string>
     <string name="suggestions_none">Inga förslag, var god ändra dina filter.</string>
     <string name="suggestions_reset_filters">Återställ filter</string>
     <string name="suggestions_load_error">Förslag kunde inte laddas, kontrollera din internetanslutning!</string>
     <string name="suggestions_send">Föreslå podcast</string>
+    <string name="suggestions_search">Sök efter flöden</string>
     <string name="sync_dropbox_unlink_title">Koppla ifrån Dropbox</string>
     <string name="sync_dropbox_unlink_message">Vill du verkligen koppla ifrån ditt Dropbox-konto från den här applikationen? Även om det här kommer att stoppa all synkronisering via Dropbox kan du alltid ångra dig genom att återansluta till applikationen.</string>
     <string name="sync_dropbox_unlink_button">Koppla ifrån</string>

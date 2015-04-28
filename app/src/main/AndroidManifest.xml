@@ -123,7 +123,15 @@
             android:theme="@android:style/Theme.NoDisplay"/>
         <activity
             android:name="com.podcatcher.deluxe.AddSuggestionActivity"
-            android:theme="@android:style/Theme.NoDisplay"/>
+            android:label="@string/suggested_podcasts"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_suggestions"/>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.podcatcher.deluxe.RemovePodcastActivity"
             android:theme="@android:style/Theme.NoDisplay"/>

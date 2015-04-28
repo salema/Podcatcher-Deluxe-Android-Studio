@@ -18,8 +18,10 @@
 package com.podcatcher.deluxe;
 
 import android.app.DialogFragment;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -203,19 +205,13 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
     }
 
     @Override
-    public void onShowSuggestions() {
-        addPodcastFragment.dismiss();
-        finish();
-
-        startActivity(new Intent(this, AddSuggestionActivity.class));
-    }
-
-    @Override
-    public void onImportOpml() {
-        addPodcastFragment.dismiss();
-        finish();
-
-        startActivity(new Intent(this, ImportOpmlActivity.class));
+    public void onShowHelp() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(PODCATCHER_HELPSITE_ADD)));
+        } catch (ActivityNotFoundException e) {
+            // We are in a restricted profile without a browser, pass
+            showToast(getString(R.string.no_browser));
+        }
     }
 
     @Override
@@ -224,6 +220,6 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
     }
 
     private boolean isCurrentlyLoadingPodcast(Podcast podcast) {
-        return podcast != null && podcast.getUrl().equals(currentLoadUrl);
+        return podcast != null && podcast.equalByUrl(currentLoadUrl);
     }
 }

@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -36,11 +35,11 @@ import com.podcatcher.deluxe.R;
 /**
  * A confirmation dialog for the user to make sure he/she really wants an
  * explicit podcast to be added.
- * <p/>
- * <b>Register call-back:</b> The fragment will use the activity it is part of
+ *
+ * <p><b>Register call-back:</b> The fragment will use the activity it is part of
  * as its listener. To make this work, the activity needs to implement
  * {@link ConfirmExplicitSuggestionDialogListener}.
- * <p/>
+ * </p>
  */
 public class ConfirmExplicitSuggestionFragment extends DialogFragment {
 
@@ -120,16 +119,16 @@ public class ConfirmExplicitSuggestionFragment extends DialogFragment {
     /**
      * The call-back for listeners to implement
      */
-    public interface ConfirmExplicitSuggestionDialogListener extends OnCancelListener {
+    public interface ConfirmExplicitSuggestionDialogListener {
 
         /**
          * The user confirmed the addition.
          */
-        public void onConfirmExplicit();
+        void onConfirmExplicit();
 
         /**
          * The user cancelled the process.
          */
-        public void onCancelExplicit();
+        void onCancelExplicit();
     }
 }

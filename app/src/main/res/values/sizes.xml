@@ -24,11 +24,12 @@
     <dimen name="font_size_large">20sp</dimen>
     <dimen name="list_item_padding">4dp</dimen>
     <dimen name="episode_view_padding">4dp</dimen>
-    <dimen name="suggestion_add_padding">8dp</dimen>
     <dimen name="progress_bar_horizontal_height">6dp</dimen>
     <dimen name="podcast_list_shadow_padding">4dp</dimen>
     <dimen name="episode_list_shadow_padding">0dp</dimen>
     <dimen name="metadata_box_elevation">4dp</dimen>
-    <dimen name="logo_size">200dp</dimen>
+    <dimen name="notification_logo_size">200dp</dimen>
     <integer name="progress_bar_horizontal_weight">3</integer>
+    <integer name="suggestion_grid_columns">2</integer>
+    <integer name="suggestion_description_lines">3</integer>
 </resources>

@@ -17,6 +17,7 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
@@ -34,7 +35,8 @@
         android:id="@+id/add_podcast_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +44,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/suggestion_add_button"
+            android:id="@+id/podcast_add_help_button"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
@@ -51,11 +53,11 @@
             android:layout_marginRight="0dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/button_orange"
+            android:background="@drawable/button_blue"
             android:ellipsize="marquee"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@string/suggestions"
+            android:text="@string/help"
             android:textColor="@drawable/button_label"/>
 
         <Button
@@ -72,22 +74,4 @@
             android:text="@string/podcast_add_button"
             android:textColor="@drawable/button_label"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/import_opml_button"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/button_blue"
-        android:drawableLeft="@drawable/ic_menu_import"
-        android:ellipsize="marquee"
-        android:gravity="center"
-        android:paddingLeft="8dp"
-        android:paddingRight="40dp"
-        android:singleLine="true"
-        android:text="@string/opml_import"
-        android:textColor="@drawable/button_label"/>
 </LinearLayout>

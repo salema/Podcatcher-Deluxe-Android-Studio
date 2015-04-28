@@ -54,7 +54,7 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
     /**
      * The use caches flag set to the http connection before it is opened.
      */
-    protected boolean useCaches;
+    protected boolean useCaches = false;
 
     /**
      * The max stale cache control to set

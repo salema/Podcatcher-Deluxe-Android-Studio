@@ -18,6 +18,7 @@
 package com.podcatcher.deluxe.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -63,9 +64,11 @@ public abstract class SuggestionFilterSpinnerAdapter extends PodcatcherBaseAdapt
         TextView result;
 
         // Get the correct return view
-        if (dropDown)
+        if (dropDown) {
             result = (TextView) findReturnView(convertView, parent,
                     android.R.layout.simple_spinner_dropdown_item);
+            result.setBackgroundColor(Color.WHITE);
+        }
         else
             result = (TextView) findReturnView(convertView, parent,
                     android.R.layout.simple_spinner_item);

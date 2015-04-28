@@ -53,7 +53,9 @@
         <item quantity="other">%d подкастів</item>
     </plurals>
     <string name="podcast_add_title">Новий подкаст</string>
+    <string name="podcast_add_by_url">Додати подкаст за URL</string>
     <string name="podcast_add_button">Додати</string>
+    <string name="podcast_added">Потік \"%s\" додано.</string>
     <string name="podcast_enter_url_here">Вставте сюди посилання на подкаст</string>
     <string name="podcast_load_error">Не вдалося завантажити подкаст!</string>
     <string name="podcast_load_error_access_denied">Не вдалося завантажити подкаст. Немає доступу до новинної стрічки.</string>
@@ -118,15 +120,17 @@
     <string name="opml_export_success">OPML-файл збережено</string>
     <string name="opml_export_success_at">OPML-файл збережено за адресою\n%s</string>
     <string name="opml_export_failed">Не вдалося експортувати OPML-файл</string>
-    <string name="suggestions">Рекомендації</string>
     <string name="suggested_podcasts">Рекомендовані подкасти</string>
-    <string name="suggestion_listen">Слухати</string>
-    <string name="suggestion_watch">Дивитися</string>
+    <string name="suggestion_featured">Вибрані</string>
+    <string name="suggestion_new">Hовачки</string>
+    <string name="suggestion_explicit">Explicit</string>
     <string name="suggestion_confirm_explicit">Схоже, що у цьому подкасті є матеріали відвертого змісту. Ви впевнені, що хочете додати його до свого списку?</string>
+    <string name="suggestion_file_size">%s за епізод</string>
     <string name="suggestions_none">За вашим запитом рекомендації не знайдено. Будь ласка, спробуйте інші фільтри.</string>
     <string name="suggestions_reset_filters">Скасувати фільтри</string>
     <string name="suggestions_load_error">Не вдалося завантажити рекомендації. Будь ласка, перевірте підключення до Інтернету.</string>
     <string name="suggestions_send">Рекомендувати подкаст</string>
+    <string name="suggestions_search">Пошук каналів</string>
     <string name="sync_dropbox_unlink_title">Відв’язати Dropbox</string>
     <string name="sync_dropbox_unlink_message">Ви дійсно хочете відв’язати ваш акаунт у Dropbox від цієї програми? Це призупинить синхронізацію, доки ви наново не прив’яжете до програми цей або іншний акаунт Dropbox.</string>
     <string name="sync_dropbox_unlink_button">Відв’язати</string>

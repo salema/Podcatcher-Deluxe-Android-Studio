@@ -335,6 +335,19 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         return url != null && url.equals(another.url);
     }
 
+    /**
+     * Check whether the given url matches the podcast's feed URL. If it
+     * does, the podcast is considered to represent the feed at the given URL.
+     * This method takes into account URL normalization, so you should use it
+     * instead of {@link java.lang.String#equals(Object)} on {@link #getUrl()}.
+     *
+     * @param aUrl The URL to check.
+     * @return <code>true</code> iff matches
+     */
+    public boolean equalByUrl(String aUrl) {
+        return aUrl != null && this.url.equals(normalizeUrl(aUrl));
+    }
+
     @Override
     public int hashCode() {
         return 42 + (url == null ? 0 : url.hashCode());

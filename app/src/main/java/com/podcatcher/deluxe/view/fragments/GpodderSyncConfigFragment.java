@@ -46,11 +46,11 @@ import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
 /**
  * The gpodder.net user config dialog. Let's the user supply a name/password
  * combination and select a device id.
- * <p/>
- * <b>Register call-back:</b> The fragment will use the activity it is part of
+ *
+ * <p><b>Register call-back:</b> The fragment will use the activity it is part of
  * as its listener. To make this work, the activity needs to implement
  * {@link ConfigureGpodderSyncDialogListener}.
- * <p/>
+ * </p>
  */
 public class GpodderSyncConfigFragment extends DialogFragment {
 
@@ -271,6 +271,6 @@ public class GpodderSyncConfigFragment extends DialogFragment {
          * @param password Password entered.
          * @param deviceId Device ID to use for gpodder.net.
          */
-        public void onSubmitConfiguration(String username, String password, String deviceId);
+        void onSubmitConfiguration(String username, String password, String deviceId);
     }
 }

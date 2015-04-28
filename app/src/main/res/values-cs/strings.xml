@@ -52,7 +52,9 @@
         <item quantity="other">%d záznamů</item>
     </plurals>
     <string name="podcast_add_title">Nový záznam</string>
+    <string name="podcast_add_by_url">Přidat podcast pomocí URL</string>
     <string name="podcast_add_button">Přidat</string>
+    <string name="podcast_added">Zdroj \"%s\" přidán.</string>
     <string name="podcast_enter_url_here">Kopírovat adresu záznamu zde</string>
     <string name="podcast_load_error">Záznam se nepodařilo nahrát!</string>
     <string name="podcast_load_error_access_denied">Záznam se nepodařilo nahrát, protože přístup ke kanálu byl odepřen.</string>
@@ -113,15 +115,17 @@
     <string name="opml_export_success">Soubor OPML uložen</string>
     <string name="opml_export_success_at">Soubor OPML uložen v\n%s</string>
     <string name="opml_export_failed">Vyvedení OPML se nezdařilo</string>
-    <string name="suggestions">Návrhy</string>
     <string name="suggested_podcasts">Navržené záznamy</string>
-    <string name="suggestion_listen">Poslouchat</string>
-    <string name="suggestion_watch">Dívat se</string>
+    <string name="suggestion_featured">Oblíbené</string>
+    <string name="suggestion_new">Nováčci</string>
+    <string name="suggestion_explicit">Výslovný</string>
     <string name="suggestion_confirm_explicit">Tento záznam je označen jako výslovný. Opravdu jej chcete přidat do seznamu svých záznamů?</string>
+    <string name="suggestion_file_size">%s za díl</string>
     <string name="suggestions_none">Žádné návrhy. Změňte, prosím, své filtry.</string>
     <string name="suggestions_reset_filters">Nastavit filtry znovu</string>
     <string name="suggestions_load_error">Návrhy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
     <string name="suggestions_send">Odeslat návrh záznamu</string>
+    <string name="suggestions_search">Hledat kanály</string>
     <string name="sync_dropbox_unlink_title">Odpojit Dropbox</string>
     <string name="sync_dropbox_unlink_message">Opravdu chcete odpojit svůj účet u Dropboxu od této aplikace? I když to pro teď veškerou synchronizaci přes Dropbox, můžete to vrátit zpět opětovným připojením aplikace později.</string>
     <string name="sync_dropbox_unlink_button">Odpojit</string>

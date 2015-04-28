@@ -31,5 +31,5 @@
     <color name="button_label_disabled">@android:color/darker_gray</color>
     <color name="text_error">@android:color/holo_red_dark</color>
     <color name="text_secondary">@android:color/darker_gray</color>
-    <color name="divider">#ddd</color>
+    <color name="divider">#FFDDDDDD</color>
 </resources>

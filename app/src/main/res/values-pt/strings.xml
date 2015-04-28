@@ -51,7 +51,9 @@
         <item quantity="other">%d podcasts</item>
     </plurals>
     <string name="podcast_add_title">Novo podcast</string>
+    <string name="podcast_add_by_url">Adicionar podcast por URL</string>
     <string name="podcast_add_button">Adicionar</string>
+    <string name="podcast_added">O feed \"%s\" foi adicionado.</string>
     <string name="podcast_enter_url_here">Copie o endereço do podcast aqui</string>
     <string name="podcast_load_error">O podcast falhou ao carregar!</string>
     <string name="podcast_load_error_access_denied">O podcast não conseguiu carregar porque o acesso ao feed foi negado.</string>
@@ -108,15 +110,17 @@
     <string name="opml_export_success">arquivo OPML guardado</string>
     <string name="opml_export_success_at">Arquivo OPML guardado em\n%s</string>
     <string name="opml_export_failed">A exportação de OPML falhou</string>
-    <string name="suggestions">Sugestões</string>
     <string name="suggested_podcasts">Podcasts sugeridos</string>
-    <string name="suggestion_listen">Ouça</string>
-    <string name="suggestion_watch">Assista</string>
+    <string name="suggestion_featured">Favoritos</string>
+    <string name="suggestion_new">Newcomers</string>
+    <string name="suggestion_explicit">Explícito</string>
     <string name="suggestion_confirm_explicit">Este podcast está marcado explícito. Tem certeza de que deseja adicioná-lo à sua lista de podcast?</string>
+    <string name="suggestion_file_size">%s por episódio</string>
     <string name="suggestions_none">Nenhumas sugestões, por favor, mude seus filtros.</string>
     <string name="suggestions_reset_filters">Reiniciar filtros</string>
     <string name="suggestions_load_error">Não conseguiu carregar as sugestões, por favor, verifique sua conexão com a internet!</string>
     <string name="suggestions_send">Sugerir podcast</string>
+    <string name="suggestions_search">Procurar fontes</string>
     <string name="sync_dropbox_unlink_title"> Desligar Dropbox</string>
     <string name="sync_dropbox_unlink_message">Você realmente quer desvincular sua conta do Dropbox deste aplicativo? Embora isto vá acabar com toda a ação de sincronização via Dropbox, por agora, você pode reverter isso, re-ligando o aplicativo mais tarde.</string>
     <string name="sync_dropbox_unlink_button">Desligar</string>

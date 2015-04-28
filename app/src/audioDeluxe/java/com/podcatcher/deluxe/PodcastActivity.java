@@ -323,10 +323,9 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         super.onActivityResult(requestCode, resultCode, data);
 
         // Only run this if we were called back from onPodcastListLoaded(). This
-        // means that we have no podcasts available and this is app start-up
-        // time.
+        // means that we have no podcasts available and this is app start-up time.
         if (requestCode == IMPORT_FROM_SIMPLE_PODCATCHER_CODE) {
-            boolean needsAddPodcastDialog = true;
+            boolean hasEmptyPodcastList = true;
 
             // Find if we got some podcasts
             if (data != null) {
@@ -335,22 +334,16 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
                 // Yes, we got some podcasts from the Simple Podcatcher
                 if (names != null && names.size() > 0) {
                     // Make sure dialog does not pop up
-                    needsAddPodcastDialog = false;
+                    hasEmptyPodcastList = false;
                     // Import all podcasts
                     for (String name : names)
                         podcastManager.addPodcast(new Podcast(name, urls.get(names.indexOf(name))));
                 }
             }
 
-            // If nothing is there, show add podcasts dialog
-            if (needsAddPodcastDialog) {
-                // On the very first start of the app, show the first run dialog
-                if (preferences.getBoolean(SettingsActivity.KEY_FIRST_RUN, true))
-                    startActivity(new Intent(this, FirstRunActivity.class));
-                    // Otherwise, just show the add podcast dialog
-                else
-                    startActivity(new Intent(this, AddPodcastActivity.class));
-            }
+            // On the very first start of the app, show the first run dialog
+            if (hasEmptyPodcastList && preferences.getBoolean(SettingsActivity.KEY_FIRST_RUN, true))
+                startActivity(new Intent(this, FirstRunActivity.class));
         }
     }
 

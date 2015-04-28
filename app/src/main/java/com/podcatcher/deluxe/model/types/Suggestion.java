@@ -18,7 +18,10 @@
 package com.podcatcher.deluxe.model.types;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,6 +29,12 @@ import java.util.Set;
  * methods specific to suggestions.
  */
 public class Suggestion extends Podcast {
+
+    /**
+     * Collection of alternative podcasts feeds for a suggestion.
+     * The map has the human-readable label as its key and the feed URL as its value.
+     */
+    protected Map<String, String> feeds = new LinkedHashMap<>();
 
     /**
      * Whether the podcast is featured.
@@ -38,6 +47,11 @@ public class Suggestion extends Podcast {
      * The UI might later decide to highlight new suggestions.
      */
     protected boolean recent = false;
+
+    /**
+     * Keyword associated with this suggestion.
+     */
+    protected String keywords;
 
     /**
      * Create new suggestion. See {@link Podcast} for details.
@@ -78,6 +92,34 @@ public class Suggestion extends Podcast {
     }
 
     /**
+     * Put new feed alternative for this suggestion.
+     *
+     * @param label   Short description for this feed alternative, e.g. "Free (audio/mp3)" or "Video low".
+     * @param feedUrl Corresponding podcast feed URL.
+     */
+    public void addFeed(String label, String feedUrl) {
+        feeds.put(label, normalizeUrl(feedUrl));
+    }
+
+    /**
+     * @return The collection of alternative feeds for this podcast suggestions.
+     */
+    @NonNull
+    public Map<String, String> getFeeds() {
+        return new LinkedHashMap<>(feeds);
+    }
+
+    /**
+     * Check whether the podcast suggestion has the given URL as one of its feed alternatives.
+     *
+     * @param url Address to check.
+     * @return <code>true</code> iff the suggestion is offering this feed URL.
+     */
+    public boolean hasFeed(String url) {
+        return feeds.containsValue(normalizeUrl(url));
+    }
+
+    /**
      * @return Whether this suggestion is featured.
      */
     public boolean isFeatured() {
@@ -112,6 +154,25 @@ public class Suggestion extends Podcast {
      */
     public void setExplicit(boolean explicit) {
         this.explicit = explicit;
+    }
+
+    /**
+     * @return The list of keywords associated with the podcast suggestion.
+     * There is not assertion on the format, but usually it is something like "word1, word2" etc.
+     */
+    public
+    @Nullable
+    String getKeywords() {
+        return keywords;
+    }
+
+    /**
+     * Associate podcast suggestion with keywords.
+     *
+     * @param keywords The search terms.
+     */
+    public void setKeywords(@Nullable String keywords) {
+        this.keywords = keywords;
     }
 
     @SuppressWarnings("EmptyMethod")

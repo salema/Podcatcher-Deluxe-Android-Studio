@@ -38,16 +38,16 @@ import com.podcatcher.deluxe.R;
  * downloaded episode files to be removed from the local storage. This fragment
  * will not survive context re-creation, but is dismissed
  * {@link Fragment#onPause()}.
- * <p>
- * <b>Register call-back:</b> The fragment will try to use the activity it is
+ *
+ * <p><b>Register call-back:</b> The fragment will try to use the activity it is
  * part of as its listener. To make this work, the activity needs to implement
  * {@link OnDeleteDownloadsConfirmationListener}. Showing this fragment from
  * another context will <em>not</em> fail, but you need to use
  * {@link #setListener(OnDeleteDownloadsConfirmationListener)} to register and
  * override the call-back. Once the listener is called, the fragment will
  * auto-dismiss itself.
- * <p>
- * <b>Deletion count:</b> If you are removing multiple downloads, you might want
+ *
+ * <p><b>Deletion count:</b> If you are removing multiple downloads, you might want
  * to use {@link #setArguments(Bundle)} with an integer for the number of
  * episodes set using the key {@link #EPISODE_COUNT_KEY}. This needs to be done
  * before showing the dialog. The default episode count is one (1).
@@ -200,11 +200,11 @@ public class DeleteDownloadsConfirmationFragment extends DialogFragment {
         /**
          * Called on the listener if the user confirmed the deletion.
          */
-        public void onConfirmDeletion();
+        void onConfirmDeletion();
 
         /**
          * Called on the listener if the user cancelled the deletion.
          */
-        public void onCancelDeletion();
+        void onCancelDeletion();
     }
 }

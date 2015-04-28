@@ -20,4 +20,5 @@
     <bool name="podcast_list_shadow_right">false</bool>
     <dimen name="podcast_list_shadow_padding">0dp</dimen>
     <dimen name="episode_view_padding">2dp</dimen>
+    <integer name="suggestion_grid_columns">1</integer>
 </resources>

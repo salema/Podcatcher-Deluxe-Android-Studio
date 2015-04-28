@@ -33,11 +33,6 @@ import com.podcatcher.deluxe.view.fragments.FirstRunFragment.FirstRunListener;
  */
 public class FirstRunActivity extends BaseActivity implements FirstRunListener {
 
-    /**
-     * The podcatcher help website URL (add anchor)
-     */
-    private static final String PODCATCHER_HELPSITE_ADD = "http://www.podcatcher-deluxe.com/help#add";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +54,7 @@ public class FirstRunActivity extends BaseActivity implements FirstRunListener {
     public void onAddPodcasts() {
         finish();
 
-        startActivity(new Intent(this, AddPodcastActivity.class));
+        startActivity(new Intent(this, AddSuggestionActivity.class));
     }
 
     @Override

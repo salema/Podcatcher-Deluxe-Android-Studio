@@ -103,7 +103,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         this(podcast, -1);
 
         this.name = name;
-        this.mediaUrl = mediaUrl;
+        this.mediaUrl = normalizeUrl(mediaUrl);
         this.description = description;
         this.mediaType = mediaType;
         // Publication date might not be present
@@ -206,6 +206,19 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         Episode another = (Episode) o;
 
         return mediaUrl != null && mediaUrl.equals(another.mediaUrl);
+    }
+
+    /**
+     * Check whether the given url matches the episode's media URL. If it
+     * does, the episode is considered to represent the file at the given URL.
+     * This method takes into account URL normalization, so you should use it
+     * instead of {@link java.lang.String#equals(Object)} on {@link #getMediaUrl()}.
+     *
+     * @param aUrl The URL to check.
+     * @return <code>true</code> iff matches
+     */
+    public boolean equalByUrl(String aUrl) {
+        return aUrl != null && mediaUrl != null && mediaUrl.equals(normalizeUrl(aUrl));
     }
 
     @Override

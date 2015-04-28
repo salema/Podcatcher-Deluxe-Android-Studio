@@ -42,7 +42,7 @@ public class PodcastExamplesTest extends SuggestionsAsExamplesTest {
             assertTrue(podcast.equals(new Podcast(null, podcast.getUrl())));
 
             for (Podcast other : examplePodcasts) {
-                if (podcast.getUrl().equals(other.getUrl()))
+                if (podcast.equalByUrl(other.getUrl()))
                     assertTrue(podcast.equals(other));
                 else
                     assertFalse(podcast.equals(other));

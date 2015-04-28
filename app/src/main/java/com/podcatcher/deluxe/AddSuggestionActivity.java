@@ -3,7 +3,7 @@
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,41 +17,51 @@
 
 package com.podcatcher.deluxe;
 
-import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.SuggestionManager;
+import com.podcatcher.deluxe.model.types.Language;
+import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
+import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment;
+import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment.AddSuggestionListener;
 import com.podcatcher.deluxe.view.fragments.ConfirmExplicitSuggestionFragment;
 import com.podcatcher.deluxe.view.fragments.ConfirmExplicitSuggestionFragment.ConfirmExplicitSuggestionDialogListener;
-import com.podcatcher.deluxe.view.fragments.SuggestionFragment;
-import com.podcatcher.deluxe.view.fragments.SuggestionFragment.AddSuggestionDialogListener;
+import com.podcatcher.deluxe.view.fragments.SelectFeedFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static android.net.Uri.encode;
 
 /**
- * Add podcast from suggestions activity.
+ * Add podcast(s) from suggestions activity.
  */
-public class AddSuggestionActivity extends BaseActivity implements AddSuggestionDialogListener,
-        ConfirmExplicitSuggestionDialogListener, OnLoadSuggestionListener {
+public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggestionListener,
+        AddSuggestionListener, ConfirmExplicitSuggestionDialogListener, SelectFeedFragment.SelectFeedDialogListener {
 
     /**
-     * Tag to find the add suggestion dialog fragment under
+     * Tag to find the add suggestion fragment under
      */
-    private static final String ADD_SUGGESTION_DIALOG_TAG = "add_suggestion_dialog";
+    private static final String ADD_SUGGESTION_FRAGMENT_TAG = "add_suggestion_fragment";
     /**
-     * Key to find "podcast to be confirmed" URL under
+     * Key to find "podcast to be added" URL under
      */
-    private static final String TO_BE_CONFIRMED_URL_KEY = "TO_BE_CONFIRMED_URL_KEY";
-    /**
-     * Key to find "podcast to be confirmed" name under
-     */
-    private static final String TO_BE_CONFIRMED_NAME_KEY = "TO_BE_CONFIRMED_NAME_KEY";
+    private static final String TO_BE_ADDED_URL_KEY = "TO_BE_ADDED_URL_KEY";
+
     /**
      * The suggestion manager handle
      */
@@ -59,32 +69,38 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     /**
      * The fragment containing the add suggestion UI
      */
-    private SuggestionFragment suggestionFragment;
+    private AddSuggestionFragment suggestionFragment;
+
     /**
-     * Helper to store suggestion awaiting confirmation
+     * Helper to store suggestion URL awaiting confirmation and/or feed selection
      */
-    private Suggestion suggestionToBeConfirmed;
+    private String suggestionToAddUrl;
+    /**
+     * Helper to store suggestion awaiting confirmation and/or feed selection
+     */
+    private Suggestion suggestionToAdd;
+
+    /**
+     * The search view widget
+     */
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create and show suggestion fragment
         if (savedInstanceState == null) {
-            this.suggestionFragment = new SuggestionFragment();
-            // Need to set style, because this activity has no UI
-            suggestionFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
+            this.suggestionFragment = new AddSuggestionFragment();
 
-            suggestionFragment.show(getFragmentManager(), ADD_SUGGESTION_DIALOG_TAG);
+            getFragmentManager().beginTransaction()
+                    .add(android.R.id.content, suggestionFragment, ADD_SUGGESTION_FRAGMENT_TAG)
+                    .commit();
         } else {
-            this.suggestionFragment = (SuggestionFragment)
-                    getFragmentManager().findFragmentByTag(ADD_SUGGESTION_DIALOG_TAG);
+            this.suggestionFragment = (AddSuggestionFragment)
+                    getFragmentManager().findFragmentByTag(ADD_SUGGESTION_FRAGMENT_TAG);
 
-            // Restore "suggestion to be confirmed" member
-            if (savedInstanceState.containsKey(TO_BE_CONFIRMED_URL_KEY))
-                suggestionToBeConfirmed = new Suggestion(
-                        savedInstanceState.getString(TO_BE_CONFIRMED_NAME_KEY),
-                        savedInstanceState.getString(TO_BE_CONFIRMED_URL_KEY));
+            if (savedInstanceState.containsKey(TO_BE_ADDED_URL_KEY))
+                suggestionToAddUrl = savedInstanceState.getString(TO_BE_ADDED_URL_KEY);
         }
 
         // Get suggestions manager and register call-back
@@ -93,8 +109,94 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.suggestions, menu);
+
+        // Associate searchable configuration with the SearchView
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        this.searchView = (SearchView) menu.findItem(R.id.search_suggestions_menuitem).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getString(R.string.suggestions_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                suggestionFragment.setSearchQuery(query);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                suggestionFragment.setSearchQuery(query);
+
+                return false;
+            }
+        });
+        colorSearchView(); // If possible, apply theme color to search plates
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.featured_suggestions_menuitem:
+                suggestionFragment.setSearchQuery(getString(R.string.suggestion_featured));
+
+                return true;
+            case R.id.new_suggestions_menuitem:
+                suggestionFragment.setSearchQuery(getString(R.string.suggestion_new));
+
+                return true;
+            case R.id.podcast_add_menuitem:
+                startActivity(new Intent(this, AddPodcastActivity.class));
+                finish();
+
+                return true;
+            case R.id.import_opml_menuitem:
+                startActivity(new Intent(this, ImportOpmlActivity.class));
+                finish();
+
+                return true;
+            case R.id.send_suggestion_menuitem:
+                // Construct the email
+                final String uriText = String.format(Locale.US, "mailto:%s?subject=%s",
+                        encode(getString(R.string.suggestion_address)),
+                        encode(getString(R.string.suggestion_subject,
+                                getString(R.string.app_name), BuildConfig.STORE)));
+
+                // Go start the mail app
+                final Intent sendTo = new Intent(Intent.ACTION_SENDTO, Uri.parse(uriText));
+                try {
+                    startActivity(sendTo);
+                } catch (ActivityNotFoundException ex) {
+                    // No mail app, this should not happen...
+                }
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // This is only needed for voice search
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            final String query = intent.getStringExtra(SearchManager.QUERY);
+
+            // TODO This should not activate the keyboard
+            this.searchView.setQuery(query, false);
+            suggestionFragment.setSearchQuery(query);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+
+        // Need to add some space in between the icon and the title
+        getActionBar().setTitle(" " + getActionBar().getTitle().toString().trim());
 
         // Load suggestions (this has to be called after UI fragment is created)
         suggestionManager.load();
@@ -104,10 +206,8 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (suggestionToBeConfirmed != null) {
-            outState.putString(TO_BE_CONFIRMED_URL_KEY, suggestionToBeConfirmed.getUrl());
-            outState.putString(TO_BE_CONFIRMED_NAME_KEY, suggestionToBeConfirmed.getName());
-        }
+        if (suggestionToAdd != null)
+            outState.putString(TO_BE_ADDED_URL_KEY, suggestionToAdd.getUrl());
     }
 
     @Override
@@ -128,10 +228,15 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
         List<Suggestion> filteredSuggestionList = new ArrayList<>();
 
         // Do filter!
-        for (Suggestion suggestion : suggestions)
+        for (Suggestion suggestion : suggestions) {
             if (!podcastManager.contains(suggestion) &&
                     !(podcastManager.blockExplicit() && suggestion.isExplicit()))
                 filteredSuggestionList.add(suggestion);
+
+            // Restore the "suggestion to be added" member
+            if (suggestion.equalByUrl(suggestionToAddUrl))
+                suggestionToAdd = suggestion;
+        }
 
         // Filter list and update UI
         suggestionFragment.setList(filteredSuggestionList);
@@ -144,21 +249,17 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
 
     @Override
     public void onAddSuggestion(Suggestion suggestion) {
-        if (suggestion.isExplicit()) {
-            this.suggestionToBeConfirmed = suggestion;
+        this.suggestionToAdd = suggestion;
 
-            // Show confirmation dialog
+        if (suggestion.isExplicit())
             new ConfirmExplicitSuggestionFragment().show(getFragmentManager(), null);
-        } else {
-            podcastManager.addPodcast(suggestion);
-            suggestionFragment.notifySuggestionAdded();
-        }
+        else
+            addConfirmedSuggestion();
     }
 
     @Override
     public void onConfirmExplicit() {
-        podcastManager.addPodcast(suggestionToBeConfirmed);
-        suggestionFragment.notifySuggestionAdded();
+        addConfirmedSuggestion();
     }
 
     @Override
@@ -166,8 +267,42 @@ public class AddSuggestionActivity extends BaseActivity implements AddSuggestion
         // Nothing to do here...
     }
 
+    private void addConfirmedSuggestion() {
+        if (suggestionToAdd.getFeeds().size() > 1) {
+            final SelectFeedFragment fragment = new SelectFeedFragment();
+
+            fragment.setFeeds(suggestionToAdd.getFeeds());
+            fragment.show(getFragmentManager(), null);
+        } else
+            onFeedSelected(suggestionToAdd.getUrl());
+    }
+
     @Override
-    public void onCancel(DialogInterface dialog) {
-        finish();
+    public void onFeedSelected(String podcastUrl) {
+        podcastManager.addPodcast(new Podcast(suggestionToAdd.getName(), podcastUrl));
+        showToast(getString(R.string.podcast_added, suggestionToAdd.getName()));
+    }
+
+    @Override
+    public void onLanguageChanged(Language newLanguage) {
+        // TODO Adjust voice search to selected language (looks like there is currently no way to do this)
+    }
+
+    @Override
+    public void onResetFilters() {
+        searchView.setQuery(null, false);
+    }
+
+    private void colorSearchView() {
+        final int searchPlateId = getResources().getIdentifier("android:id/search_plate", null, null);
+        final View searchPlate = searchView.findViewById(searchPlateId);
+        final int voicePlateId = getResources().getIdentifier("android:id/submit_area", null, null);
+        final View voicePlate = searchView.findViewById(voicePlateId);
+
+        // Make sure not to color only one plate
+        if (searchPlate != null && voicePlate != null) {
+            searchPlate.setBackgroundResource(R.drawable.textfield_searchview_holo_dark);
+            voicePlate.setBackgroundResource(R.drawable.textfield_searchview_holo_dark);
+        }
     }
 }

@@ -43,8 +43,8 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 /**
  * A podcast authorization dialog. Let's the user supply a name/password
  * combination.
- * <p>
- * <b>Register call-back:</b> The fragment will try to use the activity it is
+ *
+ * <p><b>Register call-back:</b> The fragment will try to use the activity it is
  * part of as its listener. To make this work, the activity needs to implement
  * {@link OnEnterAuthorizationListener}. Showing this fragment from another
  * context will <em>not</em> fail, but you need to use
@@ -52,8 +52,8 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
  * the call-back. Once the listener is called, the fragment will auto-dismiss
  * itself.
  * </p>
- * <p>
- * <b>Presets: </b> You might also want to use {@link #setArguments(Bundle)}
+ *
+ * <p><b>Presets: </b> You might also want to use {@link #setArguments(Bundle)}
  * with a string value to pre-set the user name using the key
  * {@link #USERNAME_PRESET_KEY}. (This needs to be done before showing the
  * dialog.)
@@ -227,11 +227,11 @@ public class AuthorizationFragment extends DialogFragment {
          * @param username User name entered.
          * @param password Password entered.
          */
-        public void onSubmitAuthorization(String username, String password);
+        void onSubmitAuthorization(String username, String password);
 
         /**
          * Called on the listener if the user cancelled the dialog.
          */
-        public void onCancelAuthorization();
+        void onCancelAuthorization();
     }
 }

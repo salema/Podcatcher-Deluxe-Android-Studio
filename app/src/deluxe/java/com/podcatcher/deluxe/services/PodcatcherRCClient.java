@@ -96,7 +96,7 @@ public class PodcatcherRCClient extends RemoteControlClient implements Target {
         if (episode.getPodcast().hasLogoUrl())
             Picasso.with(service.getApplicationContext())
                     .load(episode.getPodcast().getLogoUrl())
-                    .resizeDimen(R.dimen.logo_size, R.dimen.logo_size)
+                    .resizeDimen(R.dimen.notification_logo_size, R.dimen.notification_logo_size)
                     .into(this);
     }
 

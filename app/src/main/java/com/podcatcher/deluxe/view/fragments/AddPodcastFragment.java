@@ -59,17 +59,13 @@ public class AddPodcastFragment extends DialogFragment {
      */
     private HorizontalProgressView progressView;
     /**
-     * The show suggestions button
+     * The add podcast help button
      */
-    private Button showSuggestionsButton;
+    private Button helpButton;
     /**
      * The add podcast button
      */
     private Button addPodcastButton;
-    /**
-     * The import OPML button
-     */
-    private Button importOpmlButton;
 
     /**
      * The listener we report back to
@@ -129,15 +125,6 @@ public class AddPodcastFragment extends DialogFragment {
 
         progressView = (HorizontalProgressView) view.findViewById(R.id.add_podcast_progress);
 
-        showSuggestionsButton = (Button) view.findViewById(R.id.suggestion_add_button);
-        showSuggestionsButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                listener.onShowSuggestions();
-            }
-        });
-
         addPodcastButton = (Button) view.findViewById(R.id.podcast_add_button);
         addPodcastButton.setOnClickListener(new View.OnClickListener() {
 
@@ -146,13 +133,12 @@ public class AddPodcastFragment extends DialogFragment {
                 addPodcast();
             }
         });
-
-        importOpmlButton = (Button) view.findViewById(R.id.import_opml_button);
-        importOpmlButton.setOnClickListener(new View.OnClickListener() {
+        helpButton = (Button) view.findViewById(R.id.podcast_add_help_button);
+        helpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                listener.onImportOpml();
+                listener.onShowHelp();
             }
         });
     }
@@ -248,17 +234,11 @@ public class AddPodcastFragment extends DialogFragment {
          *
          * @param podcastUrl Podcast URL spec to add.
          */
-        public void onAddPodcast(String podcastUrl);
+        void onAddPodcast(String podcastUrl);
 
         /**
-         * Called on listener if the user wants to see suggestions for podcasts
-         * to add.
+         * Called on the listener when the user presses the help button.
          */
-        public void onShowSuggestions();
-
-        /**
-         * Called on listener if the user wants to import an OPML file.
-         */
-        public void onImportOpml();
+        void onShowHelp();
     }
 }

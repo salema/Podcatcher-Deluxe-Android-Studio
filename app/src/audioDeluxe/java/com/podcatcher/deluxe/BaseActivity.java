@@ -59,6 +59,10 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      */
     public static final String PODCATCHER_HELPSITE = "http://www.podcatcher-deluxe.com/help";
     /**
+     * The podcatcher help website URL (add anchor)
+     */
+    protected static final String PODCATCHER_HELPSITE_ADD = "http://www.podcatcher-deluxe.com/help#add";
+    /**
      * Twitter account page URL
      */
     public static final String PODCATCHER_TWITTER = "http://twitter.com/PodcatchDeluxe";
@@ -124,7 +128,7 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     /**
      * The options available for the content mode
      */
-    public static enum ContentMode {
+    public enum ContentMode {
         /**
          * Show single podcast
          */
