@@ -47,7 +47,7 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
 
         final Date start = new Date();
         examplePodcasts =
-                Utils.getExamplePodcasts(getInstrumentation().getTargetContext());
+                Utils.getExamplePodcasts(getInstrumentation().getTargetContext(), 10);
 
         Log.d(Utils.TEST_STATUS, "Waited " + (new Date().getTime() -
                 start.getTime())
@@ -102,7 +102,7 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
         final MockPodcastLoader mockLoader = new MockPodcastLoader();
 
         // null
-        loadAndWait(mockLoader, (Podcast) null, false);
+        loadAndWait(mockLoader, null, false);
         assertTrue(mockLoader.failed);
         assertNull(mockLoader.result);
         assertEquals(mockLoader.code, PodcastLoadError.UNKNOWN);

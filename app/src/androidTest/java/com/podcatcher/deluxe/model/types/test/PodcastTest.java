@@ -42,6 +42,16 @@ public class PodcastTest extends InstrumentationTestCase {
         Podcast tal2 = new Podcast(null,
                 "http://feeds.thisamericanlife.org/talpodcast");
         assertTrue(tal.equals(tal2));
+
+        Podcast tal3 = new Podcast(null,
+                "HTTP://feeds.thisamericanlife.org/talpodcast/");
+        assertTrue(tal.equals(tal3));
+        assertTrue(tal.equalByUrl(tal3.getUrl()));
+        assertFalse(tal.getUrl().equals("HTTP://feeds.thisamericanlife.org/talpodcast/"));
+        assertFalse(tal.equalByUrl(null));
+        assertFalse(tal.equalByUrl(""));
+        assertFalse(tal.equalByUrl("https://feeds.thisamericanlife.org/talpodcast"));
+        assertFalse(tal.equalByUrl("https://feeds.thisamericanlife.org/podcast"));
     }
 
     public final void testHashCode() {
@@ -178,7 +188,7 @@ public class PodcastTest extends InstrumentationTestCase {
 
     public final void testToAbsoluteUrl() {
         String url = "http://some-server.com/feeds/podcast.xml";
-        Podcast dummy = new Podcast(null, url);
+        PodcastDummy dummy = new PodcastDummy(null, url);
 
         assertEquals(null, dummy.toAbsoluteUrl(null));
         assertEquals("", dummy.toAbsoluteUrl(""));
@@ -226,5 +236,28 @@ public class PodcastTest extends InstrumentationTestCase {
 
         assertEquals("http://feeds.feedburner.com/TestPodcast",
                 new Podcast(null, "FB:TestPodcast?format=xml").getUrl());
+
+        Podcast test = new Podcast(null, "http://kevin@feeds.feedburner.com/TestPodcast");
+        assertEquals("kevin", test.getUsername());
+        assertNull(test.getPassword());
+        test = new Podcast(null, "http://kevin:@feeds.feedburner.com/TestPodcast");
+        assertEquals("kevin", test.getUsername());
+        assertNull(test.getPassword());
+        test = new Podcast(null, "http://feeds.feedburner.com/TestPodcast");
+        assertNull(test.getUsername());
+        assertNull(test.getPassword());
+        test = new Podcast(null, "http://kevin:test@feeds.feedburner.com/TestPodcast");
+        assertEquals("kevin", test.getUsername());
+        assertEquals("test", test.getPassword());
+    }
+
+    private class PodcastDummy extends Podcast {
+        public PodcastDummy(String name, String url) {
+            super(name, url);
+        }
+
+        public String toAbsoluteUrl(String relativeUrl) {
+            return super.toAbsoluteUrl(relativeUrl);
+        }
     }
 }

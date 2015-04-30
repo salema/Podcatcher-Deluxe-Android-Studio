@@ -21,7 +21,51 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:animateLayoutChanges="true">
+
+    <RelativeLayout
+        android:id="@+id/podcast_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/podcast_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/podcast_image"
+            tools:background="#AAAAFF"
+            tools:src="@drawable/default_podcast_logo"/>
+
+        <TextView
+            android:id="@+id/podcast_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:ellipsize="marquee"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:singleLine="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/text_secondary"
+            android:background="#DDFFFFFF"
+            tools:text="155 episodes"/>
+
+        <TextView
+            android:id="@+id/podcast_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:layout_above="@id/podcast_caption"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:singleLine="true"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:background="#DDFFFFFF"
+            tools:text="Great Podcast Suggestion"/>
+
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/podcast_url"

@@ -141,11 +141,15 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.featured_suggestions_menuitem:
-                suggestionFragment.setSearchQuery(getString(R.string.suggestion_featured));
+                // Toggle featured/all filter
+                final boolean isFeaturedFiltered = getString(R.string.suggestion_featured).equals(suggestionFragment.getSearchQuery());
+                suggestionFragment.setSearchQuery(isFeaturedFiltered ? null : getString(R.string.suggestion_featured));
 
                 return true;
             case R.id.new_suggestions_menuitem:
-                suggestionFragment.setSearchQuery(getString(R.string.suggestion_new));
+                // Toggle new/all filter
+                final boolean isNewFiltered = getString(R.string.suggestion_new).equals(suggestionFragment.getSearchQuery());
+                suggestionFragment.setSearchQuery(isNewFiltered ? null : getString(R.string.suggestion_new));
 
                 return true;
             case R.id.podcast_add_menuitem:

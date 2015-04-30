@@ -24,23 +24,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
+import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.HorizontalProgressView;
+import com.squareup.picasso.Picasso;
 
 import static android.view.View.VISIBLE;
 
@@ -50,6 +55,19 @@ import static android.view.View.VISIBLE;
  */
 public class AddPodcastFragment extends DialogFragment {
 
+    /**
+     * The wrapper layout for the podcast logo and name
+     */
+    private View podcastWrapper;
+    /**
+     * Podcast logo view
+     */
+    private ImageView podcastLogo;
+    /**
+     * Podcast name and caption text views
+     */
+    private TextView podcastName;
+    private TextView podcastCaption;
     /**
      * The podcast URL text field
      */
@@ -93,12 +111,17 @@ public class AddPodcastFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         getDialog().setTitle(R.string.podcast_add_title);
 
         // Prevent automatic display of the soft keyboard
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        podcastWrapper = view.findViewById(R.id.podcast_wrapper);
+        podcastLogo = (ImageView) view.findViewById(R.id.podcast_logo);
+        podcastName = (TextView) view.findViewById(R.id.podcast_name);
+        podcastCaption = (TextView) view.findViewById(R.id.podcast_caption);
 
         podcastUrlEditText = (EditText) view.findViewById(R.id.podcast_url);
         podcastUrlEditText.setOnEditorActionListener(new OnEditorActionListener() {
@@ -117,7 +140,7 @@ public class AddPodcastFragment extends DialogFragment {
             podcastUrlEditText.setText(getActivity().getIntent().getDataString());
             // This is for testing only
         else if (BuildConfig.DEBUG)
-            podcastUrlEditText.setText("https://www.theskepticsguide.org/premium");
+            podcastUrlEditText.setText("https://kevin:tantan@www.theskepticsguide.org/premium");
             // This checks for a potential podcast URL in the clipboard
             // and presets it in the text field if available
         else
@@ -141,6 +164,38 @@ public class AddPodcastFragment extends DialogFragment {
                 listener.onShowHelp();
             }
         });
+
+        // Make sure the podcast logo height matches the dialog width
+        view.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @Override
+                    public void onGlobalLayout() {
+                        // We only need this once
+                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                        // Update new layout params
+                        final ViewGroup.LayoutParams layoutParams = podcastWrapper.getLayoutParams();
+                        layoutParams.height = view.getWidth();
+                        podcastWrapper.setLayoutParams(layoutParams);
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Resize the dialog to a good fit, it can't be too big because
+        // we might show the podcast logo. Only needed if podcast is preloaded.
+        if (getActivity().getIntent().getData() != null) {
+            final DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            final boolean landscape = metrics.widthPixels > metrics.heightPixels;
+            final int width = (landscape ? metrics.heightPixels : metrics.widthPixels) * 7 / 10;
+            getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     @Override
@@ -194,17 +249,42 @@ public class AddPodcastFragment extends DialogFragment {
         addPodcastButton.setEnabled(true);
     }
 
+    /**
+     * Make the dialog change from generic mode to show given podcast.
+     *
+     * @param podcast Podcast to add.
+     */
+    public void showPodcast(Podcast podcast) {
+        podcastWrapper.setVisibility(View.VISIBLE);
+        podcastUrlEditText.setVisibility(View.GONE);
+        progressView.setVisibility(View.GONE);
+        helpButton.setVisibility(View.GONE);
+        addPodcastButton.setEnabled(true);
+
+        podcastName.setText(podcast.getName());
+        podcastCaption.setText(getResources().getQuantityString(R.plurals.episodes,
+                podcast.getEpisodeCount(), podcast.getEpisodeCount()));
+
+        hideTitleBar();
+        if (podcast.getLogoUrl() != null && podcast.getLogoUrl().startsWith("http"))
+            Picasso.with(getActivity())
+                    .load(podcast.getLogoUrl())
+                    .fit().centerCrop() // Resize logo and crop to fit image view
+                    .into(podcastLogo);
+    }
+
     private void addPodcast() {
         showProgress(Progress.WAIT);
 
-        // Try to make the input work as a online resource
+        // Try to make the input work as an online resource
         String spec = podcastUrlEditText.getText().toString();
         if (!URLUtil.isNetworkUrl(spec)) {
             spec = "http://" + spec;
             podcastUrlEditText.setText(spec);
         }
 
-        listener.onAddPodcast(spec);
+        final CharSequence name = podcastName.getText();
+        listener.onAddPodcast(name != null && name.length() > 0 ? name.toString() : null, spec);
     }
 
     private void checkClipboardForPodcastUrl() {
@@ -223,6 +303,20 @@ public class AddPodcastFragment extends DialogFragment {
         }
     }
 
+    private void hideTitleBar() {
+        try {
+            final int titleViewId = getResources().getIdentifier("android:id/title", null, null);
+            final int dividerViewId = getResources().getIdentifier("android:id/titleDivider", null, null);
+            final TextView titleView = (TextView) getDialog().findViewById(titleViewId);
+            final View divider = getDialog().findViewById(dividerViewId);
+
+            titleView.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
+        } catch (RuntimeException npe) {
+            // Simply do not apply color
+        }
+    }
+
     /**
      * Interface definition for a callback to be invoked when the user interacts
      * with the add podcast dialog.
@@ -232,9 +326,10 @@ public class AddPodcastFragment extends DialogFragment {
         /**
          * Called on listener when podcast url is given.
          *
-         * @param podcastUrl Podcast URL spec to add.
+         * @param name Podcast title, can be <code>null</code>.
+         * @param url  Podcast URL spec to add.
          */
-        void onAddPodcast(String podcastUrl);
+        void onAddPodcast(String name, String url);
 
         /**
          * Called on the listener when the user presses the help button.

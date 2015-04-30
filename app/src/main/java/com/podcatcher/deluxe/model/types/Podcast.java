@@ -376,7 +376,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * returned.
      */
     @Nullable
-    public String toAbsoluteUrl(@Nullable String relativeUrl) {
+    protected String toAbsoluteUrl(@Nullable String relativeUrl) {
         String result = relativeUrl;
 
         // Rewrite logo url to be absolute
@@ -537,6 +537,15 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                 spec = "http" + spec.substring(4);
             if (spec.toLowerCase(Locale.US).startsWith("fb:"))
                 spec = "http://feeds.feedburner.com/" + spec.substring(3);
+
+            // Try to get username and password if present
+            final String userInfo = Uri.parse(spec).getUserInfo();
+            if (userInfo != null && userInfo.length() > 0) {
+                final String[] parts = userInfo.split(":");
+
+                this.username = parts[0];
+                this.password = parts.length > 1 ? parts[1] : this.password;
+            }
         }
 
         spec = super.normalizeUrl(spec);

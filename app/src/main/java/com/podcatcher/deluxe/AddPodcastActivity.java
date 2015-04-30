@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.webkit.URLUtil;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
@@ -38,9 +39,11 @@ import static com.podcatcher.deluxe.EpisodeListActivity.PODCAST_URL_KEY;
 import static com.podcatcher.deluxe.view.fragments.AuthorizationFragment.USERNAME_PRESET_KEY;
 
 /**
- * Add new podcast(s) activity. This simply shows the add podcast fragment. To
- * preset the feed url edittext, start this activity with an intent that has the
- * feed URL set as its {@link Intent#getData()} return value.
+ * Add new podcast(s) activity. This simply shows the add podcast fragment.
+ *
+ * The activity will behave differently depending on the intent given: If it contains
+ * a podcast feed URL in {@link Intent#getData()}, the podcast will immediately start loading
+ * and its name and logo will be presented to the user. Absent an URL, an edit text is shown.
  */
 public class AddPodcastActivity extends BaseActivity implements AddPodcastDialogListener,
         OnLoadPodcastListener, OnEnterAuthorizationListener {
@@ -58,6 +61,10 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
      */
     private static final String LAST_USER_KEY = "LAST_USER_NAME";
     /**
+     * Key to find last password under
+     */
+    private static final String LAST_PASS_KEY = "LAST_PASS_NAME";
+    /**
      * The fragment containing the add URL UI
      */
     private AddPodcastFragment addPodcastFragment;
@@ -69,13 +76,18 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
      * The last user name that was put in
      */
     private String lastUserName;
+    /**
+     * The last password that was put in
+     */
+    private String lastPassword;
+    /**
+     * Helper flag for the mode we are in (preset URL or user edit)
+     */
+    private boolean intentHasFeedUrl = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Listen to podcast load events to update UI
-        podcastManager.addLoadPodcastListener(this);
 
         // If this is a fresh new activity, create and show the add podcast
         // dialog fragment (tagged for later retrieval)
@@ -92,9 +104,39 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
         else {
             this.currentLoadUrl = savedInstanceState.getString(LOADING_URL_KEY);
             this.lastUserName = savedInstanceState.getString(LAST_USER_KEY);
+            this.lastPassword = savedInstanceState.getString(LAST_PASS_KEY);
 
             this.addPodcastFragment = (AddPodcastFragment)
                     getFragmentManager().findFragmentByTag(ADD_PODCAST_DIALOG_TAG);
+        }
+
+        // Listen to podcast load events to update UI
+        podcastManager.addLoadPodcastListener(this);
+
+        // Only accept valid network URLs as presets
+        this.intentHasFeedUrl = getIntent().getData() != null &&
+                URLUtil.isNetworkUrl(getIntent().getDataString());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // If we are given an URL, go ahead and try load it (unless it is already present)
+        if (intentHasFeedUrl) {
+            final Podcast newPodcast = new Podcast(null, getIntent().getDataString());
+
+            if (podcastManager.contains(newPodcast))
+                selectExistingPodcastAndFinish(newPodcast);
+            else {
+                final String userInfo = getIntent().getData().getUserInfo();
+                lastUserName = userInfo != null ? userInfo.split(":")[0] : lastUserName;
+                currentLoadUrl = newPodcast.getUrl();
+                // If not set, put auth info user entered earlier
+                setAuthInfoIfPresent(newPodcast);
+
+                podcastManager.load(newPodcast);
+            }
         }
     }
 
@@ -105,6 +147,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
         // Make sure we know which podcast we are loading (if any)
         outState.putString(LOADING_URL_KEY, currentLoadUrl);
         outState.putString(LAST_USER_KEY, lastUserName);
+        outState.putString(LAST_PASS_KEY, lastPassword);
     }
 
     @Override
@@ -113,30 +156,28 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
 
         // Unregister from data manager
         podcastManager.removeLoadPodcastListener(this);
-
     }
 
     @Override
-    public void onAddPodcast(String podcastUrl) {
-        // Try to load the given online resource
-        final Podcast newPodcast = new Podcast(null, podcastUrl);
+    public void onAddPodcast(String podcastName, String podcastUrl) {
+        // Create a proper podcast object. We use the intent URI if present
+        // because it might have username / password information
+        final Podcast newPodcast = new Podcast(podcastName, intentHasFeedUrl ?
+            getIntent().getDataString() : podcastUrl);
+        // If not set, put auth info user entered earlier
+        setAuthInfoIfPresent(newPodcast);
 
-        // If the podcast is present, select it
-        if (podcastManager.contains(newPodcast)) {
-            Intent intent = new Intent(this, PodcastActivity.class);
-            intent.putExtra(EpisodeListActivity.MODE_KEY, ContentMode.SINGLE_PODCAST);
-            intent.putExtra(PODCAST_URL_KEY, newPodcast.getUrl());
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-            startActivity(intent);
+        // If the podcast is present, select it and close
+        if (podcastManager.contains(newPodcast))
+            selectExistingPodcastAndFinish(newPodcast);
+        // We come from a preset URL, add podcast and finish
+        else if (intentHasFeedUrl) {
+            podcastManager.addPodcast(newPodcast);
             finish();
         }
-        // Otherwise try to load it
+        // Otherwise try to load the podcast (user gave new URL)
         else {
-            // We need to keep note which podcast we are loading
             currentLoadUrl = newPodcast.getUrl();
-
             podcastManager.load(newPodcast);
         }
     }
@@ -153,9 +194,14 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
             // Reset current load url
             currentLoadUrl = null;
 
-            // Add podcast and finish the activity
-            podcastManager.addPodcast(podcast);
-            finish();
+            // Preset URL was loaded, update fragment
+            if (intentHasFeedUrl)
+                addPodcastFragment.showPodcast(podcast);
+            else {
+                // Add podcast and finish the activity
+                podcastManager.addPodcast(podcast);
+                finish();
+            }
         }
     }
 
@@ -178,8 +224,10 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
             }
             // Load failed for some other reason
             else {
-                // Reset current load url
+                // Reset current load url and the intent because it had a bad URL
                 currentLoadUrl = null;
+                intentHasFeedUrl = false;
+                getIntent().setData(null);
 
                 // Show failed UI
                 addPodcastFragment.showPodcastLoadFailed(code);
@@ -191,6 +239,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
     public void onSubmitAuthorization(String username, String password) {
         // We need to keep that in order to pre-fill next time
         lastUserName = username;
+        lastPassword = password;
 
         final Podcast newPodcast = new Podcast(null, currentLoadUrl);
         newPodcast.setUsername(username);
@@ -216,6 +265,24 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        finish();
+    }
+
+    private void setAuthInfoIfPresent(Podcast newPodcast) {
+        if (lastUserName != null && newPodcast.getUsername() == null)
+            newPodcast.setUsername(lastUserName);
+        if (lastPassword != null && newPodcast.getPassword() == null)
+            newPodcast.setPassword(lastPassword);
+    }
+
+    private void selectExistingPodcastAndFinish(Podcast podcast) {
+        Intent intent = new Intent(this, PodcastActivity.class);
+        intent.putExtra(EpisodeListActivity.MODE_KEY, ContentMode.SINGLE_PODCAST);
+        intent.putExtra(PODCAST_URL_KEY, podcast.getUrl());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        startActivity(intent);
         finish();
     }
 

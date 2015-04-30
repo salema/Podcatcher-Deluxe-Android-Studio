@@ -171,7 +171,7 @@ public class EpisodeListItemView extends PodcatcherListItemView {
                 result = result.substring(podcastName.length(), result.length());
 
             // Also remove all non-alphanumeric stuff at the start
-            result = result.replaceFirst("^(\\s|,|:|-)+", "").trim();
+            result = result.replaceFirst("^(\\s|,|:|-|–)+", "").trim();
         } else
             result = NO_TITLE;
 

@@ -287,6 +287,13 @@ public class AddSuggestionFragment extends Fragment {
     }
 
     /**
+     * @return The currently active search query, might be <code>null</code>.
+     */
+    public String getSearchQuery() {
+        return searchQuery;
+    }
+
+    /**
      * Show load suggestions progress.
      *
      * @param progress Progress information to give.
