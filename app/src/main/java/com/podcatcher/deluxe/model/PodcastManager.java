@@ -372,6 +372,9 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
             podcastList.add(newPodcast);
             Collections.sort(podcastList);
 
+            // Make sure podcast is loaded, if that did not yet happen
+            load(newPodcast, false);
+
             // Alert listeners of new podcast
             for (OnChangePodcastListListener listener : changePodcastListListeners)
                 listener.onPodcastAdded(newPodcast);
