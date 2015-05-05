@@ -246,9 +246,12 @@ public class PodcastTest extends InstrumentationTestCase {
         test = new Podcast(null, "http://feeds.feedburner.com/TestPodcast");
         assertNull(test.getUsername());
         assertNull(test.getPassword());
-        test = new Podcast(null, "http://kevin:test@feeds.feedburner.com/TestPodcast");
-        assertEquals("kevin", test.getUsername());
-        assertEquals("test", test.getPassword());
+        Podcast test2 = new Podcast(null, "http://kevin:test@feeds.feedburner.com/TestPodcast");
+        assertEquals("kevin", test2.getUsername());
+        assertEquals("test", test2.getPassword());
+        assertEquals(test, test2);
+        assertTrue(test.equalByUrl(test2.getUrl()));
+        assertTrue(test2.equalByUrl(test.getUrl()));
     }
 
     private class PodcastDummy extends Podcast {
