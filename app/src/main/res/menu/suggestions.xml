@@ -27,14 +27,16 @@
         tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/featured_suggestions_menuitem"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/suggestion_featured"
-        android:icon="@drawable/ic_menu_featured"/>
+        android:icon="@drawable/ic_menu_featured"
+        tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/new_suggestions_menuitem"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:title="@string/suggestion_new"
-        android:icon="@drawable/ic_menu_new"/>
+        android:icon="@drawable/ic_menu_new"
+        tools:ignore="AlwaysShowAction"/>
     <item
         android:id="@+id/podcast_add_menuitem"
         android:showAsAction="never"
