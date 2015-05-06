@@ -54,6 +54,11 @@ public class Suggestion extends Podcast {
     protected String keywords;
 
     /**
+     * The podcatcher-deluxe.com node ID of this podcast suggestion
+     */
+    protected int node = -1;
+
+    /**
      * Create new suggestion. See {@link Podcast} for details.
      *
      * @param name The name to show.
@@ -173,6 +178,22 @@ public class Suggestion extends Podcast {
      */
     public void setKeywords(@Nullable String keywords) {
         this.keywords = keywords;
+    }
+
+    /**
+     * @return The node ID or -1 if not set.
+     */
+    public int getNode() {
+        return node;
+    }
+
+    /**
+     * Set the node ID for this suggestion.
+     *
+     * @param node The ID, must be > 0.
+     */
+    public void setNode(int node) {
+        this.node = node > 0 ? node : -1;
     }
 
     @SuppressWarnings("EmptyMethod")

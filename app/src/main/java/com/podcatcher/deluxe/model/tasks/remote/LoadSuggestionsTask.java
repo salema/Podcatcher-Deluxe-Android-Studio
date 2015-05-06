@@ -225,6 +225,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         try {
             final String[] feeds = json.getString(JSON.FEED).split(JSON_VALUE_DELIMITER);
             suggestion = new Suggestion(json.getString(JSON.TITLE).trim(), feeds[0]);
+            suggestion.setNode(json.has(JSON.NODE) ? json.getInt(JSON.NODE) : 0);
             suggestion.setDescription(json.getString(JSON.DESCRIPTION).trim());
             suggestion.setLanguages(Language.valueOfJson(json.getString(JSON.LANGUAGE), JSON_VALUE_DELIMITER));
             suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON_VALUE_DELIMITER));

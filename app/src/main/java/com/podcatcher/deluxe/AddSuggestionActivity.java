@@ -22,6 +22,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import android.widget.SearchView;
 
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.SuggestionManager;
+import com.podcatcher.deluxe.model.tasks.remote.IncrementPopularityTask;
 import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
@@ -285,6 +287,9 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     public void onFeedSelected(String podcastUrl) {
         podcastManager.addPodcast(new Podcast(suggestionToAdd.getName(), podcastUrl));
         showToast(getString(R.string.podcast_added, suggestionToAdd.getName()));
+
+        new IncrementPopularityTask()
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, suggestionToAdd.getNode());
     }
 
     @Override
