@@ -86,6 +86,15 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
      * The search view widget
      */
     private SearchView searchView;
+    /**
+     * The toprunner menu item
+     */
+    private MenuItem toprunnerMenuItem;
+    /**
+     * The new suggestions menu item
+     */
+    private MenuItem newMenuItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +123,10 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.suggestions, menu);
 
+        // Get handle to other item, we want to hide them if the search is active
+        this.toprunnerMenuItem = menu.findItem(R.id.featured_suggestions_menuitem);
+        this.newMenuItem = menu.findItem(R.id.new_suggestions_menuitem);
+
         // Associate searchable configuration with the SearchView
         final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         this.searchView = (SearchView) menu.findItem(R.id.search_suggestions_menuitem).getActionView();
@@ -132,6 +145,23 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
                 suggestionFragment.setSearchQuery(query);
 
                 return false;
+            }
+        });
+        menu.findItem(R.id.search_suggestions_menuitem).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                toprunnerMenuItem.setVisible(!view.isSmallPortrait());
+                newMenuItem.setVisible(!view.isSmallPortrait());
+
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                toprunnerMenuItem.setVisible(true);
+                newMenuItem.setVisible(true);
+
+                return true;
             }
         });
         colorSearchView(); // If possible, apply theme color to search plates

@@ -47,6 +47,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -200,16 +203,38 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
      * @param list  List to add suggestions to.
      */
     private void addSuggestionsFromJsonArray(JSONArray array, List<Suggestion> list) {
-        for (int index = 0; index < array.length(); index++) {
+        final SortedMap<Integer, List<Suggestion>> hitlist = new TreeMap<>(Collections.reverseOrder());
 
+        // Fill hitlist of suggestions
+        for (int index = 0; index < array.length(); index++)
             try {
-                final Suggestion suggestion = createSuggestion(array.getJSONObject(index));
+                final JSONObject object = array.getJSONObject(index);
+                final int votes = object.has(JSON.VOTES) ? object.getInt(JSON.VOTES) : 0;
+                final Suggestion suggestion = createSuggestion(object);
                 // Might be null if parsing failed -> do not add to result list
-                if (suggestion != null)
-                    list.add(suggestion);
+                if (suggestion != null && hitlist.containsKey(votes))
+                    hitlist.get(votes).add(suggestion);
+                else if (suggestion != null) {
+                    final List<Suggestion> entry = new ArrayList<>();
+                    entry.add(suggestion);
+
+                    hitlist.put(votes, entry);
+                }
             } catch (JSONException e) {
                 Log.d(TAG, "Cannot create JSON object for index: " + index, e);
             }
+
+        // Make sure the best suggestions are featured and all are added to the plain list
+        int featuredCount = 0;
+        for (Map.Entry<Integer, List<Suggestion>> entry : hitlist.entrySet()) {
+            // Mark the top 10 percent as featured
+            for (Suggestion suggestion : entry.getValue()) {
+                suggestion.setFeatured(featuredCount < array.length() / 10);
+                addKeywordsForStatus(suggestion);
+            }
+
+            list.addAll(entry.getValue());
+            featuredCount += entry.getValue().size();
         }
     }
 
@@ -231,11 +256,9 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
             suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON_VALUE_DELIMITER));
             suggestion.setGenres(Genre.valueOfJson(json.getString(JSON.CATEGORY), JSON_VALUE_DELIMITER));
             suggestion.setExplicit(EXPLICIT_POSITIVE_STRING.equals(json.getString(JSON.EXPLICIT).toLowerCase(Locale.US).trim()));
-            suggestion.setFeatured(json.getInt(JSON.VOTES) >= 10);
             suggestion.setNew(json.has(JSON.DATE_ADDED) && isRecentDate(json.getString(JSON.DATE_ADDED)));
             suggestion.setLogoUrl(json.getString(JSON.LOGO));
             suggestion.setKeywords(json.has(JSON.KEYWORDS) ? json.getString(JSON.KEYWORDS) : null);
-            addKeywordsForStatus(suggestion);
 
             final String[] labels = json.getString(JSON.FEED_LABEL).split(JSON_VALUE_DELIMITER);
             for (int index = 0; index < labels.length; index++)
