@@ -49,13 +49,13 @@ public class MediaButtonReceiver extends BroadcastReceiver {
                     // the intent and make sure it is explicit (required for API >= 21)
                     final Intent actionIntent = new Intent(context, PlayEpisodeService.class);
                     switch (event.getKeyCode()) {
+                        case KeyEvent.KEYCODE_HEADSETHOOK:
                         case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                             actionIntent.setAction(ACTION_TOGGLE);
                             break;
                         case KeyEvent.KEYCODE_MEDIA_PLAY:
                             actionIntent.setAction(ACTION_PLAY);
                             break;
-                        case KeyEvent.KEYCODE_HEADSETHOOK:
                         case KeyEvent.KEYCODE_MEDIA_PAUSE:
                             actionIntent.setAction(ACTION_PAUSE);
                             break;
