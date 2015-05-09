@@ -34,6 +34,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static java.net.URLDecoder.decode;
+
 /**
  * A podcast list sync controller for the gpodder.net service. This operates by
  * keeping track of the local changes to the podcast list and merging everything
@@ -172,7 +174,9 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                 else {
                     // 2b1. Pull the subscription list for this device currently
                     // available on the gpodder.net server.
-                    synced = client.getSubscriptions(deviceId);
+                    for (String url : client.getSubscriptions(deviceId))
+                        // Make sure to use decoded and normalized URLs
+                        synced.add(new Podcast(null, decode(url, "UTF8")).getUrl());
 
                     // 2b2. Add/remove subscriptions to/from the set as needed,
                     // this will make sure local modifications of the list will

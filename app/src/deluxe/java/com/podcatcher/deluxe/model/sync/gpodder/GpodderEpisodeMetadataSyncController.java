@@ -39,6 +39,8 @@ import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
+import static java.net.URLDecoder.decode;
+
 /**
  * An episode metadata sync controller for the gpodder.net service. This
  * operates by keeping track of the local changes to episodes and publishing
@@ -69,7 +71,7 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
     /**
      * The list of episode action the gpodder.net service understands
      */
-    private static enum Action {
+    private enum Action {
         DOWNLOAD, PLAY, DELETE, NEW
     }
 
@@ -110,13 +112,15 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
                 // Go walk through actions and act on them
                 for (EpisodeAction action : changes.actions) {
                     // Only act if we know the podcast
-                    if (podcastManager.findPodcastForUrl(action.podcast) == null)
+                    // (needs to be decoded since gpodder send encoded URLs)
+                    final String podcastUrl = decode(action.podcast, "UTF8");
+                    if (podcastManager.findPodcastForUrl(podcastUrl) == null)
                         continue;
 
                     // Get us an episode
                     final EpisodeMetadata meta = new EpisodeMetadata();
-                    meta.podcastUrl = action.podcast;
-                    final Episode episode = meta.marshalEpisode(action.episode);
+                    meta.podcastUrl = podcastUrl;
+                    final Episode episode = meta.marshalEpisode(decode(action.episode, "UTF8"));
                     // Act on the episode action if in receive mode
                     if (episode != null && SyncMode.SEND_RECEIVE.equals(mode))
                         //noinspection unchecked
