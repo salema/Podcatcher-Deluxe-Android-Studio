@@ -39,7 +39,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.Normalizer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -75,9 +74,10 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
     public final void testCreateImportFile() {
         // Put feed URLs here:
-        final String[] urls = {"http://feeds.feedburner.com/braincastmp3", "http://feeds.feedburner.com/tecnoblogpodcast", "http://feeds.feedburner.com/americhka/oBlg",
-                "http://feeds.feedburner.com/Galyonkin-pod", "http://hromadskeradio.org/category/all-podcasts/antena-irini-slavinskoyi-podkasti/feed",
-                "http://hromadskeradio.org/category/all-podcasts/filosofskiy-baraban-podkasti/feed"};
+        final String[] urls = {"http://feeds.feedburner.com/SlatesWorking", "http://feeds.feedburner.com/hearpitch",
+                "http://readinglives.libsyn.com/rss", "http://rss.cnn.com/services/podcasting/fareedzakaria/rss.xml",
+                "http://rss.earwolf.com/topics", "http://throwingshade.libsyn.com/rss", "http://feeds.5by5.tv/dlc",
+                "http://geeknation.com/podcast-feed/the-movie-crypt-with-green-lynch/", "http://meninblazers.buzzsprout.com/5628.rss"};
         final List<Suggestion> existingSuggestions = Utils.getExamplePodcasts(getInstrumentation().getTargetContext());
         Log.i(TAG, "List of existing suggestions loaded: " + existingSuggestions.size() + " podcasts");
         final List<JsonDummy> dummies = new ArrayList<>();
@@ -156,6 +156,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
     private class SuggestionImport extends Suggestion {
 
+        String subtitle;
         String summary;
         String keywords;
         String link;
@@ -173,6 +174,8 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
             if (RSS.LINK.equals(tagName) && link == null) // We only want the first one from the header
                 link = normalizeUrl(parser.nextText().trim());
+            else if (RSS.SUBTITLE.equals(tagName) && subtitle == null)
+                subtitle = cleanUp(parser.nextText());
             else if (RSS.DESCRIPTION.equals(tagName) && description == null)
                 description = cleanUp(parser.nextText());
             else if (RSS.SUMMARY.equals(tagName) && summary == null)
@@ -209,6 +212,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
         // Field will be access via GSON reflection
         private String title;
+        private String subtitle;
         private String keywords;
         private String feed;
         private String logo;
@@ -219,11 +223,13 @@ public class SuggestionImporter extends InstrumentationTestCase {
         private String type;
         private String explicit;
         private int votes;
-        private String added;
         private String path;
 
         public JsonDummy(SuggestionImport si) {
             this.title = cleanUp(si.getName());
+            this.subtitle = si.subtitle == null || si.subtitle.length() == 0 ? NO_VALUE : si.subtitle;
+            if (subtitle.equals(NO_VALUE) || subtitle.equals(title))
+                Log.w(TAG, "Podcast " + title + " has bad subtitle!");
 
             this.keywords = si.keywords == null || si.keywords.length() == 0 ? NO_VALUE : si.keywords;
             if (si.keywords != null && si.keywords.length() > 160)
@@ -269,8 +275,6 @@ public class SuggestionImporter extends InstrumentationTestCase {
             this.path = cleanUpAsPath(title);
             if (path.length() < 5)
                 Log.w(TAG, "Podcast " + title + " has short path:" + path);
-
-            this.added = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(new Date());
         }
 
         private String cleanUpAsPath(String text) {

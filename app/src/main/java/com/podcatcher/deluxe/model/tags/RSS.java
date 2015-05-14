@@ -29,6 +29,7 @@ public class RSS {
     public static final String ITEM = "item";
     public static final String IMAGE = "image";
     public static final String TITLE = "title";
+    public static final String SUBTITLE = "subtitle";
     public static final String EXPLICIT = "explicit";
     public static final String ENCLOSURE = "enclosure";
     public static final String URL = "url";
