@@ -157,6 +157,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
         // Detach from play service (prevents leaking)
         if (service != null) {
+            service.setVideoSurfaceProvider(null);
             service.removePlayServiceListener(this);
             unbindService(connection);
         }

@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListAdapter;
 
+import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.PodcatcherBaseListAdapter;
 import com.podcatcher.deluxe.model.types.Progress;
@@ -94,6 +95,14 @@ public abstract class PodcatcherListFragment extends ListFragment {
         viewCreated = false;
 
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Make sure we are warned if the fragment leaks
+        ((Podcatcher) getActivity().getApplication()).getRefWatcher().watch(this);
     }
 
     @Override

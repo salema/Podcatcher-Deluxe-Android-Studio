@@ -175,6 +175,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
         // Detach from play service
         if (service != null) {
+            service.setVideoSurfaceProvider(null);
             service.removePlayServiceListener(this);
             unbindService(connection);
         }

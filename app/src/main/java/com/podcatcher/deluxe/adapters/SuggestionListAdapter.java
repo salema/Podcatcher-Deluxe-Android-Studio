@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.PodcastManager;
 import com.podcatcher.deluxe.model.types.Genre;
 import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.MediaType;
@@ -94,22 +93,6 @@ public class SuggestionListAdapter extends RecyclerView.Adapter<SuggestionListIt
     @Override
     public void onBindViewHolder(SuggestionListItemViewHolder holder, int position) {
         holder.show(list.get(position), listener, selectedLanguage, selectedGenre, selectedType);
-    }
-
-    @Override
-    public void onViewAttachedToWindow(SuggestionListItemViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-
-        // This makes sure the holder can react when "its" podcast is actually added
-        PodcastManager.getInstance().addChangePodcastListListener(holder);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(SuggestionListItemViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-
-        // Make sure the holder is removed to prevent leaking
-        PodcastManager.getInstance().removeChangePodcastListListener(holder);
     }
 
     @Override

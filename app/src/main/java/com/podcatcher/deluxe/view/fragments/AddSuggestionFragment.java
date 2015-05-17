@@ -38,12 +38,16 @@ import com.podcatcher.deluxe.adapters.GenreSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.LanguageSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.MediaTypeSpinnerAdapter;
 import com.podcatcher.deluxe.adapters.SuggestionListAdapter;
+import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
+import com.podcatcher.deluxe.model.PodcastManager;
 import com.podcatcher.deluxe.model.types.Genre;
 import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.MediaType;
+import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.ProgressView;
+import com.podcatcher.deluxe.view.SuggestionListItemViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +56,7 @@ import java.util.Locale;
 /**
  * Fragment to show podcast suggestions.
  */
-public class AddSuggestionFragment extends Fragment {
+public class AddSuggestionFragment extends Fragment implements OnChangePodcastListListener {
 
     /**
      * The call back we work on
@@ -192,6 +196,13 @@ public class AddSuggestionFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        PodcastManager.getInstance().addChangePodcastListListener(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.layoutManager = new StaggeredGridLayoutManager(getResources().getInteger(
                 R.integer.suggestion_grid_columns), StaggeredGridLayoutManager.VERTICAL);
@@ -264,6 +275,13 @@ public class AddSuggestionFragment extends Fragment {
         outState.putInt(MEDIATYPE_FILTER_POSITION, mediaTypeFilter.getSelectedItemPosition());
     }
 
+    @Override
+    public void onDestroy() {
+        PodcastManager.getInstance().removeChangePodcastListListener(this);
+
+        super.onDestroy();
+    }
+
     /**
      * Set list of suggestions to show and update the UI.
      *
@@ -307,6 +325,27 @@ public class AddSuggestionFragment extends Fragment {
      */
     public void showLoadFailed() {
         progressView.showError(R.string.suggestions_load_error);
+    }
+
+    @Override
+    public void onPodcastAdded(Podcast podcast) {
+        final int[] first = layoutManager.findFirstVisibleItemPositions(null);
+        final int[] last = layoutManager.findLastVisibleItemPositions(null);
+
+        // Alert all visible item view holders (using -1/+1 as security margins)
+        for (int column = 0; column < first.length; column++) // first.length == last.length
+            for (int index = first[column] - 1; index <= last[column]; index++) {
+                final SuggestionListItemViewHolder holder =
+                        (SuggestionListItemViewHolder) suggestionsGridView.findViewHolderForAdapterPosition(index);
+
+                if (holder != null)
+                    holder.onPodcastAdded(podcast);
+            }
+    }
+
+    @Override
+    public void onPodcastRemoved(Podcast podcast) {
+        // pass
     }
 
     private void setInitialFilterSelection() {
