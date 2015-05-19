@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -138,6 +139,14 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
     }
 
     /**
+     * @return Podcast suggestion currently represented by this view holder.
+     */
+    @Nullable
+    public Suggestion getSuggestion() {
+        return suggestion;
+    }
+
+    /**
      * Make the view update all its child to represent input given.
      *
      * @param suggestion       Podcast suggestion to represent.
@@ -150,13 +159,10 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
                      Language selectedLanguage, Genre selectedGenre, MediaType selectedType) {
         // We need to keep this handle for the Palette action onSuccess()
         this.suggestion = suggestion;
-        // Cancel all pending requests for this view holder
-        Picasso.with(context).cancelRequest(logoImageView);
-        // Reset title bar background that might still be colored
-        // because the view represented a featured suggestion earlier
-        titleBar.setBackgroundColor(Color.WHITE);
 
         // 1. Start loading suggestion logo
+        Picasso.with(context).cancelRequest(logoImageView);
+        titleBar.setBackgroundColor(Color.WHITE);
         if (suggestion.getLogoUrl() != null && suggestion.getLogoUrl().startsWith("http"))
             Picasso.with(context)
                     .load(suggestion.getLogoUrl())

@@ -92,7 +92,12 @@ public class SuggestionListAdapter extends RecyclerView.Adapter<SuggestionListIt
 
     @Override
     public void onBindViewHolder(SuggestionListItemViewHolder holder, int position) {
-        holder.show(list.get(position), listener, selectedLanguage, selectedGenre, selectedType);
+        final Suggestion newSuggestion = list.get(position);
+        final Suggestion currentSuggestion = holder.getSuggestion();
+
+        // Only run the expensive update if the holder is not already showing this podcast
+        if (currentSuggestion == null || !currentSuggestion.equals(newSuggestion))
+            holder.show(newSuggestion, listener, selectedLanguage, selectedGenre, selectedType);
     }
 
     @Override
