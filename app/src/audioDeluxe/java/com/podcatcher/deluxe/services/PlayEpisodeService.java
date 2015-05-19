@@ -297,7 +297,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
                     fastForward();
                     break;
                 case ACTION_STOP:
-                    reset();
+                    stop();
                     break;
             }
 
@@ -321,7 +321,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         // Stop the timer
         notificationUpdateHandler.removeCallbacksAndMessages(null);
 
-        reset();
+        stop();
     }
 
     /**
@@ -350,7 +350,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     public void playEpisode(Episode episode) {
         if (episode != null) {
             // Stop and reset the current player and init variables
-            reset();
+            stop();
 
             // Make the new episode our current source
             this.currentEpisode = episode;
@@ -457,6 +457,19 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             updateRemoteControlPlayState(PLAYSTATE_PLAYING);
             rebuildNotification();
         }
+    }
+
+    /**
+     * Stop playback and reset player.
+     * Will also store resume playback information if appropriate.
+     */
+    public void stop() {
+        if (player.isPlaying())
+            player.stop();
+
+        storeResumeAt();
+        // This will also take care of the notification etc.
+        reset();
     }
 
     /**
@@ -629,6 +642,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
         // Mark the episode old (needs to be done before resetting the service!)
         episodeManager.setState(currentEpisode, true);
+        episodeManager.setResumeAt(currentEpisode, null);
         // Delete download if auto delete is enabled
         if (shouldAutoDeleteCompletedEpisode())
             episodeManager.deleteDownload(currentEpisode);
@@ -640,7 +654,8 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         else {
             // Pop the episode off the playlist
             episodeManager.removeFromPlaylist(currentEpisode);
-
+            // Not calling stop() because that would overwrite
+            // the resume playback info and we are stopped anyway.
             reset();
         }
 
@@ -682,7 +697,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             for (PlayServiceListener listener : listeners)
                 listener.onError();
         else
-            reset();
+            stop();
 
         Log.w(TAG, "Media player send error: " + what + "/" + extra);
         return true;
@@ -698,7 +713,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and
                 // reset media player
-                reset();
+                stop();
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -718,14 +733,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     /**
      * Reset the service to creation state.
      */
-    public void reset() {
-        // Store resume at time
-        storeResumeAt();
-
-        // Stop current playback if any
-        if (player.isPlaying())
-            player.stop();
-
+    private void reset() {
         // Remove notification
         stopForeground(true);
         stopNotificationUpdater();

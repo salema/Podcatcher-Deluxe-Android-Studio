@@ -318,7 +318,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
         // Stop called: unload episode
         if (service.isLoadedEpisode(selection.getEpisode()))
-            service.reset();
+            service.stop();
             // Play called on unloaded episode
         else if (selection.isEpisodeSet())
             service.playEpisode(selection.getEpisode());
@@ -427,7 +427,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
     @Override
     public void onError() {
         stopPlayerUpdater();
-        service.reset();
+        service.stop();
 
         updatePlayerUi();
         playerFragment.setPlayerVisibility(true);

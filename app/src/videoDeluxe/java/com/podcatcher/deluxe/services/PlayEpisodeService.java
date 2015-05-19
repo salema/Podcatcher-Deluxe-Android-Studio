@@ -225,7 +225,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Binder given to clients
      */
     private final IBinder binder = new PlayServiceBinder();
-
     /**
      * The binder to return to client.
      */
@@ -317,7 +316,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                     fastForward();
                     break;
                 case ACTION_STOP:
-                    reset();
+                    stop();
                     break;
             }
 
@@ -341,7 +340,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         // Stop the timer
         notificationUpdateHandler.removeCallbacksAndMessages(null);
 
-        reset();
+        stop();
     }
 
     /**
@@ -444,7 +443,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     public void playEpisode(Episode episode) {
         if (episode != null) {
             // Stop and reset the current player and init variables
-            reset();
+            stop();
 
             // Make the new episode our current source
             this.currentEpisode = episode;
@@ -556,6 +555,19 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     @Override
     public void start() {
         resume();
+    }
+
+    /**
+     * Stop playback and reset player.
+     * Will also store resume playback information if appropriate.
+     */
+    public void stop() {
+        if (player.isPlaying())
+            player.stop();
+
+        storeResumeAt();
+        // This will also take care of the notification etc.
+        reset();
     }
 
     /**
@@ -785,6 +797,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
         // Mark the episode old (needs to be done before resetting the service!)
         episodeManager.setState(currentEpisode, true);
+        episodeManager.setResumeAt(currentEpisode, null);
         // Delete download if auto delete is enabled
         if (shouldAutoDeleteCompletedEpisode())
             episodeManager.deleteDownload(currentEpisode);
@@ -796,7 +809,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         else {
             // Pop the episode off the playlist
             episodeManager.removeFromPlaylist(currentEpisode);
-
+            // Not calling stop() because that would overwrite
+            // the resume playback info and we are stopped anyway.
             reset();
         }
 
@@ -838,7 +852,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             for (PlayServiceListener listener : listeners)
                 listener.onError();
         else
-            reset();
+            stop();
 
         Log.w(TAG, "Media player send error: " + what + "/" + extra);
         return true;
@@ -854,7 +868,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and
                 // reset media player
-                reset();
+                stop();
                 break;
 
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
@@ -874,14 +888,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     /**
      * Reset the service to creation state.
      */
-    public void reset() {
-        // Store resume at time
-        storeResumeAt();
-
-        // Stop current playback if any
-        if (player.isPlaying())
-            player.stop();
-
+    private void reset() {
         // Remove notification
         stopForeground(true);
         stopNotificationUpdater();
