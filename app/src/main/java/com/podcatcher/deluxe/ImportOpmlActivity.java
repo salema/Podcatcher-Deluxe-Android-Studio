@@ -20,11 +20,13 @@ package com.podcatcher.deluxe;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.tasks.LoadPodcastListTask;
+import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
 import com.podcatcher.deluxe.model.types.Podcast;
 
 import java.util.List;
@@ -84,6 +86,9 @@ public class ImportOpmlActivity extends BaseActivity implements OnLoadPodcastLis
         // Add all podcasts to the list
         for (Podcast podcast : podcastList)
             podcastManager.addPodcast(podcast);
+
+        new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+                podcastList.toArray(new Podcast[podcastList.size()]));
     }
 
     @Override

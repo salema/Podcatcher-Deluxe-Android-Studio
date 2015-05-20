@@ -22,12 +22,14 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.webkit.URLUtil;
 
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
+import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.fragments.AddPodcastFragment;
@@ -173,6 +175,8 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
         // We come from a preset URL, add podcast and finish
         else if (intentHasFeedUrl) {
             podcastManager.addPodcast(newPodcast);
+            new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, newPodcast);
+
             finish();
         }
         // Otherwise try to load the podcast (user gave new URL)
@@ -200,6 +204,8 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
             else {
                 // Add podcast and finish the activity
                 podcastManager.addPodcast(podcast);
+                new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+
                 finish();
             }
         }
