@@ -45,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -203,7 +204,10 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
      * @param list  List to add suggestions to.
      */
     private void addSuggestionsFromJsonArray(JSONArray array, List<Suggestion> list) {
-        final SortedMap<Integer, List<Suggestion>> hitlist = new TreeMap<>(Collections.reverseOrder());
+        // So, this get a little bit involved. In order to make a good judgement which
+        // podcast suggestions should be featured, we need a breakdown by language as
+        // well as votes. This is done in the hitlist:
+        final Map<Language, SortedMap<Integer, List<Suggestion>>> hitlist = new HashMap<>();
 
         // Fill hitlist of suggestions
         for (int index = 0; index < array.length(); index++)
@@ -211,30 +215,52 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
                 final JSONObject object = array.getJSONObject(index);
                 final int votes = object.has(JSON.VOTES) ? object.getInt(JSON.VOTES) : 0;
                 final Suggestion suggestion = createSuggestion(object);
-                // Might be null if parsing failed -> do not add to result list
-                if (suggestion != null && hitlist.containsKey(votes))
-                    hitlist.get(votes).add(suggestion);
-                else if (suggestion != null) {
-                    final List<Suggestion> entry = new ArrayList<>();
-                    entry.add(suggestion);
 
-                    hitlist.put(votes, entry);
+                // Might be null if parsing failed -> do not add to result list
+                if (suggestion != null) {
+                    // We use the podcasts first language for featuring
+                    final Language language = (Language) suggestion.getLanguages().toArray()[0];
+                    SortedMap<Integer, List<Suggestion>> languageHitlist;
+
+                    // Make sure hitlist for the suggestion's language is present
+                    if (hitlist.containsKey(language))
+                        languageHitlist = hitlist.get(language);
+                    else {
+                        languageHitlist = new TreeMap<>(Collections.reverseOrder());
+                        hitlist.put(language, languageHitlist);
+                    }
+                    // Put suggestion into the right bucket
+                    if (languageHitlist.containsKey(votes))
+                        languageHitlist.get(votes).add(suggestion);
+                    else {
+                        final List<Suggestion> entry = new ArrayList<>();
+                        entry.add(suggestion);
+
+                        languageHitlist.put(votes, entry);
+                    }
                 }
             } catch (JSONException e) {
                 Log.d(TAG, "Cannot create JSON object for index: " + index, e);
             }
 
         // Make sure the best suggestions are featured and all are added to the plain list
-        int featuredCount = 0;
-        for (Map.Entry<Integer, List<Suggestion>> entry : hitlist.entrySet()) {
-            // Mark the top 10 percent as featured
-            for (Suggestion suggestion : entry.getValue()) {
-                suggestion.setFeatured(featuredCount < array.length() / 10);
-                addKeywordsForStatus(suggestion);
-            }
+        for (SortedMap<Integer, List<Suggestion>> languageHitlist : hitlist.values()) {
+            int featuredCount = 0;
+            // Calculate total suggestions count for this language as needed below
+            int languageSuggestionCount = 0;
+            for (List<Suggestion> suggestionList : languageHitlist.values())
+                languageSuggestionCount += suggestionList.size();
 
-            list.addAll(entry.getValue());
-            featuredCount += entry.getValue().size();
+            for (Map.Entry<Integer, List<Suggestion>> entry : languageHitlist.entrySet()) {
+                // Mark the top 15 percent as featured
+                for (Suggestion suggestion : entry.getValue()) {
+                    suggestion.setFeatured(featuredCount < languageSuggestionCount / 7);
+                    addKeywordsForStatus(suggestion);
+                }
+
+                list.addAll(entry.getValue());
+                featuredCount += entry.getValue().size();
+            }
         }
     }
 
