@@ -243,7 +243,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
                     @Override
                     public void onClick(View v) {
-                        setInitialFilterSelection();
+                        setInitialFilterSelection(false);
                         listener.onResetFilters();
 
                         updateGrid();
@@ -259,7 +259,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
             genreFilter.setSelection(savedInstanceState.getInt(GENRE_FILTER_POSITION));
             mediaTypeFilter.setSelection(savedInstanceState.getInt(MEDIATYPE_FILTER_POSITION));
         } else
-            setInitialFilterSelection();
+            setInitialFilterSelection(true);
 
         // For now (while loading the suggestions) show the progress view.
         suggestionsGridView.setVisibility(View.GONE);
@@ -350,21 +350,23 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
         // pass
     }
 
-    private void setInitialFilterSelection() {
+    private void setInitialFilterSelection(boolean resetLanguage) {
         // Reset search query
         this.searchQuery = null;
 
         // Set language according to locale
-        try {
-            final Locale currentLocale = getActivity().getResources().getConfiguration().locale;
-            final Language currentLanguage = Language.forTwoLetterIsoCode(currentLocale.getLanguage());
-            for (int index = 0; index < languageFilter.getCount(); index++)
-                if (languageFilter.getItemAtPosition(index).equals(currentLanguage))
-                    languageFilter.setSelection(index);
-        } catch (IllegalArgumentException iae) {
-            // Unknown language, set to wildcard
-            languageFilter.setSelection(0);
-        }
+        if (resetLanguage)
+            try {
+                final Locale currentLocale = getActivity().getResources().getConfiguration().locale;
+                final Language currentLanguage = Language.forTwoLetterIsoCode(currentLocale.getLanguage());
+                for (int index = 0; index < languageFilter.getCount(); index++)
+                    if (languageFilter.getItemAtPosition(index).equals(currentLanguage))
+                        languageFilter.setSelection(index);
+            } catch (IllegalArgumentException iae) {
+                // Unknown language, set to wildcard
+                languageFilter.setSelection(0);
+            }
+
         // Set category to wildcard
         genreFilter.setSelection(0);
         // Set type according to media type flavor (audio/video)
