@@ -17,6 +17,6 @@
  */
 -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-        android:color="@color/theme_dark">
-    <item android:drawable="@color/theme_light"/>
+    android:color="@color/theme_dark">
+    <item android:drawable="@color/theme_light" />
 </ripple>

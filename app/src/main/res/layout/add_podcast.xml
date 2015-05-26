@@ -17,105 +17,105 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:orientation="vertical"
-              android:animateLayoutChanges="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
 
     <RelativeLayout
-            android:id="@+id/podcast_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+        android:id="@+id/podcast_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <ImageView
-                android:id="@+id/podcast_logo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/podcast_image"
-                tools:background="#AAAAFF"
-                tools:src="@drawable/default_podcast_logo"/>
+            android:id="@+id/podcast_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/podcast_image"
+            tools:background="#AAAAFF"
+            tools:src="@drawable/default_podcast_logo" />
 
         <TextView
-                android:id="@+id/podcast_caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center_vertical"
-                android:ellipsize="marquee"
-                android:paddingLeft="@dimen/list_item_padding"
-                android:singleLine="true"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/text_secondary"
-                android:background="#DDFFFFFF"
-                tools:text="155 episodes"/>
+            android:id="@+id/podcast_caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:ellipsize="marquee"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:singleLine="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/text_secondary"
+            android:background="#DDFFFFFF"
+            tools:text="155 episodes" />
 
         <TextView
-                android:id="@+id/podcast_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:layout_above="@id/podcast_caption"
-                android:paddingLeft="@dimen/list_item_padding"
-                android:singleLine="true"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:background="#DDFFFFFF"
-                tools:text="Great Podcast Suggestion"/>
+            android:id="@+id/podcast_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:layout_above="@id/podcast_caption"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:singleLine="true"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:background="#DDFFFFFF"
+            tools:text="Great Podcast Suggestion" />
 
     </RelativeLayout>
 
     <EditText
-            android:id="@+id/podcast_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/podcast_enter_url_here"
-            android:imeOptions="actionGo"
-            android:inputType="textUri|textNoSuggestions"/>
+        android:id="@+id/podcast_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/podcast_enter_url_here"
+        android:imeOptions="actionGo"
+        android:inputType="textUri|textNoSuggestions" />
 
     <com.podcatcher.deluxe.view.HorizontalProgressView
-            android:id="@+id/add_podcast_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+        android:id="@+id/add_podcast_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
-                android:id="@+id/podcast_add_help_button"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_blue"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/help"
-                android:textColor="@drawable/button_label"/>
+            android:id="@+id/podcast_add_help_button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_blue"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/help"
+            android:textColor="@drawable/button_label" />
 
         <Button
-                android:id="@+id/podcast_add_button"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_green"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/podcast_add_button"
-                android:textColor="@drawable/button_label"/>
+            android:id="@+id/podcast_add_button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_green"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/podcast_add_button"
+            android:textColor="@drawable/button_label" />
     </LinearLayout>
 </LinearLayout>

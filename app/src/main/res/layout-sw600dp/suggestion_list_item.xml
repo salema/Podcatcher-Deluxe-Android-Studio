@@ -17,113 +17,113 @@
  */
 -->
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="6dp"
-                                    card_view:cardCornerRadius="2dp"
-                                    tools:context=".views.SuggestionListItemHolder">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    card_view:cardCornerRadius="2dp"
+    tools:context=".views.SuggestionListItemHolder">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-                android:id="@+id/suggestion_logo"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:contentDescription="@string/podcast_image"
-                tools:background="#AAAAFF"
-                tools:src="@drawable/default_podcast_logo"/>
+            android:id="@+id/suggestion_logo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/podcast_image"
+            tools:background="#AAAAFF"
+            tools:src="@drawable/default_podcast_logo" />
 
         <RelativeLayout
-                android:id="@+id/suggestion_title_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/suggestion_logo"
-                android:alpha=".9"
-                tools:background="#DDFFFFFF">
+            android:id="@+id/suggestion_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/suggestion_logo"
+            android:alpha=".9"
+            tools:background="#DDFFFFFF">
 
             <ImageView
-                    android:id="@+id/suggestion_add_button"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/podcast_add_button"
-                    android:src="@drawable/ic_media_add"/>
+                android:id="@+id/suggestion_add_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/podcast_add_button"
+                android:src="@drawable/ic_media_add" />
 
             <TextView
-                    android:id="@+id/suggestion_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/suggestion_add_button"
-                    android:ellipsize="marquee"
-                    android:paddingLeft="@dimen/list_item_padding"
-                    android:singleLine="true"
-                    android:textAppearance="?android:textAppearanceLarge"
-                    tools:text="Great Podcast Suggestion"/>
+                android:id="@+id/suggestion_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/suggestion_add_button"
+                android:ellipsize="marquee"
+                android:paddingLeft="@dimen/list_item_padding"
+                android:singleLine="true"
+                android:textAppearance="?android:textAppearanceLarge"
+                tools:text="Great Podcast Suggestion" />
 
             <LinearLayout
-                    android:id="@+id/suggestion_icon_bar"
-                    android:layout_width="wrap_content"
+                android:id="@+id/suggestion_icon_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/suggestion_name"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/suggestion_featured"
+                    android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/suggestion_name"
-                    android:gravity="center_vertical">
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_suggestion_featured" />
 
                 <ImageView
-                        android:id="@+id/suggestion_featured"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_suggestion_featured"/>
+                    android:id="@+id/suggestion_explicit"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_suggestion_explicit" />
 
                 <ImageView
-                        android:id="@+id/suggestion_explicit"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_suggestion_explicit"/>
-
-                <ImageView
-                        android:id="@+id/suggestion_new"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_media_new"/>
+                    android:id="@+id/suggestion_new"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_media_new" />
             </LinearLayout>
 
             <TextView
-                    android:id="@+id/suggestion_meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_below="@id/suggestion_name"
-                    android:layout_toRightOf="@id/suggestion_icon_bar"
-                    android:layout_toLeftOf="@id/suggestion_add_button"
-                    android:gravity="center_vertical"
-                    android:ellipsize="marquee"
-                    android:paddingLeft="@dimen/list_item_padding"
-                    android:singleLine="true"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@color/text_secondary"
-                    tools:text="English * Music"/>
+                android:id="@+id/suggestion_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_below="@id/suggestion_name"
+                android:layout_toRightOf="@id/suggestion_icon_bar"
+                android:layout_toLeftOf="@id/suggestion_add_button"
+                android:gravity="center_vertical"
+                android:ellipsize="marquee"
+                android:paddingLeft="@dimen/list_item_padding"
+                android:singleLine="true"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/text_secondary"
+                tools:text="English * Music" />
         </RelativeLayout>
 
         <TextView
-                android:id="@+id/suggestion_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/suggestion_title_bar"
-                android:paddingBottom="2dp"
-                android:paddingLeft="@dimen/list_item_padding"
-                android:paddingRight="@dimen/list_item_padding"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:maxLines="@integer/suggestion_description_lines"
-                android:ellipsize="end"
-                tools:text="Podcast description. This is some really extensive and nice text to describe the suggestion podcasts and why you should listen."/>
+            android:id="@+id/suggestion_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/suggestion_title_bar"
+            android:paddingBottom="2dp"
+            android:paddingLeft="@dimen/list_item_padding"
+            android:paddingRight="@dimen/list_item_padding"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:maxLines="@integer/suggestion_description_lines"
+            android:ellipsize="end"
+            tools:text="Podcast description. This is some really extensive and nice text to describe the suggestion podcasts and why you should listen." />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

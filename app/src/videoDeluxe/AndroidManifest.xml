@@ -20,16 +20,13 @@
 
     <application>
         <activity
-                android:name="com.podcatcher.deluxe.MxPlayerFullscreenVideoActivity"
-                android:theme="@android:style/Theme.NoDisplay">
-        </activity>
+            android:name="com.podcatcher.deluxe.MxPlayerFullscreenVideoActivity"
+            android:theme="@android:style/Theme.NoDisplay"></activity>
         <activity
-                android:name="com.podcatcher.deluxe.VlcPlayerFullscreenVideoActivity"
-                android:theme="@android:style/Theme.NoDisplay">
-        </activity>
+            android:name="com.podcatcher.deluxe.VlcPlayerFullscreenVideoActivity"
+            android:theme="@android:style/Theme.NoDisplay"></activity>
         <activity
-                android:name="com.podcatcher.deluxe.DefaultFullscreenVideoActivity"
-                android:theme="@style/AppFullscreen">
-        </activity>
+            android:name="com.podcatcher.deluxe.DefaultFullscreenVideoActivity"
+            android:theme="@style/AppFullscreen"></activity>
     </application>
 </manifest>
