@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,11 +18,11 @@
 
 package com.podcatcher.deluxe.model.types.test;
 
-import android.test.InstrumentationTestCase;
-
 import com.podcatcher.deluxe.model.types.Genre;
 import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.MediaType;
+
+import android.test.InstrumentationTestCase;
 
 @SuppressWarnings("javadoc")
 public class TaxonomyTermTest extends InstrumentationTestCase {

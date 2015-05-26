@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,16 +18,16 @@
 
 package com.podcatcher.deluxe;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.dropbox.sync.android.DbxAccountManager;
 import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.view.fragments.ConfirmUnlinkDropboxFragment;
 import com.podcatcher.deluxe.view.fragments.ConfirmUnlinkDropboxFragment.ConfirmUnlinkDropboxDialogListener;
+
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 
 /**
  * Non-UI activity to configure the Dropbox synchronization settings.

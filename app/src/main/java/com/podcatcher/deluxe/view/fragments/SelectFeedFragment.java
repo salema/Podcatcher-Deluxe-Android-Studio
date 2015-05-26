@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,6 +18,8 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
+import com.podcatcher.deluxe.R;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -30,8 +33,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.R;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;

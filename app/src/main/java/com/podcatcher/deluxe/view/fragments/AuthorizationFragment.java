@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,8 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -35,8 +38,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
-import com.podcatcher.deluxe.R;
 
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 

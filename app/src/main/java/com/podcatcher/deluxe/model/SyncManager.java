@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,12 +18,6 @@
 
 package com.podcatcher.deluxe.model;
 
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnSyncListener;
@@ -30,6 +25,12 @@ import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.SyncController;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncControllerListener;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncMode;
+
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.HashSet;

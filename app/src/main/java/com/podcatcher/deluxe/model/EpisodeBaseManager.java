@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,14 +18,14 @@
 
 package com.podcatcher.deluxe.model;
 
-import android.os.Handler;
-
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.listeners.OnLoadEpisodeMetadataListener;
 import com.podcatcher.deluxe.listeners.OnStoreEpisodeMetadataListener;
 import com.podcatcher.deluxe.model.tasks.StoreEpisodeMetadataTask;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
+
+import android.os.Handler;
 
 import java.util.HashMap;
 import java.util.Map;

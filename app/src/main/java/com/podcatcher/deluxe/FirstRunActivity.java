@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,15 +18,15 @@
 
 package com.podcatcher.deluxe;
 
+import com.podcatcher.deluxe.view.fragments.FirstRunFragment;
+import com.podcatcher.deluxe.view.fragments.FirstRunFragment.FirstRunListener;
+
 import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.podcatcher.deluxe.view.fragments.FirstRunFragment;
-import com.podcatcher.deluxe.view.fragments.FirstRunFragment.FirstRunListener;
 
 /**
  * Activity to run on the very first app start. Welcomes the user and gives some

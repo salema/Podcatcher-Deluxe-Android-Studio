@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,15 +18,15 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.SettingsActivity;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.BaseAdapter;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.SettingsActivity;
 
 /**
  * Fragment for settings.

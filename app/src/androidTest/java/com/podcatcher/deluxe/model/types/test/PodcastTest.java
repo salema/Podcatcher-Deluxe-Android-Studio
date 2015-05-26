@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,14 +18,14 @@
 
 package com.podcatcher.deluxe.model.types.test;
 
-import android.test.InstrumentationTestCase;
-import android.test.suitebuilder.annotation.MediumTest;
-import android.util.Base64;
-
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Podcast;
 
 import org.xmlpull.v1.XmlPullParserException;
+
+import android.test.InstrumentationTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.util.Base64;
 
 import java.io.IOException;
 

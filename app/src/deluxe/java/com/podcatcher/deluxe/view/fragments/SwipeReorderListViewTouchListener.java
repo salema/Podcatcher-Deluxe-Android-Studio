@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -78,21 +79,21 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
          * @return <code>true</code> if the item at the given position can be
          * swiped to re-order.
          */
-        public boolean canReorder(int position);
+        boolean canReorder(int position);
 
         /**
          * Called on the listener on left swipes.
          *
          * @param positions Indexes flinged.
          */
-        public void onMoveUp(int[] positions);
+        void onMoveUp(int[] positions);
 
         /**
          * Called on the listener if the user swipes items to the right.
          *
          * @param positions Indexes flinged.
          */
-        public void onMoveDown(int[] positions);
+        void onMoveDown(int[] positions);
     }
 
     /**

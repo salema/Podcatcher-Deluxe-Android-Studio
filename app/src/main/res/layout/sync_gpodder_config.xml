@@ -22,116 +22,116 @@
               android:orientation="vertical">
 
     <EditText
-        android:id="@+id/username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/auth_username"
-        android:imeOptions="actionNext"
-        android:inputType="textNoSuggestions"/>
-
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        android:hint="@string/auth_password"
-        android:imeOptions="actionSend"
-        android:inputType="textPassword"/>
-
-    <ProgressBar
-        android:id="@+id/check_login_progress"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
-        android:indeterminate="true"
-        android:visibility="invisible"/>
-
-    <TextView
-        android:id="@+id/login_failed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="2dp"
-        android:gravity="center"
-        android:text="@string/sync_gpodder_login_invalid"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/text_error"
-        android:visibility="gone"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@color/divider"/>
-
-    <TextView
-        android:id="@+id/device_id_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/sync_gpodder_device_id"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/text_secondary"/>
-
-    <EditText
-        android:id="@+id/device_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:imeOptions="actionSend"
-        android:inputType="textNoSuggestions"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/auth_username"
+            android:imeOptions="actionNext"
+            android:inputType="textNoSuggestions"/>
+
+    <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_red"
-            android:ellipsize="marquee"
+            android:hint="@string/auth_password"
+            android:imeOptions="actionSend"
+            android:inputType="textPassword"/>
+
+    <ProgressBar
+            android:id="@+id/check_login_progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:indeterminate="true"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:id="@+id/login_failed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
             android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/cancel"
-            android:textColor="@drawable/button_label"/>
+            android:text="@string/sync_gpodder_login_invalid"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/text_error"
+            android:visibility="gone"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/divider"/>
+
+    <TextView
+            android:id="@+id/device_id_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/sync_gpodder_device_id"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/text_secondary"/>
+
+    <EditText
+            android:id="@+id/device_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:imeOptions="actionSend"
+            android:inputType="textNoSuggestions"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <Button
-            android:id="@+id/submit_button"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_green"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/auth_submit"
-            android:textColor="@drawable/button_label"/>
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/cancel"
+                android:textColor="@drawable/button_label"/>
+
+        <Button
+                android:id="@+id/submit_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_green"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/auth_submit"
+                android:textColor="@drawable/button_label"/>
     </LinearLayout>
 </LinearLayout>

@@ -25,56 +25,56 @@
               tools:context=".views.fragments.SuggestionFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:elevation="2dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
+            android:elevation="2dp">
 
         <Spinner
-            android:id="@+id/suggestion_language_select"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"/>
+                android:id="@+id/suggestion_language_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"/>
 
         <Spinner
-            android:id="@+id/suggestion_genre_select"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"/>
+                android:id="@+id/suggestion_genre_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"/>
 
         <Spinner
-            android:id="@+id/suggestion_type_select"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"/>
+                android:id="@+id/suggestion_type_select"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"/>
     </LinearLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#FFDDDDDD">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFDDDDDD">
 
         <com.podcatcher.deluxe.view.ProgressView
-            android:id="@+id/suggestion_list_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="gone"/>
+                android:id="@+id/suggestion_list_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:visibility="gone"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/suggestion_grid"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"/>
+                android:id="@+id/suggestion_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
 
         <ViewStub
-            android:id="@+id/suggestion_grid_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout="@layout/suggestion_list_empty"/>
+                android:id="@+id/suggestion_grid_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/suggestion_list_empty"/>
     </FrameLayout>
 </LinearLayout>

@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -34,7 +35,7 @@ public interface OnChangeEpisodeStateListener {
      *                 if the episode is considered 'old' and <code>false</code>
      *                 otherwise.
      */
-    public void onStateChanged(Episode episode, boolean newState);
+    void onStateChanged(Episode episode, boolean newState);
 
     /**
      * Called on the listener when the resume at point for an episode is
@@ -44,5 +45,5 @@ public interface OnChangeEpisodeStateListener {
      * @param millis  The player position in milli-seconds from the start,
      *                <code>null</code> if the data has been reset.
      */
-    public void onResumeAtChanged(Episode episode, Integer millis);
+    void onResumeAtChanged(Episode episode, Integer millis);
 }

@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,9 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.adapters.PreferredDownloadFolderAdapter;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -29,9 +33,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.adapters.PreferredDownloadFolderAdapter;
 
 /**
  * Dialog fragment for download folder selection.
@@ -72,17 +73,17 @@ public class SelectDownloadFolderFragment extends DialogFragment {
          *
          * @param path The absolute path to the download folder selected.
          */
-        public void onSelectFolder(String path);
+        void onSelectFolder(String path);
 
         /**
          * Called on the listener when the user wants to see the help screen.
          */
-        public void onShowHelp();
+        void onShowHelp();
 
         /**
          * Called on the listener when the user wants to select a folder manually.
          */
-        public void onShowAdvanced();
+        void onShowAdvanced();
     }
 
     @Override

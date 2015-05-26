@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -30,12 +31,12 @@ public interface OnReorderEpisodeListener {
      *
      * @param episode Episode moved by the user.
      */
-    public void onMoveEpisodeUp(Episode episode);
+    void onMoveEpisodeUp(Episode episode);
 
     /**
      * Called on listener to reflect that an episode should move down.
      *
      * @param episode Episode moved by the user.
      */
-    public void onMoveEpisodeDown(Episode episode);
+    void onMoveEpisodeDown(Episode episode);
 }

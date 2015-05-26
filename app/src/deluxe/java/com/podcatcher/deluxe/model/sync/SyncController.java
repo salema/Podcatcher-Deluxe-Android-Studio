@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,8 +17,6 @@
  */
 
 package com.podcatcher.deluxe.model.sync;
-
-import android.net.Uri;
 
 import com.podcatcher.deluxe.listeners.OnChangeEpisodeStateListener;
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
@@ -32,6 +31,8 @@ import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
+
+import android.net.Uri;
 
 import java.util.Date;
 import java.util.List;
@@ -70,7 +71,7 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
          *
          * @param impl Controller that synced successfully.
          */
-        public void onSyncTriggered(ControllerImpl impl);
+        void onSyncTriggered(ControllerImpl impl);
 
         /**
          * Called by a {@link SyncController} on its call-back to indicate that
@@ -79,7 +80,7 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
          *
          * @param impl Controller that synced successfully.
          */
-        public void onSyncCompleted(ControllerImpl impl);
+        void onSyncCompleted(ControllerImpl impl);
 
         /**
          * Called by a {@link SyncController} on its call-back when a sync
@@ -89,7 +90,7 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
          * @param impl  Controller that failed to sync contents.
          * @param cause The reason for the failure (might be <code>null</code>).
          */
-        public void onSyncFailed(ControllerImpl impl, Throwable cause);
+        void onSyncFailed(ControllerImpl impl, Throwable cause);
     }
 
     /**
@@ -100,7 +101,7 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
     /**
      * The sync mode the controller operates in.
      */
-    public static enum SyncMode {
+    public enum SyncMode {
         /**
          * Only send changes out to the service connected, do not change the
          * local data on the device.

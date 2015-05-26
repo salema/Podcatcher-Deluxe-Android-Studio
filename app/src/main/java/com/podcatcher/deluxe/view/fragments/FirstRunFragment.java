@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,8 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
+import com.podcatcher.deluxe.R;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -26,8 +29,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import com.podcatcher.deluxe.R;
 
 /**
  * A dialog to greet the user and introduce the app.
@@ -99,11 +100,11 @@ public class FirstRunFragment extends DialogFragment {
         /**
          * Called when the add podcast button is pressed
          */
-        public void onAddPodcasts();
+        void onAddPodcasts();
 
         /**
          * Called when the help button is pressed
          */
-        public void onShowHelp();
+        void onShowHelp();
     }
 }

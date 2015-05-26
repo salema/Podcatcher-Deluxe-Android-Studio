@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,13 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.adapters.SyncListAdapter;
+import com.podcatcher.deluxe.model.SyncManager;
+import com.podcatcher.deluxe.model.sync.ControllerImpl;
+import com.podcatcher.deluxe.model.sync.SyncController;
+import com.podcatcher.deluxe.model.sync.SyncController.SyncMode;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -30,13 +38,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.adapters.SyncListAdapter;
-import com.podcatcher.deluxe.model.SyncManager;
-import com.podcatcher.deluxe.model.sync.ControllerImpl;
-import com.podcatcher.deluxe.model.sync.SyncController;
-import com.podcatcher.deluxe.model.sync.SyncController.SyncMode;
 
 import java.util.Date;
 
@@ -94,7 +95,7 @@ public class ConfigureSyncFragment extends DialogFragment {
          *
          * @param impl The controller to present settings for.
          */
-        public void onUpdateSettings(ControllerImpl impl);
+        void onUpdateSettings(ControllerImpl impl);
 
         /**
          * Called on the listener when the user set the {@link SyncMode} for a
@@ -104,17 +105,17 @@ public class ConfigureSyncFragment extends DialogFragment {
          * @param mode The new sync mode. By giving <code>null</code> here, the
          *             controller is disabled.
          */
-        public void onUpdateMode(ControllerImpl impl, SyncMode mode);
+        void onUpdateMode(ControllerImpl impl, SyncMode mode);
 
         /**
          * Called on the listener when the user wants to see the help screen.
          */
-        public void onShowHelp();
+        void onShowHelp();
 
         /**
          * Called on the listener when the user triggered a sync all event.
          */
-        public void onSyncNow();
+        void onSyncNow();
     }
 
     @Override

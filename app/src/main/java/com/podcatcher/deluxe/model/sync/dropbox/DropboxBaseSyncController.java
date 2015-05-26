@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,10 +18,6 @@
 
 package com.podcatcher.deluxe.model.sync.dropbox;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxAccountManager.AccountListener;
@@ -33,6 +30,10 @@ import com.dropbox.sync.android.DbxTable;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.sync.SyncController;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;

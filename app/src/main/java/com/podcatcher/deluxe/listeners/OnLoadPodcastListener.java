@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -37,14 +38,14 @@ public interface OnLoadPodcastListener {
      *                 (and this happens in the wild out there) percent might be
      *                 >100.
      */
-    public void onPodcastLoadProgress(Podcast podcast, Progress progress);
+    void onPodcastLoadProgress(Podcast podcast, Progress progress);
 
     /**
      * Called on completion.
      *
      * @param podcast Podcast loaded.
      */
-    public void onPodcastLoaded(Podcast podcast);
+    void onPodcastLoaded(Podcast podcast);
 
     /**
      * Called when loading the podcast failed.
@@ -52,5 +53,5 @@ public interface OnLoadPodcastListener {
      * @param podcast Podcast failing to load.
      * @param code    The reason for the failure.
      */
-    public void onPodcastLoadFailed(Podcast podcast, PodcastLoadError code);
+    void onPodcastLoadFailed(Podcast podcast, PodcastLoadError code);
 }

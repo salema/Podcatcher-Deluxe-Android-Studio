@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,12 +18,12 @@
 
 package com.podcatcher.deluxe;
 
+import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.view.fragments.EpisodeFragment;
+
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
-
-import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.view.fragments.EpisodeFragment;
 
 /**
  * Activity to show only the episode and possibly the player. Used in small

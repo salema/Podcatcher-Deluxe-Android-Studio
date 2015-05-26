@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,15 +17,6 @@
  */
 
 package com.podcatcher.deluxe.model;
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.UserManager;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.GetRestrictionsReceiver;
@@ -42,6 +34,15 @@ import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
 import org.xmlpull.v1.XmlPullParser;
+
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.UserManager;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;

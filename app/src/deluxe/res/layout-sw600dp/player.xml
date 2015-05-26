@@ -25,94 +25,94 @@
               tools:showIn="@layout/main">
 
     <ImageView
-        android:id="@+id/player_divider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:contentDescription="@string/divider"
-        android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright"/>
+            android:id="@+id/player_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:contentDescription="@string/divider"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/divider_horizontal_bright"/>
 
     <TextView
-        android:id="@+id/player_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:gravity="center"
-        android:text="@string/player_error"
-        android:textColor="@color/text_error"
-        android:visibility="gone"/>
+            android:id="@+id/player_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:text="@string/player_error"
+            android:textColor="@color/text_error"
+            android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/player_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="@dimen/episode_view_padding"
-        android:layout_marginRight="@dimen/episode_view_padding"
-        android:singleLine="true"
-        android:textAppearance="?android:textAppearanceMedium"
-        android:visibility="gone"
-        tools:text="Test Episode Title - Test Podcast"
-        tools:visibility="visible"/>
+            android:id="@+id/player_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="@dimen/episode_view_padding"
+            android:layout_marginRight="@dimen/episode_view_padding"
+            android:singleLine="true"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:visibility="gone"
+            tools:text="Test Episode Title - Test Podcast"
+            tools:visibility="visible"/>
 
     <SeekBar
-        android:id="@+id/player_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="@dimen/episode_view_padding"
-        android:layout_marginRight="@dimen/episode_view_padding"/>
+            android:id="@+id/player_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="@dimen/episode_view_padding"
+            android:layout_marginRight="@dimen/episode_view_padding"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/player_rewind"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/button_orange"
-            android:src="@drawable/ic_media_rewind"/>
+                android:id="@+id/player_rewind"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/button_orange"
+                android:src="@drawable/ic_media_rewind"/>
 
         <Button
-            android:id="@+id/player_button"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingRight="32dp"
-            android:singleLine="true"
-            android:text="@string/pause"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@drawable/button_label"
-            tools:drawableLeft="@drawable/ic_media_play"
-            tools:background="@drawable/button_green"
-            tools:text="Pause at XX:XX of X:XX:XX"/>
+                android:id="@+id/player_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:paddingRight="32dp"
+                android:singleLine="true"
+                android:text="@string/pause"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@drawable/button_label"
+                tools:drawableLeft="@drawable/ic_media_play"
+                tools:background="@drawable/button_green"
+                tools:text="Pause at XX:XX of X:XX:XX"/>
 
         <ImageButton
-            android:id="@+id/player_forward"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/button_orange"
-            android:src="@drawable/ic_media_forward"/>
+                android:id="@+id/player_forward"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/button_orange"
+                android:src="@drawable/ic_media_forward"/>
 
         <ImageButton
-            android:id="@+id/player_next"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="2dp"
-            android:background="@drawable/button_orange"
-            android:src="@drawable/ic_media_next"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+                android:id="@+id/player_next"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/button_orange"
+                android:src="@drawable/ic_media_next"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
     </LinearLayout>
 </LinearLayout>

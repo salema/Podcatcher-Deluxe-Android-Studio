@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,17 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.AddSuggestionActivity;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.adapters.PodcastListAdapter;
+import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
+import com.podcatcher.deluxe.listeners.PodcastListContextListener;
+import com.podcatcher.deluxe.model.SyncManager;
+import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.model.types.Progress;
+import com.podcatcher.deluxe.view.PodcastListItemView;
+import com.squareup.picasso.Picasso;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -38,17 +50,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-
-import com.podcatcher.deluxe.AddSuggestionActivity;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.adapters.PodcastListAdapter;
-import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
-import com.podcatcher.deluxe.listeners.PodcastListContextListener;
-import com.podcatcher.deluxe.model.SyncManager;
-import com.podcatcher.deluxe.model.types.Podcast;
-import com.podcatcher.deluxe.model.types.Progress;
-import com.podcatcher.deluxe.view.PodcastListItemView;
-import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;

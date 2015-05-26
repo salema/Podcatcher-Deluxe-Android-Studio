@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,15 @@
 
 package com.podcatcher.deluxe.services;
 
+import com.podcatcher.deluxe.BaseActivity.ContentMode;
+import com.podcatcher.deluxe.EpisodeListActivity;
+import com.podcatcher.deluxe.PodcastActivity;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.types.Episode;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -26,15 +36,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.session.MediaSession;
 import android.os.Build;
-
-import com.podcatcher.deluxe.BaseActivity.ContentMode;
-import com.podcatcher.deluxe.EpisodeListActivity;
-import com.podcatcher.deluxe.PodcastActivity;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.types.Episode;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.podcatcher.deluxe.EpisodeActivity.EPISODE_URL_KEY;

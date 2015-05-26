@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,19 +18,6 @@
 
 package com.podcatcher.deluxe;
 
-import android.app.SearchManager;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.SuggestionManager;
 import com.podcatcher.deluxe.model.tasks.remote.IncrementPopularityTask;
@@ -42,6 +30,19 @@ import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment.AddSuggestionL
 import com.podcatcher.deluxe.view.fragments.ConfirmExplicitSuggestionFragment;
 import com.podcatcher.deluxe.view.fragments.ConfirmExplicitSuggestionFragment.ConfirmExplicitSuggestionDialogListener;
 import com.podcatcher.deluxe.view.fragments.SelectFeedFragment;
+
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;

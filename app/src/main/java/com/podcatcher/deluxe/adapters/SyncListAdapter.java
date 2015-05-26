@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,15 +18,15 @@
 
 package com.podcatcher.deluxe.adapters;
 
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.view.SyncListItemView;
 import com.podcatcher.deluxe.view.fragments.ConfigureSyncFragment.ConfigureSyncDialogListener;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;

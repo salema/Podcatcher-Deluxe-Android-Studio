@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,19 +17,6 @@
  */
 
 package com.podcatcher.deluxe.model;
-
-import android.annotation.TargetApi;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Process;
-import android.support.annotation.NonNull;
 
 import com.podcatcher.deluxe.BaseActivity.ContentMode;
 import com.podcatcher.deluxe.EpisodeActivity;
@@ -44,6 +32,19 @@ import com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownl
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 import com.podcatcher.deluxe.model.types.Podcast;
+
+import android.annotation.TargetApi;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Process;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.util.ArrayList;

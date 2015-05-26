@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -99,7 +100,9 @@ public class Suggestion extends Podcast {
     /**
      * Put new feed alternative for this suggestion.
      *
-     * @param label   Short description for this feed alternative, e.g. "Free (audio/mp3)" or "Video low".
+     * @param label   Short description for this feed alternative, e.g. "Free (audio/mp3)" or
+     *                "Video
+     *                low".
      * @param feedUrl Corresponding podcast feed URL.
      */
     public void addFeed(String label, String feedUrl) {

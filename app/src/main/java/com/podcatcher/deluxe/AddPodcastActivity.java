@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,16 +18,6 @@
 
 package com.podcatcher.deluxe;
 
-import android.app.DialogFragment;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.webkit.URLUtil;
-
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
@@ -36,6 +27,16 @@ import com.podcatcher.deluxe.view.fragments.AddPodcastFragment;
 import com.podcatcher.deluxe.view.fragments.AddPodcastFragment.AddPodcastDialogListener;
 import com.podcatcher.deluxe.view.fragments.AuthorizationFragment;
 import com.podcatcher.deluxe.view.fragments.AuthorizationFragment.OnEnterAuthorizationListener;
+
+import android.app.DialogFragment;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.webkit.URLUtil;
 
 import static com.podcatcher.deluxe.EpisodeListActivity.PODCAST_URL_KEY;
 import static com.podcatcher.deluxe.view.fragments.AuthorizationFragment.USERNAME_PRESET_KEY;
@@ -165,14 +166,14 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
         // Create a proper podcast object. We use the intent URI if present
         // because it might have username / password information
         final Podcast newPodcast = new Podcast(podcastName, intentHasFeedUrl ?
-            getIntent().getDataString() : podcastUrl);
+                getIntent().getDataString() : podcastUrl);
         // If not set, put auth info user entered earlier
         setAuthInfoIfPresent(newPodcast);
 
         // If the podcast is present, select it and close
         if (podcastManager.contains(newPodcast))
             selectExistingPodcastAndFinish(newPodcast);
-        // We come from a preset URL, add podcast and finish
+            // We come from a preset URL, add podcast and finish
         else if (intentHasFeedUrl) {
             podcastManager.addPodcast(newPodcast);
             new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, newPodcast);

@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,9 +18,9 @@
 
 package com.podcatcher.deluxe.listeners;
 
-import android.net.Uri;
-
 import com.podcatcher.deluxe.model.types.Podcast;
+
+import android.net.Uri;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface OnLoadPodcastListListener {
      * @param podcastList Podcast list loaded.
      * @param inputFile   The file location loaded from.
      */
-    public void onPodcastListLoaded(List<Podcast> podcastList, Uri inputFile);
+    void onPodcastListLoaded(List<Podcast> podcastList, Uri inputFile);
 
     /**
      * Called on failure.
@@ -43,5 +44,5 @@ public interface OnLoadPodcastListListener {
      * @param inputFile The file that failed to load as a podcast list.
      * @param error     The exception that occurred when trying to load the list
      */
-    public void onPodcastListLoadFailed(Uri inputFile, Exception error);
+    void onPodcastListLoadFailed(Uri inputFile, Exception error);
 }

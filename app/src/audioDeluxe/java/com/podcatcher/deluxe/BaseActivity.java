@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,13 @@
  */
 
 package com.podcatcher.deluxe;
+
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.PodcastManager;
+import com.podcatcher.deluxe.model.SyncManager;
+import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.view.ViewMode;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -36,13 +44,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.PodcastManager;
-import com.podcatcher.deluxe.model.SyncManager;
-import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.model.types.Podcast;
-import com.podcatcher.deluxe.view.ViewMode;
 
 /**
  * Podcatcher base activity. Defines some common functionality useful for all

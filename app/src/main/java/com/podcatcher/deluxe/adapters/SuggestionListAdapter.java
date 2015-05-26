@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,10 +18,6 @@
 
 package com.podcatcher.deluxe.adapters;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Genre;
 import com.podcatcher.deluxe.model.types.Language;
@@ -28,6 +25,10 @@ import com.podcatcher.deluxe.model.types.MediaType;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.SuggestionListItemViewHolder;
 import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment.AddSuggestionListener;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import java.util.List;
 

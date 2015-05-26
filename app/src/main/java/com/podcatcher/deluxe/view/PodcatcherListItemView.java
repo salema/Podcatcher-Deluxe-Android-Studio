@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,15 +18,15 @@
 
 package com.podcatcher.deluxe.view;
 
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.PodcastManager;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
-
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.PodcastManager;
 
 /**
  * An abstract super list item view class for the podcatcher's actual list view

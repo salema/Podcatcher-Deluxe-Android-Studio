@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,14 @@
  */
 
 package com.podcatcher.deluxe.services;
+
+import com.podcatcher.deluxe.Podcatcher;
+import com.podcatcher.deluxe.SettingsActivity;
+import com.podcatcher.deluxe.listeners.OnChangePlaylistListener;
+import com.podcatcher.deluxe.listeners.PlayServiceListener;
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -45,14 +54,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.MediaController.MediaPlayerControl;
-
-import com.podcatcher.deluxe.Podcatcher;
-import com.podcatcher.deluxe.SettingsActivity;
-import com.podcatcher.deluxe.listeners.OnChangePlaylistListener;
-import com.podcatcher.deluxe.listeners.PlayServiceListener;
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -225,6 +226,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * Binder given to clients
      */
     private final IBinder binder = new PlayServiceBinder();
+
     /**
      * The binder to return to client.
      */

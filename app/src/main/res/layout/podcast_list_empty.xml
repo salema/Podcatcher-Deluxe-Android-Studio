@@ -17,27 +17,27 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    android:padding="20dp">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:orientation="vertical"
+              android:padding="20dp">
 
     <TextView
-        style="@style/ListView.Empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/podcast_none" />
+            style="@style/ListView.Empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/podcast_none"/>
 
     <Button
-        android:id="@+id/add_podcast_button"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_green"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="@string/podcast_add_button"
-        android:textColor="@drawable/button_label" />
+            android:id="@+id/add_podcast_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_green"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="@string/podcast_add_button"
+            android:textColor="@drawable/button_label"/>
 </LinearLayout>

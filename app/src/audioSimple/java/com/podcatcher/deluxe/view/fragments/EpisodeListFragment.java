@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,15 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
+import com.podcatcher.deluxe.listeners.EpisodeListContextListener;
+import com.podcatcher.deluxe.listeners.OnReverseSortingListener;
+import com.podcatcher.deluxe.listeners.OnSelectEpisodeListener;
+import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
+import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.view.EpisodeListItemView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -31,15 +41,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
-import com.podcatcher.deluxe.listeners.EpisodeListContextListener;
-import com.podcatcher.deluxe.listeners.OnReverseSortingListener;
-import com.podcatcher.deluxe.listeners.OnSelectEpisodeListener;
-import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
-import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.view.EpisodeListItemView;
 
 import java.util.ArrayList;
 import java.util.List;

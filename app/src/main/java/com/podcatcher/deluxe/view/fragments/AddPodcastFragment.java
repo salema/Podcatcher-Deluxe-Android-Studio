@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,14 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.BuildConfig;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
+import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.model.types.Progress;
+import com.podcatcher.deluxe.view.HorizontalProgressView;
+import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -38,14 +47,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
-import com.podcatcher.deluxe.BuildConfig;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
-import com.podcatcher.deluxe.model.types.Podcast;
-import com.podcatcher.deluxe.model.types.Progress;
-import com.podcatcher.deluxe.view.HorizontalProgressView;
-import com.squareup.picasso.Picasso;
 
 import static android.view.View.VISIBLE;
 

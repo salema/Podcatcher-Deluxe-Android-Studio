@@ -17,68 +17,68 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_gravity="center"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/current_path"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:ellipsize="start"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textAppearance="?android:textAppearanceMedium" />
+                android:id="@+id/current_path"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="start"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textAppearance="?android:textAppearanceMedium"/>
 
         <ImageButton
-            android:id="@+id/path_up"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_margin="3dp"
-            android:background="@drawable/button_orange"
-            android:src="@drawable/ic_file_up" />
+                android:id="@+id/path_up"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_margin="3dp"
+                android:background="@drawable/button_orange"
+                android:src="@drawable/ic_file_up"/>
     </LinearLayout>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/divider"
-        android:scaleType="fitXY"
-        android:src="@android:drawable/divider_horizontal_bright" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/divider"
+            android:scaleType="fitXY"
+            android:src="@android:drawable/divider_horizontal_bright"/>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <ListView
-            android:id="@+id/files"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:listSelector="@drawable/list_selector"
-            android:choiceMode="none" />
+                android:id="@+id/files"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:listSelector="@drawable/list_selector"
+                android:choiceMode="none"/>
 
         <TextView
-            android:id="@android:id/empty"
-            style="@style/ListView.Empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/file_select_folder_empty" />
+                android:id="@android:id/empty"
+                style="@style/ListView.Empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/file_select_folder_empty"/>
     </FrameLayout>
 
     <Button
-        android:id="@+id/select_file"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_margin="3dp"
-        android:background="@drawable/button_green"
-        android:text="@string/file_select"
-        android:textColor="@drawable/button_label" />
+            android:id="@+id/select_file"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/button_green"
+            android:text="@string/file_select"
+            android:textColor="@drawable/button_label"/>
 </LinearLayout>

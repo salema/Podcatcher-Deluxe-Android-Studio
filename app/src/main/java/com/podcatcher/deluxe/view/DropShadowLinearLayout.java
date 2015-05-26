@@ -1,9 +1,10 @@
-/** Copyright 2012, 2013 Kevin Hausmann
+/**
+ * Copyright 2012, 2013 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,8 @@
 
 package com.podcatcher.deluxe.view;
 
+import com.podcatcher.deluxe.R;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -28,8 +31,6 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.widget.LinearLayout;
-
-import com.podcatcher.deluxe.R;
 
 /**
  * A linear layout sub-class that allows for extra drop shadows to be drawn on

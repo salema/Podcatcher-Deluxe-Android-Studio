@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,17 +18,17 @@
 
 package com.podcatcher.deluxe;
 
+import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
+import com.podcatcher.deluxe.model.tasks.LoadPodcastListTask;
+import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
+import com.podcatcher.deluxe.model.types.Podcast;
+
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
-import com.podcatcher.deluxe.model.tasks.LoadPodcastListTask;
-import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
-import com.podcatcher.deluxe.model.types.Podcast;
 
 import java.util.List;
 

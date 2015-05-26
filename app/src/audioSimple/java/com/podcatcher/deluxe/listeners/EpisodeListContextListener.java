@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,15 +18,6 @@
 
 package com.podcatcher.deluxe.listeners;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AbsListView.MultiChoiceModeListener;
-import android.widget.ShareActionProvider;
-
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
 import com.podcatcher.deluxe.model.EpisodeManager;
@@ -34,6 +26,15 @@ import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.OnDeleteDownloadsConfirmationListener;
 import com.podcatcher.deluxe.view.fragments.EpisodeListFragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.ShareActionProvider;
 
 import java.util.ArrayList;
 

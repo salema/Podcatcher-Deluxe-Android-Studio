@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -30,30 +31,30 @@ public interface OnSelectPodcastListener {
      * @param selectedPodcast Podcast selected by the user (not
      *                        <code>null</code>).
      */
-    public void onPodcastSelected(Podcast selectedPodcast);
+    void onPodcastSelected(Podcast selectedPodcast);
 
     /**
      * Called on listener to reflect that all podcasts are selected.
      */
-    public void onAllPodcastsSelected();
+    void onAllPodcastsSelected();
 
     /**
      * Called on listener to reflect that downloads are selected.
      */
-    public void onDownloadsSelected();
+    void onDownloadsSelected();
 
     /**
      * Called on listener to reflect that the playlist is selected.
      */
-    public void onPlaylistSelected();
+    void onPlaylistSelected();
 
     /**
      * Called on listener to reflect that no podcast is selected anymore.
      */
-    public void onNoPodcastSelected();
+    void onNoPodcastSelected();
 
     /**
      * Called on listener to indicate that the user did a swipe-to-refresh on the podcast list.
      */
-    public void onPodcastListSwipeToRefresh();
+    void onPodcastListSwipeToRefresh();
 }

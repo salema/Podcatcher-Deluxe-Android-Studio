@@ -17,53 +17,53 @@
  */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
-    tools:context=".PodcastActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:baselineAligned="false"
+              tools:context=".PodcastActivity">
 
     <fragment
-        android:id="@+id/podcast_list"
-        class="com.podcatcher.deluxe.view.fragments.PodcastListFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:tag="@string/podcast_list_fragment_tag"
-        tools:layout="@layout/podcast_list" />
+            android:id="@+id/podcast_list"
+            class="com.podcatcher.deluxe.view.fragments.PodcastListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:tag="@string/podcast_list_fragment_tag"
+            tools:layout="@layout/podcast_list"/>
 
     <fragment
-        android:id="@+id/episode_list"
-        class="com.podcatcher.deluxe.view.fragments.EpisodeListFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:tag="@string/episode_list_fragment_tag"
-        tools:layout="@layout/episode_list" />
+            android:id="@+id/episode_list"
+            class="com.podcatcher.deluxe.view.fragments.EpisodeListFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:tag="@string/episode_list_fragment_tag"
+            tools:layout="@layout/episode_list"/>
 
     <LinearLayout
-        android:id="@+id/right_column"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="vertical">
+            android:id="@+id/right_column"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical">
 
         <fragment
-            android:id="@+id/episode"
-            class="com.podcatcher.deluxe.view.fragments.EpisodeFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:tag="@string/episode_fragment_tag"
-            tools:layout="@layout/episode" />
+                android:id="@+id/episode"
+                class="com.podcatcher.deluxe.view.fragments.EpisodeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:tag="@string/episode_fragment_tag"
+                tools:layout="@layout/episode"/>
 
         <fragment
-            android:id="@+id/player"
-            class="com.podcatcher.deluxe.view.fragments.PlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:tag="@string/player_fragment_tag"
-            tools:layout="@layout/player" />
+                android:id="@+id/player"
+                class="com.podcatcher.deluxe.view.fragments.PlayerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="@string/player_fragment_tag"
+                tools:layout="@layout/player"/>
     </LinearLayout>
 </LinearLayout>

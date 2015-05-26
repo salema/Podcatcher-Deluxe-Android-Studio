@@ -26,19 +26,19 @@
               android:paddingRight="20dp">
 
     <TextView
-        style="@style/ListView.Empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/suggestions_none"/>
+            style="@style/ListView.Empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/suggestions_none"/>
 
     <Button
-        android:id="@+id/reset_filters_button"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_orange"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="@string/suggestions_reset_filters"
-        android:textColor="@drawable/button_label"/>
+            android:id="@+id/reset_filters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_orange"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="@string/suggestions_reset_filters"
+            android:textColor="@drawable/button_label"/>
 </LinearLayout>

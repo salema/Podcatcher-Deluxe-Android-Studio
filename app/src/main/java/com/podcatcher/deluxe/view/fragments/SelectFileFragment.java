@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,10 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.SelectFileActivity.SelectionMode;
+import com.podcatcher.deluxe.adapters.FileListAdapter;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -34,10 +39,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.SelectFileActivity.SelectionMode;
-import com.podcatcher.deluxe.adapters.FileListAdapter;
 
 import java.io.File;
 
@@ -286,20 +287,20 @@ public class SelectFileFragment extends DialogFragment {
          *
          * @param selectedFile The file/folder selected.
          */
-        public void onFileSelected(File selectedFile);
+        void onFileSelected(File selectedFile);
 
         /**
          * The current folder set in the file dialog changed.
          *
          * @param path The new path.
          */
-        public void onDirectoryChanged(File path);
+        void onDirectoryChanged(File path);
 
         /**
          * The user tried to navigate to an unavailable path.
          *
          * @param path The path.
          */
-        public void onAccessDenied(File path);
+        void onAccessDenied(File path);
     }
 }

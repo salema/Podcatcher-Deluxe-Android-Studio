@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,10 +18,10 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import com.podcatcher.deluxe.model.tags.RSS;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.podcatcher.deluxe.model.tags.RSS;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -176,7 +177,8 @@ public abstract class FeedEntity {
      * Check whether the given string values indicated that the feed entity is
      * considered explicit.
      *
-     * @param value The string value from the feed, <code>null</code> results in <code>false</code>.
+     * @param value The string value from the feed, <code>null</code> results in
+     *              <code>false</code>.
      * @return The explicit flag.
      */
     protected boolean parseExplicit(@Nullable String value) {

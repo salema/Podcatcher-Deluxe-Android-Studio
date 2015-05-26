@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,11 @@
 
 package com.podcatcher.deluxe.view;
 
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.PodcastManager;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +33,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.listeners.OnSelectPodcastListener;
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.PodcastManager;
 
 /**
  * The spinner for the main action bar menu, that allows for the selection of

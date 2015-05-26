@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,11 @@
  */
 
 package com.podcatcher.deluxe;
+
+import com.podcatcher.deluxe.listeners.PlayServiceListener;
+import com.podcatcher.deluxe.services.PlayEpisodeService;
+import com.podcatcher.deluxe.services.PlayEpisodeService.PlayServiceBinder;
+import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 
 import android.annotation.TargetApi;
 import android.content.ComponentName;
@@ -33,11 +39,6 @@ import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.MediaController;
-
-import com.podcatcher.deluxe.listeners.PlayServiceListener;
-import com.podcatcher.deluxe.services.PlayEpisodeService;
-import com.podcatcher.deluxe.services.PlayEpisodeService.PlayServiceBinder;
-import com.podcatcher.deluxe.view.fragments.VideoSurfaceProvider;
 
 /**
  * Show fullscreen video activity.

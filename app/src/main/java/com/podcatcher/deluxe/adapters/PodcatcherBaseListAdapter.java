@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,12 +18,12 @@
 
 package com.podcatcher.deluxe.adapters;
 
+import com.podcatcher.deluxe.R;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.SparseBooleanArray;
 import android.view.View;
-
-import com.podcatcher.deluxe.R;
 
 /**
  * Abstract super class for this app's list adapters. Handles the

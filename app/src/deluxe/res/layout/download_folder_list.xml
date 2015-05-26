@@ -24,41 +24,41 @@
               android:orientation="vertical">
 
     <ListView
-        android:id="@+id/download_folder_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginRight="4dp"
-        tools:listitem="@layout/download_folder_list_item"/>
+            android:id="@+id/download_folder_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="4dp"
+            tools:listitem="@layout/download_folder_list_item"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <Button
-            android:id="@+id/download_folder_help_button"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_blue"
-            android:gravity="center"
-            android:text="@string/help"
-            android:textColor="@drawable/button_label"/>
+                android:id="@+id/download_folder_help_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_blue"
+                android:gravity="center"
+                android:text="@string/help"
+                android:textColor="@drawable/button_label"/>
 
         <Button
-            android:id="@+id/download_folder_advanced_button"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_margin="4dp"
-            android:layout_weight="2"
-            android:background="@drawable/button_orange"
-            android:gravity="center"
-            android:text="@string/pref_download_folder_advanced"
-            android:textColor="@drawable/button_label"/>
+                android:id="@+id/download_folder_advanced_button"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="4dp"
+                android:layout_weight="2"
+                android:background="@drawable/button_orange"
+                android:gravity="center"
+                android:text="@string/pref_download_folder_advanced"
+                android:textColor="@drawable/button_label"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,4 +1,5 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -17,12 +18,12 @@
 
 package com.podcatcher.deluxe.model.types.test;
 
-import android.test.InstrumentationTestCase;
-import android.util.Log;
-
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Suggestion;
+
+import android.test.InstrumentationTestCase;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;

@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -17,6 +18,13 @@
 
 package com.podcatcher.deluxe.model.tasks.remote;
 
+import com.podcatcher.deluxe.BuildConfig;
+import com.podcatcher.deluxe.Podcatcher;
+import com.podcatcher.deluxe.SettingsActivity;
+import com.podcatcher.deluxe.listeners.DownloadTaskListener;
+import com.podcatcher.deluxe.model.EpisodeDownloadManager;
+import com.podcatcher.deluxe.model.types.Episode;
+
 import android.app.DownloadManager;
 import android.app.DownloadManager.Query;
 import android.app.DownloadManager.Request;
@@ -25,13 +33,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-
-import com.podcatcher.deluxe.BuildConfig;
-import com.podcatcher.deluxe.Podcatcher;
-import com.podcatcher.deluxe.SettingsActivity;
-import com.podcatcher.deluxe.listeners.DownloadTaskListener;
-import com.podcatcher.deluxe.model.EpisodeDownloadManager;
-import com.podcatcher.deluxe.model.types.Episode;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -109,7 +110,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
      * {@link DownloadTaskListener#onEpisodeDownloadFailed(Episode, EpisodeDownloadError)}
      * .
      */
-    public static enum EpisodeDownloadError {
+    public enum EpisodeDownloadError {
         /**
          * An error occurred, but the reason is unknown and/or does not fit any
          * of the other codes.

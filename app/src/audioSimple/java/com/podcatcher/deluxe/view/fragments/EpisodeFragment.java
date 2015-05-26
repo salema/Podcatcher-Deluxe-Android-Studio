@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -16,6 +17,14 @@
  */
 
 package com.podcatcher.deluxe.view.fragments;
+
+import com.podcatcher.deluxe.BuildConfig;
+import com.podcatcher.deluxe.Podcatcher;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
+import com.podcatcher.deluxe.model.ParserUtils;
+import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.view.Utils;
 
 import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
@@ -34,14 +43,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.podcatcher.deluxe.BuildConfig;
-import com.podcatcher.deluxe.Podcatcher;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
-import com.podcatcher.deluxe.model.ParserUtils;
-import com.podcatcher.deluxe.model.types.Episode;
-import com.podcatcher.deluxe.view.Utils;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

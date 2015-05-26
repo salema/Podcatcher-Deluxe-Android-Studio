@@ -1,9 +1,10 @@
-/** Copyright 2012-2015 Kevin Hausmann
+/**
+ * Copyright 2012-2015 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
  * Podcatcher Deluxe is free software: you can redistribute it
- * and/or modify it under the terms of the GNU General Public License as 
+ * and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
@@ -29,7 +30,7 @@ public interface OnDownloadEpisodeListener {
     /**
      * Start/stop the download for the current episode.
      */
-    public void onToggleDownload();
+    void onToggleDownload();
 
     /**
      * Called on the listener to alert it about a download progress update.
@@ -37,14 +38,14 @@ public interface OnDownloadEpisodeListener {
      * @param episode The episode the progress was made for.
      * @param percent The percentage of episode downloaded [0..100].
      */
-    public void onDownloadProgress(Episode episode, int percent);
+    void onDownloadProgress(Episode episode, int percent);
 
     /**
      * Called on the listener once a download finished successfully.
      *
      * @param episode The episode now available offline.
      */
-    public void onDownloadSuccess(Episode episode);
+    void onDownloadSuccess(Episode episode);
 
     /**
      * Called on the listener if a download failed.
@@ -52,12 +53,12 @@ public interface OnDownloadEpisodeListener {
      * @param episode The episode that failed to download.
      * @param error   The reason as in {@link EpisodeDownloadError}.
      */
-    public void onDownloadFailed(Episode episode, EpisodeDownloadError error);
+    void onDownloadFailed(Episode episode, EpisodeDownloadError error);
 
     /**
      * Called on the listener if a download is removed.
      *
      * @param episode The episode the local copy was delete of.
      */
-    public void onDownloadDeleted(Episode episode);
+    void onDownloadDeleted(Episode episode);
 }
