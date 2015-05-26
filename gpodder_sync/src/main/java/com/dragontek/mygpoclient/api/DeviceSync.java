@@ -6,5 +6,5 @@ public class DeviceSync {
     @SerializedName("synchronized")
     public String[][] synced;
     @SerializedName("not-synchronized")
-    public String[] notsynced;
+    public String[] notSynced;
 }

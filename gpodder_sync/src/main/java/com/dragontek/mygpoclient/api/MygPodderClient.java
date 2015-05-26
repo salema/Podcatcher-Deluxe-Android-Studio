@@ -1,17 +1,18 @@
 package com.dragontek.mygpoclient.api;
 
-import android.util.Log;
-
-import com.dragontek.mygpoclient.simple.SimpleClient;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import com.dragontek.mygpoclient.simple.SimpleClient;
+
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.StringEntity;
+
+import android.util.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -34,9 +35,9 @@ public class MygPodderClient extends SimpleClient {
      * of gpodder.net. See the {@link SimpleClient} class for a smaller class
      * that only implements the Simple API.
      *
-     * @param username
-     * @param password
-     * @param hostname
+     * @param username The User name
+     * @param password The pass phrase
+     * @param hostname The host server
      */
     public MygPodderClient(String username, String password, String hostname) {
         super(username, password, hostname);
@@ -91,8 +92,8 @@ public class MygPodderClient extends SimpleClient {
      *
      * @param deviceId the id of the device to be updated
      * @param since    should be a timestamp in seconds that has been retrieved
-     *                 previously by a call to {@link #updateSubscriptions} or
-     *                 {@link #pullSubscriptions}.
+     *                 previously by a call to this method or to
+     *                 {@link #updateSubscriptions}.
      * @return a {@link SubscriptionChanges} object with two lists (one for
      * added and one for removed podcast URLs) and a "since" value that
      * can be used for future calls to this method.
@@ -150,9 +151,9 @@ public class MygPodderClient extends SimpleClient {
     /**
      * Downloads a {@link List} of {@link EpisodeAction} objects from the server
      *
-     * @param since
-     * @param podcast
-     * @param deviceId
+     * @param since Time stamp
+     * @param podcast The podcast URL
+     * @param deviceId The device identifier
      * @return a {@link EpisodeActionChanges} object with the list of new
      * actions and a "since" timestamp that can be used for future calls
      * to this method when retrieving episodes.
@@ -194,9 +195,9 @@ public class MygPodderClient extends SimpleClient {
      * parameters caption and type are both optional and when set to a value
      * other than None will be used to update the device settings.
      *
-     * @param deviceId
-     * @param caption
-     * @param type
+     * @param deviceId The device identifier
+     * @param caption The device name
+     * @param type The device type
      * @return true if the request succeeded, false otherwise.
      * @throws IOException
      * @throws AuthenticationException

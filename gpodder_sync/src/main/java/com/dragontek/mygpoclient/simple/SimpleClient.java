@@ -1,11 +1,12 @@
 package com.dragontek.mygpoclient.simple;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import com.dragontek.mygpoclient.Global;
 import com.dragontek.mygpoclient.Locator;
 import com.dragontek.mygpoclient.http.HttpClient;
 import com.dragontek.mygpoclient.json.JsonClient;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.CookieStore;
@@ -53,8 +54,8 @@ public class SimpleClient {
      * in normal use cases. If it is changed, it should provide the same
      * interface as the json.JsonClient class in mygpoclient.
      *
-     * @param username
-     * @param password
+     * @param username The user name
+     * @param password The pass string
      */
     public SimpleClient(String username, String password) {
         this(username, password, Global.HOST);

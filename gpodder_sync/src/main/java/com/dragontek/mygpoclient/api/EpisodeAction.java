@@ -8,6 +8,7 @@ import java.util.Arrays;
  * @author jmondragon
  */
 public class EpisodeAction {
+    @SuppressWarnings("HardCodedStringLiteral")
     final static String[] VALID_ACTIONS = new String[]{
             "download", "play",
             "delete", "new"
@@ -51,10 +52,10 @@ public class EpisodeAction {
         // Check if the action is valid
         if (!Arrays.asList(VALID_ACTIONS).contains(action))
             throw new IllegalArgumentException(String.format(
-                    "Invalid action '%s' (see VALID_ACTIONS)", action));
+                    "Invalid action '%s' (see VALID_ACTIONS)", action)); //NON-NLS
 
         // Disallow play-only attributes for non-play actions
-        if (!action.equals("play")) {
+        if (!action.equals("play")) { //NON-NLS
             if (started != null)
                 throw new IllegalArgumentException(
                         "Started can only be set for the 'play' action");
@@ -67,6 +68,7 @@ public class EpisodeAction {
         }
 
         // Check the format of the timestamp value
+        // noinspection StatementWithEmptyBody
         if (timestamp != null) {
             // if util.iso8601_to_datetime(timestamp) is None:
             // raise ValueError('Timestamp has to be in ISO 8601 format but was
@@ -92,7 +94,7 @@ public class EpisodeAction {
     @Override
     public String toString() {
         return timestamp + ": " + action +
-                (position != null ? " to " + position + "s " : " ") +
+                (position != null ? " to " + position + "s " : " ") + //NON-NLS
                 episode + "(" + podcast + ")";
     }
 

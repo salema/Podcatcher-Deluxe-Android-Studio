@@ -1,14 +1,18 @@
 apply plugin: 'com.android.library'
 
 android {
+    //noinspection GroovyAssignabilityCheck
     compileSdkVersion rootProject.ext.compileSdkVersion
+    //noinspection GroovyAssignabilityCheck
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
+        //noinspection GroovyAssignabilityCheck
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
 }
 
 dependencies {
+    //noinspection GradleDynamicVersion
     compile 'com.google.code.gson:gson:2.3.+'
 }
