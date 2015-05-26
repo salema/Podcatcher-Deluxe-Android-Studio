@@ -195,7 +195,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        ((EpisodeListAdapter) fragment.getListAdapter()).setCheckedPositions(null);
+        if (fragment != null && fragment.getListAdapter() != null)
+            ((EpisodeListAdapter) fragment.getListAdapter()).setCheckedPositions(null);
     }
 
     @Override
