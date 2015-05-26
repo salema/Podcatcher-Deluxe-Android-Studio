@@ -512,6 +512,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
 
             // Clear and reset the playlist
             currentEpisodeSet.clear();
+            episodeListFragment.resetUi();
+            episodeListFragment.setEnableSwipeReorder(true);
             onPlaylistLoaded(episodeManager.getPlaylist());
         }
     }
@@ -533,6 +535,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
 
             // Clear and reset the playlist
             currentEpisodeSet.clear();
+            episodeListFragment.resetUi();
+            episodeListFragment.setEnableSwipeReorder(true);
             onPlaylistLoaded(episodeManager.getPlaylist());
         }
     }
