@@ -1,7 +1,8 @@
 package com.dragontek.mygpoclient.json;
 
-import com.dragontek.mygpoclient.http.HttpClient;
 import com.google.gson.Gson;
+
+import com.dragontek.mygpoclient.http.HttpClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,6 +41,7 @@ public class JsonClient extends HttpClient {
     @Override
     protected String processResponse(HttpResponse response)
             throws IllegalStateException, IOException {
+        //noinspection UnnecessaryLocalVariable
         String data = super.processResponse(response);
         // return decode(data);
         return data;

@@ -1,12 +1,12 @@
 package com.dragontek.mygpoclient.feeds;
 
-import com.dragontek.mygpoclient.json.JsonClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import com.dragontek.mygpoclient.json.JsonClient;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
@@ -48,32 +48,32 @@ public class FeedServiceClient extends JsonClient {
     }
 
     public FeedServiceResponse parseFeeds(String[] feed_urls)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         return parseFeeds(feed_urls, 0L, false, true, false, 0, null);
     }
 
     public FeedServiceResponse parseFeeds(String[] feed_urls, long last_modified)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         return parseFeeds(feed_urls, last_modified, false, true, false, 0, null);
     }
 
     public FeedServiceResponse parseFeeds(String[] feed_urls,
                                           long last_modified, boolean strip_html)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         return parseFeeds(feed_urls, last_modified, strip_html, true, false, 0,
                 null);
     }
 
     public FeedServiceResponse parseFeeds(String[] feed_urls,
                                           long last_modified, boolean strip_html, boolean use_cache)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         return parseFeeds(feed_urls, last_modified, strip_html, use_cache,
                 false, 0, null);
     }
 
     public FeedServiceResponse parseFeeds(String[] feed_urls,
                                           long last_modified, boolean strip_html, boolean use_cache,
-                                          boolean inline_logo) throws ClientProtocolException, IOException {
+                                          boolean inline_logo) throws IOException {
         return parseFeeds(feed_urls, last_modified, strip_html, use_cache,
                 inline_logo, 0, null);
     }
@@ -81,7 +81,7 @@ public class FeedServiceClient extends JsonClient {
     public FeedServiceResponse parseFeeds(String[] feed_urls,
                                           long last_modified, boolean strip_html, boolean use_cache,
                                           boolean inline_logo, int scale_logo)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         return parseFeeds(feed_urls, last_modified, strip_html, use_cache,
                 inline_logo, scale_logo, null);
     }
@@ -89,7 +89,7 @@ public class FeedServiceClient extends JsonClient {
     public FeedServiceResponse parseFeeds(String[] feed_urls,
                                           final long last_modified, boolean strip_html, boolean use_cache,
                                           boolean inline_logo, int scale_logo, String logo_format)
-            throws ClientProtocolException, IOException {
+            throws IOException {
         List<NameValuePair> args = new ArrayList<>();
         if (strip_html)
             args.add(new BasicNameValuePair("process_text", "strip_html"));

@@ -14,7 +14,7 @@ android {
     // define one config per flavor. If the property does not exist
     // or the path is not valid, only debug builds will succeed.
     if (project.hasProperty("PodcatcherDeluxe.signing")) {
-        def signingConfigs = System.getProperty("user.home") + "/" +
+        final def signingConfigs = System.getProperty("user.home") + "/" +
                 project.property("PodcatcherDeluxe.signing") + ".gradle"
 
         if (new File(signingConfigs).exists()) {
@@ -65,9 +65,9 @@ android {
 
     flavorDimensions "media", "edition"
     productFlavors {
-        def audioSimpleSigningVariable = signingConfigs.audioSimple
-        def audioDeluxeSigningVariable = signingConfigs.audioDeluxe
-        def videoDeluxeSigningVariable = signingConfigs.videoDeluxe
+        final def audioSimpleSigningVariable = signingConfigs.audioSimple
+        final def audioDeluxeSigningVariable = signingConfigs.audioDeluxe
+        final def videoDeluxeSigningVariable = signingConfigs.videoDeluxe
 
         simple {
             dimension "edition"
@@ -94,7 +94,7 @@ android {
             signingConfig videoDeluxeSigningVariable
         }
     }
-    variantFilter { variant ->
+    variantFilter { final variant ->
         // Ignore all variant we do not need: release and videoSimple
         if (variant.buildType.name.equals('release') ||
                 (variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('simple'))) {

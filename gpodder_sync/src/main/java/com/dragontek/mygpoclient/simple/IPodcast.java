@@ -1,17 +1,17 @@
 package com.dragontek.mygpoclient.simple;
 
 public interface IPodcast {
-    public String getUrl();
+    String getUrl();
 
-    public String getTitle();
+    String getTitle();
 
-    public void setTitle(String title);
+    void setTitle(String title);
 
-    public String getDescription();
+    String getDescription();
 
-    public void setDescription(String description);
+    void setDescription(String description);
 
-    public String getLogoUrl();
+    String getLogoUrl();
 
-    public void setLogoUrl(String logourl);
+    void setLogoUrl(String logourl);
 }

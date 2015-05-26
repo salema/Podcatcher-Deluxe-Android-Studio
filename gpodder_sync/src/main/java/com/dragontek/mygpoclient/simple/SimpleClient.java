@@ -81,6 +81,7 @@ public class SimpleClient {
         this._client.setCookieStore(cookieStore);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean authenticate(String username, String password) {
         if (username != null && password != null) {
             HttpClient tempClient = new HttpClient(username, password);

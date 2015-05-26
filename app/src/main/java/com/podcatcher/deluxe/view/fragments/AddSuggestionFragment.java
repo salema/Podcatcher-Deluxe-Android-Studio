@@ -118,6 +118,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //noinspection EqualsBetweenInconvertibleTypes
             if (parent.equals(languageFilter))
                 try {
                     listener.onLanguageChanged((Language) parent.getItemAtPosition(position));

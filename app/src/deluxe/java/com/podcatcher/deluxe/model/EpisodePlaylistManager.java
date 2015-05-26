@@ -169,6 +169,7 @@ public abstract class EpisodePlaylistManager extends EpisodeDownloadManager {
      * given. Will also return <code>true</code> if the playlist has no
      * entries at all.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isPlaylistEmptyBesides(Episode episode) {
         return isPlaylistEmpty() || (getPlaylistSize() == 1 && isInPlaylist(episode));
     }
