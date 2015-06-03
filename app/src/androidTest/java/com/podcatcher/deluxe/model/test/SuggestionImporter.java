@@ -62,7 +62,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
     /**
      * String to put in JSON for missing values, use null to disable
      */
-    private static String NO_VALUE = "MISSING"; // null
+    private static String NO_VALUE = null;
 
     /**
      * Max age of latest podcast episode. Podcasts with older episodes
@@ -96,7 +96,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
                     url = new PublicClient().searchPodcast(podcastName).get(0).getUrl();
                     Log.d(TAG, "Found podcast URL " + url + " for search term: " + podcastName);
                 } catch (IOException | IndexOutOfBoundsException ex) {
-                    Log.w(TAG, "Cannot find podcast for search term: " + url, ex);
+                    Log.w(TAG, "Cannot find podcast for search term: " + url);
                     continue;
                 }
 
@@ -111,9 +111,10 @@ public class SuggestionImporter extends InstrumentationTestCase {
                 final List<Episode> episodes = si.getEpisodes();
                 Collections.sort(episodes);
 
+                long ageInDays = 0;
                 // Negative age might happen, just invert those (too far in the future is also strange...)
-                final long ageInDays = Math.abs((new Date().getTime()
-                        - episodes.get(0).getPubDate().getTime()) / TimeUnit.DAYS.toMillis(1));
+                if (episodes.get(0).getPubDate() != null) ageInDays = Math.abs(
+                        (new Date().getTime() - episodes.get(0).getPubDate().getTime()) / TimeUnit.DAYS.toMillis(1));
 
                 if (REJECT_RECENT_DAYS < 1 || ageInDays < REJECT_RECENT_DAYS) {
                     dummies.add(new JsonDummy(si));
@@ -230,8 +231,6 @@ public class SuggestionImporter extends InstrumentationTestCase {
         public JsonDummy(SuggestionImport si) {
             this.title = cleanUp(si.getName());
             this.subtitle = si.subtitle == null || si.subtitle.length() == 0 ? NO_VALUE : si.subtitle;
-            if (subtitle.equals(NO_VALUE) || subtitle.equals(title))
-                Log.w(TAG, "Podcast " + title + " has bad subtitle!");
 
             this.keywords = si.keywords == null || si.keywords.length() == 0 ? NO_VALUE : si.keywords;
             if (si.keywords != null && si.keywords.length() > 160)
