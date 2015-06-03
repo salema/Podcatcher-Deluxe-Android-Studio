@@ -22,17 +22,10 @@ import android.content.Intent;
 import android.net.Uri;
 
 /**
- * Non-UI activity to import podcasts. This just aligns the data and forwards it
- * to the {@link PodcastActivity}.
+ * Non-UI activity to import podcasts. This just aligns the data
+ * and forwards it to the {@link AddPodcastActivity}.
  */
 public class ImportPodcastActivity extends BaseActivity {
-
-    /*
-     * These flags will make sure the PodcastActivity goes into the desired
-     * state before handling the intent.
-     */
-    private static final int LAUNCHER_FLAGS = Intent.FLAG_ACTIVITY_CLEAR_TOP |
-            Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
     /**
      * Scheme to use as a replacement for the specific ones
@@ -60,10 +53,9 @@ public class ImportPodcastActivity extends BaseActivity {
             if (uri.matches("^http://https?://.*"))
                 uri = uri.replaceFirst(HTTP + "://", "");
 
-            // Start (or reset display for) main activity
-            final Intent intent = new Intent(this, PodcastActivity.class);
+            // Start add podcast activity
+            final Intent intent = new Intent(this, AddPodcastActivity.class);
             intent.setData(Uri.parse(uri));
-            intent.addFlags(LAUNCHER_FLAGS);
 
             startActivity(intent);
         }

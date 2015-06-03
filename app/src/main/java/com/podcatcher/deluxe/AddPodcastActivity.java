@@ -130,7 +130,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
             final Podcast newPodcast = new Podcast(null, getIntent().getDataString());
 
             if (podcastManager.contains(newPodcast))
-                selectExistingPodcastAndFinish(newPodcast);
+                selectPodcastAndFinish(newPodcast);
             else {
                 final String userInfo = getIntent().getData().getUserInfo();
                 lastUserName = userInfo != null ? userInfo.split(":")[0] : lastUserName;
@@ -172,16 +172,15 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
 
         // If the podcast is present, select it and close
         if (podcastManager.contains(newPodcast))
-            selectExistingPodcastAndFinish(newPodcast);
-            // We come from a preset URL, add podcast and finish
+            selectPodcastAndFinish(newPodcast);
         else if (intentHasFeedUrl) {
+            // We come from a preset URL, add podcast and finish
             podcastManager.addPodcast(newPodcast);
             new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, newPodcast);
 
-            finish();
-        }
-        // Otherwise try to load the podcast (user gave new URL)
-        else {
+            selectPodcastAndFinish(newPodcast);
+        } else {
+            // Otherwise try to load the podcast (user gave new URL)
             currentLoadUrl = newPodcast.getUrl();
             podcastManager.load(newPodcast);
         }
@@ -207,7 +206,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
                 podcastManager.addPodcast(podcast);
                 new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
 
-                finish();
+                selectPodcastAndFinish(podcast);
             }
         }
     }
@@ -282,7 +281,7 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
             newPodcast.setPassword(lastPassword);
     }
 
-    private void selectExistingPodcastAndFinish(Podcast podcast) {
+    private void selectPodcastAndFinish(Podcast podcast) {
         Intent intent = new Intent(this, PodcastActivity.class);
         intent.putExtra(EpisodeListActivity.MODE_KEY, ContentMode.SINGLE_PODCAST);
         intent.putExtra(PODCAST_URL_KEY, podcast.getUrl());

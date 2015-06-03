@@ -172,24 +172,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     protected void onNewIntent(Intent intent) {
-        // This is an external call to add a new podcast
-        if (intent.getData() != null) {
-            Intent addPodcast = new Intent(this, AddPodcastActivity.class);
-            addPodcast.setData(intent.getData());
-
-            // We need to cut back the selection here when is small portrait
-            // mode to prevent other activities from covering the add podcast
-            // dialog
-            if (view.isSmallPortrait())
-                selection.reset();
-
-            startActivity(addPodcast);
-            // Reset data to prevent this intent from fire again on the next
-            // configuration change
-            intent.setData(null);
-        }
         // This is an internal call to update the selection
-        else if (intent.hasExtra(MODE_KEY)) {
+        if (intent.hasExtra(MODE_KEY)) {
             selection.setFullscreenEnabled(false);
 
             final String podcastUrl = intent.getStringExtra(PODCAST_URL_KEY);
