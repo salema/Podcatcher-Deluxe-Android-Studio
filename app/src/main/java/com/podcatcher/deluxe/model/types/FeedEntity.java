@@ -195,14 +195,16 @@ public abstract class FeedEntity {
      */
     @Nullable
     protected Date parseDate(@NonNull String dateString) {
+        // Make sure to remove any whitespaces that might make parsing fail
+        dateString = dateString.trim();
+
         try {
             // SimpleDateFormat is not thread safe
             synchronized (DATE_FORMATTER) {
                 return DATE_FORMATTER.parse(dateString);
             }
         } catch (ParseException e) {
-            // The default format is not available, try all the other formats we
-            // support...
+            // The default format is not available, try all the other formats we support...
             for (String format : DATE_FORMAT_TEMPLATE_ALTERNATIVES)
                 try {
                     return new SimpleDateFormat(format, Locale.US).parse(dateString);
