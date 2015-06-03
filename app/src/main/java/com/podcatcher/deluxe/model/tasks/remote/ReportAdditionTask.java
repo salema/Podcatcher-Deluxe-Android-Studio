@@ -31,7 +31,7 @@ public class ReportAdditionTask extends LoadRemoteFileTask<Podcast, Void> {
     /**
      * The path to get from podcatcher-deluxe.com
      */
-    public static final String HOST_PATH = "http://www.podcatcher-deluxe.com/404/";
+    public static final String HOST_PATH = "http://www.podcatcher-deluxe.com/create-suggestion?url=";
 
     @Override
     protected Void doInBackground(Podcast... podcasts) {
