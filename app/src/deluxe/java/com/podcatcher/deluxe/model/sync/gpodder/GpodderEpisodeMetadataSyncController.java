@@ -23,12 +23,9 @@ import com.dragontek.mygpoclient.api.EpisodeActionChanges;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 
-import org.apache.http.auth.AuthenticationException;
-
 import android.content.Context;
 import android.os.AsyncTask;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
@@ -141,8 +138,8 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
                 // should be empty afterwards.
                 actions.removeAll(changes.actions);
                 actions.removeAll(copy);
-            } catch (AuthenticationException | IOException | InterruptedException e) {
-                this.cause = e;
+            } catch (Exception ex) {
+                this.cause = ex;
                 cancel(true);
             }
 
