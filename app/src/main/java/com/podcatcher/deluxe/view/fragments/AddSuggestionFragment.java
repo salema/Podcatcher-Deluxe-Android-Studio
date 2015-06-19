@@ -369,8 +369,14 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
         // Set category to wildcard
         genreFilter.setSelection(0);
+
         // Set type according to media type flavor (audio/video)
-        mediaTypeFilter.setSelection(BuildConfig.FLAVOR_media.equals("video") ? 0 : 1);
+        if (BuildConfig.FLAVOR_media.equals("video"))
+            mediaTypeFilter.setSelection(0); // Show all suggestions
+        else
+            for (int index = 0; index < mediaTypeFilter.getCount(); index++)
+                if (mediaTypeFilter.getItemAtPosition(index).equals(MediaType.AUDIO))
+                    mediaTypeFilter.setSelection(index); // Show audio only
     }
 
     private void updateGrid() {
