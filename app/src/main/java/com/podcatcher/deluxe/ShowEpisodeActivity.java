@@ -39,9 +39,10 @@ public class ShowEpisodeActivity extends EpisodeActivity {
         // all, so finish it. Also there is the case where the Android system
         // recreates this activity after the app has been killed and the
         // activity would show up empty because there is no episode selected.
-        if (!view.isSmallPortrait() || !selection.isEpisodeSet())
+        if (!view.isSmallPortrait() || !selection.isEpisodeSet()) {
             finish();
-        else {
+            overridePendingTransition(0, 0);
+        } else {
             // 1. Set the content view
             setContentView(R.layout.main);
             // 2. Set, find, create the fragments

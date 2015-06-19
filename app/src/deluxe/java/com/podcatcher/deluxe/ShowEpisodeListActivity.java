@@ -46,9 +46,10 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
         // there is no content selected.
         if (!view.isSmallPortrait() || (!selection.isAll() && !selection.isPodcastSet() &&
                 !ContentMode.DOWNLOADS.equals(selection.getMode()) &&
-                !ContentMode.PLAYLIST.equals(selection.getMode())))
+                !ContentMode.PLAYLIST.equals(selection.getMode()))) {
             finish();
-        else {
+            overridePendingTransition(0, 0);
+        } else {
             // 1. Set the content view
             setContentView(R.layout.main);
             // 2. Set, find, create the fragments

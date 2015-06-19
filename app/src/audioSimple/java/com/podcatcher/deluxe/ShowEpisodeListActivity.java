@@ -45,9 +45,10 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
         // activity would show up with an endless progress indication because
         // there is no content selected.
         if (!view.isSmallPortrait() || (!selection.isAll() && !selection.isPodcastSet() &&
-                !ContentMode.DOWNLOADS.equals(selection.getMode())))
+                !ContentMode.DOWNLOADS.equals(selection.getMode()))) {
             finish();
-        else {
+            overridePendingTransition(0, 0);
+        } else {
             // 1. Set the content view
             setContentView(R.layout.main);
             // 2. Set, find, create the fragments
