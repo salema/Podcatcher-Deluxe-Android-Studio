@@ -86,16 +86,20 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
                 // Reset the current sync controller (if any)
                 syncManager.setSyncMode(ControllerImpl.GPODDER, null);
 
-                // Close dialog and end activity
-                configFragment.dismiss();
-                setResult(RESULT_OK);
-                finish();
+                // Close dialog and end activity unless it has been pull under us
+                // while we were waiting for gpodder.net to respond
+                if (configFragment != null) {
+                    configFragment.dismiss();
+                    setResult(RESULT_OK);
+                    finish();
+                }
             }
 
             @Override
             protected void onCancelled(Void aVoid) {
                 // Auth failed, show error message
-                configFragment.showProgress(false, true);
+                if (configFragment != null)
+                    configFragment.showProgress(false, true);
             }
         }.execute((Void) null);
     }
