@@ -20,7 +20,7 @@ package com.podcatcher.deluxe;
 
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.SuggestionManager;
-import com.podcatcher.deluxe.model.tasks.remote.IncrementPopularityTask;
+import com.podcatcher.deluxe.model.tasks.remote.ReportAdditionTask;
 import com.podcatcher.deluxe.model.types.Language;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
@@ -316,11 +316,12 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
 
     @Override
     public void onFeedSelected(String podcastUrl) {
-        podcastManager.addPodcast(new Podcast(suggestionToAdd.getName(), podcastUrl));
-        showToast(getString(R.string.podcast_added, suggestionToAdd.getName()));
+        final Podcast podcast = new Podcast(suggestionToAdd.getName(), podcastUrl);
 
-        new IncrementPopularityTask()
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, suggestionToAdd.getNode());
+        podcastManager.addPodcast(podcast);
+        new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
+
+        showToast(getString(R.string.podcast_added, suggestionToAdd.getName()));
     }
 
     @Override

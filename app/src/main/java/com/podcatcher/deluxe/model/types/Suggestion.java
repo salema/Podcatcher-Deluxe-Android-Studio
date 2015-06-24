@@ -55,11 +55,6 @@ public class Suggestion extends Podcast {
     protected String keywords;
 
     /**
-     * The podcatcher-deluxe.com node ID of this podcast suggestion
-     */
-    protected int node = -1;
-
-    /**
      * Create new suggestion. See {@link Podcast} for details.
      *
      * @param name The name to show.
@@ -101,8 +96,7 @@ public class Suggestion extends Podcast {
      * Put new feed alternative for this suggestion.
      *
      * @param label   Short description for this feed alternative, e.g. "Free (audio/mp3)" or
-     *                "Video
-     *                low".
+     *                "Video low".
      * @param feedUrl Corresponding podcast feed URL.
      */
     public void addFeed(String label, String feedUrl) {
@@ -111,6 +105,7 @@ public class Suggestion extends Podcast {
 
     /**
      * @return The collection of alternative feeds for this podcast suggestions.
+     * This will include the URL returned by {@link #getUrl()}.
      */
     @NonNull
     public Map<String, String> getFeeds() {
@@ -181,22 +176,6 @@ public class Suggestion extends Podcast {
      */
     public void setKeywords(@Nullable String keywords) {
         this.keywords = keywords;
-    }
-
-    /**
-     * @return The node ID or -1 if not set.
-     */
-    public int getNode() {
-        return node;
-    }
-
-    /**
-     * Set the node ID for this suggestion.
-     *
-     * @param node The ID, must be > 0.
-     */
-    public void setNode(int node) {
-        this.node = node > 0 ? node : -1;
     }
 
     @SuppressWarnings("EmptyMethod")
