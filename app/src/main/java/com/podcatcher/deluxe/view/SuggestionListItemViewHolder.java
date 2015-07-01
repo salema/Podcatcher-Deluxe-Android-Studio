@@ -101,6 +101,11 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
     private TextView descriptionTextView;
 
     /**
+     * Expanded flag helper
+     */
+    private boolean expanded;
+
+    /**
      * Create a new view holder.
      *
      * @param itemView The item's root view.
@@ -137,6 +142,25 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
                 return false;
             }
         });
+
+        descriptionTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (expanded) {
+                    descriptionTextView.setMaxLines(
+                            context.getResources().getInteger(R.integer.suggestion_description_lines));
+                    logoImageView.setVisibility(View.VISIBLE);
+                } else {
+                    descriptionTextView.setMaxLines(Integer.MAX_VALUE);
+
+                    final ViewMode mode = ViewMode.determineViewMode(context.getResources());
+                    logoImageView.setVisibility(mode.isSmall() ? View.GONE : View.VISIBLE);
+                }
+
+                expanded = !expanded;
+            }
+        });
     }
 
     /**
@@ -164,6 +188,7 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
         // 1. Start loading suggestion logo
         Picasso.with(context).cancelRequest(logoImageView);
         titleBar.setBackgroundColor(Color.WHITE);
+        logoImageView.setVisibility(View.VISIBLE); // Might have been hidden by text expansion
         if (suggestion.getLogoUrl() != null && suggestion.getLogoUrl().startsWith("http"))
             Picasso.with(context)
                     .load(suggestion.getLogoUrl())
@@ -173,6 +198,8 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
         // 2. Create/Set the texts to display
         titleTextView.setText(suggestion.getName());
         metaTextView.setText(createClassificationLabel(selectedLanguage, selectedGenre, selectedType));
+        expanded = false; // Reset description textview to the original expansion state
+        descriptionTextView.setMaxLines(context.getResources().getInteger(R.integer.suggestion_description_lines));
         descriptionTextView.setText(suggestion.getDescription());
 
         // 3. Prepare/Update the add button

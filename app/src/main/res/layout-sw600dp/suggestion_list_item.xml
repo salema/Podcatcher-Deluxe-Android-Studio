@@ -23,11 +23,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     card_view:cardCornerRadius="2dp"
-    tools:context=".views.SuggestionListItemHolder">
+    tools:context=".view.SuggestionListItemViewHolder">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
         <ImageView
             android:id="@+id/suggestion_logo"
