@@ -514,6 +514,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             currentEpisodeSet.clear();
             episodeListFragment.resetUi();
             episodeListFragment.setEnableSwipeReorder(true);
+            episodeListFragment.setShowPodcastNames(true);
             onPlaylistLoaded(episodeManager.getPlaylist());
         }
     }
@@ -537,6 +538,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             currentEpisodeSet.clear();
             episodeListFragment.resetUi();
             episodeListFragment.setEnableSwipeReorder(true);
+            episodeListFragment.setShowPodcastNames(true);
             onPlaylistLoaded(episodeManager.getPlaylist());
         }
     }
