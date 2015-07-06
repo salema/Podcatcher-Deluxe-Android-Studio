@@ -238,6 +238,9 @@ public class GpodderSyncConfigFragment extends DialogFragment {
 
         if (loginFailedTextView != null)
             loginFailedTextView.setVisibility(showError ? View.VISIBLE : View.GONE);
+
+        if (submitButton != null && showError)
+            submitButton.setEnabled(true);
     }
 
     private void submitConfiguration() {
@@ -245,6 +248,7 @@ public class GpodderSyncConfigFragment extends DialogFragment {
         final String password = passwordEditText.getText().toString();
         final String deviceId = deviceIdEditText.getText().toString();
 
+        submitButton.setEnabled(false); // Only re-enabled on error, dismissed on success
         listener.onSubmitConfiguration(username, password, deviceId);
     }
 
@@ -264,6 +268,7 @@ public class GpodderSyncConfigFragment extends DialogFragment {
      * this dialog.
      */
     public interface ConfigureGpodderSyncDialogListener extends OnCancelListener {
+
         /**
          * Called on the listener if the user submitted a gpodder.net
          * configuration.

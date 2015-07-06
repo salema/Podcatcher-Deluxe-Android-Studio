@@ -114,7 +114,7 @@ public class Locator {
 
     public String downloadEpisodeActionsUri(long since, String podcast,
                                             String deviceId) {
-        String filename = String.format("%s.json?since=%s&aggregated=true",
+        String filename = String.format("%s.json?since=%s",
                 this._username, since);
         if (deviceId != null)
             filename += String.format("&device=%s", deviceId);

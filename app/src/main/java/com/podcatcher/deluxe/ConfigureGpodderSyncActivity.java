@@ -43,6 +43,11 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
      */
     private GpodderSyncConfigFragment configFragment;
 
+    /**
+     * The task used to contact gpodder.net and check user credentials
+     */
+    private AsyncTask<Void, Void, Void> authCheckTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +71,7 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
         // done off the main thread because we need to connect to the gpodder.net service.
         configFragment.showProgress(true, false);
         // Create gpodder.net client and run auth check off-thread
-        new AsyncTask<Void, Void, Void>() {
+        this.authCheckTask = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 final MygPodderClient client = new MygPodderClient(username, password);
@@ -101,11 +106,15 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
                 if (configFragment != null)
                     configFragment.showProgress(false, true);
             }
-        }.execute((Void) null);
+        };
+        authCheckTask.execute((Void) null);
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (authCheckTask != null)
+            authCheckTask.cancel(true);
+
         setResult(RESULT_CANCELED);
         finish();
     }
