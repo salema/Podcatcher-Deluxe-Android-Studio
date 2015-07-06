@@ -331,18 +331,23 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
     @Override
     public void onPodcastAdded(Podcast podcast) {
-        final int[] first = layoutManager.findFirstVisibleItemPositions(null);
-        final int[] last = layoutManager.findLastVisibleItemPositions(null);
+        try {
+            final int[] first = layoutManager.findFirstVisibleItemPositions(null);
+            final int[] last = layoutManager.findLastVisibleItemPositions(null);
 
-        // Alert all visible item view holders (using -1/+1 as security margins)
-        for (int column = 0; column < first.length; column++) // first.length == last.length
-            for (int index = first[column] - 1; index <= last[column]; index++) {
-                final SuggestionListItemViewHolder holder =
-                        (SuggestionListItemViewHolder) suggestionsGridView.findViewHolderForAdapterPosition(index);
+            // Alert all visible item view holders (using -1/+1 as security margins)
+            for (int column = 0; column < first.length; column++) // first.length == last.length
+                for (int index = first[column] - 1; index <= last[column]; index++) {
+                    final SuggestionListItemViewHolder holder =
+                            (SuggestionListItemViewHolder) suggestionsGridView.findViewHolderForAdapterPosition(index);
 
-                if (holder != null)
-                    holder.onPodcastAdded(podcast);
-            }
+                    if (holder != null)
+                        holder.onPodcastAdded(podcast);
+                }
+        } catch (NullPointerException npe) {
+            // This will happen if the listener fires before any items are added,
+            // safe to ignore.
+        }
     }
 
     @Override
