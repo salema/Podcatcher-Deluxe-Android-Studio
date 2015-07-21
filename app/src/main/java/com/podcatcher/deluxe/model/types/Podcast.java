@@ -18,6 +18,8 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import com.android.internal.util.Predicate;
+import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.tags.RSS;
 
@@ -218,6 +220,18 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         // Need to return a copy, so nobody can change this on us and changes
         // made in the model do not make problems in the UI
         return new ArrayList<>(episodes);
+    }
+
+    @NonNull
+    public List<Episode> getEpisodes(boolean filterOld, boolean getDownloaded) {
+        ArrayList<Episode> workingCopy = new ArrayList<>();
+        EpisodeFilter filter = new EpisodeFilter(getDownloaded, filterOld);
+        for (Episode episode : episodes) {
+            if (filter.apply(episode)) {
+                workingCopy.add(episode);
+            }
+        }
+        return workingCopy;
     }
 
     /**
@@ -561,5 +575,29 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         }
 
         return spec;
+    }
+
+
+    private class EpisodeFilter implements Predicate<Episode>  {
+        boolean keepDownloaded;
+        boolean filterOld;
+        EpisodeManager episodeManager;
+
+        EpisodeFilter(boolean keepDownloaded, boolean filterOld) {
+            this.keepDownloaded = keepDownloaded;
+            this.filterOld = filterOld;
+            episodeManager = EpisodeManager.getInstance();
+        }
+
+        @Override
+        public boolean apply(Episode episode) {
+            if (keepDownloaded && episodeManager.isDownloaded(episode)) {
+                return true;
+            }
+            if (filterOld && episodeManager.getState(episode)) {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -33,6 +33,7 @@
     <string name="playlist_add">Add to Playlist</string>
     <string name="playlist_remove">Remove from Playlist</string>
     <string name="playlist_swipe_reorder">Swipe episodes to re-order</string>
+    <string name="show_all_label">Show All Episodes</string>
     <string name="pref_auto_download_title">Auto download</string>
     <string name="pref_auto_download_summary">When on WiFi, make new episodes available offline</string>
     <string name="pref_download_folder_internal_podcasts">Podcasts (recommended)</string>

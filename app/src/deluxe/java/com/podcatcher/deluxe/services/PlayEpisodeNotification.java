@@ -34,8 +34,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.media.session.MediaSession;
 import android.os.Build;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v7.app.NotificationCompat;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.podcatcher.deluxe.EpisodeActivity.EPISODE_URL_KEY;
@@ -72,7 +73,7 @@ public class PlayEpisodeNotification implements Target {
     /**
      * Our builder
      */
-    private Notification.Builder notificationBuilder;
+    private NotificationCompat.Builder notificationBuilder;
 
     private PlayEpisodeNotification(Context context) {
         this.context = context;
@@ -124,8 +125,8 @@ public class PlayEpisodeNotification implements Target {
      * @return The notification to display.
      * @see #build(Episode, boolean, int, int)
      */
-    public Notification build(Episode episode) {
-        return build(episode, false, 0, 0, null);
+    public Notification build(Episode episode, MediaSessionCompat mediaSession) {
+        return build(episode, false, 0, 0, mediaSession);
     }
 
     /**
@@ -147,7 +148,9 @@ public class PlayEpisodeNotification implements Target {
                 appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Create the notification builder and set values
-        notificationBuilder = new Notification.Builder(context)
+        notificationBuilder = new NotificationCompat.Builder(context);
+        // These methods all return the Builder as a v4, not v7 Builder.
+        notificationBuilder
                 .setContentIntent(backToAppIntent)
                 .setTicker(episode.getName())
                 .setSmallIcon(R.drawable.ic_stat)
@@ -156,6 +159,7 @@ public class PlayEpisodeNotification implements Target {
                 .setWhen(0)
                 .setProgress(duration, position, false)
                 .setOngoing(true);
+
         // Load large image if available, see onBitmapLoaded() below
         if (episode.getPodcast().hasLogoUrl())
             Picasso.with(context).load(episode.getPodcast().getLogoUrl())
@@ -192,25 +196,24 @@ public class PlayEpisodeNotification implements Target {
         }
 
         // This will call build(), not available before Android 4.1
-        return notificationBuilder.getNotification();
+        return notificationBuilder.build();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Notification build(Episode episode, boolean paused, int position, int duration, MediaSession session) {
+    public Notification build(Episode episode, boolean paused, int position, int duration, MediaSessionCompat session) {
         build(episode, paused, position, duration);
 
         // Apply new notification features available in Lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
             notificationBuilder.setCategory(Notification.CATEGORY_TRANSPORT);
-            notificationBuilder.setStyle(new Notification.MediaStyle()
+            notificationBuilder.setStyle(new NotificationCompat.MediaStyle()
                     .setShowActionsInCompactView(1, 2, 3)  // rewind, toggle play, forward
-                    .setMediaSession(session == null ? null : session.getSessionToken()));
+                    .setMediaSession(session.getSessionToken()));
             notificationBuilder.setColor(context.getResources().getColor(R.color.theme_dark));
         }
 
-        // This will call build(), not available before Android 4.1
-        return notificationBuilder.getNotification();
+        return notificationBuilder.build();
     }
 
     /**
@@ -224,9 +227,7 @@ public class PlayEpisodeNotification implements Target {
      */
     public Notification updateProgress(int position, int duration) {
         notificationBuilder.setProgress(duration, position, false);
-
-        // This will call build(), not available before Android 4.1
-        return notificationBuilder.getNotification();
+        return notificationBuilder.build();
     }
 
     @Override

@@ -134,4 +134,5 @@
     <string name="pref_sync_none">Avaktiverad för närvarande</string>
     <string name="pref_sync_last_run">Senast fulla synkronisering: %1$s</string>
     <string name="pref_sync_now">Synkronisera nu</string>
+    <string name="show_all_label">Visa alla avsnitt</string>
 </resources>

@@ -134,4 +134,5 @@
     <string name="pref_sync_none">Atualmente desativado</string>
     <string name="pref_sync_last_run">Última sincronização completa: %1$s</string>
     <string name="pref_sync_now">Sincronizar agora</string>
+    <string name="show_all_label">Mostrar todos os episódios</string>
 </resources>

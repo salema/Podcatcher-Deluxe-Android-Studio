@@ -23,7 +23,10 @@ import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnChangePlaylistListener;
 import com.podcatcher.deluxe.listeners.PlayServiceListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.ParserUtils;
+import com.podcatcher.deluxe.model.PodcastManager;
 import com.podcatcher.deluxe.model.types.Episode;
+import com.podcatcher.deluxe.model.types.Podcast;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -40,17 +43,24 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.media.RemoteControlClient;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.format.DateFormat;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,11 +69,11 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 
-import static android.media.RemoteControlClient.PLAYSTATE_BUFFERING;
-import static android.media.RemoteControlClient.PLAYSTATE_ERROR;
-import static android.media.RemoteControlClient.PLAYSTATE_PAUSED;
-import static android.media.RemoteControlClient.PLAYSTATE_PLAYING;
-import static android.media.RemoteControlClient.PLAYSTATE_STOPPED;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_BUFFERING;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_ERROR;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_STOPPED;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 
 /**
@@ -138,6 +148,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     private boolean buffering = false;
     /**
+     * Are we making a bulk-update to the playlist?
+     */
+    private boolean updatingPlaylist = false;
+    /**
      * Time at which the playback has last been paused,
      * used to determine whether we should rewind on resume.
      */
@@ -152,9 +166,9 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     private ComponentName mediaButtonReceiver;
     /**
-     * Our remote control client
+     * Our media session
      */
-    private PodcatcherRCClient remoteControlClient;
+    private MediaSessionCompat mediaSession;
     /**
      * Our wifi lock
      */
@@ -209,6 +223,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     private final IBinder binder = new PlayServiceBinder();
 
+    private List<MediaSessionCompat.QueueItem> currentQueue;
+
+    private int currentQueueIndex;
+
     /**
      * The binder to return to client.
      */
@@ -251,6 +269,24 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         player.setOnErrorListener(this);
         player.setOnInfoListener(this);
         player.setOnBufferingUpdateListener(this);
+
+        configureAudioManager();
+
+        // Prime the Queue so we can activate on Play quickly.
+        currentQueueIndex = 0;
+        if (episodeManager.isPlaylistEmpty()) {
+            // Add all new or downloaded episodes to the initial queue.
+            List<Episode> episodes = new ArrayList<>();
+            PodcastManager podcastManager = PodcastManager.getInstance();
+            if (podcastManager.size() > 0) {
+                for (Podcast podcast : podcastManager.getPodcastList()) {
+                    episodes.addAll(podcast.getEpisodes(true, true));
+                }
+            }
+            updateQueue(episodes);
+        } else {
+            updateQueue(episodeManager.getPlaylist());
+        }
     }
 
     @Override
@@ -322,6 +358,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         episodeManager.removePlaylistListener(this);
         // Stop the timer
         notificationUpdateHandler.removeCallbacksAndMessages(null);
+        mediaSession.release();
 
         stop();
     }
@@ -380,14 +417,26 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
                     // We are streaming, so make wifi stay alive
                     wifiLock.acquire();
+                    mediaSession.setActive(true);
                 }
 
+                updateMetadata();
                 player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
                 player.prepareAsync(); // might take long! (for buffering, etc)
             } catch (Throwable throwable) {
                 Log.w(TAG, "Prepare/Play failed for episode: " + episode, throwable);
             }
         }
+    }
+
+    private void updateMetadata() {
+        mediaSession.setMetadata(new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentEpisode.getPodcast().getName())
+                .putString(MediaMetadataCompat.METADATA_KEY_DATE, DateFormat.getDateFormat(this).format(currentEpisode.getPubDate()))
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, currentEpisode.getPodcast().getLogoUrl())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentEpisode.getName())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentEpisode.getDuration())
+                .build());
     }
 
     /**
@@ -400,32 +449,31 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      * either not in the playlist or is at the end of the playlist.
      */
     public void playNext() {
-        final List<Episode> playlist = episodeManager.getPlaylist();
-        final int currentEpisodePosition = playlist.indexOf(currentEpisode);
+        Episode next = getEpisodeFromQueue(++currentQueueIndex);
+        playEpisode(next);
+    }
 
-        // Pop the episode off the playlist
-        episodeManager.removeFromPlaylist(currentEpisode);
-        playlist.remove(currentEpisode);
 
-        if (!playlist.isEmpty()) {
-            Episode next = playlist.get(0);
-
-            if (currentEpisodePosition > 0 && currentEpisodePosition < playlist.size())
-                next = playlist.get(currentEpisodePosition);
-
-            playEpisode(next);
-        }
+    private Episode getEpisodeFromQueue(int queueIndex) {
+        String mediaId = currentQueue.get(queueIndex).getDescription().getMediaId();
+        return PodcastManager.getInstance().findEpisodeForUrl(mediaId);
     }
 
     @Override
     public void onPlaylistChanged() {
-        // Update status bar notification
+        // Update status bar notifications
         rebuildNotification();
+    }
 
-        // Update rc if any (e.g. lock screen)
-        if (currentEpisode != null && remoteControlClient != null)
-            remoteControlClient.setTransportControlFlags(
-                    !episodeManager.isPlaylistEmptyBesides(currentEpisode));
+    private MediaMetadataCompat episodeToMediaMetadata(Episode episode) {
+        return new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, episode.getMediaUrl())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, episode.getName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, episode.getPodcast().getName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI,
+                        episode.getPodcast().getLogoUrl())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, episode.getDuration() * 1000)
+                .build();
     }
 
     /**
@@ -438,7 +486,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
             this.lastPaused = new Date();
             stopNotificationUpdater();
-            updateRemoteControlPlayState(PLAYSTATE_PAUSED);
+            updatePlayState(STATE_PAUSED);
             rebuildNotification();
         }
     }
@@ -456,7 +504,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             player.start();
 
             startNotificationUpdater();
-            updateRemoteControlPlayState(PLAYSTATE_PLAYING);
+            updatePlayState(STATE_PLAYING);
             rebuildNotification();
         }
     }
@@ -553,6 +601,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         return currentEpisode;
     }
 
+    public MediaSessionCompat getMediaSession() {
+        return mediaSession;
+    }
+
     /**
      * @return Current position of playback in milliseconds from media start.
      * Does not throw any exception but returns at least zero.
@@ -580,17 +632,17 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
+
         // Only start playback if focus is granted
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             // So we have audio focus and we tell the audio manager all the details
             // about our playback and that it should route media buttons to us
-            updateAudioManager();
-            updateRemoteControlPlayState(PLAYSTATE_PLAYING);
+            updatePlayState(STATE_PLAYING);
 
             // Go start and show the notification
             player.seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
             player.start();
-            startForeground(NOTIFICATION_ID, notification.build(currentEpisode));
+            startForeground(NOTIFICATION_ID, notification.build(currentEpisode, mediaSession));
             startNotificationUpdater();
 
             // Alert the listeners
@@ -618,7 +670,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         switch (what) {
             case MediaPlayer.MEDIA_INFO_BUFFERING_START:
                 buffering = true;
-                updateRemoteControlPlayState(PLAYSTATE_BUFFERING);
+                updatePlayState(STATE_BUFFERING);
 
                 for (PlayServiceListener listener : listeners)
                     listener.onStopForBuffering();
@@ -626,8 +678,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
                 break;
             case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                 buffering = false;
-                updateRemoteControlPlayState(player.isPlaying() ?
-                        PLAYSTATE_PLAYING : PLAYSTATE_PAUSED);
+                updatePlayState(player.isPlaying() ? STATE_PLAYING : STATE_PAUSED);
 
                 for (PlayServiceListener listener : listeners)
                     listener.onResumeFromBuffering();
@@ -640,7 +691,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        updateRemoteControlPlayState(PLAYSTATE_STOPPED);
+        updatePlayState(STATE_STOPPED);
 
         // Mark the episode old (needs to be done before resetting the service!)
         episodeManager.setState(currentEpisode, true);
@@ -669,7 +720,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        updateRemoteControlPlayState(PLAYSTATE_ERROR);
+        updatePlayState(STATE_ERROR);
 
         // If there is another downloaded episode in the playlist, play it.
         final SortedMap<Integer, Episode> playlist = episodeManager.getDownloadedPlaylist();
@@ -748,10 +799,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
         // Release resources
         audioManager.abandonAudioFocus(this);
-        audioManager.unregisterRemoteControlClient(remoteControlClient);
-        audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
         if (wifiLock.isHeld())
             wifiLock.release();
+
+        mediaSession.setActive(false);
 
         // Reset player
         player.reset();
@@ -791,41 +842,150 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void rebuildNotification() {
         if (isPrepared() && currentEpisode != null) {
-            Notification note;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration(), remoteControlClient == null ? null : remoteControlClient.getMediaSession());
-            else
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration());
+            Notification note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
+                    getDuration(), mediaSession);
 
             startForeground(NOTIFICATION_ID, note);
         }
     }
 
-    private void updateAudioManager() {
-        // Register our media button receiver
-        audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
-
+    private void configureAudioManager() {
         // Build the PendingIntent for the remote control client
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(mediaButtonReceiver);
         PendingIntent mediaPendingIntent =
                 PendingIntent.getBroadcast(getApplicationContext(), 0, mediaButtonIntent, 0);
 
-        // Create and register the remote control client
-        remoteControlClient = new PodcatcherRCClient(mediaPendingIntent, this, currentEpisode);
-        audioManager.registerRemoteControlClient(remoteControlClient);
+        // Create and register the MediaSession
+        mediaSession = new MediaSessionCompat(this, "PlayEpisodeService", mediaButtonReceiver,
+                mediaPendingIntent);
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSession.setCallback(new MediaSessionCallbacks());
     }
 
-    private void updateRemoteControlPlayState(int state) {
-        if (remoteControlClient != null)
-            remoteControlClient.setPlaybackState(state);
+    private void updatePlayState(int state) {
+        updateMetadata();
+        mediaSession.setPlaybackState(new PlaybackStateCompat.Builder()
+                .setState(state, getCurrentPosition(), 1.0f)
+                .setActions(getAvailableActions())
+                .build());
+    }
+
+    private long getAvailableActions() {
+        long actions = PlaybackStateCompat.ACTION_PLAY
+                | PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID;
+        if (episodeManager.isPlaylistEmpty()) {
+            return actions;
+        }
+        if (isPlaying()) {
+            actions |= PlaybackStateCompat.ACTION_PAUSE;
+        }
+        if (currentQueueIndex > 0) {
+            actions |= PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+        }
+        if (currentQueueIndex < episodeManager.getPlaylistSize() - 1) {
+            actions |= PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+        }
+        return actions;
     }
 
     private boolean shouldAutoDeleteCompletedEpisode() {
         return PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(SettingsActivity.KEY_AUTO_DELETE, false);
+    }
+
+    private void updateQueue(List<Episode> episodes) {
+        List<MediaSessionCompat.QueueItem> items = new ArrayList<>();
+        int count = 0;
+        for (Episode episode : episodes) {
+            items.add(new MediaSessionCompat.QueueItem(episodeToMediaMetadata(episode).getDescription(),
+                    count++));
+        }
+        currentQueue = items;
+        mediaSession.setQueue(currentQueue);
+    }
+
+    private final class MediaSessionCallbacks extends MediaSessionCompat.Callback {
+        @Override
+        public void onPlay() {
+            if (isPrepared() && !isPlaying()) {
+                resume();
+            } else {
+                playEpisode(getEpisodeFromQueue(currentQueueIndex));
+            }
+        }
+
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            Episode episodeToPlay;
+            List<Episode> newQueue;
+            if (mediaId.equals(PodcastBrowserService.CURRENT_PLAYLIST_MEDIA_ID)) {
+                newQueue = episodeManager.getPlaylist();
+                episodeToPlay = newQueue.get(0);
+                currentQueueIndex = 0;
+            } else {
+                boolean filter = true;
+                if (mediaId.contains(PodcastBrowserService.SHOW_ALL_SUFFIX)) {
+                    mediaId = mediaId.substring(0, mediaId.indexOf(PodcastBrowserService.SHOW_ALL_SUFFIX));
+                    filter = false;
+                }
+                episodeToPlay = PodcastManager.getInstance().findEpisodeForUrl(mediaId);
+                newQueue = episodeToPlay.getPodcast().getEpisodes(filter, filter);
+                currentQueueIndex = newQueue.indexOf(episodeToPlay);
+            }
+            updateQueue(newQueue);
+            playEpisode(episodeToPlay);
+        }
+
+        @Override
+        public void onSkipToQueueItem(long queueId) {
+            for (MediaSessionCompat.QueueItem item : currentQueue) {
+                if (item.getQueueId() == queueId) {
+                    currentQueueIndex = currentQueue.indexOf(item);
+                    String mediaId = item.getDescription().getMediaId();
+                    playEpisode(PodcastManager.getInstance().findEpisodeForUrl(mediaId));
+                }
+            }
+        }
+
+        @Override
+        public void onPause() {
+            pause();
+        }
+
+        @Override
+        public void onSkipToNext() {
+            if (currentQueueIndex + 1 < currentQueue.size()) {
+                playEpisode(getEpisodeFromQueue(++currentQueueIndex));
+            }
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            if (currentQueueIndex > 0) {
+                playEpisode(getEpisodeFromQueue(--currentQueueIndex));
+            }
+        }
+
+        @Override
+        public void onFastForward() {
+            fastForward();
+        }
+
+        @Override
+        public void onRewind() {
+            rewind();
+        }
+
+        @Override
+        public void onStop() {
+            stop();
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            seekTo((int) pos);
+        }
     }
 }
