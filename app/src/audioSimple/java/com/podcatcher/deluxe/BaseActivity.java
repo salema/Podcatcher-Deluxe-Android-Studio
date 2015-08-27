@@ -125,6 +125,10 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
      * Our toast object
      */
     private Toast toast;
+    /**
+     * Visibility flag used to suppress toasts when in background
+     */
+    private static boolean visible = false;
 
     /**
      * The options available for the content mode
@@ -411,6 +415,13 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        visible = hasFocus;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -436,7 +447,7 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     }
 
     /**
-     * Show a short, centered toast.
+     * If in foreground, show a short, centered toast.
      *
      * @param text Toast message text to show.
      */
@@ -445,15 +456,17 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
     }
 
     /**
-     * Show a centered toast.
+     * If in foreground, show a centered toast.
      *
      * @param text   Toast message text to show.
      * @param length The duration for the toast to show.
      */
     protected void showToast(String text, int length) {
-        toast.setText(text);
-        toast.setDuration(length);
+        if (visible) {
+            toast.setText(text);
+            toast.setDuration(length);
 
-        toast.show();
+            toast.show();
+        }
     }
 }
