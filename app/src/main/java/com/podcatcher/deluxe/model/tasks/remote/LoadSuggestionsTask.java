@@ -357,7 +357,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     }
 
     private byte[] restoreSuggestionsFromResources() throws IOException {
-        final InputStream input = context.getResources().openRawResource(R.raw.podcast_suggestions);
+        final InputStream input = context.getResources().openRawResource(R.raw.podcast_suggestions_v3);
 
         try {
             return readFileToByteArray(input);
