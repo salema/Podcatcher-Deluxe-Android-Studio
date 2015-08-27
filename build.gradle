@@ -1,10 +1,10 @@
 // Configuration options common to all sub-projects/modules
 ext {
-    compileSdkVersion = 22
-    buildToolsVersion = '22.0.1'
+    compileSdkVersion = 23
+    buildToolsVersion = '23.0.0'
 
     minSdkVersion = 14
-    targetSdkVersion = 22
+    targetSdkVersion = 23
 }
 
 buildscript {
@@ -13,7 +13,7 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDynamicVersion
-        classpath 'com.android.tools.build:gradle:1.2.+'
+        classpath 'com.android.tools.build:gradle:+'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

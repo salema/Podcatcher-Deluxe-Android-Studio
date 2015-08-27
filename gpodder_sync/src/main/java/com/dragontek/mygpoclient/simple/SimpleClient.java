@@ -99,7 +99,8 @@ public class SimpleClient {
         return _authToken != null;
     }
 
-    public Set<String> getSubscriptions(String deviceId) throws IOException {
+    public Set<String> getSubscriptions(String deviceId) throws IOException,
+            AuthenticationException {
         String uri = _locator.subscriptionsUri(deviceId);
         Type collectionType = new TypeToken<HashSet<String>>() {
         }.getType();
@@ -107,7 +108,8 @@ public class SimpleClient {
             return _gson.fromJson(_client.GET(uri), collectionType);
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == 401)
-                throw new IOException("Unable to authenticate user with Gpodder.net", e);
+                throw new AuthenticationException(
+                        "Unable to authenticate user with Gpodder.net", e);
             else
                 throw e;
         }
@@ -115,7 +117,7 @@ public class SimpleClient {
     }
 
     public boolean putSubscriptions(String deviceId, List<String> urls)
-            throws IOException {
+            throws IOException, AuthenticationException {
         String uri = _locator.subscriptionsUri(deviceId);
         try {
             String response = _client.PUT(uri,
@@ -123,7 +125,8 @@ public class SimpleClient {
             return (response.isEmpty());
         } catch (HttpResponseException e) {
             if (e.getStatusCode() == 401)
-                throw new IOException("Unable to authenticate user with Gpodder.net", e);
+                throw new AuthenticationException(
+                        "Unable to authenticate user with Gpodder.net", e);
             else
                 throw e;
         }
