@@ -29,6 +29,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.AbstractMap;
+import java.util.ConcurrentModificationException;
 import java.util.Map.Entry;
 
 /**
@@ -108,6 +109,11 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
                 }
             } catch (DbxException | NullPointerException | InterruptedException e) {
                 this.cause = e;
+                cancel(true);
+            } catch (ConcurrentModificationException cme) {
+                // This happens if the podcast list changes while we are running,
+                // it is fine to aboard and update the metadata on the next sync event
+                this.cause = cme;
                 cancel(true);
             }
 
