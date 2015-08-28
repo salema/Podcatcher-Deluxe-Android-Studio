@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Progress;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -129,6 +130,6 @@ public class ProgressView extends LinearLayout {
      * @return The color resource.
      */
     protected int getColor(int id) {
-        return getResources().getColor(id);
+        return ContextCompat.getColor(getContext(), id);
     }
 }

@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -88,7 +89,7 @@ public class PodcastListItemView extends PodcatcherListItemView {
 
         // Create the class handle to star drawable if we are first
         if (starDrawable == null) {
-            starDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_media_new);
+            starDrawable = (BitmapDrawable) ContextCompat.getDrawable(getContext(), R.drawable.ic_media_new);
             final int size = starDrawable.getIntrinsicHeight() / 2;
             // The bounds need to be set to the smaller size
             starDrawable.setBounds(0, 0, size, size);

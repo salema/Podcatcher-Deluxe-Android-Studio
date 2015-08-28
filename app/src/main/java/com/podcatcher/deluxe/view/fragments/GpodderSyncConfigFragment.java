@@ -32,6 +32,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
@@ -121,8 +122,8 @@ public class GpodderSyncConfigFragment extends DialogFragment {
 
         // Get a few resources
         deviceIdLabelText = getString(R.string.sync_gpodder_device_id);
-        deviceIdValidColor = getResources().getColor(R.color.text_secondary);
-        deviceIdInvalidColor = getResources().getColor(R.color.text_error);
+        deviceIdValidColor = ContextCompat.getColor(getContext(), R.color.text_secondary);
+        deviceIdInvalidColor = ContextCompat.getColor(getContext(), R.color.text_error);
 
         // We read the text field presets from the preferences
         final SharedPreferences preferences =

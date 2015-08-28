@@ -200,6 +200,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
                     @Override
                     public void onGlobalLayout() {
                         // We only need this once
+                        // noinspection deprecation - need to call old method for API 14/15
                         logoView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         // Store value for future use in animations
                         logoViewHeight = getView().getWidth();

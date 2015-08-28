@@ -173,6 +173,7 @@ public class AddPodcastFragment extends DialogFragment {
                     @Override
                     public void onGlobalLayout() {
                         // We only need this once
+                        // noinspection deprecation - need to call old method for API 14/15
                         view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
                         // Update new layout params

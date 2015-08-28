@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.R;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.SparseBooleanArray;
 import android.view.View;
 
@@ -115,7 +116,7 @@ public abstract class PodcatcherBaseListAdapter extends PodcatcherBaseAdapter {
     protected void setBackgroundColorForPosition(View view, int position) {
         // This handles the selected, checked and none states
         view.setBackgroundColor(checkedPositions.get(position) ?
-                resources.getColor(R.color.theme_light) : selectedPositions.get(position) ?
-                resources.getColor(R.color.theme_dark) : Color.TRANSPARENT);
+                ContextCompat.getColor(context, R.color.theme_light) : selectedPositions.get(position) ?
+                ContextCompat.getColor(context, R.color.theme_dark) : Color.TRANSPARENT);
     }
 }
