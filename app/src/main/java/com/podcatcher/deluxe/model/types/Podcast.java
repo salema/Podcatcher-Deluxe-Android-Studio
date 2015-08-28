@@ -346,7 +346,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * @return <code>true</code> iff matches
      */
     public boolean equalByUrl(String aUrl) {
-        return aUrl != null && this.url.equals(normalizeUrl(aUrl));
+        return aUrl != null && this.url != null && this.url.equals(normalizeUrl(aUrl));
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 
+import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
 import java.util.Date;
@@ -131,7 +132,7 @@ public class EpisodeTest extends InstrumentationTestCase {
         }
 
         @Override
-        public int parseDuration(String text) {
+        public int parseDuration(@NonNull String text) {
             return super.parseDuration(text);
         }
 

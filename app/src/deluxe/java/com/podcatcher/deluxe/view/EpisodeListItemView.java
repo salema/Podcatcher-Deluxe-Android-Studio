@@ -168,7 +168,7 @@ public class EpisodeListItemView extends PodcatcherListItemView {
             // Remove podcast name from the episode title because it takes too
             // much space and is redundant anyway
             final String podcastName = episode.getPodcast().getName();
-            if (result.startsWith(podcastName))
+            if (podcastName != null && result.startsWith(podcastName))
                 result = result.substring(podcastName.length(), result.length());
 
             // Also remove all non-alphanumeric stuff at the start
