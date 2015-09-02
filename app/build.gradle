@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        versionCode 222
+        versionCode 223
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
     }
@@ -80,7 +80,7 @@ android {
         simple {
             dimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "3.4.5"
+            versionName "3.4.6"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -90,14 +90,14 @@ android {
         audio {
             dimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "4.4.5"
+            versionName "4.4.6"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             dimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "5.4.5"
+            versionName "5.4.6"
 
             signingConfig videoDeluxeSigningVariable
         }
