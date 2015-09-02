@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.listeners;
 
+import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
 import com.podcatcher.deluxe.model.EpisodeManager;
@@ -281,6 +282,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
     private void updateMenuItems() {
         // Initialize counter for the number of deletes the current selection would trigger
         this.deletesTriggered = 0;
+        // Check for permission to access external storage
+        final boolean canAccessStorage = Podcatcher.canWriteExternalStorage();
 
         // Make all menu items invisible
         newMenuItem.setVisible(false);
@@ -305,9 +308,9 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
 
                 if (episodeManager.isDownloadingOrDownloaded(episode)) {
                     deletesTriggered++;
-                    deleteMenuItem.setVisible(true);
+                    deleteMenuItem.setVisible(canAccessStorage);
                 } else
-                    downloadMenuItem.setVisible(true);
+                    downloadMenuItem.setVisible(canAccessStorage);
 
                 if (episodeManager.isInPlaylist(episode))
                     removeFromPlaylistMenuItem.setVisible(true);

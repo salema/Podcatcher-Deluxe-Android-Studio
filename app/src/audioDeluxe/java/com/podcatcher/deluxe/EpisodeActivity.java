@@ -38,6 +38,7 @@ import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -45,6 +46,7 @@ import android.widget.SeekBar;
 
 import java.util.concurrent.TimeUnit;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
 /**
@@ -60,6 +62,10 @@ public abstract class EpisodeActivity extends BaseActivity implements
      * Key used to store episode URL in intent or bundle
      */
     public static final String EPISODE_URL_KEY = "episode_url_key";
+    /**
+     * Permission request code used
+     */
+    public static final int STORAGE_PERMISSION_REQUEST_CODE = 42;
 
     /**
      * The current episode fragment
@@ -281,34 +287,48 @@ public abstract class EpisodeActivity extends BaseActivity implements
     @Override
     public void onToggleDownload() {
         if (selection.isEpisodeSet()) {
-            // Check for action to perform
-            boolean download = !episodeManager.isDownloadingOrDownloaded(selection.getEpisode());
+            // Make sure we have permission to store/remove files
+            if (!Podcatcher.canWriteExternalStorage())
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+            else {
+                // Check for action to perform
+                boolean download = !episodeManager.isDownloadingOrDownloaded(selection.getEpisode());
 
-            // Kick off the appropriate action
-            if (download) {
-                episodeManager.download(selection.getEpisode());
+                // Kick off the appropriate action
+                if (download) {
+                    episodeManager.download(selection.getEpisode());
 
-                showToast(getString(R.string.download_started, selection.getEpisode().getName()));
-                updateDownloadUi();
-            } else {
-                // For deletion, we show a confirmation dialog first
-                final DeleteDownloadsConfirmationFragment confirmationDialog =
-                        new DeleteDownloadsConfirmationFragment();
-                confirmationDialog.setListener(new OnDeleteDownloadsConfirmationListener() {
+                    showToast(getString(R.string.download_started, selection.getEpisode().getName()));
+                    updateDownloadUi();
+                } else {
+                    // For deletion, we show a confirmation dialog first
+                    final DeleteDownloadsConfirmationFragment confirmationDialog =
+                            new DeleteDownloadsConfirmationFragment();
+                    confirmationDialog.setListener(new OnDeleteDownloadsConfirmationListener() {
 
-                    @Override
-                    public void onConfirmDeletion() {
-                        episodeManager.deleteDownload(selection.getEpisode());
-                    }
+                        @Override
+                        public void onConfirmDeletion() {
+                            episodeManager.deleteDownload(selection.getEpisode());
+                        }
 
-                    @Override
-                    public void onCancelDeletion() {
-                        // Nothing to do here...
-                    }
-                });
+                        @Override
+                        public void onCancelDeletion() {
+                            // Nothing to do here...
+                        }
+                    });
 
-                confirmationDialog.show(getFragmentManager(), TAG);
+                    confirmationDialog.show(getFragmentManager(), TAG);
+                }
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    onToggleDownload();
         }
     }
 

@@ -22,10 +22,14 @@ import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
 import com.podcatcher.deluxe.view.fragments.SettingsFragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import java.io.File;
 import java.io.IOException;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Update settings activity.
@@ -71,6 +75,11 @@ public class SettingsActivity extends BaseActivity {
      * Tag to find the add suggestion dialog fragment under
      */
     private static final String SETTINGS_DIALOG_TAG = "settings_dialog";
+    /**
+     * Permission request code
+     */
+    private static final int STORAGE_PERMISSION_REQUEST_CODE = 43;
+
     /**
      * The settings fragment we display
      */
@@ -118,5 +127,32 @@ public class SettingsActivity extends BaseActivity {
             } catch (NullPointerException npe) {
                 // pass, this should not happen
             }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        super.onSharedPreferenceChanged(sharedPreferences, key);
+
+        // Make sure we have the correct permissions to fulfill the auto tasks, since
+        // these are disabled when the permission is taken away, we can count on this
+        // to only run if one of the auto tasks is enabled and not on disable.
+        if (!Podcatcher.canWriteExternalStorage() &&
+                (KEY_AUTO_DELETE.equals(key) || KEY_AUTO_DOWNLOAD.equals(key)))
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    // Reset preferences to default state (off)
+                    preferences.edit()
+                            .putBoolean(SettingsActivity.KEY_AUTO_DELETE, false)
+                            .putBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false).apply();
+
+                    showToast(getString(R.string.file_select_access_denied));
+                }
+        }
     }
 }

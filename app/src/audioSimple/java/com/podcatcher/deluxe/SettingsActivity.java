@@ -37,6 +37,14 @@ public class SettingsActivity extends BaseActivity {
      */
     public static final String KEY_SELECT_ALL_ON_START = "select_all_on_startup";
     /**
+     * The preference key for the auto download flag
+     */
+    public static final String KEY_AUTO_DOWNLOAD = "auto_download";
+    /**
+     * The preference key for the auto delete flag
+     */
+    public static final String KEY_AUTO_DELETE = "auto_delete";
+    /**
      * The key for the download folder preference
      */
     public static final String KEY_DOWNLOAD_FOLDER = "download_folder";

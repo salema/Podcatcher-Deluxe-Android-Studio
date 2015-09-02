@@ -28,6 +28,7 @@ import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 
 import java.io.File;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * Non-UI activity to select download folder. Will use a fragment to show the
@@ -53,6 +56,11 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
      */
     private static final String SELECT_FOLDER_DIALOG_TAG = "select_download_folder_dialog";
     /**
+     * Permission request code
+     */
+    private static final int STORAGE_PERMISSION_REQUEST_CODE = 44;
+
+    /**
      * The fragment containing the select download folder UI
      */
     private SelectDownloadFolderFragment selectDownloadFolderFragment;
@@ -65,8 +73,11 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
             selectDownloadFolderFragment = new SelectDownloadFolderFragment();
             selectDownloadFolderFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
-            // Show the fragment
-            selectDownloadFolderFragment.show(getFragmentManager(), SELECT_FOLDER_DIALOG_TAG);
+            // Make sure we have the permission needed
+            if (!Podcatcher.canWriteExternalStorage())
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+            else
+                selectDownloadFolderFragment.show(getFragmentManager(), SELECT_FOLDER_DIALOG_TAG);
         } else
             this.selectDownloadFolderFragment = (SelectDownloadFolderFragment)
                     getFragmentManager().findFragmentByTag(SELECT_FOLDER_DIALOG_TAG);
@@ -117,6 +128,20 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
 
         // Start activity. Result will be caught below and pushed down to the SettingsActivity.
         startActivityForResult(selectFolderIntent, DownloadFolderPreference.REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case STORAGE_PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && selectDownloadFolderFragment != null)
+                    selectDownloadFolderFragment.show(getFragmentManager(), SELECT_FOLDER_DIALOG_TAG);
+                else {
+                    showToast(getString(R.string.file_select_access_denied));
+                    onCancel(null);
+                }
+        }
     }
 
     @Override

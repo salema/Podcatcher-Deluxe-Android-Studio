@@ -28,14 +28,19 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Process;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 
 import java.io.File;
@@ -69,6 +74,11 @@ public class Podcatcher extends Application {
      * The HTTP cache size
      */
     public static final long HTTP_CACHE_SIZE = 8 * 1024 * 1024; // 8 MiB
+
+    /**
+     * Global flag to reflect runtime permission state
+     */
+    private static boolean canWriteExternalStorage = false;
 
     /**
      * Thread to move the http cache flushing off the UI thread
@@ -117,6 +127,19 @@ public class Podcatcher extends Application {
             // This should not happen, but the app works without the cache
         }
 
+        // Check permissions (only needed for Android >= 6). If this is changed
+        // while we are running, Android will restart the app, so checking once
+        // here should be fine.
+        canWriteExternalStorage = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        // If permissions are limited, disable auto-download and auto-delete
+        if (!canWriteExternalStorage) {
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            preferences.edit()
+                    .putBoolean(SettingsActivity.KEY_AUTO_DELETE, false)
+                    .putBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false).apply();
+        }
+
         // Now we will trigger the preparation on start-up, steps include:
         // 1. Load podcast list from file async, once this is finished the
         // podcast manager is alerted and in turn tells the controller activity.
@@ -130,6 +153,14 @@ public class Podcatcher extends Application {
         // block until the data is available.
         new LoadEpisodeMetadataTask(this, EpisodeManager.getInstance())
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+    }
+
+    /**
+     * @return The state of the 'write external storage' runtime permission.
+     * Will always be <code>true</code> on Android versions < 6.
+     */
+    public static boolean canWriteExternalStorage() {
+        return canWriteExternalStorage;
     }
 
     /**
