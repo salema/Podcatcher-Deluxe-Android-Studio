@@ -103,9 +103,15 @@ android {
         }
     }
     variantFilter { final variant ->
-        // Ignore all variant we do not need: release and videoSimple
+        // Ignore all variants we do not need: release and videoSimple
         if (variant.buildType.name.equals('release') ||
                 (variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('simple'))) {
+            variant.setIgnore(true);
+        }
+
+        // Ignore all variants we do not need: Samsung and not simple
+        if (variant.buildType.name.equals('samsung') &&
+                !(variant.flavors.get(0).name.equals('audio') && variant.flavors.get(1).name.equals('simple'))) {
             variant.setIgnore(true);
         }
     }
