@@ -122,8 +122,8 @@ public class GpodderSyncConfigFragment extends DialogFragment {
 
         // Get a few resources
         deviceIdLabelText = getString(R.string.sync_gpodder_device_id);
-        deviceIdValidColor = ContextCompat.getColor(getContext(), R.color.text_secondary);
-        deviceIdInvalidColor = ContextCompat.getColor(getContext(), R.color.text_error);
+        deviceIdValidColor = ContextCompat.getColor(getActivity(), R.color.text_secondary);
+        deviceIdInvalidColor = ContextCompat.getColor(getActivity(), R.color.text_error);
 
         // We read the text field presets from the preferences
         final SharedPreferences preferences =
