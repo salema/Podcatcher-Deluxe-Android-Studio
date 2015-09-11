@@ -67,7 +67,7 @@ public abstract class EpisodeInformationManager extends EpisodeBaseManager {
      *                    anything unless the value given is greater than zero.
      */
     public void updateDuration(Episode episode, int newDuration) {
-        if (newDuration > 0) {
+        if (episode != null && metadata != null && newDuration > 0) {
             // Update metadata record if the duration is new or different
             final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
             if (meta != null &&
