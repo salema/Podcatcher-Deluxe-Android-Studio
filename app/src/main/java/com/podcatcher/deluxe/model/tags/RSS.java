@@ -35,6 +35,8 @@ public class RSS {
     public static final String ENCLOSURE = "enclosure";
     public static final String URL = "url";
     public static final String MEDIA_TYPE = "type";
+    public static final String MEDIA_TYPE_AUDIO = "audio";
+    public static final String MEDIA_TYPE_VIDEO = "video";
     public static final String MEDIA_LENGTH = "length";
     public static final String HREF = "href";
     public static final String LINK = "link";

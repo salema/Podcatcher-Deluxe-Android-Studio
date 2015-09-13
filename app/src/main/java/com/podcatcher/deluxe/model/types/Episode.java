@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.model.types;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.tags.RSS;
 
@@ -309,25 +310,34 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     }
 
     protected void parseEnclosure(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
-        final String urlAttribute = parser.getAttributeValue("", RSS.URL);
-        final String typeAttribute = parser.getAttributeValue("", RSS.MEDIA_TYPE);
-        final String lengthAttribute = parser.getAttributeValue("", RSS.MEDIA_LENGTH);
+        // Extract information needed to decide if we pick this enclosure
+        final String urlAttribute = normalizeUrl(parser.getAttributeValue("", RSS.URL));
+        final String typeAttribute = parseMediaType(parser.getAttributeValue("", RSS.MEDIA_TYPE));
+        final int lengthAttribute = parseFileSize(parser.getAttributeValue("", RSS.MEDIA_LENGTH));
 
-        // Only set the media URL if it is actually there, this will
-        // prevent overriding it when there are multiple enclosures
-        if (urlAttribute != null) {
-            mediaUrl = normalizeUrl(urlAttribute);
-            mediaType = typeAttribute != null && typeAttribute.trim().length() > 0 ?
-                    typeAttribute.trim() : null;
-            try {
-                fileSize = Integer.valueOf(lengthAttribute);
-            } catch (NumberFormatException nfe) {
-                // pass, length not available
-                fileSize = -1;
-            }
+        // This enclosure is only picked if (1) it actually has a media URL
+        // and we either have (2) nothing at all yet or this one is (3) better than the current one
+        if (urlAttribute != null && (mediaUrl == null || isBetterEnclosure(typeAttribute))) {
+            mediaUrl = urlAttribute;
+            mediaType = typeAttribute;
+            fileSize = lengthAttribute;
         }
 
         parser.nextText();
+    }
+
+    private String parseMediaType(String attributeValue) {
+        return attributeValue != null && attributeValue.trim().length() > 0 ?
+                attributeValue.trim().toLowerCase(Locale.US) : null;
+    }
+
+    private int parseFileSize(String attributeValue) {
+        try {
+            return Integer.valueOf(attributeValue);
+        } catch (NumberFormatException | NullPointerException ne) {
+            // pass, length not available
+            return -1;
+        }
     }
 
     protected int parseDuration(@NonNull String durationString) {
@@ -360,6 +370,15 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
     protected boolean isContentEncodedTag(@NonNull XmlPullParser parser) {
         return RSS.CONTENT_ENCODED.equals(parser.getName()) &&
                 RSS.CONTENT_NAMESPACE.equals(parser.getNamespace(parser.getPrefix()));
+    }
+
+    private boolean isBetterEnclosure(String type) {
+        final boolean isMediaFile = type != null &&
+                (type.startsWith(RSS.MEDIA_TYPE_AUDIO) || type.startsWith(RSS.MEDIA_TYPE_VIDEO));
+        final boolean alreadyHasMatchingMediaFile = mediaType != null &&
+                mediaType.startsWith(BuildConfig.FLAVOR_media);
+
+        return isMediaFile && !alreadyHasMatchingMediaFile;
     }
 
     @Override
