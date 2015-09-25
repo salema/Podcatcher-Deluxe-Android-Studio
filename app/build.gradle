@@ -10,6 +10,14 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         resConfigs "en", "cs", "de", "es", "fr", "it", "nl", "pt", "ru", "sv", "tr", "uk"
+
+        buildConfigField "String", "STORE", "\"Google Play\""
+        buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+        buildConfigField "String", "SUGGESTIONS", "\"http://www.podcatcher-deluxe.com/podcast-suggestions.v3.json\""
+        buildConfigField "Boolean", "FIXED_BUNDLE", "false"
+        buildConfigField "String", "BUNDLE_LANGUAGE", "\"en\""
+
+        proguardFiles 'proguard-rules.pro'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -35,38 +43,51 @@ android {
             applicationIdSuffix ".debug"
 
             buildConfigField "String", "STORE", "\"Debug Store\""
-            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
         }
         play {
-            buildConfigField "String", "STORE", "\"Google Play\""
-            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
-
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         amazon {
             buildConfigField "String", "STORE", "\"Amazon\""
-            buildConfigField "String", "STORE_URL_PREFIX", "\"http://www.amazon.com/gp/mas/dl/android?p=\""
 
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         slideme {
-            buildConfigField "String", "STORE", "\"SlideMe\""
             // The SlideMe market app (SAM) also supports this link, selection
             // dialog is shown if both Google Play and SAM are installed
-            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+            buildConfigField "String", "STORE", "\"SlideMe\""
 
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         samsung {
-            buildConfigField "String", "STORE", "\"Samsung\""
             // Link to Google Play because Samsung does not allow new apps
-            buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
+            buildConfigField "String", "STORE", "\"Samsung\""
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        magic {
+            applicationIdSuffix ".mtg"
+
+            buildConfigField "String", "SUGGESTIONS", "\"http://www.podcatcher-deluxe.com/podcast-suggestions.magic.json\""
+            buildConfigField "Boolean", "FIXED_BUNDLE", "true"
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        twit {
+            applicationIdSuffix ".twit"
+
+            buildConfigField "String", "SUGGESTIONS", "\"http://www.podcatcher-deluxe.com/podcast-suggestions.twit.json\""
+            buildConfigField "Boolean", "FIXED_BUNDLE", "true"
 
             minifyEnabled true
             shrinkResources true
@@ -115,6 +136,18 @@ android {
         // Ignore all variants we do not need: Samsung and not simple
         if (variant.buildType.name.equals('samsung') &&
                 !(variant.flavors.get(0).name.equals('audio') && variant.flavors.get(1).name.equals('simple'))) {
+            variant.setIgnore(true);
+        }
+
+        // Ignore all variants we do not need for Magic Podcast
+        if (variant.buildType.name.equals('magic') &&
+                !(variant.flavors.get(0).name.equals('audio') && variant.flavors.get(1).name.equals('deluxe'))) {
+            variant.setIgnore(true);
+        }
+
+        // Ignore all variants we do not need for Twit Netcasts
+        if (variant.buildType.name.equals('twit') &&
+                !(variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('deluxe'))) {
             variant.setIgnore(true);
         }
     }

@@ -313,7 +313,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
             boolean hasEmptyPodcastList = true;
 
             // Find if we got some podcasts
-            if (data != null) {
+            if (data != null && !BuildConfig.FIXED_BUNDLE) {
                 final List<String> names = data.getStringArrayListExtra(getString(R.string.podcast_names_key));
                 final List<String> urls = data.getStringArrayListExtra(getString(R.string.podcast_urls_key));
                 // Yes, we got some podcasts from the Simple Podcatcher

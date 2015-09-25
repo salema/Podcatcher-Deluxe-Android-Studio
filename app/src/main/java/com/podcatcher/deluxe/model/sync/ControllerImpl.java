@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.model.sync;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
@@ -26,6 +27,8 @@ import com.podcatcher.deluxe.model.sync.podcare.PodcareSyncController;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 /**
  * The list of current {@link SyncController} implementations. This enum also
