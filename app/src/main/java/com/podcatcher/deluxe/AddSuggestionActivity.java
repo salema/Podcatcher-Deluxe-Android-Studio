@@ -151,21 +151,27 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
         menu.findItem(R.id.search_suggestions_menuitem).setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                toprunnerMenuItem.setVisible(!view.isSmallPortrait());
-                newMenuItem.setVisible(!view.isSmallPortrait());
+                toprunnerMenuItem.setVisible(!view.isSmallPortrait() && !BuildConfig.FIXED_BUNDLE);
+                newMenuItem.setVisible(!view.isSmallPortrait() && !BuildConfig.FIXED_BUNDLE);
 
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                toprunnerMenuItem.setVisible(true);
-                newMenuItem.setVisible(true);
+                toprunnerMenuItem.setVisible(!BuildConfig.FIXED_BUNDLE);
+                newMenuItem.setVisible(!BuildConfig.FIXED_BUNDLE);
 
                 return true;
             }
         });
         colorSearchView(); // If possible, apply theme color to search plates
+
+        // Hide some options in fixed bundle versions
+        toprunnerMenuItem.setVisible(!BuildConfig.FIXED_BUNDLE);
+        newMenuItem.setVisible(!BuildConfig.FIXED_BUNDLE);
+        menu.findItem(R.id.podcast_add_menuitem).setVisible(!BuildConfig.FIXED_BUNDLE);
+        menu.findItem(R.id.import_opml_menuitem).setVisible(!BuildConfig.FIXED_BUNDLE);
 
         return true;
     }

@@ -255,8 +255,8 @@ public class PodcastListContextListener implements MultiChoiceModeListener,
 
                 // Show/hide edit auth menu item
                 sharePodcastMenuItem.setVisible(checkedItemCount == 1);
-                editAuthMenuItem.setVisible(checkedItemCount == 1);
-                sendSuggestionMenuItem.setVisible(checkedItemCount == 1);
+                editAuthMenuItem.setVisible(checkedItemCount == 1 && !BuildConfig.FIXED_BUNDLE);
+                sendSuggestionMenuItem.setVisible(checkedItemCount == 1 && !BuildConfig.FIXED_BUNDLE);
                 // Hide the select all item if all items are selected
                 selectAllMenuItem.setVisible(checkedItemCount != fragment.getListAdapter().getCount());
             } catch (NullPointerException npe) {

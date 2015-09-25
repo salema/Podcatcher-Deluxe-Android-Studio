@@ -215,6 +215,9 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        final View filterBar = view.findViewById(R.id.suggestion_filter_bar);
+        filterBar.setVisibility(BuildConfig.FIXED_BUNDLE ? View.GONE : View.VISIBLE);
+
         languageFilter = (Spinner) view.findViewById(R.id.suggestion_language_select);
         languageFilter.setAdapter(new LanguageSpinnerAdapter(getActivity()));
         languageFilter.setOnItemSelectedListener(selectionListener);
@@ -238,6 +241,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
             @Override
             public void onInflate(ViewStub stub, View inflated) {
                 final Button resetFilters = (Button) inflated.findViewById(R.id.reset_filters_button);
+                resetFilters.setVisibility(BuildConfig.FIXED_BUNDLE ? View.GONE : View.VISIBLE);
 
                 resetFilters.setOnClickListener(new View.OnClickListener() {
 
@@ -363,9 +367,11 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
         if (resetLanguage)
             try {
                 final Locale currentLocale = getActivity().getResources().getConfiguration().locale;
-                final Language currentLanguage = Language.forTwoLetterIsoCode(currentLocale.getLanguage());
+                final Language selectedLanguage = BuildConfig.FIXED_BUNDLE ?
+                        Language.forTwoLetterIsoCode(BuildConfig.BUNDLE_LANGUAGE) :
+                        Language.forTwoLetterIsoCode(currentLocale.getLanguage());
                 for (int index = 0; index < languageFilter.getCount(); index++)
-                    if (languageFilter.getItemAtPosition(index).equals(currentLanguage))
+                    if (languageFilter.getItemAtPosition(index).equals(selectedLanguage))
                         languageFilter.setSelection(index);
             } catch (IllegalArgumentException iae) {
                 // Unknown language, set to wildcard
@@ -376,7 +382,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
         genreFilter.setSelection(0);
 
         // Set type according to media type flavor (audio/video)
-        if (BuildConfig.FLAVOR_media.equals("video"))
+        if (BuildConfig.FLAVOR_media.equals("video") || BuildConfig.FIXED_BUNDLE)
             mediaTypeFilter.setSelection(0); // Show all suggestions
         else
             for (int index = 0; index < mediaTypeFilter.getCount(); index++)

@@ -35,7 +35,7 @@ public class ReportAdditionTask extends LoadRemoteFileTask<Podcast, Void> {
 
     @Override
     protected Void doInBackground(Podcast... podcasts) {
-        if (!BuildConfig.DEBUG)
+        if (!BuildConfig.DEBUG && !BuildConfig.FIXED_BUNDLE)
             for (Podcast podcast : podcasts)
                 try {
                     // All we need to do is trigger the page load and discard the result

@@ -25,6 +25,7 @@
     tools:context=".views.fragments.SuggestionFragment">
 
     <LinearLayout
+        android:id="@+id/suggestion_filter_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

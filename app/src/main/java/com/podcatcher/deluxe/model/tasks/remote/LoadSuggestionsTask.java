@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.model.tasks.remote;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnLoadSuggestionListener;
 import com.podcatcher.deluxe.model.tags.JSON;
@@ -66,7 +67,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * The online resource to find suggestions
      */
-    private static final String SOURCE = "http://www.podcatcher-deluxe.com/podcast-suggestions.v3.json";
+    private static final String SOURCE = BuildConfig.SUGGESTIONS;
     /**
      * The local file name for the cached suggestions
      */

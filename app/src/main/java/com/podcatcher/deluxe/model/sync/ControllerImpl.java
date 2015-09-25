@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.model.sync;
 
+import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
@@ -25,6 +26,8 @@ import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import java.util.Locale;
 
 /**
  * The list of current {@link SyncController} implementations. This enum also
@@ -108,10 +111,11 @@ public enum ControllerImpl {
      */
     public boolean isAvailable(Context context) {
         switch (this) {
-            // Disabling check for now, the stores do that for us
-            /* case DROPBOX:
+            case DROPBOX:
                 final String arch = System.getProperty("os.arch");
-                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US)); */
+                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US)) &&
+                        // Disable Dropbox sync for fixed bundle versions
+                        !BuildConfig.FIXED_BUNDLE;
             default:
                 return true;
         }
