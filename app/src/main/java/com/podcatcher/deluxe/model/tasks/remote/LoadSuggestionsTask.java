@@ -240,7 +240,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
                         languageHitlist.put(votes, entry);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (JSONException | ArrayIndexOutOfBoundsException e) {
                 Log.d(TAG, "Cannot create JSON object for index: " + index, e);
             }
 
