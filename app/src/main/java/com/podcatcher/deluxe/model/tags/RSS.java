@@ -50,6 +50,10 @@ public class RSS {
     public static final String DESCRIPTION = "description";
     public static final String SUMMARY = "summary";
     public static final String CONTENT_ENCODED = "encoded";
+    public static final String CHAPTERS = "chapters";
+    public static final String CHAPTER = "chapter";
+    public static final String CHAPTER_START = "start";
+    public static final String CHAPTER_TITLE = "title";
 
     public static final String CONTENT_NAMESPACE = "http://purl.org/rss/1.0/modules/content/";
     public static final String EXPLICIT_POSITIVE_VALUE = "yes";

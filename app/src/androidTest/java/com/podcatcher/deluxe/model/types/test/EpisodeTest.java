@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.model.types.test;
 
+import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
@@ -25,6 +26,7 @@ import com.podcatcher.deluxe.model.types.Podcast;
 import android.support.annotation.NonNull;
 import android.test.InstrumentationTestCase;
 
+import java.text.ParseException;
 import java.util.Date;
 
 @SuppressWarnings("javadoc")
@@ -80,17 +82,46 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertEquals(-1, e.parseDuration(""));
         assertEquals(-1, e.parseDuration("   "));
         assertEquals(-1, e.parseDuration("0"));
+        assertEquals(-1, e.parseDuration("0.0"));
         assertEquals(-1, e.parseDuration("0:0"));
         assertEquals(-1, e.parseDuration("Bla"));
         assertEquals(-1, e.parseDuration("0:00"));
         assertEquals(-1, e.parseDuration("0:00:00"));
         assertEquals(-1, e.parseDuration("00:00:00"));
+        assertEquals(-1, e.parseDuration("00:00:00.000"));
         assertEquals(1, e.parseDuration("0:00:01"));
+        assertEquals(1, e.parseDuration("0:00:01.000"));
+        assertEquals(1, e.parseDuration("0:00:01.499"));
         assertEquals(1, e.parseDuration("00:00:01"));
         assertEquals(1, e.parseDuration("0:01"));
         assertEquals(1, e.parseDuration("1"));
         assertEquals(3600 + 60 + 1, e.parseDuration("1:01:01"));
         assertEquals(12 * 3600 + 59 * 60 + 33, e.parseDuration("12:59:33"));
+        assertEquals(12 * 3600 + 59 * 60 + 33, e.parseDuration("12:59:33.000"));
+    }
+
+    public final void testUnformatTime() {
+        try {
+            assertEquals(0, ParserUtils.unformatTime("0"));
+            assertEquals(0, ParserUtils.unformatTime("0:0"));
+            assertEquals(0, ParserUtils.unformatTime("0:00"));
+            assertEquals(0, ParserUtils.unformatTime("0:0.000"));
+            assertEquals(0, ParserUtils.unformatTime("0:00"));
+            assertEquals(0, ParserUtils.unformatTime("0:00:00"));
+            assertEquals(0, ParserUtils.unformatTime("00:00:00"));
+            assertEquals(0, ParserUtils.unformatTime("00:00:00.000"));
+            assertEquals(1000, ParserUtils.unformatTime("01.000"));
+            assertEquals(1000, ParserUtils.unformatTime("0:00:01"));
+            assertEquals(1000, ParserUtils.unformatTime("00:00:01"));
+            assertEquals(1000, ParserUtils.unformatTime("0:01"));
+            assertEquals(1000, ParserUtils.unformatTime("1"));
+            assertEquals(1999, ParserUtils.unformatTime("1.999"));
+            assertEquals((3600 + 60 + 1) * 1000, ParserUtils.unformatTime("1:01:01"));
+            assertEquals((3600 + 60 + 1) * 1000 + 1, ParserUtils.unformatTime("1:01:01.001"));
+            assertEquals((12 * 3600 + 59 * 60 + 33) * 1000, ParserUtils.unformatTime("12:59:33"));
+        } catch (ParseException pex) {
+            assertTrue(false);
+        }
     }
 
     public final void testIsExplicit() {

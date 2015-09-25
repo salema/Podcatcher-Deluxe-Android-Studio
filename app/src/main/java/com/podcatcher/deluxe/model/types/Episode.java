@@ -32,8 +32,13 @@ import android.text.Html;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import static com.podcatcher.deluxe.model.ParserUtils.unformatTime;
 
 /**
  * The episode type. Each episode represents an item from a podcast's RSS/XML
@@ -61,7 +66,7 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      */
     protected Date pubDate;
     /**
-     * The episode's duration
+     * The episode's duration (in seconds)
      */
     protected int duration = -1;
     /**
@@ -72,6 +77,12 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * The episode's media file type
      */
     protected String mediaType;
+    /**
+     * The chapters for this episode as of http://podlove.org/simple-chapters/
+     * Since this will be empty for a lot of episodes that do not carry this information,
+     * we only create a map if some chapters are actually found.
+     */
+    protected SortedMap<Integer, String> chapters;
 
     /**
      * Create a new episode.
@@ -192,6 +203,18 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         return url != null && url.startsWith("http") && !url.equals(mediaUrl) ? url : null;
     }
 
+    /**
+     * Get the episode's chapters.
+     *
+     * @return If not <code>null</code>, sorted list of chapters as map entries.
+     * Each key is the amount of millis from the episode's beginning the chapter starts at
+     * and the value has the chapter's title.
+     */
+    @Nullable
+    public SortedMap<Integer, String> getChapters() {
+        return chapters == null ? null : new TreeMap<>(chapters);
+    }
+
     @Override
     @Nullable
     public String toString() {
@@ -301,6 +324,8 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
                 content = parser.nextText();
             else if (tagName.equals(RSS.ENCLOSURE))
                 parseEnclosure(parser);
+            else if (tagName.equals(RSS.CHAPTERS))
+                parseChapters(parser);
             else
                 ParserUtils.skipSubTree(parser);
         }
@@ -349,22 +374,46 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         } catch (NumberFormatException e) {
             // The duration is given as something like "1:12:34" instead
             try {
-                final String[] split = durationString.split(":");
-
-                // e.g. 12:34
-                if (split.length == 2)
-                    result = Integer.parseInt(split[1]) + Integer.parseInt(split[0]) * 60;
-                    // e.g. 01:12:34
-                else if (split.length == 3)
-                    result = Integer.parseInt(split[2]) + Integer.parseInt(split[1]) * 60
-                            + Integer.parseInt(split[0]) * 3600;
-            } catch (NumberFormatException | NullPointerException ex) {
+                result = unformatTime(durationString) / 1000;
+            } catch (ParseException pex) {
                 // Pass, duration not available or null
             }
         }
 
         // Never return zero as a duration since that does not make sense.
         return result == 0 ? -1 : result;
+    }
+
+    protected void parseChapters(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
+        // Only the first chapters definition is used
+        if (chapters == null) {
+
+            // Init chapter list
+            this.chapters = new TreeMap<>();
+            // Parse feed and find all chapters
+            while (parser.nextTag() == XmlPullParser.START_TAG) {
+                final String tagName = parser.getName().toLowerCase(Locale.US);
+
+                if (tagName.equals(RSS.CHAPTER)) {
+                    try {
+                        final String title = parser.getAttributeValue("", RSS.CHAPTER_TITLE);
+                        final int startsAt = unformatTime(parser.getAttributeValue("", RSS.CHAPTER_START));
+
+                        if (title != null && title.trim().length() > 0 && startsAt >= 0)
+                            chapters.put(startsAt, title);
+                    } catch (ParseException pex) {
+                        // Bad chapter definition, skip
+                    }
+
+                    parser.nextText();
+                } else
+                    ParserUtils.skipSubTree(parser);
+            }
+
+            // Reset chapters if empty
+            if (chapters.size() == 0)
+                chapters = null;
+        }
     }
 
     protected boolean isContentEncodedTag(@NonNull XmlPullParser parser) {

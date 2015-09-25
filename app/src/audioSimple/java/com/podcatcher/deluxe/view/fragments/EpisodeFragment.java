@@ -44,6 +44,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Map;
+import java.util.SortedMap;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -419,6 +422,28 @@ public class EpisodeFragment extends Fragment {
             builder.append(" <a href=\"" + websiteUrl + "\"" + "style=\"text-decoration: none\">")
                     .append("&#10149;" + getString(R.string.episode_description_website_link_label) + "</a>");
 
+        // Add Podlove simple chapter info if available
+        final SortedMap<Integer, String> chapters = currentEpisode.getChapters();
+        if (chapters != null)
+            appendChapterInformation(builder, chapters);
+
         return builder.toString();
+    }
+
+    private void appendChapterInformation(StringBuilder builder, SortedMap<Integer, String> chapters) {
+        final String cellStyle = "padding: 5px; background: #ededed;";
+        builder.append("<table style=\"font-size: 4vw; margin: 10px 0px; width: 100%; border-radius: 5px;\">");
+
+        int index = 0;
+        for (Map.Entry<Integer, String> entry : chapters.entrySet())
+            builder.append("<tr><td style=\"text-align: right; ").append(cellStyle).append("\">")
+                    .append(++index).append(".</td>")
+                    .append("<td style=\"text-align: left; ").append(cellStyle).append("\">")
+                    .append(entry.getValue()).append("</td>")
+                    .append("<td style=\"text-align: right; ").append(cellStyle).append("\">")
+                    .append(ParserUtils.formatTime(entry.getKey() / 1000))
+                    .append("</tr></td>");
+
+        builder.append("</table>");
     }
 }

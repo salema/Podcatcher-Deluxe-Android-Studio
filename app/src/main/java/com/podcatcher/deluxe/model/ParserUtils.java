@@ -24,6 +24,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.annotation.SuppressLint;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * Utility class to support podcast XML/RSS parsing.
@@ -51,6 +52,45 @@ public class ParserUtils {
 
         return String.format(hours > 0 ? LONG_DURATION : SHORT_DURATION,
                 hours, (time / 60) - 60 * hours, time % 60);
+    }
+
+    /**
+     * Converts a time string like XX:XX:XX.XXX to millis.
+     *
+     * @param timeString String to parse. The fraction part (after the dot) is
+     *                   optional, but has to have three places if given.
+     * @return Amount of millis represented in time string given.
+     * @throws ParseException on bad string format.
+     */
+    public static int unformatTime(String timeString) throws ParseException {
+        try {
+            final String[] all = timeString.split("\\."); // Split off fractions (millis)
+            final int millis = all.length == 2 && all[1].length() == 3 ? Integer.parseInt(all[1]) : 0;
+            final String[] nonFraction = all.length == 2 ? all[0].split(":") : timeString.split(":");
+
+            int result = 0;
+            switch (nonFraction.length) {
+                case 1:
+                    // e.g. 03
+                    result = Integer.parseInt(all.length == 2 ? all[0] : timeString);
+                    break;
+                case 2:
+                    // e.g. 12:34
+                    result = Integer.parseInt(nonFraction[1]) + Integer.parseInt(nonFraction[0]) * 60;
+                    break;
+                case 3:
+                    // e.g. 01:12:34
+                    result = Integer.parseInt(nonFraction[2]) + Integer.parseInt(nonFraction[1]) * 60
+                            + Integer.parseInt(nonFraction[0]) * 3600;
+                    break;
+                default:
+                    throw new ParseException("Invalid time string " + timeString, 0);
+            }
+
+            return result * 1000 + millis;
+        } catch (NumberFormatException | NullPointerException ne) {
+            throw new ParseException("Invalid time string " + timeString, 0);
+        }
     }
 
     /**
