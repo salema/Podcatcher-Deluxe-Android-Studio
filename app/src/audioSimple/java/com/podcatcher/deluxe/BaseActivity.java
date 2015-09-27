@@ -39,6 +39,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -322,7 +323,7 @@ public abstract class BaseActivity extends Activity implements OnSharedPreferenc
         // On Android 5.0 and later, make sure the app looks nice in "Recent Tasks"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
-                    null, getResources().getColor(R.color.recent_tasks_background)));
+                    null, ContextCompat.getColor(this, R.color.recent_tasks_background)));
 
         // This will suggest to the Android system, that the volume to be
         // changed for this app (all its activities) is the music stream

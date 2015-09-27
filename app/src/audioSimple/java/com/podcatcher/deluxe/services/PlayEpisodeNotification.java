@@ -35,6 +35,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.session.MediaSession;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.podcatcher.deluxe.EpisodeActivity.EPISODE_URL_KEY;
@@ -195,7 +196,7 @@ public class PlayEpisodeNotification implements Target {
             notificationBuilder.setStyle(new Notification.MediaStyle()
                     .setShowActionsInCompactView(1, 2, 3)  // rewind, toggle play, forward
                     .setMediaSession(session == null ? null : session.getSessionToken()));
-            notificationBuilder.setColor(context.getResources().getColor(R.color.theme_dark));
+            notificationBuilder.setColor(ContextCompat.getColor(context, R.color.theme_dark));
         }
 
         // This will call build(), not available before Android 4.1
