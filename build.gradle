@@ -1,7 +1,7 @@
 // Configuration options common to all sub-projects/modules
 ext {
     compileSdkVersion = 23
-    buildToolsVersion = '23.0.0'
+    buildToolsVersion = '23.0.1'
 
     minSdkVersion = 14
     targetSdkVersion = 23
