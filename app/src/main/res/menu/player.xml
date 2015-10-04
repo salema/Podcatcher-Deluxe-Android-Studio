@@ -17,12 +17,13 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/episode_load_menuitem"
         android:icon="@drawable/ic_media_play"
         android:orderInCategory="10"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/play"
         tools:ignore="AlwaysShowAction" />
 </menu>

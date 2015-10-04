@@ -16,30 +16,38 @@
  * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/media_route_menu_item"
+        android:orderInCategory="95"
+        app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+        app:showAsAction="always"
+        tools:ignore="MenuTitle" />
     <item
         android:id="@+id/settings_menuitem"
-        android:orderInCategory="97"
-        android:showAsAction="never"
+        android:orderInCategory="96"
+        app:showAsAction="never"
         android:title="@string/preferences" />
     <item
         android:id="@+id/review_menuitem"
-        android:orderInCategory="98"
-        android:showAsAction="never"
+        android:orderInCategory="97"
+        app:showAsAction="never"
         android:title="@string/review" />
     <item
         android:id="@+id/follow_menuitem"
         android:orderInCategory="98"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/follow" />
     <item
         android:id="@+id/help_menuitem"
         android:orderInCategory="99"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/help" />
     <item
         android:id="@+id/about_menuitem"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/about" />
 </menu>

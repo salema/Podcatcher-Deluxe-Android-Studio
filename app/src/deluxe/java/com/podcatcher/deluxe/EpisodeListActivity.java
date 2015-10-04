@@ -93,9 +93,9 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
 
         // Create the content mode spinner and add it to the action bar
         contentSpinner = new ContentSpinner(this, this);
-        getActionBar().setCustomView(contentSpinner);
+        getSupportActionBar().setCustomView(contentSpinner);
         // Make sure the action bar has the right display options set
-        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
                 | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
     }
 

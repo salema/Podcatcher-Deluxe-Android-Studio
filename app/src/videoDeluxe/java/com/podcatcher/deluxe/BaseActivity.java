@@ -27,7 +27,6 @@ import com.podcatcher.deluxe.view.ViewMode;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
@@ -40,6 +39,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +50,7 @@ import android.widget.Toast;
  * Podcatcher base activity. Defines some common functionality useful for all
  * activities.
  */
-public abstract class BaseActivity extends Activity implements OnSharedPreferenceChangeListener {
+public abstract class BaseActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener {
 
     /**
      * The podcatcher website URL

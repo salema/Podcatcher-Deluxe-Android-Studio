@@ -17,19 +17,20 @@
  */
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/sort_menuitem"
         android:icon="@drawable/ic_menu_sort"
         android:orderInCategory="2"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/episodes_sort_toggle"
         tools:ignore="AlwaysShowAction" />
     <item
         android:id="@+id/filter_menuitem"
         android:icon="@drawable/ic_menu_filter"
         android:orderInCategory="3"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/episodes_filter_new"
         tools:ignore="AlwaysShowAction" />
 </menu>

@@ -18,8 +18,6 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" />
-
     <style name="AppDialog" parent="android:Theme.Holo.Light.Dialog" />
 
     <style name="ProgressBar.Horizontal" parent="android:Widget.ProgressBar.Horizontal">
