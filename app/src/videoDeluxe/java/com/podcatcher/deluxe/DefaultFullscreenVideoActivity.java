@@ -260,7 +260,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             service.addPlayServiceListener(DefaultFullscreenVideoActivity.this);
 
             // Create the media controller to show when the surface is touched
-            controller = new MediaController(DefaultFullscreenVideoActivity.this);
+            controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward());
             controller.setMediaPlayer(service);
             controller.setAnchorView(videoView);
 
@@ -320,7 +320,10 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
     private void attachPrevNextListeners() {
         if (controller != null)
-            controller.setPrevNextListeners(episodeManager.isPlaylistEmpty() ?
-                    null : new NextListener(), new PrevListener());
+            controller.setPrevNextListeners(
+                    // Only show next option if there is an episode waiting in queue
+                    episodeManager.isPlaylistEmpty() ? null : new NextListener(),
+                    // Only show prev option if the current media is seekable
+                    service.canSeekBackward() ? new PrevListener() : null);
     }
 }

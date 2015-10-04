@@ -684,8 +684,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                 "http://www.geo.de/GEOaudio/index.xml"));
         podcastList.add(new Podcast("SGU",
                 "https://www.theskepticsguide.org/premium"));
-        podcastList.add(new Podcast("Planet Money",
-                "http://www.npr.org/rss/podcast.php?id=510289"));
+        podcastList.add(new Podcast("Twit Live",
+                "http://podcatcher-deluxe.com/sites/default/files/feeds/twit_live.xml"));
         podcastList.add(new Podcast("Freakonomics",
                 "http://feeds.feedburner.com/freakonomicsradio"));
         podcastList.add(new Podcast("Anstalt",

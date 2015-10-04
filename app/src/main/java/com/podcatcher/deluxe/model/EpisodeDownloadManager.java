@@ -220,31 +220,36 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
      */
     public void download(Episode episode) {
         if (episode != null && metadata != null && !isDownloadingOrDownloaded(episode)) {
-            // Find or create the metadata information holder
-            EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
-            if (meta == null) {
-                meta = new EpisodeMetadata();
-                metadata.put(episode.getMediaUrl(), meta);
-            }
+            // Make sure not to attempt downloads for Live Streams
+            if (episode.isLive())
+                onEpisodeDownloadFailed(episode, EpisodeDownloadError.BAD_EPISODE);
+            else {
+                // Find or create the metadata information holder
+                EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
+                if (meta == null) {
+                    meta = new EpisodeMetadata();
+                    metadata.put(episode.getMediaUrl(), meta);
+                }
 
-            // We need to put a download id. If the episode is already
-            // downloaded (i.e. the file exists) and we somehow missed to catch
-            // it, zero will work just fine.
-            meta.downloadId = 0l;
-            // Prepare metadata record
-            meta.downloadProgress = -1;
-            putAdditionalEpisodeInformation(episode, meta);
+                // We need to put a download id. If the episode is already
+                // downloaded (i.e. the file exists) and we somehow missed to catch
+                // it, zero will work just fine.
+                meta.downloadId = 0l;
+                // Prepare metadata record
+                meta.downloadProgress = -1;
+                putAdditionalEpisodeInformation(episode, meta);
 
-            // Mark metadata record as dirty
-            metadataChanged = true;
+                // Mark metadata record as dirty
+                metadataChanged = true;
 
-            // Start the actual download
-            try {
-                new DownloadEpisodeTask(podcatcher, this)
-                        .executeOnExecutor(downloadEpisodeExecutor, episode);
-            } catch (RejectedExecutionException ree) {
-                // Too many tasks running
-                onEpisodeDownloadFailed(episode, EpisodeDownloadError.UNKNOWN);
+                // Start the actual download
+                try {
+                    new DownloadEpisodeTask(podcatcher, this)
+                            .executeOnExecutor(downloadEpisodeExecutor, episode);
+                } catch (RejectedExecutionException ree) {
+                    // Too many tasks running
+                    onEpisodeDownloadFailed(episode, EpisodeDownloadError.UNKNOWN);
+                }
             }
         }
     }
@@ -275,7 +280,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
 
     @Override
     public void onEpisodeDownloaded(Episode episode, File episodeFile) {
-        // Find the metadata record for the episode
+        // Update the metadata record for the episode and alert listeners
         final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
         if (meta != null) {
             meta.filePath = episodeFile.getAbsolutePath();
@@ -295,18 +300,19 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
 
     @Override
     public void onEpisodeDownloadFailed(Episode episode, EpisodeDownloadError error) {
-        // Find the metadata record for the episode
+        // Update the metadata record for the episode
         final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
         if (meta != null) {
             meta.downloadId = null;
             meta.filePath = null;
 
-            for (OnDownloadEpisodeListener listener : downloadListeners)
-                listener.onDownloadFailed(episode, error);
-
             // Mark metadata record as dirty
             metadataChanged = true;
         }
+
+        // Alert listeners
+        for (OnDownloadEpisodeListener listener : downloadListeners)
+            listener.onDownloadFailed(episode, error);
     }
 
     /**

@@ -171,8 +171,11 @@ public class EpisodeListItemView extends PodcatcherListItemView {
     private String createCaption(Episode episode, boolean showPodcastName) {
         final StringBuilder builder = new StringBuilder();
 
-        if (episode.getPubDate() != null)
+        if (episode.isLive())
+            builder.append(getResources().getString(R.string.live)).append(SEPARATOR);
+        else if (episode.getPubDate() != null)
             builder.append(Utils.getRelativePubDate(episode)).append(SEPARATOR);
+
         if (showPodcastName)
             builder.append(episode.getPodcast().getName()).append(SEPARATOR);
         if (!showPodcastName && episode.getDuration() > 0)

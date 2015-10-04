@@ -113,28 +113,18 @@ public class PlayEpisodeNotification implements Target {
     }
 
     /**
-     * Build a new notification using default values for all but the episode.
-     *
-     * @param episode The episode playing.
-     * @return The notification to display.
-     * @see #build(Episode, boolean, int, int)
-     */
-    public Notification build(Episode episode) {
-        return build(episode, false, 0, 0, null);
-    }
-
-    /**
      * Build a new notification. To update the progress on the notification, use
      * {@link #updateProgress(int, int)} instead.
      *
      * @param episode  The episode playing.
      * @param paused   Playback state, <code>true</code> for paused.
+     * @param canSeek  If the currently played media is seekable
      * @param position The current playback progress.
      * @param duration The length of the current episode.
      * @return The notification to display.
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Notification build(Episode episode, boolean paused, int position, int duration) {
+    public Notification build(Episode episode, boolean paused, boolean canSeek, int position, int duration) {
         // Prepare the main intent (leading back to the app)
         appIntent.putExtra(PODCAST_URL_KEY, episode.getPodcast().getUrl());
         appIntent.putExtra(EPISODE_URL_KEY, episode.getMediaUrl());
@@ -165,7 +155,7 @@ public class PlayEpisodeNotification implements Target {
                     context.getString(R.string.stop), stopPendingIntent);
 
             // REWIND, Android >= 5.0 only
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && canSeek)
                 notificationBuilder.addAction(R.drawable.ic_media_rewind, null, rewindPendingIntent);
 
             // PLAY/PAUSE, according to playback state
@@ -177,7 +167,7 @@ public class PlayEpisodeNotification implements Target {
                         context.getString(R.string.pause), togglePendingIntent);
 
             // FAST FORWARD, Android >= 5.0 only
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && canSeek)
                 notificationBuilder.addAction(R.drawable.ic_media_forward, null, forwardPendingIntent);
         }
 
@@ -186,16 +176,22 @@ public class PlayEpisodeNotification implements Target {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Notification build(Episode episode, boolean paused, int position, int duration, MediaSession session) {
-        build(episode, paused, position, duration);
+    public Notification build(Episode episode, boolean paused, boolean canSeek,
+                              int position, int duration, MediaSession session) {
+        build(episode, paused, canSeek, position, duration);
 
         // Apply new notification features available in Lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Notification.MediaStyle style = new Notification.MediaStyle()
+                    .setMediaSession(session == null ? null : session.getSessionToken());
+            if (canSeek)
+                style.setShowActionsInCompactView(1, 2, 3);  // rewind, toggle play, forward
+            else
+                style.setShowActionsInCompactView(0, 1);  // stop, toggle play
+
             notificationBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
             notificationBuilder.setCategory(Notification.CATEGORY_TRANSPORT);
-            notificationBuilder.setStyle(new Notification.MediaStyle()
-                    .setShowActionsInCompactView(1, 2, 3)  // rewind, toggle play, forward
-                    .setMediaSession(session == null ? null : session.getSessionToken()));
+            notificationBuilder.setStyle(style);
             notificationBuilder.setColor(ContextCompat.getColor(context, R.color.theme_dark));
         }
 

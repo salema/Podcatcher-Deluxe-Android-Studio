@@ -143,6 +143,10 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     private boolean buffering = false;
     /**
+     * Is the current media seekable ?
+     */
+    private boolean canSeek = true;
+    /**
      * The current buffer state
      */
     private int bufferPercent = 0;
@@ -579,11 +583,15 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      *              value <=0 makes the player jump to the beginning.
      */
     public void seekTo(int msecs) {
-        if (prepared && msecs <= getDuration()) {
+        if (prepared && canSeek && msecs <= getDuration()) {
             player.seekTo(msecs > 0 ? msecs : 0);
 
-            startForeground(NOTIFICATION_ID,
-                    notification.updateProgress(getCurrentPosition(), getDuration()));
+            try {
+                startForeground(NOTIFICATION_ID,
+                        notification.updateProgress(getCurrentPosition(), getDuration()));
+            } catch (NullPointerException npe) {
+                // This happens if the notification is not ready yet, skip...
+            }
         }
     }
 
@@ -646,12 +654,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
     @Override
     public boolean canSeekBackward() {
-        return isPrepared();
+        return prepared && canSeek;
     }
 
     @Override
     public boolean canSeekForward() {
-        return isPrepared();
+        return prepared && canSeek;
     }
 
     @Override
@@ -713,7 +721,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             updateRemoteControlPlayState(PLAYSTATE_PLAYING);
 
             // Start the playback the right point in time
-            player.seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
+            seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
             // A) If we play audio or do not have a video surface, simply start
             // playback without caring about any video content
             if (!isVideo() || videoSurfaceProvider == null) {
@@ -736,7 +744,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                     startPlaybackOnSurfaceCreate = true;
             }
             // Show notification
-            startForeground(NOTIFICATION_ID, notification.build(currentEpisode));
+            rebuildNotification();
             startNotificationUpdater();
         } else
             onError(mediaPlayer, 0, 0);
@@ -787,6 +795,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                 for (PlayServiceListener listener : listeners)
                     listener.onResumeFromBuffering();
 
+                break;
+            case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                canSeek = false;
                 break;
         }
 
@@ -899,6 +910,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         this.currentEpisode = null;
         this.prepared = false;
         this.buffering = false;
+        this.canSeek = true;
         this.bufferPercent = 0;
         this.startPlaybackOnSurfaceCreate = false;
         this.lastPaused = null;
@@ -916,7 +928,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     }
 
     private void storeResumeAt() {
-        if (currentEpisode != null) {
+        if (currentEpisode != null && canSeek) {
             final int position = player.getCurrentPosition();
             final int duration = player.getDuration();
 
@@ -952,11 +964,12 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             Notification note;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration(), remoteControlClient == null ? null : remoteControlClient.getMediaSession());
+                note = notification.build(currentEpisode, !player.isPlaying(), canSeek,
+                        getCurrentPosition(), getDuration(),
+                        remoteControlClient == null ? null : remoteControlClient.getMediaSession());
             else
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration());
+                note = notification.build(currentEpisode, !player.isPlaying(), canSeek,
+                        getCurrentPosition(), getDuration());
 
             startForeground(NOTIFICATION_ID, note);
         }

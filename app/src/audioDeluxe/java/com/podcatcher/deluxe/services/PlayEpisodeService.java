@@ -138,6 +138,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     private boolean buffering = false;
     /**
+     * Is the current media seekable ?
+     */
+    private boolean canSeek = true;
+    /**
      * Time at which the playback has last been paused,
      * used to determine whether we should rewind on resume.
      */
@@ -481,11 +485,15 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      *              value <=0 makes the player jump to the beginning.
      */
     public void seekTo(int msecs) {
-        if (prepared && msecs <= getDuration()) {
+        if (prepared && canSeek && msecs <= getDuration()) {
             player.seekTo(msecs > 0 ? msecs : 0);
 
-            startForeground(NOTIFICATION_ID,
-                    notification.updateProgress(getCurrentPosition(), getDuration()));
+            try {
+                startForeground(NOTIFICATION_ID,
+                        notification.updateProgress(getCurrentPosition(), getDuration()));
+            } catch (NullPointerException npe) {
+                // This happens if the notification is not ready yet, skip...
+            }
         }
     }
 
@@ -532,6 +540,13 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     public boolean isBuffering() {
         return buffering || isPreparing();
+    }
+
+    /**
+     * @return Whether the currently played media is seekable
+     */
+    public boolean canSeek() {
+        return prepared && canSeek;
     }
 
     /**
@@ -588,9 +603,9 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             updateRemoteControlPlayState(PLAYSTATE_PLAYING);
 
             // Go start and show the notification
-            player.seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
+            seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
             player.start();
-            startForeground(NOTIFICATION_ID, notification.build(currentEpisode));
+            rebuildNotification();
             startNotificationUpdater();
 
             // Alert the listeners
@@ -632,6 +647,9 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
                 for (PlayServiceListener listener : listeners)
                     listener.onResumeFromBuffering();
 
+                break;
+            case MediaPlayer.MEDIA_INFO_NOT_SEEKABLE:
+                canSeek = false;
                 break;
         }
 
@@ -744,6 +762,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         this.currentEpisode = null;
         this.prepared = false;
         this.buffering = false;
+        this.canSeek = true;
         this.lastPaused = null;
 
         // Release resources
@@ -758,7 +777,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     }
 
     private void storeResumeAt() {
-        if (currentEpisode != null) {
+        if (currentEpisode != null && canSeek) {
             final int position = player.getCurrentPosition();
             final int duration = player.getDuration();
 
@@ -794,11 +813,12 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             Notification note;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration(), remoteControlClient == null ? null : remoteControlClient.getMediaSession());
+                note = notification.build(currentEpisode, !player.isPlaying(), canSeek,
+                        getCurrentPosition(), getDuration(),
+                        remoteControlClient == null ? null : remoteControlClient.getMediaSession());
             else
-                note = notification.build(currentEpisode, !player.isPlaying(), getCurrentPosition(),
-                        getDuration());
+                note = notification.build(currentEpisode, !player.isPlaying(), canSeek,
+                        getCurrentPosition(), getDuration());
 
             startForeground(NOTIFICATION_ID, note);
         }

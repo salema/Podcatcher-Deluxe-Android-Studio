@@ -360,8 +360,8 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
             subtitleView.setText(currentEpisode.getPodcast().getName());
             // Episode publication data
             if (currentEpisode.getPubDate() != null)
-                subtitleView.setText(subtitleView.getText() + SEPARATOR
-                        + Utils.getRelativePubDate(currentEpisode));
+                subtitleView.setText(subtitleView.getText() + SEPARATOR + (currentEpisode.isLive() ?
+                        getString(R.string.live) : Utils.getRelativePubDate(currentEpisode)));
 
             // Episode metadata
             metadataBoxTextView.setText(createMetadataBoxText());

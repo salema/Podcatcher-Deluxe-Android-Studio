@@ -142,10 +142,20 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
 
     /**
      * @return The publication date for this episode or <code>null</code> if not present.
+     * Will return a date object with <code>getTime() == Long.MAX_VALUE</code>
+     * as a special case for live streams.
+     * @see #isLive()
      */
     @Nullable
     public Date getPubDate() {
         return pubDate == null ? null : new Date(pubDate.getTime());
+    }
+
+    /**
+     * @return Whether this episode represents a live stream.
+     */
+    public boolean isLive() {
+        return pubDate != null && pubDate.getTime() == Long.MAX_VALUE;
     }
 
     /**
@@ -363,6 +373,14 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
             // pass, length not available
             return -1;
         }
+    }
+
+    @Nullable
+    @Override
+    protected Date parseDate(@NonNull String dateString) {
+        // For live streams set pubDate to the maximum value, see getPubDate()
+        return RSS.DATE_NOW.equalsIgnoreCase(dateString) ?
+                new Date(Long.MAX_VALUE) : super.parseDate(dateString);
     }
 
     protected int parseDuration(@NonNull String durationString) {

@@ -32,11 +32,13 @@ import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.
 import com.podcatcher.deluxe.view.fragments.EpisodeFragment;
 import com.podcatcher.deluxe.view.fragments.PlayerFragment;
 
+import android.annotation.TargetApi;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -261,6 +263,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
         updateDownloadUi();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onToggleDownload() {
         if (selection.isEpisodeSet()) {
@@ -273,9 +276,9 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
                 // Kick off the appropriate action
                 if (download) {
-                    episodeManager.download(selection.getEpisode());
-
                     showToast(getString(R.string.download_started, selection.getEpisode().getName()));
+
+                    episodeManager.download(selection.getEpisode());
                     updateDownloadUi();
                 } else {
                     // For deletion, we show a confirmation dialog first
@@ -488,10 +491,10 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
                 // Update UI to reflect service status
                 playerFragment.updatePlayerTitle(service.getCurrentEpisode());
-                playerFragment.updateSeekBar(!service.isPreparing(), service.getDuration(),
-                        service.getCurrentPosition());
-                playerFragment.updateButton(service.isBuffering(), service.isPlaying(),
+                playerFragment.updateSeekBar(service.canSeek() && !service.isPreparing(),
                         service.getDuration(), service.getCurrentPosition());
+                playerFragment.updateButton(service.isBuffering(), service.isPlaying(),
+                        service.canSeek(), service.getDuration(), service.getCurrentPosition());
             }
         }
     }

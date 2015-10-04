@@ -17,6 +17,7 @@
  */
 -->
 <resources>
+    <string name="live" translatable="false">Live</string>
     <string name="divider">Divider</string>
     <string name="review">Rate &amp; Review</string>
     <string name="follow">Follow @PodcatchDeluxe</string>

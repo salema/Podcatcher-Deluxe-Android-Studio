@@ -101,11 +101,11 @@ public abstract class EpisodeInformationManager extends EpisodeBaseManager {
      * Set the media file size information.
      *
      * @param episode Episode to set duration for.
-     * @param newSize The new file size, the method will not do anything unless
-     *                the value given is greater than zero
+     * @param newSize The new file size in bytes, the method will not do anything unless
+     *                the value given is greater than one thousand twenty four (1KB)
      */
     public void updateMediaFileSize(Episode episode, long newSize) {
-        if (newSize > 0) {
+        if (newSize > 1024) {
             // Update metadata record if the size is new or different
             final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
             if (meta != null &&

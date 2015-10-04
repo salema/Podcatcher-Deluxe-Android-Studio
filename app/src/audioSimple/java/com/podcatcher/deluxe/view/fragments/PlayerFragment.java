@@ -390,24 +390,29 @@ public class PlayerFragment extends Fragment {
      *
      * @param buffering Whether the player is currently buffering.
      * @param playing   Whether the player is currently playing.
+     * @param canSeek   Whether the current media allows seeking.
      * @param duration  Full duration of current episode.
      * @param position  Player position in current episode.
      */
-    public void updateButton(boolean buffering, boolean playing, int duration, int position) {
+    public void updateButton(boolean buffering, boolean playing, boolean canSeek, int duration, int position) {
         // We can only do this after the fragment's widgets are created
         if (viewCreated) {
-            final String formattedPosition = ParserUtils.formatTime(position / 1000);
-            final String formattedDuration = ParserUtils.formatTime(duration / 1000);
-
-            if (duration == 0)
+            // Label play/resume button according to state given
+            if (buffering)
                 playPauseButton.setText(getString(R.string.player_buffering));
-            else if (showShortPlaybackPosition)
-                playPauseButton.setText(getString(R.string.player_label_short,
-                        formattedPosition, formattedDuration));
-            else
-                playPauseButton.setText(getString(playing ? R.string.pause : R.string.resume)
-                        + " " + getString(R.string.player_label, formattedPosition,
-                        formattedDuration));
+            else if (!canSeek)
+                playPauseButton.setText(getString(playing ? R.string.pause : R.string.resume));
+            else {
+                final String formattedPosition = ParserUtils.formatTime(position / 1000);
+                final String formattedDuration = ParserUtils.formatTime(duration / 1000);
+
+                if (showShortPlaybackPosition)
+                    playPauseButton.setText(getString(R.string.player_label_short,
+                            formattedPosition, formattedDuration));
+                else
+                    playPauseButton.setText(getString(playing ? R.string.pause : R.string.resume)
+                            + " " + getString(R.string.player_label, formattedPosition, formattedDuration));
+            }
 
             playPauseButton.setBackgroundResource(playing ?
                     R.drawable.button_red : R.drawable.button_green);
