@@ -499,7 +499,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
 
     @Override
     public SurfaceHolder getVideoSurface() {
-        return surfaceView.getHolder();
+        return surfaceView == null ? null : surfaceView.getHolder();
     }
 
     @Override

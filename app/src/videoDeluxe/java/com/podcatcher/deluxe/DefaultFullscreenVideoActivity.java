@@ -224,7 +224,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
     @Override
     public SurfaceHolder getVideoSurface() {
-        return videoView.getHolder();
+        return videoView == null ? null : videoView.getHolder();
     }
 
     @Override

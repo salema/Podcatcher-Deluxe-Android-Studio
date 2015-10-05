@@ -377,19 +377,19 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     public void setVideoSurfaceProvider(VideoSurfaceProvider provider) {
         // Remove callback from old provider
-        if (videoSurfaceProvider != null)
+        if (videoSurfaceProvider != null && videoSurfaceProvider.getVideoSurface() != null)
             videoSurfaceProvider.getVideoSurface().removeCallback(this);
 
         // Set new provider
         this.videoSurfaceProvider = provider;
-        if (provider != null) {
+        if (videoSurfaceProvider != null && videoSurfaceProvider.getVideoSurface() != null) {
             // Add callback to new provider
-            provider.getVideoSurface().addCallback(this);
+            videoSurfaceProvider.getVideoSurface().addCallback(this);
 
             // If the surface is already available, we can switch to it,
             // otherwise the callback will take care of that.
-            if (isPrepared() && isVideo() && provider.isVideoSurfaceAvailable())
-                setVideoSurface(provider.getVideoSurface());
+            if (isPrepared() && isVideo() && videoSurfaceProvider.isVideoSurfaceAvailable())
+                setVideoSurface(videoSurfaceProvider.getVideoSurface());
         }
         // If the provider is set to <code>null</code>, reset the display
         else
@@ -730,11 +730,9 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             }
             // B) If we have a video and a surface, use it
             else {
-                final SurfaceHolder holder = videoSurfaceProvider.getVideoSurface();
-
                 // The surface is available, we can start right away
                 if (videoSurfaceProvider.isVideoSurfaceAvailable()) {
-                    setVideoSurface(holder);
+                    setVideoSurface(videoSurfaceProvider.getVideoSurface());
                     player.start();
                     alertListenersOnInitialStart();
                 }
