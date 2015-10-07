@@ -21,7 +21,7 @@
     <application>
         <activity
             android:name="com.podcatcher.deluxe.ScrapePodcastsActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="com.podcatcher.deluxe.action.IMPORT" />
                 <category android:name="android.intent.category.DEFAULT" />

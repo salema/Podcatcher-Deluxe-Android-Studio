@@ -21,6 +21,6 @@
     <application>
         <activity
             android:name="com.podcatcher.deluxe.SelectDownloadFolderActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 </manifest>

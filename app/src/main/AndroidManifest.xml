@@ -60,7 +60,7 @@
         </activity>
         <activity
             android:name="com.podcatcher.deluxe.ImportPodcastActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -131,10 +131,10 @@
             android:theme="@style/AppDialog" />
         <activity
             android:name="com.podcatcher.deluxe.FirstRunActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.AddPodcastActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.AddSuggestionActivity"
             android:label="@string/suggested_podcasts">
@@ -147,7 +147,7 @@
         </activity>
         <activity
             android:name="com.podcatcher.deluxe.RemovePodcastActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.ImportOpmlActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -156,11 +156,11 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.SelectFileActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.ConfigureSyncActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="com.podcatcher.deluxe.CONFIGURE_SYNC" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -185,10 +185,10 @@
 
         <activity
             android:name="com.podcatcher.deluxe.ConfigureGpodderSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.podcatcher.deluxe.ConfigureDropboxSyncActivity"
-            android:theme="@android:style/Theme.NoDisplay" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"
