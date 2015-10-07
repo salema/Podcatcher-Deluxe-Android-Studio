@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 
 import java.io.File;
 import java.io.IOException;
@@ -140,7 +141,8 @@ public class SettingsActivity extends BaseActivity {
         // these are disabled when the permission is taken away, we can count on this
         // to only run if one of the auto tasks is enabled and not on disable.
         if (!((Podcatcher) getApplication()).canWriteExternalStorage() &&
-                (KEY_AUTO_DELETE.equals(key) || KEY_AUTO_DOWNLOAD.equals(key)))
+                (KEY_AUTO_DELETE.equals(key) || KEY_AUTO_DOWNLOAD.equals(key)) &&
+                sharedPreferences.getBoolean(key, false)) // Only if switched on
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
     }
 
@@ -150,9 +152,8 @@ public class SettingsActivity extends BaseActivity {
             case STORAGE_PERMISSION_REQUEST_CODE:
                 if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     // Reset preferences to default state (off)
-                    preferences.edit()
-                            .putBoolean(SettingsActivity.KEY_AUTO_DELETE, false)
-                            .putBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false).apply();
+                    ((CheckBoxPreference) settingsFragment.findPreference(KEY_AUTO_DELETE)).setChecked(false);
+                    ((CheckBoxPreference) settingsFragment.findPreference(KEY_AUTO_DOWNLOAD)).setChecked(false);
 
                     showToast(getString(R.string.file_select_access_denied));
                 }
