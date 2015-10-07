@@ -65,6 +65,7 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
      */
     private SelectDownloadFolderFragment selectDownloadFolderFragment;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +75,7 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
             selectDownloadFolderFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.AppDialog);
 
             // Make sure we have the permission needed
-            if (!Podcatcher.canWriteExternalStorage())
+            if (!((Podcatcher) getApplication()).canWriteExternalStorage())
                 requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
             else
                 selectDownloadFolderFragment.show(getFragmentManager(), SELECT_FOLDER_DIALOG_TAG);

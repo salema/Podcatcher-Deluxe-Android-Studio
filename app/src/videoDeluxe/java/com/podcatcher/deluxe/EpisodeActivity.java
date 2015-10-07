@@ -320,7 +320,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
     public void onToggleDownload() {
         if (selection.isEpisodeSet()) {
             // Make sure we have permission to store/remove files
-            if (!Podcatcher.canWriteExternalStorage())
+            if (!((Podcatcher) getApplication()).canWriteExternalStorage())
                 requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
             else {
                 // Check for action to perform

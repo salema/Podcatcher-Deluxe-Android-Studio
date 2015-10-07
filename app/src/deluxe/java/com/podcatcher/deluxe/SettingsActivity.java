@@ -21,9 +21,11 @@ package com.podcatcher.deluxe;
 import com.podcatcher.deluxe.preferences.DownloadFolderPreference;
 import com.podcatcher.deluxe.view.fragments.SettingsFragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import java.io.File;
@@ -129,6 +131,7 @@ public class SettingsActivity extends BaseActivity {
             }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         super.onSharedPreferenceChanged(sharedPreferences, key);
@@ -136,7 +139,7 @@ public class SettingsActivity extends BaseActivity {
         // Make sure we have the correct permissions to fulfill the auto tasks, since
         // these are disabled when the permission is taken away, we can count on this
         // to only run if one of the auto tasks is enabled and not on disable.
-        if (!Podcatcher.canWriteExternalStorage() &&
+        if (!((Podcatcher) getApplication()).canWriteExternalStorage() &&
                 (KEY_AUTO_DELETE.equals(key) || KEY_AUTO_DOWNLOAD.equals(key)))
             requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
     }

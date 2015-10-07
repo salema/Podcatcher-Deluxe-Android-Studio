@@ -283,7 +283,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
         // Initialize counter for the number of deletes the current selection would trigger
         this.deletesTriggered = 0;
         // Check for permission to access external storage
-        final boolean canAccessStorage = Podcatcher.canWriteExternalStorage();
+        final boolean canAccessStorage =
+                ((Podcatcher) fragment.getActivity().getApplication()).canWriteExternalStorage();
 
         // Make all menu items invisible
         newMenuItem.setVisible(false);

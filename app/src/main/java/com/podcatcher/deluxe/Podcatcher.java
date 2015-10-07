@@ -76,11 +76,6 @@ public class Podcatcher extends Application {
     public static final long HTTP_CACHE_SIZE = 8 * 1024 * 1024; // 8 MiB
 
     /**
-     * Global flag to reflect runtime permission state
-     */
-    private static boolean canWriteExternalStorage = false;
-
-    /**
      * Thread to move the http cache flushing off the UI thread
      */
     private static class FlushCacheThread extends Thread {
@@ -127,13 +122,10 @@ public class Podcatcher extends Application {
             // This should not happen, but the app works without the cache
         }
 
-        // Check permissions (only needed for Android >= 6). If this is changed
-        // while we are running, Android will restart the app, so checking once
-        // here should be fine.
-        canWriteExternalStorage = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        // If permissions are limited, disable auto-download and auto-delete
-        if (!canWriteExternalStorage) {
+        // If permissions are limited, disable auto-download and auto-delete.
+        // This code will run if the user pulls the permission from under us,
+        // since the system will restart the app.
+        if (!canWriteExternalStorage()) {
             final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             preferences.edit()
                     .putBoolean(SettingsActivity.KEY_AUTO_DELETE, false)
@@ -156,18 +148,19 @@ public class Podcatcher extends Application {
     }
 
     /**
-     * @return The state of the 'write external storage' runtime permission.
-     * Will always be <code>true</code> on Android versions < 6.
-     */
-    public static boolean canWriteExternalStorage() {
-        return canWriteExternalStorage;
-    }
-
-    /**
      * Write http cache data to disk (async).
      */
     public void flushHttpCache() {
         new FlushCacheThread().start();
+    }
+
+    /**
+     * @return The state of the 'write external storage' runtime permission.
+     * Will always be <code>true</code> on Android versions < 6.0.
+     */
+    public boolean canWriteExternalStorage() {
+        return ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
