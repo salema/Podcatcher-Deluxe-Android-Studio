@@ -18,10 +18,6 @@
 
 package com.podcatcher.deluxe.model.test;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import com.dragontek.mygpoclient.pub.PublicClient;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.EpisodeDownloadManager;
 import com.podcatcher.deluxe.model.tags.RSS;
@@ -29,13 +25,17 @@ import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Genre;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.content.res.Resources;
 import android.os.Environment;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
+
+import com.dragontek.mygpoclient.pub.PublicClient;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileOutputStream;

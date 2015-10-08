@@ -18,10 +18,10 @@
 
 package com.podcatcher.deluxe.model;
 
+import android.annotation.SuppressLint;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
-import android.annotation.SuppressLint;
 
 import java.io.IOException;
 import java.text.ParseException;

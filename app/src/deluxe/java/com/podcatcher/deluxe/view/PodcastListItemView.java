@@ -21,7 +21,6 @@ package com.podcatcher.deluxe.view;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
-import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +29,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * A list item view to represent a podcast.

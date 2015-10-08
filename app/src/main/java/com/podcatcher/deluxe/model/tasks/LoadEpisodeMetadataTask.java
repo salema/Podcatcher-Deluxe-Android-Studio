@@ -25,13 +25,13 @@ import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 import com.podcatcher.deluxe.model.types.Progress;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
 import java.io.IOException;

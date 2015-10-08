@@ -22,12 +22,12 @@ import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.tags.RSS;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

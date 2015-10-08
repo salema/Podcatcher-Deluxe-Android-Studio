@@ -18,7 +18,6 @@
 
 package com.podcatcher.deluxe.model.sync.gpodder;
 
-import com.dragontek.mygpoclient.api.MygPodderClient;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.SyncController;
 
@@ -26,6 +25,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
+
+import com.dragontek.mygpoclient.api.MygPodderClient;
 
 import java.util.Locale;
 

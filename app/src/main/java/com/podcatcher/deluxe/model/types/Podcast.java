@@ -21,14 +21,14 @@ package com.podcatcher.deluxe.model.types;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.tags.RSS;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Base64;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

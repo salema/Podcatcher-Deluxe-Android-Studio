@@ -1,18 +1,17 @@
 package com.dragontek.mygpoclient.api;
 
+import android.util.Log;
+
+import com.dragontek.mygpoclient.simple.SimpleClient;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import com.dragontek.mygpoclient.simple.SimpleClient;
-
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.entity.StringEntity;
-
-import android.util.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

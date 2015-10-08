@@ -21,11 +21,11 @@ package com.podcatcher.deluxe.model.types.test;
 import com.podcatcher.deluxe.model.test.Utils;
 import com.podcatcher.deluxe.model.types.Podcast;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.util.Base64;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 

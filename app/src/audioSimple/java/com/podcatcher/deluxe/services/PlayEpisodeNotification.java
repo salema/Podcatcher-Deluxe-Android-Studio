@@ -23,8 +23,6 @@ import com.podcatcher.deluxe.EpisodeListActivity;
 import com.podcatcher.deluxe.PodcastActivity;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.types.Episode;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -36,6 +34,9 @@ import android.graphics.drawable.Drawable;
 import android.media.session.MediaSession;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static com.podcatcher.deluxe.EpisodeActivity.EPISODE_URL_KEY;

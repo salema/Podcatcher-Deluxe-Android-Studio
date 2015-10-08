@@ -18,7 +18,6 @@
 
 package com.podcatcher.deluxe;
 
-import com.dropbox.sync.android.DbxAccountManager;
 import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.view.fragments.ConfirmUnlinkDropboxFragment;
@@ -28,6 +27,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.dropbox.sync.android.DbxAccountManager;
 
 /**
  * Non-UI activity to configure the Dropbox synchronization settings.

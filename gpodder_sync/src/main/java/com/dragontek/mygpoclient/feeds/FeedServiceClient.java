@@ -1,9 +1,8 @@
 package com.dragontek.mygpoclient.feeds;
 
+import com.dragontek.mygpoclient.json.JsonClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import com.dragontek.mygpoclient.json.JsonClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;

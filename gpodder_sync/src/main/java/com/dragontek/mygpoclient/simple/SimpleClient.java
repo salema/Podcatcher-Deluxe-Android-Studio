@@ -1,12 +1,11 @@
 package com.dragontek.mygpoclient.simple;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import com.dragontek.mygpoclient.Global;
 import com.dragontek.mygpoclient.Locator;
 import com.dragontek.mygpoclient.http.HttpClient;
 import com.dragontek.mygpoclient.json.JsonClient;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.client.CookieStore;

@@ -18,6 +18,14 @@
 
 package com.podcatcher.deluxe.model.sync.dropbox;
 
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.SyncManager;
+import com.podcatcher.deluxe.model.sync.SyncController;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
 import com.dropbox.sync.android.DbxAccount;
 import com.dropbox.sync.android.DbxAccountManager;
 import com.dropbox.sync.android.DbxAccountManager.AccountListener;
@@ -27,13 +35,6 @@ import com.dropbox.sync.android.DbxDatastoreStatus;
 import com.dropbox.sync.android.DbxException;
 import com.dropbox.sync.android.DbxRecord;
 import com.dropbox.sync.android.DbxTable;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.SyncManager;
-import com.podcatcher.deluxe.model.sync.SyncController;
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;

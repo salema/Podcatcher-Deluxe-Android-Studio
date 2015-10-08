@@ -27,12 +27,12 @@ import com.podcatcher.deluxe.model.types.MediaType;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
+import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.content.Context;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

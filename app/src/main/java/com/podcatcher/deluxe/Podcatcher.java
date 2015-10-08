@@ -24,9 +24,6 @@ import com.podcatcher.deluxe.model.SuggestionManager;
 import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.tasks.LoadEpisodeMetadataTask;
 import com.podcatcher.deluxe.model.tasks.LoadPodcastListTask;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
-import com.squareup.picasso.Picasso;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -42,6 +39,10 @@ import android.os.Process;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;

@@ -27,8 +27,6 @@ import com.podcatcher.deluxe.model.types.MediaType;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Suggestion;
 import com.podcatcher.deluxe.view.fragments.AddSuggestionFragment.AddSuggestionListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -42,6 +40,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 /**
  * A card view to represent a podcast suggestion.

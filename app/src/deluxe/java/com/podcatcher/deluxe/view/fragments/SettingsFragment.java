@@ -19,7 +19,6 @@
 package com.podcatcher.deluxe.view.fragments;
 
 import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.SettingsActivity;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

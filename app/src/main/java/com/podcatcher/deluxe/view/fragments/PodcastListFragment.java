@@ -27,7 +27,6 @@ import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.PodcastListItemView;
-import com.squareup.picasso.Picasso;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -50,6 +49,8 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;

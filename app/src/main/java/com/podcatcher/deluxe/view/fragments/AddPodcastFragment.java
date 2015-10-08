@@ -24,7 +24,6 @@ import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.view.HorizontalProgressView;
-import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -47,6 +46,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import com.squareup.picasso.Picasso;
 
 import static android.view.View.VISIBLE;
 

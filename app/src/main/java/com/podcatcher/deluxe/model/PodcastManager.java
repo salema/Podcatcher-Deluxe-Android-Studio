@@ -33,8 +33,6 @@ import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.Uri;
@@ -43,6 +41,8 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Collections;

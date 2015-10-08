@@ -18,13 +18,14 @@
 
 package com.podcatcher.deluxe.model.sync.dropbox;
 
-import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxRecord;
-import com.dropbox.sync.android.DbxTable;
 import com.podcatcher.deluxe.model.types.Podcast;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxTable;
 
 /**
  * A sync controller for the Dropbox service dealing with the podcast list.

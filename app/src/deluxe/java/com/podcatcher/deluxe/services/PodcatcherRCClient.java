@@ -22,8 +22,6 @@ import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -31,6 +29,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.RemoteControlClient;
 import android.os.Build;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.concurrent.TimeUnit;
 

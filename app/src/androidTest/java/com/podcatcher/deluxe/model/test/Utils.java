@@ -27,11 +27,11 @@ import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 import com.podcatcher.deluxe.model.types.Suggestion;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.List;

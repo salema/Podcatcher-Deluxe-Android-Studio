@@ -18,15 +18,16 @@
 
 package com.podcatcher.deluxe.model.sync.dropbox;
 
-import com.dropbox.sync.android.DbxException;
-import com.dropbox.sync.android.DbxRecord;
-import com.dropbox.sync.android.DbxTable;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.dropbox.sync.android.DbxException;
+import com.dropbox.sync.android.DbxRecord;
+import com.dropbox.sync.android.DbxTable;
 
 import java.util.AbstractMap;
 import java.util.ConcurrentModificationException;

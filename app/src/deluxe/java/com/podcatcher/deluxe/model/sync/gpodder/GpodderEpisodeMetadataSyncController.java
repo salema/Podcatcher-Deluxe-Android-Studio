@@ -18,13 +18,14 @@
 
 package com.podcatcher.deluxe.model.sync.gpodder;
 
-import com.dragontek.mygpoclient.api.EpisodeAction;
-import com.dragontek.mygpoclient.api.EpisodeActionChanges;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
+import com.dragontek.mygpoclient.api.EpisodeAction;
+import com.dragontek.mygpoclient.api.EpisodeActionChanges;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

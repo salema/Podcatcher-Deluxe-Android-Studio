@@ -18,7 +18,6 @@
 
 package com.podcatcher.deluxe;
 
-import com.dragontek.mygpoclient.api.MygPodderClient;
 import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
 import com.podcatcher.deluxe.view.fragments.GpodderSyncConfigFragment;
@@ -27,6 +26,8 @@ import com.podcatcher.deluxe.view.fragments.GpodderSyncConfigFragment.ConfigureG
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import com.dragontek.mygpoclient.api.MygPodderClient;
 
 /**
  * Non-UI activity to configure the gpodder synchronization settings.
