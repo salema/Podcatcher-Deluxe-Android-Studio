@@ -235,8 +235,8 @@ public abstract class EpisodePlaylistManager extends EpisodeDownloadManager {
                 // Increment all other positions if needed
                 if (position < getPlaylistSize())
                     for (EpisodeMetadata otherMeta : metadata.values())
-                        if (otherMeta.playlistPosition != null
-                                && otherMeta.playlistPosition >= position)
+                        if (otherMeta.playlistPosition != null &&
+                                otherMeta.playlistPosition >= position)
                             otherMeta.playlistPosition++;
 
                 // Put metadata information
@@ -272,8 +272,8 @@ public abstract class EpisodePlaylistManager extends EpisodeDownloadManager {
                     EpisodeMetadata other = stringEpisodeMetadataEntry.getValue();
 
                     // Find records for playlist entries
-                    if (other.playlistPosition != null
-                            && other.playlistPosition > meta.playlistPosition)
+                    if (other.playlistPosition != null &&
+                            other.playlistPosition > meta.playlistPosition)
                         other.playlistPosition--;
                 }
 

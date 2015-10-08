@@ -135,8 +135,8 @@ public class SelectDownloadFolderActivity extends BaseActivity implements Select
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case STORAGE_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && selectDownloadFolderFragment != null)
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        selectDownloadFolderFragment != null)
                     selectDownloadFolderFragment.show(getFragmentManager(), SELECT_FOLDER_DIALOG_TAG);
                 else {
                     showToast(getString(R.string.file_select_access_denied));

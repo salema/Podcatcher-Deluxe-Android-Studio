@@ -245,8 +245,8 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
                     // Clean all state meta data information for episodes of the deleted feed
                     for (Entry<String, EpisodeMetadata> entry : metadata.entrySet()) {
                         // Find metadata records with matching podcast
-                        if (podcast.equalByUrl(entry.getValue().podcastUrl)
-                                && entry.getValue().hasOnlyStateData()) {
+                        if (podcast.equalByUrl(entry.getValue().podcastUrl) &&
+                                entry.getValue().hasOnlyStateData()) {
                             // This is actually enough since the task storing
                             // the metadata will clean empty records
                             entry.getValue().isOld = null;
@@ -263,9 +263,9 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
         // We do not want to run this too frequently and for all podcasts at
         // once. In addition it should run only once per podcast during the
         // lifetime of this EpisodeManager
-        if (podcast != null && podcast.getEpisodeCount() > 0
-                && !podcastsCleanUpRanFor.contains(podcast.getUrl())
-                && podcastLoadCounter % 10 == 0) {
+        if (podcast != null && podcast.getEpisodeCount() > 0 &&
+                !podcastsCleanUpRanFor.contains(podcast.getUrl()) &&
+                podcastLoadCounter % 10 == 0) {
             // Update helpers
             podcastLoadCounter++;
             podcastsCleanUpRanFor.add(podcast.getUrl());

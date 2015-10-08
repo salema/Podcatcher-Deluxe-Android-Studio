@@ -381,8 +381,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         String result = relativeUrl;
 
         // Rewrite logo url to be absolute
-        if (url != null && relativeUrl != null && !relativeUrl.isEmpty()
-                && Uri.parse(relativeUrl).isRelative()) {
+        if (url != null && relativeUrl != null && !relativeUrl.isEmpty() &&
+                Uri.parse(relativeUrl).isRelative()) {
             final Uri podcastUrl = Uri.parse(url);
             final String prefix = podcastUrl.getScheme() + "://" + podcastUrl.getAuthority();
 

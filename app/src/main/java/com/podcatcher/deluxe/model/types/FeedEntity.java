@@ -159,8 +159,8 @@ public abstract class FeedEntity {
 
             // Look at ports and only keep non-defaults
             boolean needsPort = url.getPort() != -1;
-            if ((scheme.equals("http") && url.getPort() == 80)
-                    || (scheme.equals("https") && url.getPort() == 443))
+            if ((scheme.equals("http") && url.getPort() == 80) ||
+                    (scheme.equals("https") && url.getPort() == 443))
                 needsPort = false;
 
             // Reconstruct the string
@@ -182,8 +182,8 @@ public abstract class FeedEntity {
      * @return The explicit flag.
      */
     protected boolean parseExplicit(@Nullable String value) {
-        return value != null
-                && value.trim().toLowerCase(Locale.US).equals(RSS.EXPLICIT_POSITIVE_VALUE);
+        return value != null &&
+                value.trim().toLowerCase(Locale.US).equals(RSS.EXPLICIT_POSITIVE_VALUE);
     }
 
     /**

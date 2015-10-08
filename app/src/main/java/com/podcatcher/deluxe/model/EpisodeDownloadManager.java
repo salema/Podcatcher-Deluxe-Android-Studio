@@ -409,9 +409,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
         if (episode != null && metadata != null) {
             final EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
 
-            return meta != null
-                    && meta.downloadId != null
-                    && meta.filePath == null;
+            return meta != null && meta.downloadId != null && meta.filePath == null;
         } else
             return false;
     }
@@ -580,10 +578,8 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
     }
 
     private boolean isDownloaded(EpisodeMetadata meta) {
-        return meta != null
-                && meta.downloadId != null
-                && meta.filePath != null
-                && new File(meta.filePath).exists();
+        return meta != null && meta.downloadId != null &&
+                meta.filePath != null && new File(meta.filePath).exists();
     }
 
     private void processDownloadClicked(long downloadId) {

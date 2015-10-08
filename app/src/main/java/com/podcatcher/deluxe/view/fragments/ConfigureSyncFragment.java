@@ -210,7 +210,7 @@ public class ConfigureSyncFragment extends DialogFragment {
     }
 
     private void updateSyncButton() {
-        syncNowButton.setEnabled(!syncManager.isSyncRunning()
-                && syncManager.getActiveControllerCount() > 0);
+        syncNowButton.setEnabled(!syncManager.isSyncRunning() &&
+                syncManager.getActiveControllerCount() > 0);
     }
 }

@@ -271,8 +271,8 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
      */
     protected void updateProgress() {
         // This should show if there is still a podcast loading.
-        episodeListFragment.setShowOverlayProgress(selection.isAll()
-                && podcastManager.getLoadCount() > 0);
+        episodeListFragment.setShowOverlayProgress(selection.isAll() &&
+                podcastManager.getLoadCount() > 0);
     }
 
     @Override

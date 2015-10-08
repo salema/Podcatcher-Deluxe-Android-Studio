@@ -294,8 +294,8 @@ public class AddPodcastFragment extends DialogFragment {
                 Context.CLIPBOARD_SERVICE);
 
         // Get the value to paste (make this fail safe)
-        if (clipboard != null && clipboard.hasPrimaryClip()
-                && clipboard.getPrimaryClip().getItemCount() > 0) {
+        if (clipboard != null && clipboard.hasPrimaryClip() &&
+                clipboard.getPrimaryClip().getItemCount() > 0) {
             CharSequence candidate = clipboard.getPrimaryClip().getItemAt(0).getText();
 
             // Check whether this might be a podcast RSS online resource, if so

@@ -685,8 +685,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             episodeListFragment.setEmptyStringId(R.string.downloads_none);
         else if (ContentMode.PLAYLIST.equals(selection.getMode()))
             episodeListFragment.setEmptyStringId(R.string.playlist_empty);
-        else if (selection.isEpisodeFilterEnabled()
-                && filteredList.isEmpty() && !currentEpisodeSet.isEmpty())
+        else if (selection.isEpisodeFilterEnabled() &&
+                filteredList.isEmpty() && !currentEpisodeSet.isEmpty())
             episodeListFragment.setEmptyStringId(R.string.episodes_no_new);
         else if (selection.isAll())
             episodeListFragment.setEmptyStringId(R.string.episode_none_all_podcasts);
@@ -725,9 +725,9 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             final Episode latestEpisode = podcast.getEpisodes().get(0);
 
             return PreferenceManager.getDefaultSharedPreferences(this)
-                    .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false)
-                    && ((Podcatcher) getApplication()).isOnFastConnection()
-                    && !episodeManager.getState(latestEpisode);
+                    .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false) &&
+                    ((Podcatcher) getApplication()).isOnFastConnection() &&
+                    !episodeManager.getState(latestEpisode);
         }
     }
 }

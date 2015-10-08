@@ -109,8 +109,8 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
                         final File sdCardRoot = new File(path);
                         final File sdCardPodcasts = new File(sdCardRoot, "Podcasts");
 
-                        if (sdCardRoot.exists()
-                                && (sdCardPodcasts.isDirectory() || sdCardPodcasts.mkdir()))
+                        if (sdCardRoot.exists() &&
+                                (sdCardPodcasts.isDirectory() || sdCardPodcasts.mkdir()))
                             return sdCardPodcasts;
                     }
 

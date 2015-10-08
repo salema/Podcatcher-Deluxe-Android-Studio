@@ -202,8 +202,8 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
             // Find and alter record for given episode as needed
             final DbxRecord episodeRecord = findAndPrepareRecord(episode);
             // Only write to the record if the data actually changed
-            if (!episodeRecord.hasField(EPISODE_STATE)
-                    || episodeRecord.getBoolean(EPISODE_STATE) != newState)
+            if (!episodeRecord.hasField(EPISODE_STATE) ||
+                    episodeRecord.getBoolean(EPISODE_STATE) != newState)
                 episodeRecord.set(EPISODE_STATE, newState);
         } catch (DbxException | NullPointerException e) {
             Log.d(TAG, "State for episode " + episode + " cannot be synced to Dropbox", e);
@@ -217,8 +217,8 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
             final DbxRecord episodeRecord = findAndPrepareRecord(episode);
             final long newValue = (millis == null ? RESUME_AT_RESET : millis);
             // Only write to the record if the data actually changed
-            if (!episodeRecord.hasField(EPISODE_RESUME_AT)
-                    || episodeRecord.getLong(EPISODE_RESUME_AT) != newValue)
+            if (!episodeRecord.hasField(EPISODE_RESUME_AT) ||
+                    episodeRecord.getLong(EPISODE_RESUME_AT) != newValue)
                 episodeRecord.set(EPISODE_RESUME_AT, newValue);
         } catch (DbxException | NullPointerException e) {
             Log.d(TAG, "Resume at for episode " + episode + " cannot be synced to Dropbox", e);

@@ -28,6 +28,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.BaseAdapter;
 
+import static com.podcatcher.deluxe.SettingsActivity.KEY_DOWNLOAD_FOLDER;
+import static com.podcatcher.deluxe.SettingsActivity.KEY_SYNC_ACTIVE;
+import static com.podcatcher.deluxe.SettingsActivity.KEY_SYNC_RECEIVE;
+
 /**
  * Fragment for settings.
  */
@@ -47,9 +51,8 @@ public class SettingsFragment extends PreferenceFragment implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (SettingsActivity.KEY_SYNC_ACTIVE.equals(key)
-                || SettingsActivity.KEY_SYNC_RECEIVE.equals(key)
-                || SettingsActivity.KEY_DOWNLOAD_FOLDER.equals(key))
+        if (KEY_SYNC_ACTIVE.equals(key) || KEY_SYNC_RECEIVE.equals(key) ||
+                KEY_DOWNLOAD_FOLDER.equals(key))
             // Update the preference UIs to reflect new setting
             ((BaseAdapter) getPreferenceScreen().getRootAdapter()).notifyDataSetChanged();
     }

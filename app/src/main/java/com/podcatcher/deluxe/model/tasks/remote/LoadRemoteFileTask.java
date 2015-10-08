@@ -138,8 +138,8 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
             // Check whether we could calculate the percentage of completion,
             // this only works if a content length is given and the content is
             // not gzipped
-            final boolean isZippedResponse = connection.getContentEncoding() != null
-                    && connection.getContentEncoding().equals("gzip");
+            final boolean isZippedResponse = connection.getContentEncoding() != null &&
+                    connection.getContentEncoding().equals("gzip");
             final boolean sendLoadProgress = contentLength > 0 && !isZippedResponse;
 
             // showResponseHeaderDetails(connection);

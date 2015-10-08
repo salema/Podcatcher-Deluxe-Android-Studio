@@ -208,8 +208,8 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
      * @return Whether given podcast has an non-empty name and an URL.
      */
     private boolean hasNameAndUrl(Podcast podcast) {
-        return podcast.getName() != null && podcast.getName().trim().length() > 0
-                && podcast.getUrl() != null && podcast.getUrl().startsWith("http");
+        return podcast.getName() != null && podcast.getName().trim().length() > 0 &&
+                podcast.getUrl() != null && podcast.getUrl().startsWith("http");
     }
 
     private void writeHeader(String fileName) throws IOException {

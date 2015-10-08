@@ -256,10 +256,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     public void onBackStackChanged() {
         // This only needed in small landscape mode and in case
         // we go back to the episode list
-        if (view.isSmallLandscape()
-                && getFragmentManager().getBackStackEntryCount() == 0) {
+        if (view.isSmallLandscape() && getFragmentManager().getBackStackEntryCount() == 0)
             onNoEpisodeSelected();
-        }
     }
 
     @Override
@@ -277,9 +275,9 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
                 startActivity(new Intent(this, FirstRunActivity.class));
         }
         // If enabled, we run the "select all on start-up" action
-        else if (podcastManager.size() > 0 && isInitialAppStart
-                && ((Podcatcher) getApplication()).isOnline()
-                && preferences.getBoolean(SettingsActivity.KEY_SELECT_ALL_ON_START, false))
+        else if (podcastManager.size() > 0 && isInitialAppStart &&
+                ((Podcatcher) getApplication()).isOnline() &&
+                preferences.getBoolean(SettingsActivity.KEY_SELECT_ALL_ON_START, false))
             onAllPodcastsSelected();
 
         this.isInitialAppStart = false;
