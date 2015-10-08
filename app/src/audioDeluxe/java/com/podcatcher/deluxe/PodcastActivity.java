@@ -283,7 +283,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         updateActionBar();
 
         // If podcast list is empty we try to import from Simple Podcatcher
-        if (podcastManager.size() == 0 && isInitialAppStart && !hasPodcastToAdd && !BuildConfig.FIXED_BUNDLE) {
+        if (podcastManager.size() == 0 && isInitialAppStart && !hasPodcastToAdd) {
             try {
                 Intent importFromSimple = new Intent(IMPORT_ACTION);
                 startActivityForResult(importFromSimple, IMPORT_FROM_SIMPLE_PODCATCHER_CODE);
