@@ -94,10 +94,12 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
 
                 // Close dialog and end activity unless it has been pull under us
                 // while we were waiting for gpodder.net to respond
-                if (configFragment != null) {
+                try {
                     configFragment.dismiss();
                     setResult(RESULT_OK);
                     finish();
+                } catch (NullPointerException | IllegalStateException e) {
+                    // Activity has already been cancelled, pass...
                 }
             }
 
