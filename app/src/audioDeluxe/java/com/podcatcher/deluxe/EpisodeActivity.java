@@ -313,6 +313,10 @@ public abstract class EpisodeActivity extends BaseActivity implements
                         @Override
                         public void onConfirmDeletion() {
                             episodeManager.deleteDownload(selection.getEpisode());
+
+                            // Prevent immediate re-download by marking episode 'old'
+                            if (preferences.getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false))
+                                episodeManager.setState(selection.getEpisode(), true);
                         }
 
                         @Override

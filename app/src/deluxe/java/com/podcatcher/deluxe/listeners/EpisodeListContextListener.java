@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.listeners;
 
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.adapters.EpisodeListAdapter;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.ParserUtils;
@@ -30,6 +31,7 @@ import com.podcatcher.deluxe.view.fragments.EpisodeListFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -194,9 +196,17 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
 
                     @Override
                     public void onConfirmDeletion() {
-                        // Go delete the downloads
-                        for (Integer position : positions)
-                            episodeManager.deleteDownload((Episode) fragment.getListAdapter().getItem(position));
+                        for (Integer position : positions) {
+                            final Episode episode = (Episode) fragment.getListAdapter().getItem(position);
+
+                            // Go delete the download
+                            episodeManager.deleteDownload(episode);
+
+                            // Prevent immediate re-download by marking episode 'old'
+                            if (PreferenceManager.getDefaultSharedPreferences(fragment.getActivity())
+                                    .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false))
+                                episodeManager.setState(episode, true);
+                        }
 
                         // Action picked, so close the CAB
                         mode.finish();
