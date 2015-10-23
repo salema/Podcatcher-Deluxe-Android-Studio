@@ -477,8 +477,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBufferUpdate(int seconds) {
-        playerFragment.updateSeekBarSecondaryProgress(seconds);
+    public void onBufferUpdate(int millis) {
+        playerFragment.updateSeekBarSecondaryProgress(millis);
     }
 
     @Override
@@ -605,10 +605,10 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
                 // Update UI to reflect service status
                 playerFragment.updatePlayerTitle(service.getCurrentEpisode());
-                playerFragment.updateSeekBar(service.canSeekForward() && !service.isPreparing(),
+                playerFragment.updateSeekBar(service.canSeek() && !service.isPreparing(),
                         service.getDuration(), service.getCurrentPosition());
                 playerFragment.updateButton(service.isBuffering(), service.isPlaying(),
-                        service.canSeekForward(), service.getDuration(), service.getCurrentPosition());
+                        service.canSeek(), service.getDuration(), service.getCurrentPosition());
             }
         }
     }

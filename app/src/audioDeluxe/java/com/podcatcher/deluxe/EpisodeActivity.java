@@ -441,8 +441,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onBufferUpdate(int seconds) {
-        playerFragment.updateSeekBarSecondaryProgress(seconds);
+    public void onBufferUpdate(int millis) {
+        playerFragment.updateSeekBarSecondaryProgress(millis);
     }
 
     @Override

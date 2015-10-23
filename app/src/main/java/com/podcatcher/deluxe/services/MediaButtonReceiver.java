@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
 
+import static android.content.Intent.EXTRA_KEY_EVENT;
 import static com.podcatcher.deluxe.services.PlayEpisodeService.ACTION_FORWARD;
 import static com.podcatcher.deluxe.services.PlayEpisodeService.ACTION_PAUSE;
 import static com.podcatcher.deluxe.services.PlayEpisodeService.ACTION_PLAY;
@@ -44,46 +45,67 @@ public class MediaButtonReceiver extends BroadcastReceiver {
         if (Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
             try {
                 // Find out if the event was a button press
-                KeyEvent event = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
-                if (KeyEvent.ACTION_DOWN == event.getAction()) {
-                    // Send appropriate action to the episode playback service by constructing
-                    // the intent and make sure it is explicit (required for API >= 21)
-                    final Intent actionIntent = new Intent(context, PlayEpisodeService.class);
-                    switch (event.getKeyCode()) {
-                        case KeyEvent.KEYCODE_HEADSETHOOK:
-                        case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                            actionIntent.setAction(ACTION_TOGGLE);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_PLAY:
-                            actionIntent.setAction(ACTION_PLAY);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                            actionIntent.setAction(ACTION_PAUSE);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                            actionIntent.setAction(ACTION_PREVIOUS);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_NEXT:
-                            actionIntent.setAction(ACTION_SKIP);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_REWIND:
-                            actionIntent.setAction(ACTION_REWIND);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                            actionIntent.setAction(ACTION_FORWARD);
-                            break;
-                        case KeyEvent.KEYCODE_MEDIA_STOP:
-                        case KeyEvent.KEYCODE_MEDIA_EJECT:
-                            actionIntent.setAction(ACTION_STOP);
-                            break;
-                    }
-                    // Go send command to service
-                    context.startService(actionIntent);
-                }
+                KeyEvent event = intent.getParcelableExtra(EXTRA_KEY_EVENT);
+                if (event != null && KeyEvent.ACTION_DOWN == event.getAction())
+                    handleMediaKeyCode(context, event.getKeyCode());
             } catch (SecurityException se) {
                 // This might happen if called from the outside since our
                 // service is not exported, just do nothing.
             }
         }
+    }
+
+    /**
+     * Translate a media key code to the correct service command
+     * and send it out to the {@link PlayEpisodeService}.
+     *
+     * @param context The context to send the command from.
+     * @param keyCode The key code to handle. (Not the full key event!)
+     * @return If the key event was acted upon (i.e. any action was send to the service).
+     * @see KeyEvent
+     */
+    public static boolean handleMediaKeyCode(Context context, int keyCode) {
+        boolean consumed = true;
+
+        // Send appropriate action to the episode playback service by constructing
+        // the intent and make sure it is explicit (required for API >= 21)
+        final Intent actionIntent = new Intent(context, PlayEpisodeService.class);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                actionIntent.setAction(ACTION_TOGGLE);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+                actionIntent.setAction(ACTION_PLAY);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                actionIntent.setAction(ACTION_PAUSE);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                actionIntent.setAction(ACTION_PREVIOUS);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                actionIntent.setAction(ACTION_SKIP);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                actionIntent.setAction(ACTION_REWIND);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                actionIntent.setAction(ACTION_FORWARD);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+            case KeyEvent.KEYCODE_MEDIA_EJECT:
+                actionIntent.setAction(ACTION_STOP);
+                break;
+            default:
+                // Unknown key code
+                consumed = false;
+                break;
+        }
+        // Go send command to service
+        if (consumed)
+            context.startService(actionIntent);
+
+        return consumed;
     }
 }

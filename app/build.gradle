@@ -131,6 +131,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:+'
     compile 'com.android.support:palette-v7:+'
     compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:support-annotations:+'
 
     // 5) Development helper "Leak Canary"

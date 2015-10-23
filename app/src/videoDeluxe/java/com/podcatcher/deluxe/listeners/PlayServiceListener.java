@@ -61,9 +61,9 @@ public interface PlayServiceListener {
      * Called by the service on the listener if the media player buffer state
      * changed.
      *
-     * @param seconds Seconds from the media start currently buffered.
+     * @param millis Milli-seconds from the media start currently buffered.
      */
-    void onBufferUpdate(int seconds);
+    void onBufferUpdate(int millis);
 
     /**
      * Called by the service on the listener if an episode finished playing. The
