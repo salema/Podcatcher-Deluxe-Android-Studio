@@ -458,8 +458,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
             final boolean downloading = episodeManager.isDownloading(selection.getEpisode());
             final boolean downloaded = episodeManager.isDownloaded(selection.getEpisode());
 
-            episodeFragment.setDownloadMenuItemVisibility(selection.isEpisodeSet(),
-                    !(downloading || downloaded));
+            episodeFragment.setDownloadMenuItemVisibility(selection.isEpisodeSet() &&
+                    !selection.getEpisode().isLive(), !(downloading || downloaded));
             episodeFragment.setDownloadIconVisibility(downloading || downloaded, downloaded);
         }
     }

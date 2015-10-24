@@ -320,7 +320,7 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
                 if (episodeManager.isDownloadingOrDownloaded(episode)) {
                     deletesTriggered++;
                     deleteMenuItem.setVisible(canAccessStorage);
-                } else
+                } else if (!episode.isLive())
                     downloadMenuItem.setVisible(canAccessStorage);
 
                 if (episodeManager.isInPlaylist(episode))

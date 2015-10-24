@@ -727,7 +727,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             return PreferenceManager.getDefaultSharedPreferences(this)
                     .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false) &&
                     ((Podcatcher) getApplication()).isOnFastConnection() &&
-                    !episodeManager.getState(latestEpisode);
+                    !episodeManager.getState(latestEpisode) && !latestEpisode.isLive();
         }
     }
 }
