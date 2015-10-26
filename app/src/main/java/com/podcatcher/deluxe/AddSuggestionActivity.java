@@ -39,6 +39,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -124,6 +125,9 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.suggestions, menu);
 
+        // Enable navigation
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Get handle to other item, we want to hide them if the search is active
         this.toprunnerMenuItem = menu.findItem(R.id.featured_suggestions_menuitem);
         this.newMenuItem = menu.findItem(R.id.new_suggestions_menuitem);
@@ -173,6 +177,10 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+
+                return true;
             case R.id.featured_suggestions_menuitem:
                 // Toggle featured/all filter
                 final boolean isFeaturedFiltered = getString(R.string.suggestion_featured).equals(suggestionFragment.getSearchQuery());
