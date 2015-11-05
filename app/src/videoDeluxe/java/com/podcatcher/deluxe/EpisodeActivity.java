@@ -68,9 +68,13 @@ public abstract class EpisodeActivity extends BaseActivity implements
      */
     public static final String EPISODE_URL_KEY = "episode_url_key";
     /**
-     * Permission request code used
+     * Permission request code used for downloads
      */
-    public static final int STORAGE_PERMISSION_REQUEST_CODE = 42;
+    public static final int REQUEST_CODE_DOWNLOAD = 42;
+    /**
+     * Permission request code used for playback
+     */
+    public static final int REQUEST_CODE_PLAYBACK = 43;
 
     /**
      * The current episode fragment
@@ -322,7 +326,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
         if (selection.isEpisodeSet()) {
             // Make sure we have permission to store/remove files
             if (!((Podcatcher) getApplication()).canWriteExternalStorage())
-                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST_CODE);
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_DOWNLOAD);
             else {
                 // Check for action to perform
                 boolean download = !episodeManager.isDownloadingOrDownloaded(selection.getEpisode());
@@ -362,24 +366,32 @@ public abstract class EpisodeActivity extends BaseActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case STORAGE_PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            switch (requestCode) {
+                case REQUEST_CODE_DOWNLOAD:
                     onToggleDownload();
-        }
+                    break;
+                case REQUEST_CODE_PLAYBACK:
+                    onToggleLoad();
+                    break;
+            }
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onToggleLoad() {
-        // Stop timer task
         stopPlayerUpdater();
 
-        // Stop called: unload episode
         if (service.isLoadedEpisode(selection.getEpisode()))
             service.stop();
-            // Play called on unloaded episode
-        else if (selection.isEpisodeSet())
-            service.playEpisode(selection.getEpisode());
+        else if (selection.isEpisodeSet()) {
+            // Make sure we have permission to play downloaded files if needed
+            if (!((Podcatcher) getApplication()).canWriteExternalStorage() &&
+                    episodeManager.isDownloaded(selection.getEpisode()))
+                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_PLAYBACK);
+            else
+                service.playEpisode(selection.getEpisode());
+        }
 
         // Update UI
         updatePlayerUi();
