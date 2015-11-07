@@ -28,6 +28,7 @@ import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.EpisodeListItemView;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -65,9 +66,9 @@ public class EpisodeListFragment extends PodcatcherListFragment {
     private OnReverseSortingListener sortingListener;
 
     /**
-     * Identifier for the string the empty view shows.
+     * The episode list context listener
      */
-    private int emptyStringId = R.string.episode_none;
+    private EpisodeListContextListener listContextListener = new EpisodeListContextListener(this);
 
     /**
      * Flag for show sort menu item state
@@ -85,6 +86,11 @@ public class EpisodeListFragment extends PodcatcherListFragment {
      * Flag to indicate whether podcast names should be shown for episodes
      */
     private boolean showPodcastNames = false;
+
+    /**
+     * Identifier for the string the empty view shows.
+     */
+    private int emptyStringId = R.string.episode_none;
 
     /**
      * The sort episodes menu bar item
@@ -144,7 +150,7 @@ public class EpisodeListFragment extends PodcatcherListFragment {
         viewCreated = true;
 
         // Set list choice listener (context action mode)
-        getListView().setMultiChoiceModeListener(new EpisodeListContextListener(this));
+        getListView().setMultiChoiceModeListener(listContextListener);
 
         // This will make sure we show the right information once the view
         // controls are established (the list might have been set earlier)
@@ -175,6 +181,21 @@ public class EpisodeListFragment extends PodcatcherListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            switch (requestCode) {
+                case R.id.episode_download_contextmenuitem:
+                    listContextListener.onDownloadClicked();
+                    break;
+                case R.id.episode_remove_contextmenuitem:
+                    listContextListener.onRemoveClicked();
+                    break;
+            }
+
     }
 
     @Override

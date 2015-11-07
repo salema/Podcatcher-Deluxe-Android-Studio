@@ -29,7 +29,9 @@ import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment;
 import com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.OnDeleteDownloadsConfirmationListener;
 import com.podcatcher.deluxe.view.fragments.EpisodeListFragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
@@ -41,6 +43,7 @@ import android.widget.ShareActionProvider;
 
 import java.util.ArrayList;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.EPISODE_COUNT_KEY;
 import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
@@ -158,6 +161,7 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
         return false;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
         boolean markNew = false;
@@ -178,48 +182,17 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
                 mode.finish();
                 return true;
             case R.id.episode_download_contextmenuitem:
-                for (Integer position : positions)
-                    episodeManager.download((Episode) fragment.getListAdapter().getItem(position));
+                if (!((Podcatcher) fragment.getActivity().getApplication()).canWriteExternalStorage())
+                    fragment.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, R.id.episode_download_contextmenuitem);
+                else
+                    onDownloadClicked();
 
-                // Action picked, so close the CAB
-                mode.finish();
                 return true;
             case R.id.episode_remove_contextmenuitem:
-                final DeleteDownloadsConfirmationFragment confirmationDialog = new DeleteDownloadsConfirmationFragment();
-
-                // Create bundle to make dialog aware of selection count
-                final Bundle args = new Bundle();
-                args.putInt(EPISODE_COUNT_KEY, deletesTriggered);
-                confirmationDialog.setArguments(args);
-                // Set the callback
-                confirmationDialog.setListener(new OnDeleteDownloadsConfirmationListener() {
-
-                    @Override
-                    public void onConfirmDeletion() {
-                        for (Integer position : positions) {
-                            final Episode episode = (Episode) fragment.getListAdapter().getItem(position);
-
-                            // Go delete the download
-                            episodeManager.deleteDownload(episode);
-
-                            // Prevent immediate re-download by marking episode 'old'
-                            if (PreferenceManager.getDefaultSharedPreferences(fragment.getActivity())
-                                    .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false))
-                                episodeManager.setState(episode, true);
-                        }
-
-                        // Action picked, so close the CAB
-                        mode.finish();
-                    }
-
-                    @Override
-                    public void onCancelDeletion() {
-                        // Nothing to do here
-                    }
-                });
-
-                // Finally show the dialog
-                confirmationDialog.show(fragment.getFragmentManager(), TAG);
+                if (!((Podcatcher) fragment.getActivity().getApplication()).canWriteExternalStorage())
+                    fragment.requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE}, R.id.episode_remove_contextmenuitem);
+                else
+                    onRemoveClicked();
 
                 return true;
             case R.id.episode_add_to_playlist_contextmenuitem:
@@ -251,6 +224,57 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
             default:
                 return false;
         }
+    }
+
+    /**
+     * Trigger context action item "download"
+     */
+    public void onDownloadClicked() {
+        for (Integer position : getCheckedPositions())
+            episodeManager.download((Episode) fragment.getListAdapter().getItem(position));
+
+        // Action picked, so close the CAB
+        actionMode.finish();
+    }
+    /**
+     * Trigger context action item "remove"
+     */
+    public void onRemoveClicked() {
+        final DeleteDownloadsConfirmationFragment confirmationDialog = new DeleteDownloadsConfirmationFragment();
+
+        // Create bundle to make dialog aware of selection count
+        final Bundle args = new Bundle();
+        args.putInt(EPISODE_COUNT_KEY, deletesTriggered);
+        confirmationDialog.setArguments(args);
+        // Set the callback
+        confirmationDialog.setListener(new OnDeleteDownloadsConfirmationListener() {
+
+            @Override
+            public void onConfirmDeletion() {
+                for (Integer position : getCheckedPositions()) {
+                    final Episode episode = (Episode) fragment.getListAdapter().getItem(position);
+
+                    // Go delete the download
+                    episodeManager.deleteDownload(episode);
+
+                    // Prevent immediate re-download by marking episode 'old'
+                    if (PreferenceManager.getDefaultSharedPreferences(fragment.getActivity())
+                            .getBoolean(SettingsActivity.KEY_AUTO_DOWNLOAD, false))
+                        episodeManager.setState(episode, true);
+                }
+
+                // Action picked, so close the CAB
+                actionMode.finish();
+            }
+
+            @Override
+            public void onCancelDeletion() {
+                // Nothing to do here
+            }
+        });
+
+        // Finally show the dialog
+        confirmationDialog.show(fragment.getFragmentManager(), TAG);
     }
 
     @Override
@@ -292,9 +316,6 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
     private void updateMenuItems() {
         // Initialize counter for the number of deletes the current selection would trigger
         this.deletesTriggered = 0;
-        // Check for permission to access external storage
-        final boolean canAccessStorage =
-                ((Podcatcher) fragment.getActivity().getApplication()).canWriteExternalStorage();
 
         // Make all menu items invisible
         newMenuItem.setVisible(false);
@@ -319,9 +340,9 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
 
                 if (episodeManager.isDownloadingOrDownloaded(episode)) {
                     deletesTriggered++;
-                    deleteMenuItem.setVisible(canAccessStorage);
+                    deleteMenuItem.setVisible(true);
                 } else if (!episode.isLive())
-                    downloadMenuItem.setVisible(canAccessStorage);
+                    downloadMenuItem.setVisible(true);
 
                 if (episodeManager.isInPlaylist(episode))
                     removeFromPlaylistMenuItem.setVisible(true);

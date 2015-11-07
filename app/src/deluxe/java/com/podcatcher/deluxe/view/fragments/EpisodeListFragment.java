@@ -31,6 +31,7 @@ import com.podcatcher.deluxe.view.EpisodeListItemView;
 import com.podcatcher.deluxe.view.fragments.SwipeReorderListViewTouchListener.ReorderCallback;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -79,6 +80,10 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
      * Out swipe to reorder listener
      */
     private SwipeReorderListViewTouchListener swipeReorderListener;
+    /**
+     * The episode list context listener
+     */
+    private EpisodeListContextListener listContextListener = new EpisodeListContextListener(this);
 
     /**
      * Flag for show sort menu item state
@@ -198,7 +203,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
         viewCreated = true;
 
         // Set list choice listener (context action mode)
-        getListView().setMultiChoiceModeListener(new EpisodeListContextListener(this));
+        getListView().setMultiChoiceModeListener(listContextListener);
 
         // Create and set the swipe-to-reorder listener on the listview.
         swipeReorderListener = new SwipeReorderListViewTouchListener(getListView(), this);
@@ -243,6 +248,21 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            switch (requestCode) {
+                case R.id.episode_download_contextmenuitem:
+                    listContextListener.onDownloadClicked();
+                    break;
+                case R.id.episode_remove_contextmenuitem:
+                    listContextListener.onRemoveClicked();
+                    break;
+            }
+
     }
 
     @Override
