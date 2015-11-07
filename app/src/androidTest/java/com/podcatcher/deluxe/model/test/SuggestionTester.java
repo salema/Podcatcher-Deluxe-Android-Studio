@@ -89,7 +89,10 @@ public class SuggestionTester extends InstrumentationTestCase implements OnLoadP
                 final Suggestion podcast = new Suggestion(name, entry.getValue());
                 podcast.setMediaTypes(suggestion.getMediaTypes());
 
-                new LoadPodcastTask(this).executeOnExecutor(executor, podcast);
+                final LoadPodcastTask task = new LoadPodcastTask(this);
+                task.setReportPodcastMovedIfEmpty(false);
+                task.setReportPodcastMovedFromFeed(true);
+                task.executeOnExecutor(executor, podcast);
             }
 
         try {
@@ -104,6 +107,12 @@ public class SuggestionTester extends InstrumentationTestCase implements OnLoadP
     @Override
     public void onPodcastLoadProgress(Podcast podcast, Progress progress) {
         // pass
+    }
+
+    @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        Log.w(TAG, "Podcast " + podcast.getName() + " needs to move to " + newUrl);
+        signal.countDown();
     }
 
     @Override

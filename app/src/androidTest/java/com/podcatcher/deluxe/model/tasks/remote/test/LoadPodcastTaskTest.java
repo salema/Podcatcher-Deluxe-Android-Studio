@@ -215,6 +215,16 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
         }
 
         @Override
+        public void onPodcastMoved(Podcast podcast, String newUrl) {
+            this.result = podcast;
+            this.failed = true;
+            this.code = null;
+
+            Log.w(Utils.TEST_STATUS, "Podcast " + podcast.getName() + " needs to move to " + newUrl);
+            signal.countDown();
+        }
+
+        @Override
         public void onPodcastLoaded(Podcast podcast) {
             this.result = podcast;
             this.failed = false;

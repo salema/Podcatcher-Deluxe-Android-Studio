@@ -250,14 +250,19 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                 new LoadPodcastTask(new OnLoadPodcastListener() {
 
                     @Override
-                    public void onPodcastLoaded(Podcast podcast) {
-                        podcastManager.addPodcast(podcast);
-                        runningLoadPodcastTaskCount--;
+                    public void onPodcastLoadProgress(Podcast p, Progress pr) {
+                        // pass
                     }
 
                     @Override
-                    public void onPodcastLoadProgress(Podcast p, Progress pr) {
-                        // pass
+                    public void onPodcastMoved(Podcast podcast, String newUrl) {
+                        // pass, this will not be called if any sync controllers are active
+                    }
+
+                    @Override
+                    public void onPodcastLoaded(Podcast podcast) {
+                        podcastManager.addPodcast(podcast);
+                        runningLoadPodcastTaskCount--;
                     }
 
                     @Override

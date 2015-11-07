@@ -259,6 +259,11 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
     }
 
     @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        // TODO Move metadata over
+    }
+
+    @Override
     public void onPodcastLoaded(final Podcast podcast) {
         // We do not want to run this too frequently and for all podcasts at
         // once. In addition it should run only once per podcast during the

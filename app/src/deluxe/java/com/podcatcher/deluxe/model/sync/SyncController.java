@@ -209,6 +209,16 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
     protected abstract void syncEpisodeMetadata();
 
     @Override
+    public void onPodcastLoadProgress(Podcast podcast, Progress progress) {
+        // pass, this is not a sync event
+    }
+
+    @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        // pass, podcast move disabled when sync is active
+    }
+
+    @Override
     public void onPodcastLoaded(Podcast podcast) {
         // This should make sure that the episode metadata for the loaded
         // episode is updated
@@ -221,11 +231,6 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
                     new Date().getTime() - loadDate.getTime() < TimeUnit.SECONDS.toMillis(30))
                 syncEpisodeMetadata();
         }
-    }
-
-    @Override
-    public void onPodcastLoadProgress(Podcast podcast, Progress progress) {
-        // pass, this is not a sync event
     }
 
     @Override

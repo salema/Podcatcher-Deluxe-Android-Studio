@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.model.types;
 
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.tags.RSS;
+import com.podcatcher.deluxe.model.tasks.remote.PodcastMovedException;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -46,7 +47,7 @@ import java.util.Set;
  * load its RSS/XML file from. The online location is not verified or checked
  * inside the podcast type.
  * <p>
- * <b>Parsing:</b> Call {@link #parse(XmlPullParser)} with the parser set up to
+ * <b>Parsing:</b> Call {@link #parse(XmlPullParser, boolean)} with the parser set up to
  * the correct content in order to make the podcast object read and refresh its
  * members. Use {@link #getLastLoaded()} to find out whether and when this last
  * happened to a given podcast instance.
@@ -59,7 +60,7 @@ import java.util.Set;
  * </p>
  * <p>
  * <b>Logo:</b> Podcast often have logos. This podcast type allows for access to
- * the logo's online location (after {@link #parse(XmlPullParser)}, of course).
+ * the logo's online location (after {@link #parse(XmlPullParser, boolean)}, of course).
  * </p>
  */
 public class Podcast extends FeedEntity implements Comparable<Podcast> {
@@ -113,13 +114,13 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * Create a new podcast by name and RSS file location. The name will not be
      * read from the file, but remains as given (unless you give
      * <code>null</code> as the name). All other data on the podcast will only
-     * be available after {@link #parse(XmlPullParser)} was called.
+     * be available after {@link #parse(XmlPullParser, boolean)} was called.
      *
      * @param name The podcast's name, if you give <code>null</code> the name
      *             will be read from the RSS file on
-     *             {@link #parse(XmlPullParser)}.
+     *             {@link #parse(XmlPullParser, boolean)}.
      * @param url  The location of the podcast's RSS file (not <code>null</code>).
-     * @see #parse(XmlPullParser)
+     * @see #parse(XmlPullParser, boolean)
      */
     public Podcast(@Nullable String name, @NonNull String url) {
         this.name = name;
@@ -211,7 +212,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * parse the RSS file before expecting any results.
      *
      * @return The list of episodes as listed in the feed.
-     * @see #parse(XmlPullParser)
+     * @see #parse(XmlPullParser, boolean)
      */
     @NonNull
     public List<Episode> getEpisodes() {
@@ -223,7 +224,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     /**
      * Clean all explicit episodes from the podcast. Once called, the
      * {@link #getEpisodes()} method will only return episodes <em>not</em>
-     * marked explicit until {@link #parse(XmlPullParser)} is called.
+     * marked explicit until {@link #parse(XmlPullParser, boolean)} is called.
      *
      * @return The number of clean episodes left.
      */
@@ -242,7 +243,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
     /**
      * @return The number of episode for this podcast (always >= 0).
-     * @see #parse(XmlPullParser)
+     * @see #parse(XmlPullParser, boolean)
      */
     public int getEpisodeCount() {
         return episodes.size();
@@ -251,7 +252,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     /**
      * @return The feed remote file encoding or <code>null</code> if not yet parsed or
      * detected by the parser.
-     * @see #parse(XmlPullParser)
+     * @see #parse(XmlPullParser, boolean)
      */
     @Nullable
     public String getFeedEncoding() {
@@ -263,7 +264,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      *
      * @return URL pointing at the logo location (might be <code>null</code> if the podcast
      * does not provide a logo or it has not been parsed).
-     * @see #parse(XmlPullParser)
+     * @see #parse(XmlPullParser, boolean)
      */
     @Nullable
     public String getLogoUrl() {
@@ -409,10 +410,16 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * this case the episode list will not be altered.
      *
      * @param parser Parser used to read the RSS/XML file.
+     * @param failWhenMoved Whether an {@link PodcastMovedException} should be thrown
+     *                      when the parser encounters the new-feed-url tag. Setting
+     *                      this to <code>false</code> will ignore the tag and continue
+     *                      regular parsing.
+     * @throws PodcastMovedException  If the podcast URL needs to change.
      * @throws IOException            If we encounter problems read the file.
      * @throws XmlPullParserException On parsing errors.
      */
-    public void parse(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
+    public void parse(@NonNull XmlPullParser parser, boolean failWhenMoved) throws
+            PodcastMovedException, XmlPullParserException, IOException {
         final List<Episode> newEpisodes = new ArrayList<>();
 
         try {
@@ -435,6 +442,14 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                         case RSS.EXPLICIT:
                             explicit = parseExplicit(parser.nextText());
                             break;
+                        case RSS.NEW_URL:
+                            if (failWhenMoved) {
+                                final String newUrl = normalizeUrl(parser.nextText());
+                                // Make sure this is a good URL to move to
+                                if (newUrl != null && !equalByUrl(newUrl) && newUrl.startsWith("http"))
+                                    throw new PodcastMovedException(newUrl);
+                            } else
+                                break;
                         case RSS.IMAGE:
                             parseLogo(parser);
                             break;

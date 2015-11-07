@@ -259,6 +259,11 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     }
 
     @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        // TODO Update selection
+    }
+
+    @Override
     public void onPodcastLoaded(Podcast podcast) {
         // Update list fragment to show episode list
         if (selection.isAll() || selection.isSingle() && podcast.equals(selection.getPodcast())) {

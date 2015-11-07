@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe.listeners;
 
+import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
@@ -39,6 +40,20 @@ public interface OnLoadPodcastListener {
      *                 >100.
      */
     void onPodcastLoadProgress(Podcast podcast, Progress progress);
+
+    /**
+     * Called when the podcast has an "old" URL that should be replaced. This call completes
+     * loading, {@link #onPodcastLoaded(Podcast)} will <em>not</em> be called in addition.
+     * <br/>
+     * This will <em>never</em> be called on a listener if sync is active.
+     * Instead, loading will continue as normal and either {@link #onPodcastLoaded(Podcast)}
+     * or {@link #onPodcastLoadFailed(Podcast, PodcastLoadError)} will be called.
+     *
+     * @param podcast Podcast not loaded.
+     * @param newUrl  The new URL to switch to.
+     * @see SyncManager#getActiveControllerCount()
+     */
+    void onPodcastMoved(Podcast podcast, String newUrl);
 
     /**
      * Called on completion.

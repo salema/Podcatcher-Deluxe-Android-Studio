@@ -84,6 +84,11 @@ public class Utils {
             }
 
             @Override
+            public void onPodcastMoved(Podcast podcast, String newUrl) {
+                signal.countDown();
+            }
+
+            @Override
             public void onPodcastLoaded(Podcast podcast) {
                 signal.countDown();
             }

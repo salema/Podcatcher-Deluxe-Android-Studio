@@ -294,6 +294,14 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                     task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnMeteredConnection() ?
                             MAX_STALE_MOBILE : MAX_STALE : MAX_STALE_OFFLINE);
 
+                    // If this is a new podcast and it returns empty, the user might have
+                    // added a RSS news feed, we try to check podcatcher-deluxe.com for a
+                    // corresponding podcast URL to use
+                    task.setReportPodcastMovedIfEmpty(!podcastList.contains(podcast) &&
+                            SyncManager.getInstance().getActiveControllerCount() == 0);
+                    // TODO Activate if not syncing
+                    task.setReportPodcastMovedFromFeed(false);
+
                     // Enqueue podcast load/refresh
                     task.executeOnExecutor(loadPodcastExecutor, podcast);
 
@@ -328,6 +336,34 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         // Notify listeners
         for (OnLoadPodcastListener listener : loadPodcastListeners)
             listener.onPodcastLoadProgress(podcast, progress);
+    }
+
+    @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        // Remove from the set of loading task
+        loadingPodcasts.remove(podcast);
+
+        // Replace podcast and load new version
+        if (podcastList.contains(podcast)) {
+            final Podcast newPodcast = new Podcast(podcast.getName(), newUrl);
+            newPodcast.setUsername(podcast.getUsername());
+            newPodcast.setPassword(podcast.getPassword());
+
+            podcastList.remove(podcastList.indexOf(podcast));
+            podcastList.add(newPodcast);
+            Collections.sort(podcastList);
+
+            // Mark podcast list dirty
+            podcastListChanged = true;
+        }
+
+        // Notify listeners
+        for (OnLoadPodcastListener listener : loadPodcastListeners)
+            listener.onPodcastMoved(podcast, newUrl);
+
+        if (podcastListChanged)
+            // Make sure podcast is loaded, if that did not yet happen
+            ; //load(newPodcast, false);
     }
 
     @Override
@@ -623,10 +659,9 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     }
 
     /**
-     * Whether the podcast content is old enough to need reloading. This relates
-     * to the time that {@link Podcast#parse(XmlPullParser)} has last been called on
-     * the object and has nothing to do with the updating of the podcast RSS
-     * file on the provider's server.
+     * Whether the podcast content is old enough to need reloading. This relates to the time
+     * that {@link Podcast#parse(XmlPullParser, boolean)} has last been called on the object
+     * and has nothing to do with the updating of the podcast RSS file on the provider's server.
      *
      * @param podcast Podcast to check.
      * @return <code>true</code> iff time to live expired or the podcast has

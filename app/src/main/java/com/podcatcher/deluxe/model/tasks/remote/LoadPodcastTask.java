@@ -21,10 +21,13 @@ package com.podcatcher.deluxe.model.tasks.remote;
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.tags.JSON;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -32,6 +35,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Loads a podcast's RSS file from the server and parses its contents
@@ -40,7 +44,7 @@ import java.net.URL;
  * <b>Usage:</b> Implement the {@link OnLoadPodcastListener} interface and give
  * it to the task's constructor to be alerted on completion, progress, or
  * failure. The downloaded file will be used as the podcast's content via
- * {@link Podcast#parse(XmlPullParser)}, use the podcast object given (and
+ * {@link Podcast#parse(XmlPullParser, boolean)}, use the podcast object given (and
  * returned via callbacks) to access it.
  * </p>
  * <p>
@@ -68,10 +72,31 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
     private boolean blockExplicit = false;
 
     /**
+     * The URL the podcast currently loading moved to
+     */
+    private String shouldMoveToUrl;
+    /**
+     * Flag indicating whether we report on new-feed-url tags
+     */
+    private boolean reportPodcastMovedFromFeed = false;
+    /**
+     * Flag indicating whether we check podcatcher-deluxe.com for
+     * better URLs and abort loading.
+     */
+    private boolean reportPodcastMovedIfEmpty = false;
+    /**
+     * Website URL to check for alternative feed URLs.
+     */
+    private static final String CHECK_FEED_URL = "http://podcatcher-deluxe.com/preferred-url.json/";
+    /**
+     * The string json feed value are separated by
+     */
+    private static final String JSON_VALUE_DELIMITER = ", ";
+
+    /**
      * The error code returned on failure
      */
     private PodcastLoadError errorCode = PodcastLoadError.UNKNOWN;
-
     /**
      * Podcast load error codes as returned by
      * {@link OnLoadPodcastListener#onPodcastLoadFailed(Podcast, PodcastLoadError)}
@@ -134,6 +159,28 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         this.blockExplicit = block;
     }
 
+    /**
+     * @param report Whether the task should return with
+     *               {@link OnLoadPodcastListener#onPodcastMoved(Podcast, String)} instead of
+     *               {@link OnLoadPodcastListener#onPodcastLoaded(Podcast)} if the feed parsed
+     *               contains a new-feed-url tag. Default is <code>false</code> and ignores
+     *               any such tags.
+     */
+    public void setReportPodcastMovedFromFeed(boolean report) {
+        this.reportPodcastMovedFromFeed = report;
+    }
+
+    /**
+     * @param report Whether the task should return with
+     *               {@link OnLoadPodcastListener#onPodcastMoved(Podcast, String)} instead of
+     *               {@link OnLoadPodcastListener#onPodcastLoaded(Podcast)} if the feed parsed
+     *               contains no valid episodes and the tasks finds an alternative feed URL
+     *               on podcatcher-deluxe.com. Default is <code>false</code>.
+     */
+    public void setReportPodcastMovedIfEmpty(boolean report) {
+        this.reportPodcastMovedIfEmpty = report;
+    }
+
     @Override
     protected Void doInBackground(Podcast... podcasts) {
         this.podcast = podcasts[0];
@@ -162,7 +209,14 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                 XmlPullParser parser = factory.newPullParser();
                 parser.setInput(new ByteArrayInputStream(podcastRssFile), null);
 
-                podcast.parse(parser);
+                podcast.parse(parser, reportPodcastMovedFromFeed);
+
+                // Podcast is empty, if enabled try look-up on podcatcher-deluxe.com
+                if (!isCancelled() && podcast.getEpisodeCount() == 0 &&
+                        reportPodcastMovedIfEmpty && hasAlternativeUrl(podcast))
+                    // Cancelling is enough since hasAlternativeUrl()
+                    // set the shouldMoveToUrl member variable, see onCancelled()
+                    cancel(true);
 
                 // 3. Clean out explicit episodes
                 if (!isCancelled() && blockExplicit) {
@@ -191,6 +245,9 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                             episode.setFileSize(episodeManager.findMediaFileSize(episode));
                     }
             }
+        } catch (PodcastMovedException pme) {
+            shouldMoveToUrl = pme.getNewUrl();
+            cancel(true);
         } catch (XmlPullParserException xppe) {
             errorCode = PodcastLoadError.NOT_PARSABLE;
             cancel(true);
@@ -233,7 +290,28 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         // Background task failed to complete
         if (needsAuthorization)
             listener.onPodcastLoadFailed(podcast, PodcastLoadError.AUTH_REQUIRED);
+        else if (shouldMoveToUrl != null)
+            listener.onPodcastMoved(podcast, shouldMoveToUrl);
         else
             listener.onPodcastLoadFailed(podcast, errorCode);
+    }
+
+    private boolean hasAlternativeUrl(Podcast podcast) {
+        try {
+            // Go to podcatcher-deluxe.com, find and normalize alt. URL if any
+            byte[] response = loadFile(new URL(CHECK_FEED_URL + podcast.getUrl()));
+            final String newUrl = new Podcast(null,
+                    new JSONArray(new String(response, Charset.forName("UTF8")))
+                            .getJSONObject(0).getString(JSON.FEED)
+                            .split(JSON_VALUE_DELIMITER)[0]).getUrl();
+
+            // Make sure it parses and is actually different from the URL we started with
+            if (newUrl != null && !newUrl.equalsIgnoreCase(podcast.getUrl()))
+                this.shouldMoveToUrl = new URL(newUrl).toString();
+        } catch (IOException | JSONException | RuntimeException e) {
+            // pass, no URL found -> return false
+        }
+
+        return shouldMoveToUrl != null;
     }
 }
