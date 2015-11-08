@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.services;
 
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.PodcastManager;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
 
@@ -32,16 +33,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Intent.EXTRA_KEY_EVENT;
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ART;
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ARTIST;
+import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_ART_URI;
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DATE;
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_DURATION;
 import static android.support.v4.media.MediaMetadataCompat.METADATA_KEY_MEDIA_ID;
@@ -55,7 +60,7 @@ import static android.support.v4.media.session.PlaybackStateCompat.ACTION_REWIND
 import static android.support.v4.media.session.PlaybackStateCompat.ACTION_SEEK_TO;
 import static android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
 import static android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
-import static android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP;
+import static android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
 
 /**
  * Our media session implementation.
@@ -70,6 +75,10 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
      * Our service handle
      */
     private final PlayEpisodeService service;
+    /**
+     * Our episode manager handle
+     */
+    private final EpisodeManager episodeManager = EpisodeManager.getInstance();
 
     /**
      * The media metadata builder handle, needs to be member
@@ -81,10 +90,20 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
      * when the async loading returns late/never.
      */
     private String lastLogoLoading;
+
+    /**
+     * The playback state builder handle.
+     */
+    private PlaybackStateCompat.Builder stateBuilder;
     /**
      * Last playback state set.
      */
     private int lastPlaybackState = PlaybackStateCompat.STATE_NONE;
+
+    /**
+     * Our playlist as the queue.
+     */
+    private List<QueueItem> queue;
 
     /**
      * Create new media session.
@@ -99,6 +118,7 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
 
         setFlags(FLAG_HANDLES_TRANSPORT_CONTROLS | FLAG_HANDLES_MEDIA_BUTTONS);
         setCallback(new PlayEpisodeSessionCallback());
+        updateQueue();
     }
 
     /**
@@ -110,11 +130,7 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
         final Episode episode = service.getCurrentEpisode();
 
         if (episode != null) {
-            metadataBuilder.putString(METADATA_KEY_MEDIA_ID, episode.getMediaUrl())
-                    .putString(METADATA_KEY_TITLE, episode.getName())
-                    .putString(METADATA_KEY_ARTIST, episode.getPodcast().getName())
-                    .putString(METADATA_KEY_DATE, Utils.getRelativePubDate(episode))
-                    .putLong(METADATA_KEY_DURATION, TimeUnit.SECONDS.toMillis(episode.getDuration()));
+            putEpisodeMetadata(metadataBuilder, episode, false);
 
             // Load and show logo, onBitmapLoaded() below
             if (episode.getPodcast().hasLogoUrl()) {
@@ -149,6 +165,30 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
         // pass
     }
 
+    public void updateQueue() {
+        this.queue = new ArrayList<>();
+        final MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+
+        // Add other playlist items
+        final List<Episode> playlist = episodeManager.getPlaylist();
+
+        // Add current episode as first item if not in playlist
+        if (service.getCurrentEpisode() != null && !playlist.contains(service.getCurrentEpisode())) {
+            putEpisodeMetadata(builder, service.getCurrentEpisode(), true);
+            queue.add(new QueueItem(builder.build().getDescription(), 0));
+        }
+
+        // Add other playlist items
+        for (int index = 0, queueSize = queue.size(); index < playlist.size(); index++) {
+            putEpisodeMetadata(builder, playlist.get(index), true);
+            queue.add(new QueueItem(builder.build().getDescription(), index + queueSize));
+        }
+
+        setQueue(queue);
+        // Make sure to update active queue id
+        updatePlayState();
+    }
+
     /**
      * Update the play state and available actions
      * using the last state previously given.
@@ -166,23 +206,35 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
     public void updatePlayState(int state) {
         this.lastPlaybackState = state;
 
-        final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
+        stateBuilder = new PlaybackStateCompat.Builder()
                 .setState(state, service.getCurrentPosition(), 1.0f)
                 .setActions(getAvailableActions())
                 .setErrorMessage(service.getString(R.string.player_error));
 
-        if (service.getCurrentEpisode() != null && service.getCurrentEpisode().getMediaUrl() != null)
-            stateBuilder.setActiveQueueItemId(service.getCurrentEpisode().getMediaUrl().hashCode());
-
-        if (service.getBufferedPosition() > 0)
-            stateBuilder.setBufferedPosition(service.getBufferedPosition());
+        // Make sure to set active queue item, queue will not show otherwise
+        if (queue != null && service.getCurrentEpisode() != null)
+            for (QueueItem item : queue)
+                if (service.getCurrentEpisode().equalByUrl(item.getDescription().getMediaId()))
+                    stateBuilder.setActiveQueueItemId(item.getQueueId());
 
         setPlaybackState(stateBuilder.build());
     }
 
+    /**
+     * Update playback progress information.
+     */
+    public void updateProgress() {
+        // This should only run if updatePlayState() ran before
+        if (stateBuilder != null) {
+            stateBuilder.setState(lastPlaybackState, service.getCurrentPosition(), 1.0f)
+                    .setBufferedPosition(service.getBufferedPosition());
+
+            setPlaybackState(stateBuilder.build());
+        }
+    }
+
     private long getAvailableActions() {
-        long actions = ACTION_PLAY_PAUSE | ACTION_STOP |
-                ACTION_SKIP_TO_PREVIOUS | ACTION_PLAY_FROM_MEDIA_ID;
+        long actions = ACTION_PLAY_PAUSE | ACTION_SKIP_TO_PREVIOUS | ACTION_PLAY_FROM_MEDIA_ID;
 
         if (service.isPlaying())
             actions |= ACTION_PAUSE;
@@ -192,10 +244,22 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
         if (service.canSeek())
             actions |= ACTION_REWIND | ACTION_FAST_FORWARD | ACTION_SEEK_TO;
 
-        if (!EpisodeManager.getInstance().isPlaylistEmptyBesides(service.getCurrentEpisode()))
-            actions |= ACTION_SKIP_TO_NEXT; // | ACTION_SKIP_TO_QUEUE_ITEM;
+        if (!episodeManager.isPlaylistEmptyBesides(service.getCurrentEpisode()))
+            actions |= ACTION_SKIP_TO_NEXT | ACTION_SKIP_TO_QUEUE_ITEM;
 
         return actions;
+    }
+
+    private void putEpisodeMetadata(MediaMetadataCompat.Builder metadataBuilder, Episode episode,
+                                    boolean addArtworkUri) {
+        metadataBuilder.putString(METADATA_KEY_MEDIA_ID, episode.getMediaUrl())
+                .putString(METADATA_KEY_TITLE, episode.getName())
+                .putString(METADATA_KEY_ARTIST, episode.getPodcast().getName())
+                .putString(METADATA_KEY_DATE, Utils.getRelativePubDate(episode))
+                .putLong(METADATA_KEY_DURATION, TimeUnit.SECONDS.toMillis(episode.getDuration()));
+
+        if (addArtworkUri)
+            metadataBuilder.putString(METADATA_KEY_ART_URI, episode.getPodcast().getLogoUrl());
     }
 
     private class PlayEpisodeSessionCallback extends MediaSessionCompat.Callback {
@@ -218,13 +282,42 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
 
         @Override
         public void onPlay() {
-            service.startService(new Intent(PlayEpisodeService.ACTION_PLAY,
+            if (service.isPrepared())
+                service.startService(new Intent(PlayEpisodeService.ACTION_PLAY,
                     null, service, PlayEpisodeService.class));
+            else
+                service.playNext();
         }
 
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
-            // TODO
+            Episode episode = PodcastManager.getInstance().findEpisodeForUrl(mediaId);
+
+            // Also search downloads
+            if (episode == null)
+                for (Episode download : episodeManager.getDownloads())
+                    if (download.equalByUrl(mediaId))
+                        episode = download;
+            // ... and playlist
+            if (episode == null)
+                for (Episode item : episodeManager.getPlaylist())
+                    if (item.equalByUrl(mediaId))
+                        episode = item;
+
+            // TODO Use command instead?
+            service.playEpisode(episode);
+        }
+
+        @Override
+        public void onPlayFromSearch(String query, Bundle extras) {
+            // We only support a generic "Listen to Podcatcher Deluxe" for now
+            if (TextUtils.isEmpty(query) && !service.isPlaying())
+                service.playNext();
+        }
+
+        @Override
+        public void onSkipToQueueItem(long id) {
+            onPlayFromMediaId(queue.get((int) id).getDescription().getMediaId(), null);
         }
 
         @Override

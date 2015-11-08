@@ -20,6 +20,18 @@
 
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" />
 
+    <style name="CarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/theme_light</item>
+        <item name="colorPrimaryDark">@color/theme_dark</item>
+        <item name="colorAccent">@color/theme_dark</item>
+    </style>
+
+    <style name="WearTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/theme_light</item>
+        <item name="colorPrimaryDark">@color/theme_dark</item>
+        <item name="colorAccent">@color/theme_dark</item>
+    </style>
+
     <style name="AppDialog" parent="android:Theme.Holo.Light.Dialog" />
 
     <style name="ProgressBar.Horizontal" parent="android:Widget.ProgressBar.Horizontal">

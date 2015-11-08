@@ -31,6 +31,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.NotificationCompat;
@@ -138,6 +140,7 @@ public class PlayEpisodeNotification implements Target {
      * @param session  The media session representing current playback.
      * @return The notification to display.
      */
+    @NonNull
     public Notification build(Episode episode, boolean paused, boolean canSeek,
                               int position, int duration, MediaSessionCompat session) {
         // 0. Prepare the main intent (leading back to the app)
@@ -201,13 +204,13 @@ public class PlayEpisodeNotification implements Target {
      *
      * @param position The new progress position.
      * @param duration The length of the current episode.
-     * @return The updated notification to display.
+     * @return The updated notification to display or <code>null</code> if called before build().
      * @see #build(Episode, boolean, boolean, int, int, MediaSessionCompat)
      */
+    @Nullable
     public Notification updateProgress(int position, int duration) {
-        notificationBuilder.setProgress(duration, position, false);
-
-        return notificationBuilder.build();
+        return notificationBuilder == null ? null :
+                notificationBuilder.setProgress(duration, position, false).build();
     }
 
     @Override

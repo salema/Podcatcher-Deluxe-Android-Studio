@@ -19,12 +19,13 @@
 package com.podcatcher.deluxe.services;
 
 import com.podcatcher.deluxe.Podcatcher;
-import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnChangePlaylistListener;
 import com.podcatcher.deluxe.listeners.PlayServiceListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.types.Episode;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -36,14 +37,17 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import java.util.Date;
@@ -60,6 +64,7 @@ import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_STOPPED;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
+import static com.podcatcher.deluxe.SettingsActivity.KEY_AUTO_DELETE;
 
 /**
  * <p>
@@ -159,6 +164,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
      */
     private PlayEpisodeNotification notification;
     /**
+     * Our notification manager handle
+     */
+    private NotificationManagerCompat notificationManager;
+    /**
      * Our media session
      */
     private PlayEpisodeMediaSession mediaSession;
@@ -237,8 +246,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         episodeManager = EpisodeManager.getInstance();
         // We need to listen to playlist updates to update the notification
         episodeManager.addPlaylistListener(this);
-        // Our notification helper
+        // Our notification helpers
         notification = PlayEpisodeNotification.getInstance(this);
+        notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancelAll();
         // Create media session
         mediaSession = new PlayEpisodeMediaSession(this);
 
@@ -325,6 +336,11 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         stop();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public MediaSession.Token getMediaSessionToken() {
+        return (MediaSession.Token) mediaSession.getSessionToken().getToken();
+    }
+
     /**
      * Register a play service listener.
      *
@@ -356,6 +372,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             // Make the new episode our current source
             this.currentEpisode = episode;
             mediaSession.updateMetadata();
+            mediaSession.updateQueue();
 
             // Start playback for new episode
             try {
@@ -419,8 +436,8 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
     @Override
     public void onPlaylistChanged() {
+        mediaSession.updateQueue();
         rebuildNotification();
-        mediaSession.updatePlayState();
     }
 
     /**
@@ -479,12 +496,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         if (prepared && canSeek && msecs <= getDuration()) {
             player.seekTo(msecs > 0 ? msecs : 0);
 
-            try {
-                startForeground(NOTIFICATION_ID,
-                        notification.updateProgress(getCurrentPosition(), getDuration()));
-            } catch (NullPointerException npe) {
-                // This happens if the notification is not ready yet, skip...
-            }
+            updateNotificationProgress();
         }
     }
 
@@ -534,7 +546,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     }
 
     /**
-     * @return Whether the currently played media is seekable
+     * @return Whether the currently played media content is seekable.
      */
     public boolean canSeek() {
         return prepared && canSeek;
@@ -599,11 +611,11 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             // So we have audio focus and we tell the audio manager all the details
             // about our playback and that it should route media buttons to us
             mediaSession.setActive(true);
-            mediaSession.updatePlayState(STATE_PLAYING);
 
             // Go start and show the notification
             seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
             player.start();
+            mediaSession.updatePlayState(STATE_PLAYING);
             rebuildNotification();
             startNotificationUpdater();
 
@@ -664,7 +676,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         episodeManager.setState(currentEpisode, true);
         episodeManager.setResumeAt(currentEpisode, null);
         // Delete download if auto delete is enabled
-        if (shouldAutoDeleteCompletedEpisode())
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(KEY_AUTO_DELETE, false))
             episodeManager.deleteDownload(currentEpisode);
 
         // If there is another episode on the playlist, play it.
@@ -757,6 +769,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         // Remove notification
         stopForeground(true);
         stopNotificationUpdater();
+        notificationManager.cancel(NOTIFICATION_ID);
 
         // Reset variables
         this.currentEpisode = null;
@@ -795,8 +808,8 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         notificationUpdateHandler.post(new Runnable() {
             @Override
             public void run() {
-                startForeground(NOTIFICATION_ID,
-                        notification.updateProgress(getCurrentPosition(), getDuration()));
+                updateNotificationProgress();
+                mediaSession.updateProgress();
 
                 notificationUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
             }
@@ -808,13 +821,21 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     }
 
     private void rebuildNotification() {
-        if (isPrepared() && currentEpisode != null)
-            startForeground(NOTIFICATION_ID, notification.build(currentEpisode,
-                    !player.isPlaying(), canSeek, getCurrentPosition(), getDuration(), mediaSession));
+        if (isPrepared() && currentEpisode != null) {
+            final Notification note = notification.build(currentEpisode, !player.isPlaying(),
+                    canSeek, getCurrentPosition(), getDuration(), mediaSession);
+
+            notificationManager.notify(NOTIFICATION_ID, note);
+            startForeground(NOTIFICATION_ID, note);
+        }
     }
 
-    private boolean shouldAutoDeleteCompletedEpisode() {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(SettingsActivity.KEY_AUTO_DELETE, false);
+    private void updateNotificationProgress() {
+        final Notification note = notification.updateProgress(getCurrentPosition(), getDuration());
+
+        if (note != null) {
+            notificationManager.notify(NOTIFICATION_ID, note);
+            startForeground(NOTIFICATION_ID, note);
+        }
     }
 }
