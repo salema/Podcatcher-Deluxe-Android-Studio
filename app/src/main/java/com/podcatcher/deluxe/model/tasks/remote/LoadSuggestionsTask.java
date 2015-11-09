@@ -72,10 +72,6 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
      */
     private static final String LOCAL_SUGGESTIONS_FILE = "suggestions.v3.json";
     /**
-     * Delimiter value used in JSON strings
-     */
-    private static final String JSON_VALUE_DELIMITER = ", ";
-    /**
      * The text that marks isExplicit() == true
      */
     private static final String EXPLICIT_POSITIVE_STRING = "yes";
@@ -275,18 +271,18 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         Suggestion suggestion = null;
 
         try {
-            final String[] feeds = json.getString(JSON.FEED).split(JSON_VALUE_DELIMITER);
+            final String[] feeds = json.getString(JSON.FEED).split(JSON.VALUE_DELIMITER);
             suggestion = new Suggestion(json.getString(JSON.TITLE).trim(), feeds[0]);
             suggestion.setDescription(json.getString(JSON.DESCRIPTION).trim());
-            suggestion.setLanguages(Language.valueOfJson(json.getString(JSON.LANGUAGE), JSON_VALUE_DELIMITER));
-            suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON_VALUE_DELIMITER));
-            suggestion.setGenres(Genre.valueOfJson(json.getString(JSON.CATEGORY), JSON_VALUE_DELIMITER));
+            suggestion.setLanguages(Language.valueOfJson(json.getString(JSON.LANGUAGE), JSON.VALUE_DELIMITER));
+            suggestion.setMediaTypes(MediaType.valueOfJson(json.getString(JSON.TYPE), JSON.VALUE_DELIMITER));
+            suggestion.setGenres(Genre.valueOfJson(json.getString(JSON.CATEGORY), JSON.VALUE_DELIMITER));
             suggestion.setExplicit(EXPLICIT_POSITIVE_STRING.equals(json.getString(JSON.EXPLICIT).toLowerCase(Locale.US).trim()));
             suggestion.setNew(json.has(JSON.DATE_ADDED) && isRecentDate(json.getString(JSON.DATE_ADDED)));
             suggestion.setLogoUrl(json.getString(JSON.LOGO));
             suggestion.setKeywords(json.has(JSON.KEYWORDS) ? json.getString(JSON.KEYWORDS) : null);
 
-            final String[] labels = json.getString(JSON.FEED_LABEL).split(JSON_VALUE_DELIMITER);
+            final String[] labels = json.getString(JSON.FEED_LABEL).split(JSON.VALUE_DELIMITER);
             for (int index = 0; index < labels.length; index++)
                 suggestion.addFeed(labels[index], feeds[index]);
         } catch (JSONException e) {

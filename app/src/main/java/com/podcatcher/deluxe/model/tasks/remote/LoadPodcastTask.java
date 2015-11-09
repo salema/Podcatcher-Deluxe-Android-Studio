@@ -88,10 +88,6 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
      * Website URL to check for alternative feed URLs.
      */
     private static final String CHECK_FEED_URL = "http://podcatcher-deluxe.com/preferred-url.json/";
-    /**
-     * The string json feed value are separated by
-     */
-    private static final String JSON_VALUE_DELIMITER = ", ";
 
     /**
      * The error code returned on failure
@@ -303,7 +299,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             final String newUrl = new Podcast(null,
                     new JSONArray(new String(response, Charset.forName("UTF8")))
                             .getJSONObject(0).getString(JSON.FEED)
-                            .split(JSON_VALUE_DELIMITER)[0]).getUrl();
+                            .split(JSON.VALUE_DELIMITER)[0]).getUrl();
 
             // Make sure it parses and is actually different from the URL we started with
             if (newUrl != null && !newUrl.equalsIgnoreCase(podcast.getUrl()))

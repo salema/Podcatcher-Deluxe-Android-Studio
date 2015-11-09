@@ -36,4 +36,6 @@ public class JSON {
     public static final String EXPLICIT = "explicit";
     public static final String VOTES = "votes";
     public static final String DATE_ADDED = "added";
+
+    public static final String VALUE_DELIMITER = ", ";
 }
