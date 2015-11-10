@@ -169,10 +169,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      */
     private PlayEpisodeNotification notification;
     /**
-     * Our notification manager handle
-     */
-    private NotificationManagerCompat notificationManager;
-    /**
      * Our media session
      */
     private PlayEpisodeMediaSession mediaSession;
@@ -260,10 +256,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         episodeManager = EpisodeManager.getInstance();
         // We need to listen to playlist updates to update the notification
         episodeManager.addPlaylistListener(this);
-        // Our notification helpers
+        // Our notification
         notification = PlayEpisodeNotification.getInstance(this);
-        notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancelAll();
         // Create media session
         mediaSession = new PlayEpisodeMediaSession(this);
 
@@ -917,7 +911,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         // Remove notification
         stopForeground(true);
         stopNotificationUpdater();
-        notificationManager.cancel(NOTIFICATION_ID);
 
         // Reset variables
         this.currentEpisode = null;
@@ -971,21 +964,15 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     }
 
     private void rebuildNotification() {
-        if (isPrepared() && currentEpisode != null) {
-            final Notification note = notification.build(currentEpisode, !player.isPlaying(),
-                    canSeek, getCurrentPosition(), getDuration(), mediaSession);
-
-            notificationManager.notify(NOTIFICATION_ID, note);
-            startForeground(NOTIFICATION_ID, note);
-        }
+        if (isPrepared() && currentEpisode != null)
+            startForeground(NOTIFICATION_ID, notification.build(currentEpisode, !player.isPlaying(),
+                    canSeek, getCurrentPosition(), getDuration(), mediaSession));
     }
 
     private void updateNotificationProgress() {
         final Notification note = notification.updateProgress(getCurrentPosition(), getDuration());
 
-        if (note != null) {
-            notificationManager.notify(NOTIFICATION_ID, note);
+        if (note != null)
             startForeground(NOTIFICATION_ID, note);
-        }
     }
 }
