@@ -32,6 +32,8 @@
     <string name="play">Play</string>
     <string name="pause">Pausa</string>
     <string name="resume">Retomar</string>
+    <string name="rewind">Recuo rápido</string>
+    <string name="forward">Avanço rápido</string>
     <string name="select_all">Selecionar todos</string>
     <string name="first_run_title">Bem-vindo</string>
     <string name="first_run_text">Seu primeiro passo é adicionar uma ou mais subscrições de podcast. Por favor, use o botão verde abaixo para abrir o diálogo de adição de podcast. O diálogo também oferece sugestões de podcast e importações da lista de subscrição OPML.</string>

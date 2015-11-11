@@ -32,6 +32,8 @@
     <string name="play">Грати</string>
     <string name="pause">Пауза</string>
     <string name="resume">Продовжити</string>
+    <string name="rewind">Перемотка назад</string>
+    <string name="forward">Перемотка вперед</string>
     <string name="select_all">Обрати все</string>
     <string name="first_run_title">Вітаємо</string>
     <string name="first_run_text">Перш за все, додайте один чи кілька подкастів. Натисніть на зелену кнопку внизу, щоб відкрити вікно додавання подкастів. Через нього ви також зможете обрати подкасти зі списку рекомендованих чи імпортувати список подкастів у форматі OPML.</string>

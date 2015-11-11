@@ -32,6 +32,8 @@
     <string name="play">Reproducir</string>
     <string name="pause">Pausar</string>
     <string name="resume">Reanudar</string>
+    <string name="rewind">Rebobinar</string>
+    <string name="forward">Avance rápido</string>
     <string name="select_all">Seleccionar todos</string>
     <string name="first_run_title">Bienvenidos</string>
     <string name="first_run_text">En primer lugar, añada uno o más podcasts a su lista de podcasts. Para ello, haga clic en el botón verde. En la ventana que aparecerá podrá ver también podcasts recomendados e importar listas OPML.</string>

@@ -32,6 +32,8 @@
     <string name="play">Oynat</string>
     <string name="pause">Duraklat</string>
     <string name="resume">Devam et</string>
+    <string name="rewind">Geri sar</string>
+    <string name="forward">İleri sar</string>
     <string name="select_all">Tümünü seç</string>
     <string name="first_run_title">Hoşgeldin</string>
     <string name="first_run_text">İlk adım, bir veya daha fazla podcast aboneliği eklemektir. Lütfen podcast ekle iletişim kutusunu açmak için aşağıdaki yeşil düğmeyi kullanın. İletişim kutusu ayrıca podcast öneriler sunar ve OPML abonelik listesini alır.</string>

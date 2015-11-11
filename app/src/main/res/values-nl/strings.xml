@@ -32,6 +32,8 @@
     <string name="play">Afspelen</string>
     <string name="pause">Pauzeren</string>
     <string name="resume">Hervatten</string>
+    <string name="rewind">Terugspoelen</string>
+    <string name="forward">Vooruitspoelen</string>
     <string name="select_all">Selecteer alles</string>
     <string name="first_run_title">Welkom</string>
     <string name="first_run_text">De eerste stap is om 1 of meer podcasts toe te voegen. Gebruik de groene knop onderaan om de podcasts toe te voegen. Deze functie biedt tevens podcast suggesties en OPML import mogelijkheden.</string>

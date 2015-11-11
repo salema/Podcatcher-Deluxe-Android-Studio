@@ -92,7 +92,7 @@ public class PlayEpisodeNotification implements Target {
 
         final Intent rewindIntent = new Intent(context, PlayEpisodeService.class);
         rewindIntent.setAction(PlayEpisodeService.ACTION_REWIND);
-        rewindAction = new NotificationCompat.Action(R.drawable.ic_media_rewind, null,
+        rewindAction = new NotificationCompat.Action(R.drawable.ic_media_rewind, context.getString(R.string.rewind),
                 PendingIntent.getService(context, 0, rewindIntent, FLAG_UPDATE_CURRENT));
 
         final Intent toggleIntent = new Intent(context, PlayEpisodeService.class);
@@ -104,7 +104,7 @@ public class PlayEpisodeNotification implements Target {
 
         final Intent forwardIntent = new Intent(context, PlayEpisodeService.class);
         forwardIntent.setAction(PlayEpisodeService.ACTION_FORWARD);
-        forwardAction = new NotificationCompat.Action(R.drawable.ic_media_forward, null,
+        forwardAction = new NotificationCompat.Action(R.drawable.ic_media_forward, context.getString(R.string.forward),
                 PendingIntent.getService(context, 0, forwardIntent, FLAG_UPDATE_CURRENT));
     }
 

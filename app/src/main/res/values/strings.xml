@@ -33,6 +33,8 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
+    <string name="rewind">Rewind</string>
+    <string name="forward">Fast forward</string>
     <string name="select_all">Select all</string>
     <string name="first_run_title">Welcome</string>
     <string name="first_run_text">Your first step is to add one or more podcast subscriptions. Please use the green button below to open the add podcast dialog. The dialog also offers podcast suggestions and OPML subscription list imports.</string>

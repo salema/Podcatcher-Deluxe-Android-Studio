@@ -32,6 +32,8 @@
     <string name="play">Přehrát</string>
     <string name="pause">Pozastavit</string>
     <string name="resume">Pokračovat</string>
+    <string name="rewind">Posunout zpět</string>
+    <string name="forward">Posunout vpřed</string>
     <string name="select_all">Vybrat vše</string>
     <string name="first_run_title">Vítejte</string>
     <string name="first_run_text">Vaším prvním krokem je přidání odběru jednoho nebo více záznamů (podcast), zvukových a obrazových. Použijte, prosím, zelené tlačítko níže k otevření dialogu Přidat záznam. Dialog nabízí i návrhy záznamů a seznam odběrů OPML.</string>

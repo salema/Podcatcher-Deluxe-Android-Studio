@@ -18,13 +18,6 @@
 
 package com.podcatcher.deluxe.services;
 
-import com.podcatcher.deluxe.BaseActivity.ContentMode;
-import com.podcatcher.deluxe.EpisodeListActivity;
-import com.podcatcher.deluxe.PodcastActivity;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.types.Episode;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -37,6 +30,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.NotificationCompat;
 
+import com.podcatcher.deluxe.BaseActivity.ContentMode;
+import com.podcatcher.deluxe.EpisodeListActivity;
+import com.podcatcher.deluxe.PodcastActivity;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.types.Episode;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -94,7 +93,7 @@ public class PlayEpisodeNotification implements Target {
 
         final Intent rewindIntent = new Intent(context, PlayEpisodeService.class);
         rewindIntent.setAction(PlayEpisodeService.ACTION_REWIND);
-        rewindAction = new NotificationCompat.Action(R.drawable.ic_media_rewind, null,
+        rewindAction = new NotificationCompat.Action(R.drawable.ic_media_rewind, context.getString(R.string.rewind),
                 PendingIntent.getService(context, 0, rewindIntent, FLAG_UPDATE_CURRENT));
 
         final Intent toggleIntent = new Intent(context, PlayEpisodeService.class);
@@ -106,7 +105,7 @@ public class PlayEpisodeNotification implements Target {
 
         final Intent forwardIntent = new Intent(context, PlayEpisodeService.class);
         forwardIntent.setAction(PlayEpisodeService.ACTION_FORWARD);
-        forwardAction = new NotificationCompat.Action(R.drawable.ic_media_forward, null,
+        forwardAction = new NotificationCompat.Action(R.drawable.ic_media_forward, context.getString(R.string.forward),
                 PendingIntent.getService(context, 0, forwardIntent, FLAG_UPDATE_CURRENT));
 
         final Intent nextIntent = new Intent(context, PlayEpisodeService.class);
