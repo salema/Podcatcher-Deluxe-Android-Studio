@@ -297,7 +297,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                     // If this is a new podcast and it returns empty, the user might have
                     // added a RSS news feed, we try to check podcatcher-deluxe.com for a
                     // corresponding podcast URL to use
-                    task.setReportPodcastMovedIfEmpty(!podcastList.contains(podcast) &&
+                    task.setReportPodcastMovedIfEmpty(
+                            (podcastList == null || !podcastList.contains(podcast)) &&
                             SyncManager.getInstance().getActiveControllerCount() == 0);
                     // TODO Activate if not syncing
                     task.setReportPodcastMovedFromFeed(false);
@@ -711,8 +712,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
 
         podcastList.add(new Podcast("This American Life",
                 "http://feeds.thisamericanlife.org/talpodcast"));
-        podcastList.add(new Podcast("Radiolab",
-                "http://feeds.wnyc.org/radiolab"));
+        podcastList.add(new Podcast("CRE",
+                "http://feeds.metaebene.me/cre/mp3"));
         podcastList.add(new Podcast("Linux' Outlaws",
                 "http://feeds.feedburner.com/linuxoutlaws"));
         podcastList.add(new Podcast("GEO",
