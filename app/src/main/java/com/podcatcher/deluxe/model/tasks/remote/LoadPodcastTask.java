@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Loads a podcast's RSS file from the server and parses its contents
@@ -194,6 +195,10 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             this.authorization = podcast.getAuthorization();
             // ... and go get the file
             byte[] podcastRssFile = loadFile(new URL(podcast.getUrl()));
+            // Take a moment to remove any leading whitespaces that might make the parser fail
+            if (podcastRssFile.length > 0 && Character.isWhitespace(podcastRssFile[0]))
+                podcastRssFile = removeLeadingWhitespaces(podcastRssFile);
+
             podcast.setFileSize(podcastRssFile.length);
 
             if (!isCancelled()) {
@@ -290,6 +295,17 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             listener.onPodcastMoved(podcast, shouldMoveToUrl);
         else
             listener.onPodcastLoadFailed(podcast, errorCode);
+    }
+
+    private byte[] removeLeadingWhitespaces(byte[] byteArray) {
+        int firstNonWhiteSpacePosition = 0;
+
+        // Trailing whitespaces make the XML pull parser fail, remove them
+        while (firstNonWhiteSpacePosition < byteArray.length &&
+                Character.isWhitespace(byteArray[firstNonWhiteSpacePosition]))
+            firstNonWhiteSpacePosition++;
+
+        return Arrays.copyOfRange(byteArray, firstNonWhiteSpacePosition, byteArray.length);
     }
 
     private boolean hasAlternativeUrl(Podcast podcast) {
