@@ -45,9 +45,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import java.util.Date;
@@ -169,9 +169,9 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     private PlayEpisodeMediaSession mediaSession;
 
     /**
-     * Update handler for the notification
+     * Update handler for the notification and other progress indicators
      */
-    private Handler notificationUpdateHandler = new Handler();
+    private Handler progressUpdateHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Our notification id (does not really matter)
@@ -324,7 +324,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         // Unregister listener
         episodeManager.removePlaylistListener(this);
         // Stop the timer
-        notificationUpdateHandler.removeCallbacksAndMessages(null);
+        progressUpdateHandler.removeCallbacksAndMessages(null);
 
         mediaSession.release();
         stop();
@@ -443,7 +443,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             storeResumeAt();
 
             this.lastPaused = new Date();
-            stopNotificationUpdater();
+            stopProgressUpdater();
             mediaSession.updatePlayState(STATE_PAUSED);
             rebuildNotification();
         }
@@ -461,7 +461,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
 
             player.start();
 
-            startNotificationUpdater();
+            startProgressUpdater();
             mediaSession.updatePlayState(STATE_PLAYING);
             rebuildNotification();
         }
@@ -611,7 +611,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             player.start();
             mediaSession.updatePlayState(STATE_PLAYING);
             rebuildNotification();
-            startNotificationUpdater();
+            startProgressUpdater();
 
             // Alert the listeners
             for (PlayServiceListener listener : listeners)
@@ -762,7 +762,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
     private void reset() {
         // Remove notification
         stopForeground(true);
-        stopNotificationUpdater();
+        stopProgressUpdater();
 
         // Reset variables
         this.currentEpisode = null;
@@ -795,22 +795,26 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         }
     }
 
-    private void startNotificationUpdater() {
+    private void startProgressUpdater() {
         // Remove all runnables and post a fresh one
-        notificationUpdateHandler.removeCallbacksAndMessages(null);
-        notificationUpdateHandler.post(new Runnable() {
+        progressUpdateHandler.removeCallbacksAndMessages(null);
+        progressUpdateHandler.post(new Runnable() {
             @Override
             public void run() {
                 updateNotificationProgress();
                 mediaSession.updateProgress();
 
-                notificationUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
+                // Store current playback position every 30 seconds
+                if (TimeUnit.MILLISECONDS.toSeconds(getCurrentPosition()) % 30 == 0)
+                    storeResumeAt();
+
+                progressUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
             }
         });
     }
 
-    private void stopNotificationUpdater() {
-        notificationUpdateHandler.removeCallbacksAndMessages(null);
+    private void stopProgressUpdater() {
+        progressUpdateHandler.removeCallbacksAndMessages(null);
     }
 
     private void rebuildNotification() {
