@@ -181,7 +181,7 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
      *                resume playback from. Give <code>null</code> to reset.
      */
     public void setResumeAt(Episode episode, Integer at) {
-        if (episode != null && episode.getMediaUrl() != null && metadata != null) {
+        if (episode != null && episode.getMediaUrl() != null && !episode.isLive() && metadata != null) {
             EpisodeMetadata meta = metadata.get(episode.getMediaUrl());
 
             // Metadata not yet created
