@@ -955,7 +955,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
                 mediaSession.updateProgress();
 
                 // Store current playback position every 30 seconds
-                if (TimeUnit.MILLISECONDS.toSeconds(getCurrentPosition()) % 30 == 0)
+                if (TimeUnit.MILLISECONDS.toSeconds(getCurrentPosition()) % 30 == 29)
                     storeResumeAt();
 
                 progressUpdateHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
