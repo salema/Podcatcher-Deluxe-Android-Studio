@@ -154,6 +154,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
     private boolean viewCreated = false;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 

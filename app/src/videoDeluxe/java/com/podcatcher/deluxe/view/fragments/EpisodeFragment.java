@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.listeners.OnPlayEpisodeFromPositionListener;
+import com.podcatcher.deluxe.listeners.OnRequestFullscreenListener;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;

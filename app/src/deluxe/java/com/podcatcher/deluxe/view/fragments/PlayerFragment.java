@@ -171,6 +171,7 @@ public class PlayerFragment extends Fragment {
     };
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 

@@ -129,6 +129,7 @@ public class PodcastListFragment extends PodcatcherListFragment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 

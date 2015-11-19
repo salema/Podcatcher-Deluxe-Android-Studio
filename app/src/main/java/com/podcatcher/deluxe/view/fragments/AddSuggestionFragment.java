@@ -185,6 +185,7 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
     private ViewStub suggestionsGridEmptyView;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 

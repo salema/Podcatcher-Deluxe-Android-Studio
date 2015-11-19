@@ -107,6 +107,7 @@ public class EpisodeListFragment extends PodcatcherListFragment {
     private boolean viewCreated = false;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
