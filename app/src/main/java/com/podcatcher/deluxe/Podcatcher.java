@@ -148,6 +148,15 @@ public class Podcatcher extends Application {
                 .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+        // Make sure we save our state before eventually being killed
+        PodcastManager.getInstance().saveState();
+        EpisodeManager.getInstance().saveState();
+    }
+
     /**
      * Write http cache data to disk (async).
      */
