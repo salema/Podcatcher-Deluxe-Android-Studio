@@ -21,6 +21,7 @@ package com.podcatcher.deluxe.view.fragments;
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
+import com.podcatcher.deluxe.listeners.OnPlayEpisodeFromPositionListener;
 import com.podcatcher.deluxe.listeners.OnRequestFullscreenListener;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;
@@ -30,6 +31,8 @@ import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +48,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,6 +73,10 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      * The listener for the menu item
      */
     private OnDownloadEpisodeListener downloadListener;
+    /**
+     * The listener for chapter marker call-backs
+     */
+    private OnPlayEpisodeFromPositionListener playListener;
     /**
      * The listener for the video view
      */
@@ -123,6 +131,10 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      * The encoding of the episode description if not specified
      */
     private static final String EPISODE_DESCRIPTION_DEFAULT_ENCODING = "UTF-8";
+    /**
+     * The href URL scheme used for chapter marker links
+     */
+    private static final String PLAY_PCD_SCHEME = "play-pcd://";
 
     /**
      * Status flag indicating that our view is created
@@ -233,10 +245,12 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
         // Make sure our listener is present
         try {
             this.downloadListener = (OnDownloadEpisodeListener) activity;
+            this.playListener = (OnPlayEpisodeFromPositionListener) activity;
             this.fullscreenListener = (OnRequestFullscreenListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnDownloadEpisodeListener and OnRequestFullscreenListener");
+                    + " must implement OnDownloadEpisodeListener, " +
+                    "OnPlayEpisodeFromPositionListener, and OnRequestFullscreenListener");
         }
     }
 
@@ -270,6 +284,23 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
 
         // Get and configure the web view showing the episode description
         descriptionView = (WebView) view.findViewById(R.id.episode_description);
+        descriptionView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                try {
+                    if (url.startsWith(PLAY_PCD_SCHEME)) {
+                        final int position = Integer.parseInt(url.substring(PLAY_PCD_SCHEME.length()));
+                        playListener.onPlayFromPosition(currentEpisode, position);
+                    } else
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                } catch (RuntimeException re) {
+                    // pass
+                }
+
+                return true;
+            }
+        });
         final WebSettings settings = descriptionView.getSettings();
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setSupportZoom(true);
@@ -596,7 +627,9 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
                     .append("<td style=\"text-align: left; ").append(cellStyle).append("\">")
                     .append(entry.getValue()).append("</td>")
                     .append("<td style=\"text-align: right; ").append(cellStyle).append("\">")
+                    .append("<a href=\"").append(PLAY_PCD_SCHEME).append(entry.getKey()).append("\">")
                     .append(ParserUtils.formatTime(entry.getKey() / 1000))
+                    .append("</a>")
                     .append("</tr></td>");
 
         builder.append("</table>");

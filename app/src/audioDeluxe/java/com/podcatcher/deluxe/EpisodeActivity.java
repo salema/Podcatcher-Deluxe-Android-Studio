@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.listeners.OnChangeEpisodeStateListener;
 import com.podcatcher.deluxe.listeners.OnChangePlaylistListener;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.listeners.OnEpisodeInformationChangedListener;
+import com.podcatcher.deluxe.listeners.OnPlayEpisodeFromPositionListener;
 import com.podcatcher.deluxe.listeners.OnSelectEpisodeListener;
 import com.podcatcher.deluxe.listeners.PlayServiceListener;
 import com.podcatcher.deluxe.listeners.PlayerListener;
@@ -59,7 +60,8 @@ import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFr
  */
 public abstract class EpisodeActivity extends BaseActivity implements
         PlayerListener, PlayServiceListener, OnSelectEpisodeListener, OnDownloadEpisodeListener,
-        OnEpisodeInformationChangedListener, OnChangePlaylistListener, OnChangeEpisodeStateListener {
+        OnEpisodeInformationChangedListener, OnChangePlaylistListener, OnChangeEpisodeStateListener,
+        OnPlayEpisodeFromPositionListener {
 
     /**
      * Key used to store episode URL in intent or bundle
@@ -382,6 +384,27 @@ public abstract class EpisodeActivity extends BaseActivity implements
         }
 
         updatePlayerUi();
+    }
+
+    @Override
+    public void onPlayFromPosition(Episode episode, int millis) {
+        if (episode != null && millis >= 0) {
+            // This will make the service jump to the desired position once playback starts
+            episodeManager.setResumeAt(episode, millis);
+
+            // Three cases here:
+            // 1. Episode is already loaded: we need to seek (and resume playback, if paused)
+            // 2. Episode is loaded but not yet prepared: do nothing, will start at position set above
+            // 3. Episode not loaded: make service switch to it and hit play
+            if (service.isLoadedEpisode(episode) && service.isPrepared()) {
+                service.seekTo(millis);
+                service.resume();
+                startPlayerUpdater();
+            } else if (!service.isLoadedEpisode(episode))
+                service.playEpisode(episode);
+
+            updatePlayerUi();
+        }
     }
 
     @Override
