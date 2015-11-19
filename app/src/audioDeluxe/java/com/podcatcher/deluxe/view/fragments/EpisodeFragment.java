@@ -22,6 +22,7 @@ import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.OnDownloadEpisodeListener;
 import com.podcatcher.deluxe.listeners.OnPlayEpisodeFromPositionListener;
+import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.ParserUtils;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.view.Utils;
@@ -165,6 +166,7 @@ public class EpisodeFragment extends Fragment {
     private WebView descriptionView;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -435,8 +437,15 @@ public class EpisodeFragment extends Fragment {
     private String createMetadataBoxText() {
         final StringBuilder builder = new StringBuilder();
 
-        if (currentEpisode.getDuration() > 0)
-            builder.append(ParserUtils.formatTime(currentEpisode.getDuration())).append(SEPARATOR);
+        if (currentEpisode.getDuration() > 0) {
+            final int resumeAt = EpisodeManager.getInstance().getResumeAt(currentEpisode) / 1000;
+
+            if (resumeAt > 0)
+                builder.append(getString(R.string.player_label_short, ParserUtils.formatTime(resumeAt),
+                        ParserUtils.formatTime(currentEpisode.getDuration()))).append(SEPARATOR);
+            else
+                builder.append(ParserUtils.formatTime(currentEpisode.getDuration())).append(SEPARATOR);
+        }
         if (currentEpisode.getFileSize() > 0)
             builder.append(ParserUtils.formatFileSize(currentEpisode.getFileSize())).append(SEPARATOR);
         if (currentEpisode.getMediaType() != null)

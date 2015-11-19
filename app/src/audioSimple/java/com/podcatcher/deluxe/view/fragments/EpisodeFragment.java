@@ -147,6 +147,7 @@ public class EpisodeFragment extends Fragment {
     private String ad;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
