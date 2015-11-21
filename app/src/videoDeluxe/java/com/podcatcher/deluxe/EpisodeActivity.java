@@ -319,6 +319,7 @@ public abstract class EpisodeActivity extends BaseActivity implements
     @Override
     public void onResumeAtChanged(Episode episode, Integer millis) {
         updateStateUi();
+        updateEpisodeMetadataUi();
     }
 
     @TargetApi(Build.VERSION_CODES.M)

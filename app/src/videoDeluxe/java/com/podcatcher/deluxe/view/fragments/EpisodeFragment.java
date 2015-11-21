@@ -125,6 +125,11 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
      */
     private static final String SEPARATOR = " • ";
     /**
+     * Unicode play character used in episode metadata bar
+     */
+    private static final String UNICODE_PLAY = "▶";
+
+    /**
      * The mime type set for the episode description
      */
     private static final String EPISODE_DESCRIPTION_MIME_TYPE = "text/html";
@@ -583,7 +588,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
             final int resumeAt = EpisodeManager.getInstance().getResumeAt(currentEpisode) / 1000;
 
             if (resumeAt > 0)
-                builder.append(getString(R.string.player_label_short, ParserUtils.formatTime(resumeAt),
+                builder.append(UNICODE_PLAY).append(getString(R.string.player_label_short, ParserUtils.formatTime(resumeAt),
                         ParserUtils.formatTime(currentEpisode.getDuration()))).append(SEPARATOR);
             else
                 builder.append(ParserUtils.formatTime(currentEpisode.getDuration())).append(SEPARATOR);
