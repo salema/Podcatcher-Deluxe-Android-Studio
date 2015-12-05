@@ -320,7 +320,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
 
     @Override
     public void onPodcastMoved(Podcast podcast, String newUrl) {
-        // TODO Update selection
+        if (selection.isSingle() && podcast.equals(selection.getPodcast()))
+            selection.setPodcast(new Podcast(podcast.getName(), newUrl));
     }
 
     @Override

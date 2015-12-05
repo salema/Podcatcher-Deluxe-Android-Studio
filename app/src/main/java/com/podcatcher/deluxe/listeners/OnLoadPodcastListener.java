@@ -43,7 +43,11 @@ public interface OnLoadPodcastListener {
 
     /**
      * Called when the podcast has an "old" URL that should be replaced. This call completes
-     * loading, {@link #onPodcastLoaded(Podcast)} will <em>not</em> be called in addition.
+     * loading from that URL, {@link #onPodcastLoaded(Podcast)} will <em>not</em> be called
+     * in addition. Listeners should use this call-back to update their internal state and can
+     * rely on the {@link com.podcatcher.deluxe.model.PodcastManager} to actually load the
+     * podcast from its new online location <em>after</em> calling this method, resulting in a
+     * call of {@link #onPodcastLoaded(Podcast)} for the new URL.
      * <br/>
      * This will <em>never</em> be called on a listener if sync is active.
      * Instead, loading will continue as normal and either {@link #onPodcastLoaded(Podcast)}

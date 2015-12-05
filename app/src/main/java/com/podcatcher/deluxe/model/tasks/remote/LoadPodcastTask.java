@@ -26,6 +26,8 @@ import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.deluxe.model.types.Progress;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.xmlpull.v1.XmlPullParser;
@@ -45,7 +47,7 @@ import java.util.Arrays;
  * <b>Usage:</b> Implement the {@link OnLoadPodcastListener} interface and give
  * it to the task's constructor to be alerted on completion, progress, or
  * failure. The downloaded file will be used as the podcast's content via
- * {@link Podcast#parse(XmlPullParser, boolean)}, use the podcast object given (and
+ * {@link Podcast#parse(XmlPullParser)}, use the podcast object given (and
  * returned via callbacks) to access it.
  * </p>
  * <p>
@@ -205,12 +207,14 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                 publishProgress(Progress.PARSE);
 
                 // 2. Parse as podcast content
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(true);
-                XmlPullParser parser = factory.newPullParser();
-                parser.setInput(new ByteArrayInputStream(podcastRssFile), null);
+                final XmlPullParser parser = prepareParser(podcastRssFile);
+                final String newFeedUrl = podcast.parse(parser);
 
-                podcast.parse(parser, reportPodcastMovedFromFeed);
+                // Check for new feed URL we should move to
+                if (newFeedUrl != null && reportPodcastMovedFromFeed && isGoodNewUrl(newFeedUrl)) {
+                    shouldMoveToUrl = newFeedUrl;
+                    cancel(true);
+                }
 
                 // Podcast is empty, if enabled try look-up on podcatcher-deluxe.com
                 if (!isCancelled() && podcast.getEpisodeCount() == 0 &&
@@ -230,14 +234,15 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                     }
                 }
 
-                // 4. We need to wait here and make sure the episode metadata is
-                // available before we return
-                EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
+                if (!isCancelled()) {
+                    // 4. We need to wait here and make sure the episode metadata is
+                    // available before we return
+                    EpisodeManager.getInstance().blockUntilEpisodeMetadataIsLoaded();
 
-                // 5. Update additional episode metadata where available, if not
-                // parsed from the feed
-                final EpisodeManager episodeManager = EpisodeManager.getInstance();
-                if (!isCancelled())
+                    // 5. Update additional episode metadata where available, if not
+                    // parsed from the feed
+                    final EpisodeManager episodeManager = EpisodeManager.getInstance();
+
                     for (Episode episode : podcast.getEpisodes()) {
                         if (episode.getDuration() <= 0)
                             episode.setDuration(episodeManager.findDuration(episode));
@@ -245,10 +250,8 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                         if (episode.getFileSize() <= 0)
                             episode.setFileSize(episodeManager.findMediaFileSize(episode));
                     }
+                }
             }
-        } catch (PodcastMovedException pme) {
-            shouldMoveToUrl = pme.getNewUrl();
-            cancel(true);
         } catch (XmlPullParserException xppe) {
             errorCode = PodcastLoadError.NOT_PARSABLE;
             cancel(true);
@@ -308,10 +311,33 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
         return Arrays.copyOfRange(byteArray, firstNonWhiteSpacePosition, byteArray.length);
     }
 
+    @NonNull
+    private XmlPullParser prepareParser(byte[] podcastRssFile) throws XmlPullParserException {
+        final XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+
+        final XmlPullParser parser = factory.newPullParser();
+        parser.setInput(new ByteArrayInputStream(podcastRssFile), null);
+
+        return parser;
+    }
+
+    private boolean isGoodNewUrl(String newFeedUrl) {
+        try {
+            final Podcast test = new Podcast(null, newFeedUrl);
+            final byte[] podcastRssFile = removeLeadingWhitespaces(loadFile(new URL(newFeedUrl)));
+            final XmlPullParser parser = prepareParser(podcastRssFile);
+
+            return test.parse(parser) == null && test.getEpisodeCount() > 0;
+        } catch (IOException | RuntimeException | XmlPullParserException e) {
+            return false;
+        }
+    }
+
     private boolean hasAlternativeUrl(Podcast podcast) {
         try {
             // Go to podcatcher-deluxe.com, find and normalize alt. URL if any
-            byte[] response = loadFile(new URL(CHECK_FEED_URL + podcast.getUrl()));
+            final byte[] response = loadFile(new URL(CHECK_FEED_URL + podcast.getUrl()));
             final String newUrl = new Podcast(null,
                     new JSONArray(new String(response, Charset.forName("UTF8")))
                             .getJSONObject(0).getString(JSON.FEED)

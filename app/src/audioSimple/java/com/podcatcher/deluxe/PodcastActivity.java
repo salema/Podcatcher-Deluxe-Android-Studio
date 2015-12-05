@@ -449,6 +449,13 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     }
 
     @Override
+    public void onPodcastMoved(Podcast podcast, String newUrl) {
+        super.onPodcastMoved(podcast, newUrl);
+
+        podcastListFragment.setPodcastList(podcastManager.getPodcastList());
+    }
+
+    @Override
     public void onPodcastLoaded(Podcast podcast) {
         podcastListFragment.refresh();
         updateLogoViewMode();

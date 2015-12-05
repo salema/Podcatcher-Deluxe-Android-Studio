@@ -195,11 +195,9 @@ public class AddPodcastActivity extends BaseActivity implements AddPodcastDialog
     @Override
     public void onPodcastMoved(Podcast podcast, String newUrl) {
         if (isCurrentlyLoadingPodcast(podcast)) {
-            final Podcast newPodcast = new Podcast(podcast.getName(), newUrl);
-            setAuthInfoIfPresent(newPodcast);
-
-            currentLoadUrl = newPodcast.getUrl();
-            podcastManager.load(newPodcast);
+            currentLoadUrl = newUrl;
+            // We need to update this there, because it is re-used onAddPodcast()
+            getIntent().setData(Uri.parse(newUrl));
         }
     }
 

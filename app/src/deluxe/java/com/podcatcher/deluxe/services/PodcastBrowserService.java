@@ -244,6 +244,11 @@ public class PodcastBrowserService extends MediaBrowserService {
              * Thread sync latch used to wait for podcast loading
              */
             private CountDownLatch latch = new CountDownLatch(1);
+            /**
+             * The feed URL we are currently waiting for. Needs to
+             * be a member because we have to update it onPodcastMoved()
+             */
+            private String loadingPodcastUrl = podcastUrl;
 
             private OnLoadPodcastListener listener = new OnLoadPodcastListener() {
 
@@ -254,13 +259,14 @@ public class PodcastBrowserService extends MediaBrowserService {
 
                 @Override
                 public void onPodcastMoved(Podcast podcast, String newUrl) {
-                    // pass
+                    if (podcast.equalByUrl(loadingPodcastUrl))
+                        loadingPodcastUrl = newUrl;
                 }
 
                 @Override
                 public void onPodcastLoaded(Podcast podcast) {
                     // Make sure we got the right podcast
-                    if (podcast.equalByUrl(podcastUrl)) {
+                    if (podcast.equalByUrl(loadingPodcastUrl)) {
                         if (podcast.getEpisodeCount() > 0) {
                             // Limit episode list to a low item number
                             final List<Episode> episodes = podcast.getEpisodes().subList(0,
@@ -278,7 +284,7 @@ public class PodcastBrowserService extends MediaBrowserService {
 
                 @Override
                 public void onPodcastLoadFailed(Podcast podcast, LoadPodcastTask.PodcastLoadError code) {
-                    if (podcast.equalByUrl(podcastUrl))
+                    if (podcast.equalByUrl(loadingPodcastUrl))
                         latch.countDown();
                 }
             };
@@ -287,7 +293,7 @@ public class PodcastBrowserService extends MediaBrowserService {
             protected void onPreExecute() {
                 // Needs to run on UI thread
                 podcastManager.addLoadPodcastListener(listener);
-                podcastManager.load(podcastManager.findPodcastForUrl(podcastUrl));
+                podcastManager.load(podcastManager.findPodcastForUrl(loadingPodcastUrl));
             }
 
             @Override

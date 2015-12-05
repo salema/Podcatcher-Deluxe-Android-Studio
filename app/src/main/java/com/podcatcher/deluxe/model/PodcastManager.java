@@ -287,27 +287,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         else synchronized (loadingPodcasts) {
             if (!loadingPodcasts.contains(podcast))
                 try {
-                    // Download podcast RSS feed (async)
-                    final LoadPodcastTask task = new LoadPodcastTask(this);
-                    task.setBlockExplicitEpisodes(blockExplicit);
-                    // We will accept stale versions from the cache in certain situations
-                    task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnMeteredConnection() ?
-                            MAX_STALE_MOBILE : MAX_STALE : MAX_STALE_OFFLINE);
-
-                    // If this is a new podcast and it returns empty, the user might have
-                    // added a RSS news feed, we try to check podcatcher-deluxe.com for a
-                    // corresponding podcast URL to use
-                    task.setReportPodcastMovedIfEmpty(
-                            (podcastList == null || !podcastList.contains(podcast)) &&
-                            SyncManager.getInstance().getActiveControllerCount() == 0);
-                    // TODO Activate if not syncing
-                    task.setReportPodcastMovedFromFeed(false);
-
-                    // Enqueue podcast load/refresh
-                    task.executeOnExecutor(loadPodcastExecutor, podcast);
-
-                    // Update the set of currently loading podcasts
-                    loadingPodcasts.add(podcast);
+                    enqueueLoadPodcastTask(podcast);
                 } catch (RejectedExecutionException ree) {
                     // Skip update
                     onPodcastLoadFailed(podcast, PodcastLoadError.UNKNOWN);
@@ -344,12 +324,12 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         // Remove from the set of loading task
         loadingPodcasts.remove(podcast);
 
+        final Podcast newPodcast = new Podcast(podcast.getName(), newUrl);
+        newPodcast.setUsername(podcast.getUsername());
+        newPodcast.setPassword(podcast.getPassword());
+
         // Replace podcast and load new version
         if (podcastList.contains(podcast)) {
-            final Podcast newPodcast = new Podcast(podcast.getName(), newUrl);
-            newPodcast.setUsername(podcast.getUsername());
-            newPodcast.setPassword(podcast.getPassword());
-
             podcastList.remove(podcastList.indexOf(podcast));
             podcastList.add(newPodcast);
             Collections.sort(podcastList);
@@ -362,9 +342,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
         for (OnLoadPodcastListener listener : loadPodcastListeners)
             listener.onPodcastMoved(podcast, newUrl);
 
-        if (podcastListChanged)
-            // Make sure podcast is loaded, if that did not yet happen
-            ; //load(newPodcast, false);
+        // Make sure podcast is loaded
+        load(newPodcast, false);
     }
 
     @Override
@@ -660,8 +639,37 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
     }
 
     /**
+     * Create, prepare and run {@link LoadPodcastTask} on our loadPodcastExecutor.
+     *
+     * @param podcast Podcast to load.
+     */
+    private void enqueueLoadPodcastTask(Podcast podcast) {
+        // Download podcast RSS feed (async)
+        final LoadPodcastTask task = new LoadPodcastTask(this);
+        task.setBlockExplicitEpisodes(blockExplicit);
+        // We will accept stale versions from the cache in certain situations
+        task.setMaxStale(podcatcher.isOnline() ? podcatcher.isOnMeteredConnection() ?
+                MAX_STALE_MOBILE : MAX_STALE : MAX_STALE_OFFLINE);
+
+        final boolean syncActive = SyncManager.getInstance().getActiveControllerCount() > 0;
+        // If this is a new podcast and it returns empty, the user might have
+        // added a RSS news feed, we try to check podcatcher-deluxe.com for a
+        // corresponding podcast URL to use
+        task.setReportPodcastMovedIfEmpty(!syncActive &&
+                (podcastList == null || !podcastList.contains(podcast)));
+        // Scan podcast feed for new-feed-url tag and move
+        task.setReportPodcastMovedFromFeed(!syncActive);
+
+        // Enqueue podcast load/refresh
+        task.executeOnExecutor(loadPodcastExecutor, podcast);
+
+        // Update the set of currently loading podcasts
+        loadingPodcasts.add(podcast);
+    }
+
+    /**
      * Whether the podcast content is old enough to need reloading. This relates to the time
-     * that {@link Podcast#parse(XmlPullParser, boolean)} has last been called on the object
+     * that {@link Podcast#parse(XmlPullParser)} has last been called on the object
      * and has nothing to do with the updating of the podcast RSS file on the provider's server.
      *
      * @param podcast Podcast to check.
@@ -726,6 +734,8 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                 "http://feeds.feedburner.com/freakonomicsradio"));
         podcastList.add(new Podcast("Anstalt",
                 "http://www.zdf.de/ZDFmediathek/podcast/2085930?view=podcast"));
+        podcastList.add(new Podcast("Apfelklatsch",
+                "http://www.apfelklatsch.de/feed/podcast/"));
         podcastList.add(new Podcast("Radio Ambulante",
                 "http://feeds.feedburner.com/RadioAmbulante-English"));
 
@@ -757,13 +767,7 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
                         if (podcast.getLastLoaded() == null || (!podcatcher.isOnMeteredConnection() &&
                                 podcast.getLastLoaded().before(triggerIfLoadedBefore)))
                             try {
-                                // All set, go schedule the refresh
-                                final LoadPodcastTask task = new LoadPodcastTask(PodcastManager.this);
-                                task.setBlockExplicitEpisodes(blockExplicit);
-                                task.executeOnExecutor(loadPodcastExecutor, podcast);
-
-                                // Update set of currently loading podcasts
-                                loadingPodcasts.add(podcast);
+                                enqueueLoadPodcastTask(podcast);
                             } catch (RejectedExecutionException ree) {
                                 // Skip update
                             }

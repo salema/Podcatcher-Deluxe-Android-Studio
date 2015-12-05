@@ -260,7 +260,11 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
 
     @Override
     public void onPodcastMoved(Podcast podcast, String newUrl) {
-        // TODO Move metadata over
+        // Replace all occurrences of the old URL with the new one
+        for (Entry<String, EpisodeMetadata> entry : metadata.entrySet())
+            // Find metadata records with matching podcast
+            if (podcast.equalByUrl(entry.getValue().podcastUrl))
+                entry.getValue().podcastUrl = newUrl;
     }
 
     @Override
