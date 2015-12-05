@@ -46,7 +46,8 @@ public class MediaButtonReceiver extends BroadcastReceiver {
             try {
                 // Find out if the event was a button press
                 KeyEvent event = intent.getParcelableExtra(EXTRA_KEY_EVENT);
-                if (event != null && KeyEvent.ACTION_DOWN == event.getAction())
+                if (event != null && KeyEvent.ACTION_DOWN == event.getAction() &&
+                        event.getRepeatCount() == 0)
                     handleMediaKeyCode(context, event.getKeyCode());
             } catch (SecurityException se) {
                 // This might happen if called from the outside since our

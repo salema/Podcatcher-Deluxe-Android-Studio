@@ -228,8 +228,8 @@ public class PlayEpisodeMediaSession extends MediaSessionCompat implements Targe
                 final KeyEvent event = mediaButtonEvent.getParcelableExtra(EXTRA_KEY_EVENT);
 
                 // Make sure this is an event we want to react on
-                if (event != null && KeyEvent.ACTION_DOWN == event.getAction()
-                        && event.getRepeatCount() == 0)
+                if (event != null && KeyEvent.ACTION_DOWN == event.getAction() &&
+                        event.getRepeatCount() == 0)
                     consumed = MediaButtonReceiver.handleMediaKeyCode(service, event.getKeyCode());
             }
 
