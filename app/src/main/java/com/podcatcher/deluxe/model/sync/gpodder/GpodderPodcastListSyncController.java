@@ -35,8 +35,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static java.net.URLDecoder.decode;
-
 /**
  * A podcast list sync controller for the gpodder.net service. This operates by
  * keeping track of the local changes to the podcast list and merging everything
@@ -177,7 +175,7 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                     // available on the gpodder.net server.
                     for (String url : client.getSubscriptions(deviceId))
                         // Make sure to use decoded and normalized URLs
-                        synced.add(new Podcast(null, decode(url, "UTF8")).getUrl());
+                        synced.add(new Podcast(null, url).getUrl());
 
                     // 2b2. Add/remove subscriptions to/from the set as needed,
                     // this will make sure local modifications of the list will
@@ -223,7 +221,9 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
                             // pass
                         }
 
-                    // 2b7. Finally, clean up local status
+                    // 2b7. Finally, clean up local status. In particular,
+                    // this will leave changes in place that happened while
+                    // this task ran, to be picked up by next execution
                     clearAddRemoveSets(subscriptionsAddedLocally, subscriptionsRemovedLocally);
                 }
             } catch (Throwable th) {

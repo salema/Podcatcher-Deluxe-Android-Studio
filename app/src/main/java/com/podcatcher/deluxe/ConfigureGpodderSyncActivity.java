@@ -22,12 +22,14 @@ import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
 import com.podcatcher.deluxe.view.fragments.GpodderSyncConfigFragment;
 import com.podcatcher.deluxe.view.fragments.GpodderSyncConfigFragment.ConfigureGpodderSyncDialogListener;
+import com.podcatcher.labs.sync.gpodder.GpodderClient;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.dragontek.mygpoclient.api.MygPodderClient;
+import static com.podcatcher.deluxe.BuildConfig.DEBUG;
+import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
 
 /**
  * Non-UI activity to configure the gpodder synchronization settings.
@@ -75,8 +77,7 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
         this.authCheckTask = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                final MygPodderClient client = new MygPodderClient(username, password);
-                if (!client.authenticate(username, password))
+                if (!new GpodderClient(username, password, USER_AGENT_VALUE, DEBUG).authenticate())
                     cancel(true);
 
                 return null;

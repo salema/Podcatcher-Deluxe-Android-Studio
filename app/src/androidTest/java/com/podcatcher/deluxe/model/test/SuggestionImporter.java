@@ -30,7 +30,6 @@ import android.os.Environment;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
-import com.dragontek.mygpoclient.pub.PublicClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -89,17 +88,6 @@ public class SuggestionImporter extends InstrumentationTestCase {
             Log.w(TAG, "Device should be set to English for taxonomy to match!");
 
         for (String url : urls) {
-            // For non-URLs, try resolve via gpodder.net
-            if (!url.startsWith("http"))
-                try {
-                    final String podcastName = url;
-                    url = new PublicClient().searchPodcast(podcastName).get(0).getUrl();
-                    Log.d(TAG, "Found podcast URL " + url + " for search term: " + podcastName);
-                } catch (IOException | IndexOutOfBoundsException ex) {
-                    Log.w(TAG, "Cannot find podcast for search term: " + url);
-                    continue;
-                }
-
             // Make sure we do not import a duplicate
             final SuggestionImport si = new SuggestionImport(url);
             if (existingSuggestions.contains(si)) {

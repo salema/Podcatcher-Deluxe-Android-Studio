@@ -15,9 +15,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    // This is used by the gpodder.net sync lib only,
-    // but needs to be here as well for the build tools to work
-    useLibrary 'org.apache.http.legacy'
 
     // Bring in the signing configurations, place these in a file at
     // ${USER.HOME}/.signing/pcd.gradle for this to work. You need to

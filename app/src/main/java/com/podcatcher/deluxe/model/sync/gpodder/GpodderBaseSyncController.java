@@ -18,15 +18,16 @@
 
 package com.podcatcher.deluxe.model.sync.gpodder;
 
+import com.podcatcher.deluxe.BuildConfig;
+import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.SyncController;
+import com.podcatcher.labs.sync.gpodder.GpodderClient;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-
-import com.dragontek.mygpoclient.api.MygPodderClient;
 
 import java.util.Locale;
 
@@ -55,10 +56,11 @@ abstract class GpodderBaseSyncController extends SyncController {
      * Our preferences handle
      */
     protected final SharedPreferences preferences;
+
     /**
      * Our client instance
      */
-    protected final MygPodderClient client;
+    protected final GpodderClient client;
     /**
      * Our device id
      */
@@ -78,7 +80,7 @@ abstract class GpodderBaseSyncController extends SyncController {
         final String user = preferences.getString(USERNAME_KEY, "");
         final String password = preferences.getString(PASSWORD_KEY, "");
 
-        client = new MygPodderClient(user, password);
+        client = new GpodderClient(user, password, Podcatcher.USER_AGENT_VALUE, BuildConfig.DEBUG);
         deviceId = preferences.getString(DEVICE_ID_KEY, getDefaultDeviceId(context));
     }
 

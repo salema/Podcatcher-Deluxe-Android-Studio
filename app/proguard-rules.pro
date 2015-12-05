@@ -27,6 +27,21 @@
 
 # Prevent proguard from deleting the Dropbox stuff
 -keep class com.dropbox.** {*;}
+# Prevent proguard from deleting the Retrofit stuff
+-dontwarn retrofit.**
+-dontwarn okio.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+# The support library contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version.  We know about them, and they are safe.
+-dontwarn android.support.**
+-dontwarn com.dropbox.ledger.**
+
+# This is needed for Picasso
+-dontwarn com.squareup.okhttp.**
 
 -keepattributes *Annotation*
 -keep public class com.google.vending.licensing.ILicensingService
@@ -62,12 +77,3 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
-
-# The support library contains references to newer platform versions.
-# Don't warn about those in case this app is linking against an older
-# platform version.  We know about them, and they are safe.
--dontwarn android.support.**
--dontwarn com.dropbox.ledger.**
-
-# This is needed for Picasso
--dontwarn com.squareup.okhttp.**
