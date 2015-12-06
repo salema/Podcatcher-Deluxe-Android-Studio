@@ -41,6 +41,8 @@ public class RSS {
     public static final String MEDIA_LENGTH = "length";
     public static final String HREF = "href";
     public static final String LINK = "link";
+    public static final String REL = "rel";
+    public static final String NEXT = "next";
     public static final String CATEGORY = "category";
     public static final String LANGUAGE = "language";
     public static final String KEYWORDS = "keywords";
@@ -57,6 +59,7 @@ public class RSS {
     public static final String CHAPTER_TITLE = "title";
 
     public static final String CONTENT_NAMESPACE = "http://purl.org/rss/1.0/modules/content/";
+    public static final String ATOM_NAMESPACE = "http://www.w3.org/2005/Atom";
     public static final String EXPLICIT_POSITIVE_VALUE = "yes";
     public static final String DATE_NOW = "now";
 }

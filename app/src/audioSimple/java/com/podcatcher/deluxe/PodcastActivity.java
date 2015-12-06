@@ -402,9 +402,10 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
     @Override
     public void onEpisodeListSwipeToRefresh() {
         if (!view.isSmallPortrait()) {
-            if (selection.isSingle() && selection.getPodcast() != null)
+            if (selection.isSingle() && selection.getPodcast() != null) {
+                selection.getPodcast().setExpanded(true);
                 onPodcastSelected(selection.getPodcast(), true, true);
-            else if (selection.isAll())
+            } else if (selection.isAll())
                 onAllPodcastsSelected(true, true);
             else if (ContentMode.DOWNLOADS.equals(selection.getMode()))
                 onDownloadsSelected();

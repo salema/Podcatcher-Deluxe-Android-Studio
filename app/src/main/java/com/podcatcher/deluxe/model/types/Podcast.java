@@ -61,6 +61,12 @@ import java.util.Set;
  * <b>Logo:</b> Podcast often have logos. This podcast type allows for access to
  * the logo's online location (after {@link #parse(XmlPullParser)}, of course).
  * </p>
+ * <p>
+ * <b>Paged feeds:</b> This type supports paged feeds as defined by
+ * http://podlove.org/paged-feeds/. Call {@link #getNextPage()} after parsing to
+ * find if the podcast has any additional pages. There is also an expanded flag
+ * you can use to mark the podcast as "should read all pages when parsed".
+ * </p>
  */
 public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
@@ -94,6 +100,20 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * Password for http authorization
      */
     protected String password;
+
+    /**
+     * The next page to read episodes from.
+     * This adds support for paged feeds as of http://podlove.org/paged-feeds/
+     */
+    protected String nextPage;
+    /**
+     * If the podcast has pages
+     */
+    protected boolean isPaged = false;
+    /**
+     * The paged feed state
+     */
+    protected boolean expanded = false;
 
     /**
      * The point in time when the RSS file as last been set
@@ -288,6 +308,42 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     /**
+     * @return The next page URL to read episodes for this podcast from,
+     * or <code>null</code> if not a paged feed. Will also be <code>null</code>
+     * for the last page of episodes. See http://podlove.org/paged-feeds/
+     * @see #isExpanded()
+     * @see #canExpand()
+     */
+    @Nullable
+    public String getNextPage() {
+        return nextPage;
+    }
+
+    /**
+     * @return If the podcast reads episode data from all its pages when parsed.
+     * @see #parse(XmlPullParser)
+     */
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    /**
+     * Set whether the podcast should look at all feed pages for episode data.
+     *
+     * @param expanded The flag.
+     */
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    /**
+     * @return If the feed is paged and can be expanded
+     */
+    public boolean canExpand() {
+        return isPaged && !expanded;
+    }
+
+    /**
      * @return The point in time this podcast has last been loaded or
      * <code>null</code> iff it had not been loaded before.
      */
@@ -417,6 +473,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     public String parse(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
         final List<Episode> newEpisodes = new ArrayList<>();
         String result = null;
+        this.nextPage = null;
 
         try {
             // Start parsing
@@ -434,6 +491,9 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                         case RSS.TITLE:
                             if (name == null || name.trim().isEmpty())
                                 name = Html.fromHtml(parser.nextText().trim()).toString();
+                            break;
+                        case RSS.LINK:
+                            parseLink(parser);
                             break;
                         case RSS.EXPLICIT:
                             explicit = parseExplicit(parser.nextText());
@@ -477,6 +537,45 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     }
 
     /**
+     * Read and append episode data only. This is useful for paged feeds
+     * where {@link #parse(XmlPullParser)} already ran and additional pages
+     * should not change the podcast, but add extra episodes. This method will
+     * also check for even more pages to parse and update the reply to
+     * {@link #getNextPage()}.
+     *
+     * @param parser Parser to read episodes from
+     * @throws IOException            If we encounter problems read the file.
+     * @throws XmlPullParserException On parsing errors.
+     * @see #parse(XmlPullParser)
+     * @see #getNextPage()
+     */
+    public void parseEpisodes(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
+        this.nextPage = null;
+
+        int episodeIndex = episodes.size();
+        int eventType = parser.next();
+
+        // Read complete document
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            // We only need start tags here
+            if (eventType == XmlPullParser.START_TAG) {
+                final String tagName = parser.getName().toLowerCase(Locale.US);
+
+                switch (tagName) {
+                    case RSS.LINK:
+                        parseLink(parser);
+                    case RSS.ITEM:
+                        parseAndAddEpisode(parser, episodes, episodeIndex++);
+                        break;
+                }
+            }
+
+            // Done, get next parsing event
+            eventType = parser.next();
+        }
+    }
+
+    /**
      * Called for tags not consumed by the podcast parsing. Use this in sub-classes,
      * if you need to get more data from the podcast feed. This will <em>not</em> be
      * called for tags the podcast consumes itself.
@@ -487,6 +586,15 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     protected void parse(XmlPullParser parser, String tagName) throws XmlPullParserException, IOException {
         // Do nothing, subclass might want to use this hook
         // to read other information they care about from the feed
+    }
+
+    protected void parseLink(XmlPullParser parser) {
+        final String rel = parser.getAttributeValue("", RSS.REL);
+        // Check for paged feed info
+        if (RSS.NEXT.equalsIgnoreCase(rel) && RSS.ATOM_NAMESPACE.equalsIgnoreCase(parser.getNamespace())) {
+            nextPage = parser.getAttributeValue("", RSS.HREF);
+            isPaged = true;
+        }
     }
 
     protected void parseLogo(@NonNull XmlPullParser parser) throws IOException {

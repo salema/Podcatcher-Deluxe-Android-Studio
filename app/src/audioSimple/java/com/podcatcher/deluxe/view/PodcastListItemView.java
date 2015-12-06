@@ -36,6 +36,11 @@ import com.squareup.picasso.Picasso;
 public class PodcastListItemView extends PodcatcherListItemView {
 
     /**
+     * Unicode round arrow to indicate that reloading a podcast would expand it
+     */
+    public static final String EXPANDABLE_INDICATOR = "\u27F3";
+
+    /**
      * The title text view
      */
     private TextView titleTextView;
@@ -92,6 +97,8 @@ public class PodcastListItemView extends PodcatcherListItemView {
         // 2. Set caption text and visibility
         captionTextView.setText(getResources().getQuantityString(
                 R.plurals.episodes, episodeNumber, episodeNumber));
+        if (podcast.canExpand())
+            captionTextView.setText(String.format("%1$s %2$s", captionTextView.getText(), EXPANDABLE_INDICATOR));
         // The caption should only show if there are episodes or there is
         // progress to display
         ((View) captionTextView.getParent())

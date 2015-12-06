@@ -96,6 +96,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
      * The error code returned on failure
      */
     private PodcastLoadError errorCode = PodcastLoadError.UNKNOWN;
+
     /**
      * Podcast load error codes as returned by
      * {@link OnLoadPodcastListener#onPodcastLoadFailed(Podcast, PodcastLoadError)}
@@ -222,6 +223,13 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                     // Cancelling is enough since hasAlternativeUrl()
                     // set the shouldMoveToUrl member variable, see onCancelled()
                     cancel(true);
+
+                // If expand flag is set on the podcast, process all pages
+                if (podcast.isExpanded())
+                    while (podcast.getNextPage() != null) {
+                        final byte[] nextPageRssFile = removeLeadingWhitespaces(loadFile(new URL(podcast.getNextPage())));
+                        podcast.parseEpisodes(prepareParser(nextPageRssFile));
+                    }
 
                 // 3. Clean out explicit episodes
                 if (!isCancelled() && blockExplicit) {

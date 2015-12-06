@@ -21,6 +21,7 @@ package com.podcatcher.deluxe;
 import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.Podcast;
+import com.podcatcher.deluxe.view.PodcastListItemView;
 import com.podcatcher.deluxe.view.fragments.EpisodeListFragment;
 
 import android.os.Bundle;
@@ -165,9 +166,10 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
 
     @Override
     public void onEpisodeListSwipeToRefresh() {
-        if (selection.isSingle() && selection.getPodcast() != null)
+        if (selection.isSingle() && selection.getPodcast() != null) {
+            selection.getPodcast().setExpanded(true);
             onPodcastSelected(selection.getPodcast(), true);
-        else if (selection.isAll())
+        } else if (selection.isAll())
             onAllPodcastsSelected(true);
         else if (ContentMode.DOWNLOADS.equals(selection.getMode()))
             onDownloadsSelected();
@@ -219,8 +221,12 @@ public class ShowEpisodeListActivity extends EpisodeListActivity {
                         contentSpinner.setSubtitle(null);
                     else {
                         final int episodeCount = selection.getPodcast().getEpisodeCount();
-                        contentSpinner.setSubtitle(getResources()
-                                .getQuantityString(R.plurals.episodes, episodeCount, episodeCount));
+                        String subtitle = getResources().getQuantityString(R.plurals.episodes, episodeCount, episodeCount);
+
+                        if (selection.getPodcast().canExpand())
+                            subtitle = subtitle + " " + PodcastListItemView.EXPANDABLE_INDICATOR;
+
+                        contentSpinner.setSubtitle(subtitle);
                     }
                 }
                 break;
