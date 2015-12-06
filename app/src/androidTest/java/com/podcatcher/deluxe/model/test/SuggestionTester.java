@@ -59,7 +59,7 @@ public class SuggestionTester extends InstrumentationTestCase implements OnLoadP
     /**
      * Enable/disable media type warnings for suggestions tested.
      */
-    private static final boolean CHECK_MEDIA_TYPE = true;
+    private static final boolean CHECK_MEDIA_TYPE = false;
 
     public final void testSuggestions() {
         final List<Suggestion> suggestions = Utils.getExamplePodcasts(getInstrumentation().getTargetContext());
