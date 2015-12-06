@@ -40,8 +40,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -91,18 +89,12 @@ public class Podcatcher extends Application {
         }
     }
 
-    /**
-     * The Leak Canary reference watcher
-     */
-    private RefWatcher referenceWatcher;
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         // First things first, set-up our libraries
         Picasso.with(this).setIndicatorsEnabled(BuildConfig.DEBUG);
-        this.referenceWatcher = LeakCanary.install(this);
 
         // This will only run once in the lifetime of the app
         // since the application is an implicit singleton. We create the other
@@ -228,16 +220,6 @@ public class Podcatcher extends Application {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ?
                 getConnectivityManager().isActiveNetworkMetered() :
                 !isOnFastConnection();
-    }
-
-    /**
-     * Get handle on the app's Leak Canary reference watcher, used to
-     * identify memory leaks when on a debug build.
-     *
-     * @return The watcher.
-     */
-    public RefWatcher getRefWatcher() {
-        return referenceWatcher;
     }
 
     private ConnectivityManager getConnectivityManager() {

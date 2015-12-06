@@ -258,14 +258,6 @@ public class PlayerFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // Make sure we are warned if the fragment leaks
-        ((Podcatcher) getActivity().getApplication()).getRefWatcher().watch(this);
-    }
-
     /**
      * Set whether the fragment should show the load menu item. You can call
      * this any time and can expect it to happen on menu creation at the latest.

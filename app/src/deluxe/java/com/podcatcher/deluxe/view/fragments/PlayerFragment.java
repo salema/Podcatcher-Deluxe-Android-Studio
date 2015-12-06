@@ -18,7 +18,6 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
-import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.PlayerListener;
 import com.podcatcher.deluxe.model.ParserUtils;
@@ -279,14 +278,6 @@ public class PlayerFragment extends Fragment {
         viewCreated = false;
 
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // Make sure we are warned if the fragment leaks
-        ((Podcatcher) getActivity().getApplication()).getRefWatcher().watch(this);
     }
 
     /**

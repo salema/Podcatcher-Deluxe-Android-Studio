@@ -242,14 +242,6 @@ public class EpisodeFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        // Make sure we are warned if the fragment leaks
-        ((Podcatcher) getActivity().getApplication()).getRefWatcher().watch(this);
-    }
-
     /**
      * Set the displayed episode, all UI will be updated.
      *
