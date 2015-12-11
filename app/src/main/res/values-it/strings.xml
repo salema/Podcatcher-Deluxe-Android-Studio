@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Impossibile caricare i suggerimenti, controlla la tua connessione ad internet!</string>
     <string name="suggestions_send">Suggerisci podcast</string>
     <string name="suggestions_search">Cerca dei feed</string>
-    <string name="sync_dropbox_unlink_title">Scollega Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Vuoi davvero scollegare il tuo account Dropbox da questa app? Anche se questa operazione chiuderà la sincronizzazione a Dropbox adesso, puoi sempre ricollegare quest\' app dopo.</string>
-    <string name="sync_dropbox_unlink_button">Scollega</string>
+    <string name="sync_unlink_title">Scollega %1$s</string>
+    <string name="sync_unlink_message">Vuoi davvero scollegare il tuo account %1$s da questa app? Anche se questa operazione chiuderà la sincronizzazione a %1$s adesso, puoi sempre ricollegare quest\' app dopo.</string>
+    <string name="sync_unlink_button">Scollega</string>
     <string name="sync_gpodder_config_title">Configura gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Impossibile collegarsi a gpodder.net, controlla le tue credenziali!</string>
     <string name="sync_gpodder_device_id">Device ID</string>

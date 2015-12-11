@@ -56,6 +56,10 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      * its podcast. -1 means that we do not have this information.
      */
     protected final int index;
+    /**
+     * The episode's global id
+     */
+    protected String guid;
 
     /**
      * The episode's long content description
@@ -138,6 +142,15 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
      */
     public int getPositionInPodcast() {
         return index;
+    }
+
+    /**
+     * @return The episode's global identifier as given by the feed. Not <code>null</code>
+     * after parsing, unless the feed omits it or the episode has been marshalled.
+     */
+    @Nullable
+    public String getGuid() {
+        return guid;
     }
 
     /**
@@ -318,6 +331,8 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
 
             if (tagName.equals(RSS.TITLE))
                 name = Html.fromHtml(parser.nextText().trim()).toString();
+            else if (tagName.equals(RSS.GUID))
+                guid = parser.nextText();
             else if (tagName.equals(RSS.LINK))
                 url = parser.nextText();
             else if (tagName.equals(RSS.EXPLICIT))

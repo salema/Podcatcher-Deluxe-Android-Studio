@@ -18,9 +18,9 @@
 package com.podcatcher.labs.sync.gpodder.types.internal;
 
 /**
- * Internal POJO for a response to gpodder.net's /episodes
+ * Internal POJO for a response from gpodder.net that has a time stamp
  */
-public class PostEpisodeActionResponse {
+public class TimestampResponse {
 
     private long timestamp;
 

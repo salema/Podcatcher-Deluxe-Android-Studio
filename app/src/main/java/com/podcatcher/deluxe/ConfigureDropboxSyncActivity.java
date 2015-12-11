@@ -20,8 +20,8 @@ package com.podcatcher.deluxe;
 
 import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
-import com.podcatcher.deluxe.view.fragments.ConfirmUnlinkDropboxFragment;
-import com.podcatcher.deluxe.view.fragments.ConfirmUnlinkDropboxFragment.ConfirmUnlinkDropboxDialogListener;
+import com.podcatcher.deluxe.view.fragments.ConfirmSyncUnlinkFragment;
+import com.podcatcher.deluxe.view.fragments.ConfirmSyncUnlinkFragment.ConfirmSyncUnlinkDialogListener;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -33,8 +33,7 @@ import com.dropbox.sync.android.DbxAccountManager;
 /**
  * Non-UI activity to configure the Dropbox synchronization settings.
  */
-public class ConfigureDropboxSyncActivity extends BaseActivity implements
-        ConfirmUnlinkDropboxDialogListener {
+public class ConfigureDropboxSyncActivity extends BaseActivity implements ConfirmSyncUnlinkDialogListener {
 
     /**
      * Our account manager handle
@@ -50,9 +49,11 @@ public class ConfigureDropboxSyncActivity extends BaseActivity implements
         if (savedInstanceState == null) {
             // Toggle link/unlink depending on current state
             if (accountManager.hasLinkedAccount()) {
-                // Show confirmation dialog, action occurs in call-back
-                // implementations below
-                new ConfirmUnlinkDropboxFragment().show(getFragmentManager(), null);
+                // Show confirmation dialog, action occurs in call-back implementations below
+                final ConfirmSyncUnlinkFragment dialog = new ConfirmSyncUnlinkFragment();
+                dialog.setController(ControllerImpl.DROPBOX);
+
+                dialog.show(getFragmentManager(), null);
             } else
                 accountManager.startLink(this, 42);
         }

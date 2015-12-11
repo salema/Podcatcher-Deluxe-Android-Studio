@@ -56,10 +56,10 @@ public enum ControllerImpl {
      */
     public static SyncController create(Context context, ControllerImpl impl) {
         switch (impl) {
-            case GPODDER:
-                return new GpodderSyncController(context);
             case DROPBOX:
                 return new DropboxSyncController(context);
+            case GPODDER:
+                return new GpodderSyncController(context);
             default:
                 return null;
         }
@@ -71,10 +71,10 @@ public enum ControllerImpl {
      */
     public CharSequence getLabel() {
         switch (this) {
-            case GPODDER:
-                return "gpodder.net";
             case DROPBOX:
                 return "Dropbox";
+            case GPODDER:
+                return "gpodder.net";
             default:
                 return "Sync Controller X";
         }
@@ -86,10 +86,10 @@ public enum ControllerImpl {
      */
     public int getLogoResourceId() {
         switch (this) {
-            case GPODDER:
-                return R.drawable.ic_gpodder;
             case DROPBOX:
                 return R.drawable.ic_dropbox;
+            case GPODDER:
+                return R.drawable.ic_gpodder;
             default:
                 return 0;
         }
@@ -127,16 +127,15 @@ public enum ControllerImpl {
      * <em>not</em> for network state etc.
      */
     public boolean isLinked(Context context) {
-        switch (this) {
-            case GPODDER:
-                final SharedPreferences preferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
+        switch (this) {
+            case DROPBOX:
+                return DropboxSyncController.getAccountManager(context).hasLinkedAccount();
+            case GPODDER:
                 return preferences.contains(GpodderSyncController.USERNAME_KEY) &&
                         preferences.contains(GpodderSyncController.PASSWORD_KEY) &&
                         preferences.contains(GpodderSyncController.DEVICE_ID_KEY);
-            case DROPBOX:
-                return DropboxSyncController.getAccountManager(context).hasLinkedAccount();
             default:
                 return false;
         }

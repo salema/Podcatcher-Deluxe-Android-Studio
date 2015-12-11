@@ -18,22 +18,17 @@
 
 package com.podcatcher.deluxe.model.sync.gpodder;
 
-import com.podcatcher.deluxe.listeners.OnLoadPodcastListener;
-import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask;
-import com.podcatcher.deluxe.model.tasks.remote.LoadPodcastTask.PodcastLoadError;
+import com.podcatcher.deluxe.model.sync.SyncPodcastListTask;
 import com.podcatcher.deluxe.model.types.Podcast;
-import com.podcatcher.deluxe.model.types.Progress;
+import com.podcatcher.labs.sync.gpodder.types.Subscription;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A podcast list sync controller for the gpodder.net service. This operates by
@@ -42,14 +37,6 @@ import java.util.concurrent.TimeUnit;
  */
 abstract class GpodderPodcastListSyncController extends GpodderBaseSyncController {
 
-    /**
-     * The key for the list of added podcasts in the shared preferences
-     */
-    private static final String REMOVED_KEY = "gpodder_removed_subscriptions";
-    /**
-     * The key for the list of deleted podcasts in the shared preferences
-     */
-    private static final String ADDED_KEY = "gpodder_added_subscriptions";
     /**
      * The key for the sync ever complete before flag
      */
@@ -74,158 +61,97 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
         if (!syncRunning) {
             syncRunning = true;
 
-            new SyncPodcastListTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
+            new GpodderSyncPodcastListTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
         }
     }
 
-    @Override
-    public void onPodcastAdded(Podcast podcast) {
-        updateAddRemoveSets(podcast.getUrl(), true);
-    }
-
-    @Override
-    public void onPodcastRemoved(Podcast podcast) {
-        updateAddRemoveSets(podcast.getUrl(), false);
-    }
-
-    private synchronized void updateAddRemoveSets(String podcastUrl, boolean add) {
-        // We keep track of the changes to the local list and store them in the
-        // app's preferences so they survive a restart. (We cannot directly use
-        // the sets coming from #getStringSet, see javadoc there.)
-        final Set<String> subscriptionsAdded = new HashSet<>(
-                preferences.getStringSet(ADDED_KEY, new HashSet<String>()));
-        final Set<String> subscriptionsRemoved = new HashSet<>(
-                preferences.getStringSet(REMOVED_KEY, new HashSet<String>()));
-
-        // We an action is reversed (add and then remove and vice versa), we can
-        // delete that part of the history
-        if (add) {
-            subscriptionsAdded.add(podcastUrl);
-            subscriptionsRemoved.remove(podcastUrl);
-        } else {
-            subscriptionsRemoved.add(podcastUrl);
-            subscriptionsAdded.remove(podcastUrl);
-        }
-
-        preferences.edit()
-                .putStringSet(ADDED_KEY, subscriptionsAdded)
-                .putStringSet(REMOVED_KEY, subscriptionsRemoved)
-                .apply();
-    }
-
-    private synchronized void clearAddRemoveSets(Set<String> added, Set<String> removed) {
-        // Clean up the add/remove history after sync. (We cannot directly use
-        // the sets coming from #getStringSet, see javadoc there.)
-        final Set<String> subscriptionsAdded = new HashSet<>(
-                preferences.getStringSet(ADDED_KEY, new HashSet<String>()));
-        final Set<String> subscriptionsRemoved = new HashSet<>(
-                preferences.getStringSet(REMOVED_KEY, new HashSet<String>()));
-
-        subscriptionsAdded.removeAll(added);
-        subscriptionsRemoved.removeAll(removed);
-
-        preferences.edit()
-                .putStringSet(ADDED_KEY, subscriptionsAdded)
-                .putStringSet(REMOVED_KEY, subscriptionsRemoved)
-                .apply();
-    }
-
-    /**
-     * Our async task triggering the actual sync machinery
-     */
-    private class SyncPodcastListTask extends AsyncTask<Void, Entry<Boolean, Podcast>, Void> {
-
-        /**
-         * This task triggers some LoadPodcastTasks and should not finish before
-         * these are all finished, so we need to track them.
-         */
-        private int runningLoadPodcastTaskCount = 0;
-
-        /**
-         * The reason for failure if it occurs
-         */
-        private Throwable cause;
+    private class GpodderSyncPodcastListTask extends SyncPodcastListTask {
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
                 // 1. Find sync preferences. If this is the first sync we are
-                // ever performing, we have to push the current local list
-                // (unless it is empty).
+                // ever performing, we have to treat this as a special case.
                 final String firstEverKey = FIRST_SYNC_EVER_KEY + deviceId;
                 final boolean firstSyncEver = preferences.getBoolean(firstEverKey, true);
-                final boolean sendOnly = firstSyncEver && podcastManager.size() > 0;
 
-                // 2. Create and fill the final subscription set to be synced
-                // and equal locally and remotely once this task is done.
-                // Filling it depends on the sync mode and the task's
-                // preferences.
-                Set<String> synced = new HashSet<>();
-                // 2a. Simply send out the local list
-                if (sendOnly || SyncMode.SEND_ONLY.equals(mode)) {
+                // 2. Get the lists of locally added/deleted podcasts
+                final Set<String> addedLocally = getLocallyAddedPodcastUrls();
+                final Set<String> removedLocally = getLocallyRemovedPodcastUrls();
+                // On first sync, use the full list of podcast because we do not
+                // want the server to overwrite all the subscriptions we already have.
+                if (firstSyncEver)
                     for (Podcast podcast : podcastManager.getPodcastList())
-                        synced.add(podcast.getUrl());
+                        addedLocally.add(podcast.getUrl());
 
-                    client.putSubscriptions(deviceId, new ArrayList<>(synced));
-                }
-                // 2b. Sync mode is set to send/receive: consolidate local and
-                // remote lists
+                if (firstSyncEver && SyncMode.SEND_ONLY.equals(mode))
+                    // 3a. On first sync and send only, simply send out the current podcast list
+                    client.putSubscriptions(deviceId, addedLocally);
+                else if (SyncMode.SEND_ONLY.equals(mode))
+                    // 3b. On send only, update server with changes, no-op if both are empty
+                    client.putSubscriptionChanges(deviceId, addedLocally, removedLocally);
                 else {
-                    // 2b1. Pull the subscription list for this device currently
+                    // 3c. Sync mode is set to send/receive: consolidate local and remote lists
+                    Set<String> synced = new HashSet<>();
+
+                    // 3c1. Pull the subscription list for this device currently
                     // available on the gpodder.net server.
                     for (String url : client.getSubscriptions(deviceId))
                         // Make sure to use decoded and normalized URLs
                         synced.add(new Podcast(null, url).getUrl());
+                    // Pull down all subscriptions if the device has never been synced.
+                    // This will add all subscriptions from other devices to the local
+                    // list so it does not end up empty.
+                    if (firstSyncEver && synced.isEmpty())
+                        for (Subscription subscription : client.getSubscriptions())
+                            synced.add(new Podcast(null, subscription.getUrl()).getUrl());
 
-                    // 2b2. Add/remove subscriptions to/from the set as needed,
-                    // this will make sure local modifications of the list will
-                    // be preserved and pushed to the server.
-                    final Set<String> subscriptionsAddedLocally = new HashSet<>(
-                            preferences.getStringSet(ADDED_KEY, new HashSet<String>()));
-                    final Set<String> subscriptionsRemovedLocally = new HashSet<>(
-                            preferences.getStringSet(REMOVED_KEY, new HashSet<String>()));
-                    synced.addAll(subscriptionsAddedLocally);
-                    synced.removeAll(subscriptionsRemovedLocally);
+                    // 3c2. Add/remove subscriptions to/from the set as needed,
+                    // this will make sure that local modifications of the list
+                    // will be preserved and pushed to the server.
+                    synced.addAll(addedLocally);
+                    synced.removeAll(removedLocally);
 
-                    // 2b3. Remove local podcasts not in synced list
+                    // 3c3. Remove local podcasts not in synced list
                     for (Podcast podcast : podcastManager.getPodcastList())
                         if (!synced.contains(podcast.getUrl())) {
                             //noinspection unchecked
                             publishProgress(new AbstractMap.SimpleEntry<>(false, podcast));
-                            subscriptionsRemovedLocally.add(podcast.getUrl());
+                            removedLocally.add(podcast.getUrl());
                         }
 
-                    // 2b4. Add remote podcasts not in local list
+                    // 3c4. Add remote podcasts not in local list
+                    int loadCount = 0;
                     for (String url : synced) {
                         final Podcast podcast = new Podcast(null, url);
 
                         if (!podcastManager.contains(podcast)) {
                             // Increase running tasks counter
-                            runningLoadPodcastTaskCount++;
+                            loadCount++;
                             //noinspection unchecked
                             publishProgress(new AbstractMap.SimpleEntry<>(true, podcast));
-                            subscriptionsAddedLocally.add(url);
+                            addedLocally.add(url);
                         }
                     }
 
-                    // 2b5. Push synced list to the server
-                    client.putSubscriptions(deviceId, new ArrayList<>(synced));
+                    // 3c5. Push synced list (on first sync) or changes (later) to the server
+                    if (firstSyncEver)
+                        client.putSubscriptions(deviceId, synced);
+                    else
+                        client.putSubscriptionChanges(deviceId, addedLocally, removedLocally);
 
-                    // 2b6. Wait for all the LoadPodcastTasks triggered by
-                    // adding podcasts to finish, otherwise we would mess up the
-                    // local status
-                    while (runningLoadPodcastTaskCount > 0)
-                        try {
-                            TimeUnit.SECONDS.sleep(1);
-                        } catch (Exception e) {
-                            // pass
-                        }
-
-                    // 2b7. Finally, clean up local status. In particular,
-                    // this will leave changes in place that happened while
-                    // this task ran, to be picked up by next execution
-                    clearAddRemoveSets(subscriptionsAddedLocally, subscriptionsRemovedLocally);
+                    // 3c6. Wait for all the LoadPodcastTasks triggered by adding podcasts
+                    // to finish, otherwise we would mess up the local status
+                    try {
+                        allPodcastLoadsFinishedSemaphore.acquire(loadCount);
+                    } catch (InterruptedException ie) {
+                        // pass
+                    }
                 }
+
+                // 4. Finally, clean up local status. In particular, this will leave changes
+                // in place that happened while this task ran, to be picked up by next execution
+                clearAddRemoveSets(addedLocally, removedLocally);
             } catch (Throwable th) {
                 this.cause = th;
                 cancel(true);
@@ -234,45 +160,6 @@ abstract class GpodderPodcastListSyncController extends GpodderBaseSyncControlle
             }
 
             return null;
-        }
-
-        @SafeVarargs
-        @Override
-        protected final void onProgressUpdate(Entry<Boolean, Podcast>... values) {
-            // Each progress update entry represents a podcast to be added or
-            // removed locally, so we do just that:
-            final boolean add = values[0].getKey();
-            final Podcast podcast = values[0].getValue();
-
-            if (add) {
-                // We need to load the podcast before adding it
-                // because otherwise we do not have its name
-                new LoadPodcastTask(new OnLoadPodcastListener() {
-
-                    @Override
-                    public void onPodcastLoadProgress(Podcast p, Progress pr) {
-                        // pass
-                    }
-
-                    @Override
-                    public void onPodcastMoved(Podcast podcast, String newUrl) {
-                        // pass, this will not be called if any sync controllers are active
-                    }
-
-                    @Override
-                    public void onPodcastLoaded(Podcast podcast) {
-                        podcastManager.addPodcast(podcast);
-                        runningLoadPodcastTaskCount--;
-                    }
-
-                    @Override
-                    public void onPodcastLoadFailed(Podcast p, PodcastLoadError code) {
-                        runningLoadPodcastTaskCount--;
-                        // Bad podcast, do not add
-                    }
-                }).executeOnExecutor(THREAD_POOL_EXECUTOR, podcast);
-            } else
-                podcastManager.removePodcast(podcastManager.indexOf(podcast));
         }
 
         protected void onPostExecute(Void result) {

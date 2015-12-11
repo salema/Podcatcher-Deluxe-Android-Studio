@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+import static com.podcatcher.deluxe.BuildConfig.VERSION_NAME;
 
 /**
  * Our application subclass. Holds global state and model. The Podcatcher
@@ -63,7 +64,7 @@ public class Podcatcher extends Application {
     /**
      * The user agent string we use to identify us
      */
-    public static final String USER_AGENT_VALUE = "Podcatcher Deluxe";
+    public static String USER_AGENT_VALUE;
     /**
      * The http request header field key for the authorization
      */
@@ -93,7 +94,9 @@ public class Podcatcher extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // First things first, set-up our libraries
+        // First things first, set-up user agent
+        USER_AGENT_VALUE = String.format("%1$s/%2$s", getString(R.string.app_name), VERSION_NAME);
+
         Picasso.with(this).setIndicatorsEnabled(BuildConfig.DEBUG);
 
         // This will only run once in the lifetime of the app

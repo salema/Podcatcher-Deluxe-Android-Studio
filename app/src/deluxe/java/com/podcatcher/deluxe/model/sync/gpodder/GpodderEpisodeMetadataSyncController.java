@@ -20,6 +20,7 @@ package com.podcatcher.deluxe.model.sync.gpodder;
 
 import com.podcatcher.deluxe.model.types.Episode;
 import com.podcatcher.deluxe.model.types.EpisodeMetadata;
+import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.labs.sync.gpodder.types.EpisodeAction;
 import com.podcatcher.labs.sync.gpodder.types.EpisodeAction.Action;
 
@@ -27,15 +28,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map.Entry;
-import java.util.TimeZone;
+
+import static java.net.URLDecoder.decode;
 
 /**
  * An episode metadata sync controller for the gpodder.net service. This
@@ -90,36 +90,36 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
                 // manager because otherwise we cannot update it
                 episodeManager.blockUntilEpisodeMetadataIsLoaded();
 
-                // 1. Get the episode actions from server and apply them to the
-                // local model if the episode is actually present. Giving no
-                // device id here will make sure that we get changes from all
-                // devices. We do give the last sync time stamp + 1, so only changed
-                // that occurred afterwards are returned.
-                final List<EpisodeAction> changes = client.getEpisodeActions(lastSyncTimeStamp + 1);
-                // Go walk through actions and act on them
-                for (EpisodeAction action : changes) {
-                    // Only act if we know the podcast
-                    // (needs to be decoded since gpodder send encoded URLs)
-                    final String podcastUrl = action.getPodcast();
-                    if (podcastManager.findPodcastForUrl(podcastUrl) == null)
-                        continue;
+                final List<EpisodeAction> changes = new ArrayList<>();
+                if (SyncMode.SEND_RECEIVE.equals(mode)) {
+                    // 1. Get the episode actions from server and apply them to the local model
+                    // if the episode is actually present. We give the last sync time stamp + 1,
+                    // so only changed that occurred afterwards are returned.
+                    client.getEpisodeActions(changes, lastSyncTimeStamp + 1);
 
-                    // Get us an episode
-                    final EpisodeMetadata meta = new EpisodeMetadata();
-                    meta.podcastUrl = podcastUrl;
-                    final Episode episode = meta.marshalEpisode(action.getEpisode());
-                    // Act on the episode action if in receive mode
-                    if (episode != null && SyncMode.SEND_RECEIVE.equals(mode))
+                    // Go walk through actions and act on them
+                    for (EpisodeAction action : changes) {
+                        // Only act if we know the podcast,
+                        // (needs decode since gpodder sends encoded URLs)
+                        final String podcastUrl = decode(action.getPodcast(), "UTF8");
+                        if (podcastManager.findPodcastForUrl(podcastUrl) == null)
+                            continue;
+
+                        // Get us an episode and perform change on main thread
+                        final EpisodeMetadata meta = new EpisodeMetadata();
+                        meta.podcastUrl = new Podcast(null, podcastUrl).getUrl();
+                        final Episode episode = meta.marshalEpisode(decode(action.getEpisode(), "UTF8"));
                         //noinspection unchecked
                         publishProgress(new AbstractMap.SimpleEntry<>(episode, action));
+                    }
                 }
 
                 // 2. Upload local changes and clear them from the local action
                 // list, the actions triggered above are not included since the
-                // controller set the ignoreNewActions flag before applying
-                // those.
+                // controller set the ignoreNewActions flag before applying those.
                 final List<EpisodeAction> copy = new ArrayList<>(actions);
-                lastSyncTimeStamp = client.putEpisodeActions(copy);
+                final long newTimeStamp = client.putEpisodeActions(copy);
+                lastSyncTimeStamp = newTimeStamp > lastSyncTimeStamp ? newTimeStamp : lastSyncTimeStamp;
 
                 // 3. Remove all actions already taken care of (we can call this
                 // here because the list is synchronized). Unless new action
@@ -191,11 +191,8 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
         super(context);
 
         // Create the date time format for the time stamp sent to gpodder.net
-        final TimeZone zone = TimeZone.getTimeZone("UTC");
-        this.gpodderTimeStampFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-        gpodderTimeStampFormat.setTimeZone(zone);
-
-        // Recover the last synced time stamp
+        this.gpodderTimeStampFormat = client.getTimeStampFormatter();
+        // Recover the last synced time stamp (unformatted long)
         this.lastSyncTimeStamp = preferences.getLong(GPODDER_LAST_SYNC_ACTIONS, 0);
     }
 
@@ -217,7 +214,7 @@ abstract class GpodderEpisodeMetadataSyncController extends GpodderPodcastListSy
     public void onStateChanged(Episode episode, boolean newState) {
         // Limit the number of actions added here since this will make the whole
         // app hang here if too many episodes are marked old at once
-        if (!ignoreNewActions && actions.size() < 25 && newState)
+        if (!ignoreNewActions && actions.size() < 100 && newState)
             actions.add(prepareAction(episode, Action.RESET, 0));
     }
 

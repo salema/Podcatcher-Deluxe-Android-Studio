@@ -125,9 +125,9 @@
     <string name="suggestions_load_error">Suggestions failed to load, please check your internet connection!</string>
     <string name="suggestions_send">Suggest podcast</string>
     <string name="suggestions_search">Search Podcasts</string>
-    <string name="sync_dropbox_unlink_title">Unlink Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Do you really want to unlink your Dropbox account from this app? While this will end all sync action via Dropbox for now, you can revert this by re-linking the app later.</string>
-    <string name="sync_dropbox_unlink_button">Unlink</string>
+    <string name="sync_unlink_title">Unlink %1$s</string>
+    <string name="sync_unlink_message">Do you really want to unlink your %1$s account from this app? While this will end all sync action via %1$s for now, you can revert this by re-linking the app later.</string>
+    <string name="sync_unlink_button">Unlink</string>
     <string name="sync_gpodder_config_title">Configure gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Failed to log into gpodder.net, please check your credentials!</string>
     <string name="sync_gpodder_device_id">Device ID</string>

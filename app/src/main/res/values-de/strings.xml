@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Empfehlungen können nicht geladen werden, bitte prüfen Sie Ihre Internetverbindung!</string>
     <string name="suggestions_send">Podcast empfehlen</string>
     <string name="suggestions_search">Podcast suchen</string>
-    <string name="sync_dropbox_unlink_title">Dropbox abmelden</string>
-    <string name="sync_dropbox_unlink_message">Wollen Sie die App wirklich von Ihrer Dropbox abmelden? Diese Aktion beendet die Synchronisation, kann aber später wieder zurückgenommen werden.</string>
-    <string name="sync_dropbox_unlink_button">Abmelden</string>
+    <string name="sync_unlink_title">%1$s abmelden</string>
+    <string name="sync_unlink_message">Wollen Sie die App wirklich von %1$s abmelden? Diese Aktion beendet die Synchronisation, kann aber später wieder zurückgenommen werden.</string>
+    <string name="sync_unlink_button">Abmelden</string>
     <string name="sync_gpodder_config_title">Bei gpodder.net anmelden</string>
     <string name="sync_gpodder_login_invalid">Anmeldung bei gpodder.net fehlgeschlagen, bitte prüfen Sie Ihre Anmeldedaten!</string>
     <string name="sync_gpodder_device_id">Device ID</string>

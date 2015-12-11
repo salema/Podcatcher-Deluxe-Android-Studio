@@ -133,9 +133,9 @@
     <string name="suggestions_load_error">Не вдалося завантажити рекомендації. Будь ласка, перевірте підключення до Інтернету.</string>
     <string name="suggestions_send">Рекомендувати подкаст</string>
     <string name="suggestions_search">Пошук каналів</string>
-    <string name="sync_dropbox_unlink_title">Відв’язати Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Ви дійсно хочете відв’язати ваш акаунт у Dropbox від цієї програми? Це призупинить синхронізацію, доки ви наново не прив’яжете до програми цей або іншний акаунт Dropbox.</string>
-    <string name="sync_dropbox_unlink_button">Відв’язати</string>
+    <string name="sync_unlink_title">Відв’язати %1$s</string>
+    <string name="sync_unlink_message">Ви дійсно хочете відв’язати ваш акаунт у %1$s від цієї програми? Це призупинить синхронізацію, доки ви наново не прив’яжете до програми цей або іншний акаунт %1$s.</string>
+    <string name="sync_unlink_button">Відв’язати</string>
     <string name="sync_gpodder_config_title">Налаштувати gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Не вдалося авторизуватися на gpodder.net. Будь ласка, перевірте ваші дані!</string>
     <string name="sync_gpodder_device_id">ID пристрою</string>

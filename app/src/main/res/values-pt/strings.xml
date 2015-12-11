@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Não conseguiu carregar as sugestões, por favor, verifique sua conexão com a internet!</string>
     <string name="suggestions_send">Sugerir podcast</string>
     <string name="suggestions_search">Procurar fontes</string>
-    <string name="sync_dropbox_unlink_title"> Desligar Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Você realmente quer desvincular sua conta do Dropbox deste aplicativo? Embora isto vá acabar com toda a ação de sincronização via Dropbox, por agora, você pode reverter isso, re-ligando o aplicativo mais tarde.</string>
-    <string name="sync_dropbox_unlink_button">Desligar</string>
+    <string name="sync_unlink_title"> Desligar %1$s</string>
+    <string name="sync_unlink_message">Você realmente quer desvincular sua conta do %1$s deste aplicativo? Embora isto vá acabar com toda a ação de sincronização via %1$s, por agora, você pode reverter isso, re-ligando o aplicativo mais tarde.</string>
+    <string name="sync_unlink_button">Desligar</string>
     <string name="sync_gpodder_config_title"> Configure gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Falha ao efetuar login no gpodder.net, por favor, verifique suas credenciais!</string>
     <string name="sync_gpodder_device_id">ID de dispositivo</string>

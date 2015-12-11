@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Öneriler yüklenemedi, internet bağlantısını kontrol edin!</string>
     <string name="suggestions_send">Podcast öneri</string>
     <string name="suggestions_search">Besleme Ara</string>
-    <string name="sync_dropbox_unlink_title">Dropbox iptal et</string>
-    <string name="sync_dropbox_unlink_message">Dropbox hesabınızı uygulamadan kaldırmak istiyor musunuz? Bu işlem ile tüm senkronizasyonlar sona erecek, daha sonra tekrar ekleyip kullanabilirsiniz.</string>
-    <string name="sync_dropbox_unlink_button">Ayır</string>
+    <string name="sync_unlink_title">%1$s iptal et</string>
+    <string name="sync_unlink_message">%1$s hesabınızı uygulamadan kaldırmak istiyor musunuz? Bu işlem ile tüm senkronizasyonlar sona erecek, daha sonra tekrar ekleyip kullanabilirsiniz.</string>
+    <string name="sync_unlink_button">Ayır</string>
     <string name="sync_gpodder_config_title">gpodder.net ayarla</string>
     <string name="sync_gpodder_login_invalid">gpodder.net oturum başarısız oldu, lütfen kimlik bilgilerinizi kontrol edin!</string>
     <string name="sync_gpodder_device_id">Aygıt ID</string>

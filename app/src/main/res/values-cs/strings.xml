@@ -128,9 +128,9 @@
     <string name="suggestions_load_error">Návrhy se nepodařilo nahrát. Prověřte, prosím, své internetové spojení!</string>
     <string name="suggestions_send">Odeslat návrh záznamu</string>
     <string name="suggestions_search">Hledat kanály</string>
-    <string name="sync_dropbox_unlink_title">Odpojit Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Opravdu chcete odpojit svůj účet u Dropboxu od této aplikace? I když to pro teď veškerou synchronizaci přes Dropbox, můžete to vrátit zpět opětovným připojením aplikace později.</string>
-    <string name="sync_dropbox_unlink_button">Odpojit</string>
+    <string name="sync_unlink_title">Odpojit %1$s</string>
+    <string name="sync_unlink_message">Opravdu chcete odpojit svůj účet u %1$su od této aplikace? I když to pro teď veškerou synchronizaci přes %1$s, můžete to vrátit zpět opětovným připojením aplikace později.</string>
+    <string name="sync_unlink_button">Odpojit</string>
     <string name="sync_gpodder_config_title">Nastavit gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Nepodařilo se přihlásit k gpodder.net. Prověřte, prosím, své přihlašovací údaje!</string>
     <string name="sync_gpodder_device_id">ID zařízení</string>

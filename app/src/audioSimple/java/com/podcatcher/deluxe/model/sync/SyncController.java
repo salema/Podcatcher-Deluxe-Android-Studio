@@ -57,7 +57,7 @@ public abstract class SyncController implements OnChangePodcastListListener,
          *
          * @param impl Controller that synced successfully.
          */
-        public void onSyncTriggered(ControllerImpl impl);
+        void onSyncTriggered(ControllerImpl impl);
 
         /**
          * Called by a {@link SyncController} on its call-back to indicate that
@@ -66,7 +66,7 @@ public abstract class SyncController implements OnChangePodcastListListener,
          *
          * @param impl Controller that synced successfully.
          */
-        public void onSyncCompleted(ControllerImpl impl);
+        void onSyncCompleted(ControllerImpl impl);
 
         /**
          * Called by a {@link SyncController} on its call-back when a sync
@@ -76,7 +76,7 @@ public abstract class SyncController implements OnChangePodcastListListener,
          * @param impl  Controller that failed to sync contents.
          * @param cause The reason for the failure (might be <code>null</code>).
          */
-        public void onSyncFailed(ControllerImpl impl, Throwable cause);
+        void onSyncFailed(ControllerImpl impl, Throwable cause);
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class SyncController implements OnChangePodcastListListener,
     /**
      * The sync mode the controller operates in.
      */
-    public static enum SyncMode {
+    public enum SyncMode {
         /**
          * Only send changes out to the service connected, do not change the
          * local data on the device.

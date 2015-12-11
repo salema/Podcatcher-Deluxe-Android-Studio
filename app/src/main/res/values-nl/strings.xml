@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Suggesties konden niet worden geladen. Check alstublieft uw internetverbinding!</string>
     <string name="suggestions_send">Geef podcast suggesties</string>
     <string name="suggestions_search">Feeds zoeken</string>
-    <string name="sync_dropbox_unlink_title">Ontkoppel Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Wilt u echt uw Dropbox account ontkoppelen van deze app? Hoewel dit alle synchronisaties via Dropbox voor nu zal beeindigen, kunt u dit herstellen door deze app later weer aan Dropbox te koppelen.</string>
-    <string name="sync_dropbox_unlink_button">Ontkoppel</string>
+    <string name="sync_unlink_title">Ontkoppel %1$s</string>
+    <string name="sync_unlink_message">Wilt u echt uw %1$s account ontkoppelen van deze app? Hoewel dit alle synchronisaties via %1$s voor nu zal beeindigen, kunt u dit herstellen door deze app later weer aan Dropbox te koppelen.</string>
+    <string name="sync_unlink_button">Ontkoppel</string>
     <string name="sync_gpodder_config_title">Configureer gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Inloggen bij gpodder.net mislukt, check alstublieft uw login!</string>
     <string name="sync_gpodder_device_id">Apparaat ID</string>

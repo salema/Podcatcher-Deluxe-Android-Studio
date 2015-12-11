@@ -21,6 +21,8 @@ package com.podcatcher.deluxe.model.types;
 import com.podcatcher.deluxe.model.EpisodeManager;
 import com.podcatcher.deluxe.model.PodcastManager;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 
 /**
@@ -126,6 +128,7 @@ public class EpisodeMetadata {
      * @param episodeUrl URL for the new episode to be identified by.
      * @return An episode object or <code>null</code> if something goes wrong.
      */
+    @NonNull
     public Episode marshalEpisode(String episodeUrl) {
         PodcastManager manager = PodcastManager.getInstance();
 

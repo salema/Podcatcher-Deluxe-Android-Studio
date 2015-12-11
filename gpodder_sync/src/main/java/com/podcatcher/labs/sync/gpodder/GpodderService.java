@@ -18,10 +18,13 @@
 package com.podcatcher.labs.sync.gpodder;
 
 import com.podcatcher.labs.sync.gpodder.types.EpisodeAction;
-import com.podcatcher.labs.sync.gpodder.types.internal.GetEpisodeActionResponse;
-import com.podcatcher.labs.sync.gpodder.types.internal.PostEpisodeActionResponse;
+import com.podcatcher.labs.sync.gpodder.types.Subscription;
+import com.podcatcher.labs.sync.gpodder.types.internal.EpisodeActionResponse;
+import com.podcatcher.labs.sync.gpodder.types.internal.TimestampResponse;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -33,28 +36,37 @@ import retrofit.http.Query;
 
 /**
  * Retrofit service definition for the gpodder.net sync service.
- * Consult the <a href="http://http://gpoddernet.readthedocs.org">documentation</a> for details.
+ * Consult the <a href="http://gpoddernet.readthedocs.org">documentation</a> for details.
  */
 interface GpodderService {
 
     String BASE_URL = "https://gpodder.net/";
 
+    String TIME_STAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+
     @POST("api/2/auth/{username}/login.json")
     Call<Boolean> login(@Path("username") String user);
 
+    @GET("subscriptions/{username}.json")
+    Call<Set<Subscription>> getSubscriptions(@Path("username") String user);
+
     @GET("subscriptions/{username}/{deviceid}.json")
-    Call<List<String>> getSubscriptions(@Path("username") String user, @Path("deviceid") String deviceId);
+    Call<Set<String>> getSubscriptions(@Path("username") String user, @Path("deviceid") String deviceId);
 
 
     @PUT("subscriptions/{username}/{deviceid}.json")
     Call<String> putSubscriptions(@Path("username") String user, @Path("deviceid") String deviceId,
-                                  @Body List<String> feedUrls);
+                                  @Body Set<String> feedUrls);
+
+    @POST("api/2/subscriptions/{username}/{deviceid}.json")
+    Call<TimestampResponse> putSubscriptionChanges(@Path("username") String user, @Path("deviceid") String deviceId,
+                                                   @Body Map<String, Set<String>> changes);
 
     @GET("api/2/episodes/{username}.json")
-    Call<GetEpisodeActionResponse> getEpisodeActions(@Path("username") String user, @Query("podcast") String feedUrl,
+    Call<EpisodeActionResponse> getEpisodeActions(@Path("username") String user, @Query("podcast") String feedUrl,
                                                      @Query("device") String deviceId, @Query("since") Long timestamp,
                                                      @Query("aggregated") Boolean aggregated);
 
     @POST("api/2/episodes/{username}.json")
-    Call<PostEpisodeActionResponse> postEpisodeActions(@Path("username") String user, @Body List<EpisodeAction> actions);
+    Call<TimestampResponse> postEpisodeActions(@Path("username") String user, @Body List<EpisodeAction> actions);
 }

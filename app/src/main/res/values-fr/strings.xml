@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Impossible de charger les suggestions. Vérifiez votre connexion Internet!</string>
     <string name="suggestions_send">Suggérer podcast</string>
     <string name="suggestions_search">Chercher des flux</string>
-    <string name="sync_dropbox_unlink_title">Se déconnecter de Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Êtes-vous sûr de vouloir déconnecter cette app de votre compte Dropbox? Même si avec cette opération la synchronisation avec Dropbox est terminée pour le moment, vous pouvez toujours vous connecter à l’app plus tard. </string>
-    <string name="sync_dropbox_unlink_button">Se déconnecter</string>
+    <string name="sync_unlink_title">Se déconnecter de %1$s</string>
+    <string name="sync_unlink_message">Êtes-vous sûr de vouloir déconnecter cette app de votre compte %1$s? Même si avec cette opération la synchronisation avec %1$s est terminée pour le moment, vous pouvez toujours vous connecter à l’app plus tard.</string>
+    <string name="sync_unlink_button">Se déconnecter</string>
     <string name="sync_gpodder_config_title">Configurer gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Impossible de se connecter à gpodder.net. Veuillez vérifier vos identifiants de connexion. </string>
     <string name="sync_gpodder_device_id">Device ID</string>

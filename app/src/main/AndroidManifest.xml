@@ -210,10 +210,10 @@
         </receiver>
 
         <activity
-            android:name="com.podcatcher.deluxe.ConfigureGpodderSyncActivity"
+            android:name="com.podcatcher.deluxe.ConfigureDropboxSyncActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name="com.podcatcher.deluxe.ConfigureDropboxSyncActivity"
+            android:name="com.podcatcher.deluxe.ConfigureGpodderSyncActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
         <activity

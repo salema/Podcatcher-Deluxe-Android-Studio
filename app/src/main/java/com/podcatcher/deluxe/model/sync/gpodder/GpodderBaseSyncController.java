@@ -21,20 +21,18 @@ package com.podcatcher.deluxe.model.sync.gpodder;
 import com.podcatcher.deluxe.BuildConfig;
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.sync.SyncController;
+import com.podcatcher.deluxe.model.sync.PreferenceSetSyncController;
 import com.podcatcher.labs.sync.gpodder.GpodderClient;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 
 import java.util.Locale;
 
 /**
  * A sync controller for the gpodder.net service, abstract base class.
  */
-abstract class GpodderBaseSyncController extends SyncController {
+abstract class GpodderBaseSyncController extends PreferenceSetSyncController {
 
     /**
      * The gpodder.net user name setting key
@@ -52,10 +50,6 @@ abstract class GpodderBaseSyncController extends SyncController {
      * Our log tag
      */
     protected static final String TAG = "GpodderSyncController";
-    /**
-     * Our preferences handle
-     */
-    protected final SharedPreferences preferences;
 
     /**
      * Our client instance
@@ -74,9 +68,8 @@ abstract class GpodderBaseSyncController extends SyncController {
      *                {@link #DEVICE_ID_KEY}.
      */
     protected GpodderBaseSyncController(Context context) {
-        super();
+        super(context);
 
-        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
         final String user = preferences.getString(USERNAME_KEY, "");
         final String password = preferences.getString(PASSWORD_KEY, "");
 

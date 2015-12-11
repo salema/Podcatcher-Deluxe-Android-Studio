@@ -19,6 +19,7 @@
 package com.podcatcher.deluxe.view.fragments;
 
 import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.sync.ControllerImpl;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -36,19 +37,31 @@ import android.widget.TextView;
 
 /**
  * A confirmation dialog for the user to make sure he/she really wants the
- * Dropbox sync to be unlinked.
+ * sync service to be unlinked. Make sure to call {@link #setController(ControllerImpl)}
+ * to prepare the dialog.
  *
  * <p><b>Register call-back:</b> The fragment will use the activity it is part of
  * as its listener. To make this work, the activity needs to implement
- * {@link ConfirmUnlinkDropboxDialogListener}.
+ * {@link ConfirmSyncUnlinkDialogListener}.
  * </p>
  */
-public class ConfirmUnlinkDropboxFragment extends DialogFragment {
+public class ConfirmSyncUnlinkFragment extends DialogFragment {
 
     /**
-     * The callback we are working with
+     * The controller to unlink.
      */
-    private ConfirmUnlinkDropboxDialogListener listener;
+    private ControllerImpl impl;
+    /**
+     * The callback we are working with.
+     */
+    private ConfirmSyncUnlinkDialogListener listener;
+
+    /**
+     * @param impl The controller being unlinked.
+     */
+    public void setController(ControllerImpl impl) {
+        this.impl = impl;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -56,17 +69,17 @@ public class ConfirmUnlinkDropboxFragment extends DialogFragment {
 
         // Make sure our listener is present
         try {
-            this.listener = (ConfirmUnlinkDropboxDialogListener) activity;
+            this.listener = (ConfirmSyncUnlinkDialogListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement ConfirmUnlinkDropboxDialogListener");
+                    + " must implement ConfirmSyncUnlinkDialogListener");
         }
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final String title = getString(R.string.sync_dropbox_unlink_title);
-        final String message = getString(R.string.sync_dropbox_unlink_message);
+        final String title = getString(R.string.sync_unlink_title, impl.getLabel());
+        final String message = getString(R.string.sync_unlink_message, impl.getLabel());
 
         // Define context to use (parent activity might have no theme)
         final ContextThemeWrapper context = new ContextThemeWrapper(getActivity(), R.style.AppDialog);
@@ -82,7 +95,7 @@ public class ConfirmUnlinkDropboxFragment extends DialogFragment {
 
         // Add click listeners
         final Button confirmButton = (Button) content.findViewById(R.id.confirm_button);
-        confirmButton.setText(R.string.sync_dropbox_unlink_button);
+        confirmButton.setText(R.string.sync_unlink_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -119,7 +132,7 @@ public class ConfirmUnlinkDropboxFragment extends DialogFragment {
     /**
      * The call-back for listeners to implement
      */
-    public interface ConfirmUnlinkDropboxDialogListener extends OnCancelListener {
+    public interface ConfirmSyncUnlinkDialogListener extends OnCancelListener {
 
         /**
          * The user confirmed the unlink.

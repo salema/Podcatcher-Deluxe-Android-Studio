@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Las sugerencias no se han podido cargar. Comprobar la conexión a Internet.</string>
     <string name="suggestions_send">Envíe propuesta</string>
     <string name="suggestions_search">Buscar canales</string>
-    <string name="sync_dropbox_unlink_title">Desconectarse de Dropbox</string>
-    <string name="sync_dropbox_unlink_message">¿Está seguro de querer desconectar esta app de su cuenta Dropbox? Aunque con esta operación se termina por ahora la sincronización con Dropbox podrá siempre volver a conectarse a la app.   </string>
-    <string name="sync_dropbox_unlink_button">Desconectarse</string>
+    <string name="sync_unlink_title">Desconectarse de %1$s</string>
+    <string name="sync_unlink_message">¿Está seguro de querer desconectar esta app de su cuenta %1$s? Aunque con esta operación se termina por ahora la sincronización con %1$s podrá siempre volver a conectarse a la app.</string>
+    <string name="sync_unlink_button">Desconectarse</string>
     <string name="sync_gpodder_config_title">Registrarse en gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Imposible de conectarse a gpodder.net. Por favor, compruebe sus datos de acceso. </string>
     <string name="sync_gpodder_device_id">Device ID</string>

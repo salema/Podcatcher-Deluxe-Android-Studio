@@ -28,6 +28,7 @@ public class RSS {
     // These should be all lowercase because the parser compares
     // to the XML tag name when .toLowerCase() is applied!
     public static final String ITEM = "item";
+    public static final String GUID = "guid";
     public static final String IMAGE = "image";
     public static final String TITLE = "title";
     public static final String SUBTITLE = "subtitle";

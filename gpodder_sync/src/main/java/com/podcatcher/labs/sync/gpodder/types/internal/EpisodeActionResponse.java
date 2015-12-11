@@ -24,18 +24,9 @@ import java.util.List;
 /**
  * Internal POJO for a response to gpodder.net's /episodes
  */
-public class GetEpisodeActionResponse {
+public class EpisodeActionResponse extends TimestampResponse {
 
-    private long timestamp;
     private List<EpisodeAction> actions;
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public List<EpisodeAction> getActions() {
         return actions;

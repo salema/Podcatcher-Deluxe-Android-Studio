@@ -123,9 +123,9 @@
     <string name="suggestions_load_error">Förslag kunde inte laddas, kontrollera din internetanslutning!</string>
     <string name="suggestions_send">Föreslå podcast</string>
     <string name="suggestions_search">Sök efter flöden</string>
-    <string name="sync_dropbox_unlink_title">Koppla ifrån Dropbox</string>
-    <string name="sync_dropbox_unlink_message">Vill du verkligen koppla ifrån ditt Dropbox-konto från den här applikationen? Även om det här kommer att stoppa all synkronisering via Dropbox kan du alltid ångra dig genom att återansluta till applikationen.</string>
-    <string name="sync_dropbox_unlink_button">Koppla ifrån</string>
+    <string name="sync_unlink_title">Koppla ifrån %1$s</string>
+    <string name="sync_unlink_message">Vill du verkligen koppla ifrån ditt %1$s-konto från den här applikationen? Även om det här kommer att stoppa all synkronisering via %1$s kan du alltid ångra dig genom att återansluta till applikationen.</string>
+    <string name="sync_unlink_button">Koppla ifrån</string>
     <string name="sync_gpodder_config_title">Konfigurera gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Kunde inte logga in på gpodder.net, var god kolla dina uppgifter!</string>
     <string name="sync_gpodder_device_id">Enhets-ID</string>

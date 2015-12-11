@@ -84,11 +84,11 @@ public class ConfigureSyncActivity extends BaseActivity implements ConfigureSync
         final Intent configureIntent = new Intent();
 
         switch (impl) {
-            case GPODDER:
-                configureIntent.setClass(this, ConfigureGpodderSyncActivity.class);
-                break;
             case DROPBOX:
                 configureIntent.setClass(this, ConfigureDropboxSyncActivity.class);
+                break;
+            case GPODDER:
+                configureIntent.setClass(this, ConfigureGpodderSyncActivity.class);
                 break;
         }
 
