@@ -93,6 +93,16 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        jupiter {
+            applicationIdSuffix ".jupiter"
+
+            buildConfigField "String", "SUGGESTIONS", "\"http://www.podcatcher-deluxe.com/podcast-suggestions.jb.json\""
+            buildConfigField "Boolean", "FIXED_BUNDLE", "true"
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
     flavorDimensions "media", "edition"
@@ -147,6 +157,12 @@ android {
 
         // Ignore all variants we do not need for Twit Netcasts
         if (variant.buildType.name.equals('twit') &&
+                !(variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('deluxe'))) {
+            variant.setIgnore(true);
+        }
+
+        // Ignore all variants we do not need for Jupiter Broadcasts
+        if (variant.buildType.name.equals('jupiter') &&
                 !(variant.flavors.get(0).name.equals('video') && variant.flavors.get(1).name.equals('deluxe'))) {
             variant.setIgnore(true);
         }

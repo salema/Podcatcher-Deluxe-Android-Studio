@@ -123,6 +123,8 @@ public enum ControllerImpl {
      */
     public boolean isAvailable(Context context) {
         switch (this) {
+            case PODCARE:
+                return !BuildConfig.FIXED_BUNDLE;
             default:
                 return true;
         }
