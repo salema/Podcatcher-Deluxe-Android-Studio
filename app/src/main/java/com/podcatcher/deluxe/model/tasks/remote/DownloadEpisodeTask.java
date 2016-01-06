@@ -49,6 +49,8 @@ import static android.app.DownloadManager.COLUMN_STATUS;
 import static android.app.DownloadManager.COLUMN_TOTAL_SIZE_BYTES;
 import static android.app.DownloadManager.ERROR_FILE_ALREADY_EXISTS;
 import static android.app.DownloadManager.ERROR_INSUFFICIENT_SPACE;
+import static android.app.DownloadManager.Request.NETWORK_MOBILE;
+import static android.app.DownloadManager.Request.NETWORK_WIFI;
 import static android.app.DownloadManager.STATUS_FAILED;
 import static android.app.DownloadManager.STATUS_SUCCESSFUL;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
@@ -96,6 +98,11 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
      */
     private int percentProgress;
     /**
+     * Flag on whether the download should only occur on wifi and
+     * be cancelled if the devices switches to mobile (metered) data.
+     */
+    private final boolean wifiOnly;
+    /**
      * Flag on whether the download needs moving after the fact
      */
     private boolean needsPostDownloadMove = false;
@@ -141,13 +148,14 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
 
     /**
      * Create a new task.
-     *
      * @param podcatcher The podcatcher app handle (not <code>null</code>).
      * @param listener   The call-back used by the task (not <code>null</code>).
+     * @param wifiOnly   Whether the download should only occur on wifi.
      */
-    public DownloadEpisodeTask(Podcatcher podcatcher, DownloadTaskListener listener) {
+    public DownloadEpisodeTask(Podcatcher podcatcher, DownloadTaskListener listener, boolean wifiOnly) {
         this.podcatcher = podcatcher;
         this.listener = listener;
+        this.wifiOnly = wifiOnly;
 
         // Get handle to the system download manager which does all the
         // downloading for us
@@ -200,13 +208,13 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
                         .setDestinationUri(Uri.fromFile(localFile))
                         .setTitle(episode.getName())
                         .setDescription(episode.getPodcast().getName())
-                                // We overwrite the AndroidDownloadManager user agent
-                                // string here because there are servers out there (e.g.
-                                // ORF.at) that apparently block downloads based on this
-                                // information
+                        .setNotificationVisibility(Request.VISIBILITY_VISIBLE)
                         .addRequestHeader(USER_AGENT_KEY, USER_AGENT_VALUE)
-                                // Make sure our download does not end up in the http cache
-                        .addRequestHeader("Cache-Control", "no-store");
+                        .addRequestHeader("Cache-Control", "no-store")
+                        .setAllowedNetworkTypes(NETWORK_WIFI | (wifiOnly ? 0 : NETWORK_MOBILE))
+                        .setAllowedOverRoaming(!wifiOnly);
+
+                download.allowScanningByMediaScanner();
             } catch (NullPointerException | IllegalArgumentException re) {
                 // The Android DownloadManager will reject URL that
                 // don't start with http or https

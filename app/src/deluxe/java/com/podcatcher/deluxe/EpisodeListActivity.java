@@ -345,7 +345,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
 
         // We may want to auto-download the latest episode
         if (shouldAutoDownloadLatestEpisode(podcast))
-            episodeManager.download(podcast.getEpisodes().get(0));
+            episodeManager.download(podcast.getEpisodes().get(0), true);
 
         // Additionally, if on large device, process clever selection update
         if (!view.isSmall())

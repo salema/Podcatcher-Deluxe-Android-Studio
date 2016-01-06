@@ -219,6 +219,17 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
      * @param episode Episode to get.
      */
     public void download(Episode episode) {
+        download(episode, false);
+    }
+
+    /**
+     * Initiate a download for the given episode. Will do nothing if the episode
+     * is already downloaded or is currently downloading.
+     *
+     * @param episode  Episode to get.
+     * @param wifiOnly Whether the download should only occur on wifi.
+     */
+    public void download(Episode episode, boolean wifiOnly) {
         if (episode != null && metadata != null && !isDownloadingOrDownloaded(episode)) {
             // Make sure not to attempt downloads for Live Streams
             if (episode.isLive())
@@ -244,7 +255,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
 
                 // Start the actual download
                 try {
-                    new DownloadEpisodeTask(podcatcher, this)
+                    new DownloadEpisodeTask(podcatcher, this, wifiOnly)
                             .executeOnExecutor(downloadEpisodeExecutor, episode);
                 } catch (RejectedExecutionException ree) {
                     // Too many tasks running
