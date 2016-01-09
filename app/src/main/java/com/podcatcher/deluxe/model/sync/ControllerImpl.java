@@ -21,6 +21,7 @@ package com.podcatcher.deluxe.model.sync;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.model.sync.dropbox.DropboxSyncController;
 import com.podcatcher.deluxe.model.sync.gpodder.GpodderSyncController;
+import com.podcatcher.deluxe.model.sync.podcare.PodcareSyncController;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -42,7 +43,12 @@ public enum ControllerImpl {
     /**
      * Sync to the <a href="http://www.gpodder.net">gpodder.net</a> service
      */
-    GPODDER;
+    GPODDER,
+
+    /**
+     * Sync to the <a href="https://pod.care">pod.care</a> service
+     */
+    PODCARE;
 
     /**
      * Create a {@link SyncController} object for the service given. This is for
@@ -60,6 +66,8 @@ public enum ControllerImpl {
                 return new DropboxSyncController(context);
             case GPODDER:
                 return new GpodderSyncController(context);
+            case PODCARE:
+                return new PodcareSyncController(context);
             default:
                 return null;
         }
@@ -75,6 +83,8 @@ public enum ControllerImpl {
                 return "Dropbox";
             case GPODDER:
                 return "gpodder.net";
+            case PODCARE:
+                return "Podcare";
             default:
                 return "Sync Controller X";
         }
@@ -90,6 +100,8 @@ public enum ControllerImpl {
                 return R.drawable.ic_dropbox;
             case GPODDER:
                 return R.drawable.ic_gpodder;
+            case PODCARE:
+                return R.drawable.ic_podcare;
             default:
                 return 0;
         }
@@ -136,6 +148,8 @@ public enum ControllerImpl {
                 return preferences.contains(GpodderSyncController.USERNAME_KEY) &&
                         preferences.contains(GpodderSyncController.PASSWORD_KEY) &&
                         preferences.contains(GpodderSyncController.DEVICE_ID_KEY);
+            case PODCARE:
+                return preferences.contains(PodcareSyncController.CONNECT_ID_KEY);
             default:
                 return false;
         }

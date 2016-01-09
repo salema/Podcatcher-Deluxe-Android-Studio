@@ -1,1 +1,1 @@
-include ':app', ':gpodder_sync'
+include ':app', ':podcare_sync', ':gpodder_sync'

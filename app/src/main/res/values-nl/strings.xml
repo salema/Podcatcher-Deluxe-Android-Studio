@@ -129,6 +129,10 @@
     <string name="sync_gpodder_config_title">Configureer gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Inloggen bij gpodder.net mislukt, check alstublieft uw login!</string>
     <string name="sync_gpodder_device_id">Apparaat ID</string>
+    <string name="sync_podcare_config_title">Configureer Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Installeer</string>
+    <string name="sync_podcare_config_scan">Scan</string>
     <string name="preferences">Voorkeursinstellingen</string>
     <string name="pref_select_all_on_start_title">Selecteer alles bij opstarten</string>
     <string name="pref_select_all_on_start_summary">Laad alle afleveringen als de app opstart</string>

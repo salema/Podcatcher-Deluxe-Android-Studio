@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile 'com.squareup.retrofit:retrofit:2.+'
+    compile 'com.squareup.retrofit:converter-gson:2.+'
+    compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
+
+    compile 'com.android.support:support-annotations:+'
+}

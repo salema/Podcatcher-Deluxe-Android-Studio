@@ -129,6 +129,10 @@
     <string name="sync_gpodder_config_title">gpodder.net ayarla</string>
     <string name="sync_gpodder_login_invalid">gpodder.net oturum başarısız oldu, lütfen kimlik bilgilerinizi kontrol edin!</string>
     <string name="sync_gpodder_device_id">Aygıt ID</string>
+    <string name="sync_podcare_config_title">Podcare ayarla</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Yükleme</string>
+    <string name="sync_podcare_config_scan">Tarayın</string>
     <string name="preferences">Tercihler</string>
     <string name="pref_select_all_on_start_title">Tüm seçimi başlat</string>
     <string name="pref_select_all_on_start_summary">Uygulama başlangıcında tüm abonelikleri yükle</string>

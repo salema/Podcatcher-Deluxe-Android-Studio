@@ -129,6 +129,10 @@
     <string name="sync_gpodder_config_title">Bei gpodder.net anmelden</string>
     <string name="sync_gpodder_login_invalid">Anmeldung bei gpodder.net fehlgeschlagen, bitte prüfen Sie Ihre Anmeldedaten!</string>
     <string name="sync_gpodder_device_id">Device ID</string>
+    <string name="sync_podcare_config_title">Bei Podcare anmelden</string>
+    <string name="sync_podcare_config_text">Bitte scannen Sie den QR-Code auf der Webseite, um die Verbindung herzustellen!</string>
+    <string name="sync_podcare_config_install">Installieren</string>
+    <string name="sync_podcare_config_scan">Scannen</string>
     <string name="preferences">Einstellungen</string>
     <string name="pref_select_all_on_start_title">Alle Podcasts laden</string>
     <string name="pref_select_all_on_start_summary">Beim Start der App alle Podcasts aktualisieren</string>

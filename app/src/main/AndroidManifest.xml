@@ -215,6 +215,9 @@
         <activity
             android:name="com.podcatcher.deluxe.ConfigureGpodderSyncActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.podcatcher.deluxe.ConfigurePodcareSyncActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
         <activity
             android:name="com.dropbox.client2.android.AuthActivity"

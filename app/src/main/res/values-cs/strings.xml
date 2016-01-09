@@ -134,6 +134,10 @@
     <string name="sync_gpodder_config_title">Nastavit gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Nepodařilo se přihlásit k gpodder.net. Prověřte, prosím, své přihlašovací údaje!</string>
     <string name="sync_gpodder_device_id">ID zařízení</string>
+    <string name="sync_podcare_config_title">Nastavit Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Instalovat</string>
+    <string name="sync_podcare_config_scan">Skenování</string>
     <string name="preferences">Nastavení</string>
     <string name="pref_select_all_on_start_title">Vybrat vše při spuštění</string>
     <string name="pref_select_all_on_start_summary">Nahrát všechny odběry, když se program spouští</string>

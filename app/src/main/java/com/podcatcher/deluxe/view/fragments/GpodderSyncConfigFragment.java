@@ -46,7 +46,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 /**
- * The gpodder.net user config dialog. Let's the user supply a name/password
+ * The gpodder.net user config dialog. Lets the user supply a name/password
  * combination and select a device id.
  *
  * <p><b>Register call-back:</b> The fragment will use the activity it is part of

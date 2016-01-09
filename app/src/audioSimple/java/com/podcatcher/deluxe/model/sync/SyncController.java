@@ -18,13 +18,13 @@
 
 package com.podcatcher.deluxe.model.sync;
 
+import android.net.Uri;
+
 import com.podcatcher.deluxe.listeners.OnChangePodcastListListener;
 import com.podcatcher.deluxe.listeners.OnLoadPodcastListListener;
 import com.podcatcher.deluxe.model.PodcastManager;
 import com.podcatcher.deluxe.model.SyncManager;
 import com.podcatcher.deluxe.model.types.Podcast;
-
-import android.net.Uri;
 
 import java.util.List;
 

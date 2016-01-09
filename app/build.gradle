@@ -118,8 +118,9 @@ android {
 
 dependencies {
     // These are the libs to include:
-    // 1) gpodder.net connector (local lib module)
+    // 1) gpodder.net and podcare connectors (local lib modules)
     compile project(':gpodder_sync')
+    compile project(':podcare_sync')
     // 2) Dropbox Sync
     compile files('libs/dropbox-sync-sdk-android.jar')
     // 3) Picasso (podcast logo loading)

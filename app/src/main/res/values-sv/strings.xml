@@ -129,6 +129,10 @@
     <string name="sync_gpodder_config_title">Konfigurera gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Kunde inte logga in på gpodder.net, var god kolla dina uppgifter!</string>
     <string name="sync_gpodder_device_id">Enhets-ID</string>
+    <string name="sync_podcare_config_title">Konfigurera Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Installera</string>
+    <string name="sync_podcare_config_scan">Skanna</string>
     <string name="preferences">Inställningar</string>
     <string name="pref_select_all_on_start_title">Välj alla vid uppstart</string>
     <string name="pref_select_all_on_start_summary">Ladda alla prenumerationer när applikationen startas</string>

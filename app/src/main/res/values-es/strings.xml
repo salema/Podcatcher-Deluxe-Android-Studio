@@ -129,6 +129,10 @@
     <string name="sync_gpodder_config_title">Registrarse en gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Imposible de conectarse a gpodder.net. Por favor, compruebe sus datos de acceso. </string>
     <string name="sync_gpodder_device_id">Device ID</string>
+    <string name="sync_podcare_config_title">Registrarse en Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Instalar</string>
+    <string name="sync_podcare_config_scan">Escanear</string>
     <string name="preferences">Ajustes</string>
     <string name="pref_select_all_on_start_title">Seleccionar todos al inicio</string>
     <string name="pref_select_all_on_start_summary">Actualizar todos los podcasts al inicio de la aplicación</string>

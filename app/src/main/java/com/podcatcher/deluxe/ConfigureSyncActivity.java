@@ -90,6 +90,9 @@ public class ConfigureSyncActivity extends BaseActivity implements ConfigureSync
             case GPODDER:
                 configureIntent.setClass(this, ConfigureGpodderSyncActivity.class);
                 break;
+            case PODCARE:
+                configureIntent.setClass(this, ConfigurePodcareSyncActivity.class);
+                break;
         }
 
         startActivityForResult(configureIntent, 42);

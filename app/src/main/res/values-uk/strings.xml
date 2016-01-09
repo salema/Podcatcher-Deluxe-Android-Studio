@@ -139,6 +139,10 @@
     <string name="sync_gpodder_config_title">Налаштувати gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Не вдалося авторизуватися на gpodder.net. Будь ласка, перевірте ваші дані!</string>
     <string name="sync_gpodder_device_id">ID пристрою</string>
+    <string name="sync_podcare_config_title">Налаштувати Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Встановити</string>
+    <string name="sync_podcare_config_scan">Сканування</string>
     <string name="preferences">Налаштування</string>
     <string name="pref_select_all_on_start_title">Обирати усе при старті</string>
     <string name="pref_select_all_on_start_summary">Оновлювати усі підписки при старті програми</string>

@@ -131,6 +131,10 @@
     <string name="sync_gpodder_config_title">Configure gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Failed to log into gpodder.net, please check your credentials!</string>
     <string name="sync_gpodder_device_id">Device ID</string>
+    <string name="sync_podcare_config_title">Configure Podcare</string>
+    <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
+    <string name="sync_podcare_config_install">Install</string>
+    <string name="sync_podcare_config_scan">Scan</string>
     <string name="preferences">Preferences</string>
     <string name="pref_select_all_on_start_title">Select all on start</string>
     <string name="pref_select_all_on_start_summary">Load all subscriptions when the app starts</string>
