@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -59,7 +58,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     /**
      * Milli-seconds to wait for system UI to be hidden
      */
-    private static final int HIDE_SYSTEM_UI_DELAY = 3000;
+    private static final int HIDE_SYSTEM_UI_DELAY = 5000;
     /**
      * The handler that delays the system UI hiding
      */
@@ -67,7 +66,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
         @Override
         public void handleMessage(Message msg) {
-            hideSystemUI();
+            setNavigationVisibility(false);
         }
     };
 
@@ -99,11 +98,11 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             // Needed for dimming/hiding of the system UI
             videoView.setOnSystemUiVisibilityChangeListener(this);
             videoView.setOnTouchListener(new View.OnTouchListener() {
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    showSystemUI();
-                    delayedHide();
                     showMediaControllerOverlay();
+                    setNavigationVisibility(true);
 
                     return true;
                 }
@@ -119,32 +118,27 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    protected void onResume() {
+        super.onResume();
 
-        // We need to initially set the view's system UI flags
-        showSystemUI();
-        // Hide system UI after some time
-        delayedHide();
+        showMediaControllerOverlay();
+        setNavigationVisibility(true);
     }
 
     @Override
     public void onSystemUiVisibilityChange(int flags) {
-        Log.d("FULL", "VISI CHANGED: " + flags);
         // Bit-wise and with the flag is zero iff navigation is shown
-        if ((flags & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0)
-            delayedHide();
-    }
+        final boolean visible = (flags & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == 0;
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//
-//        if (hasFocus)
-//            delayedHide();
-//        else
-//            hideSystemUIHandler.removeMessages(0);
-//    }
+        if (!visible)
+            controller.hide();
+        else {
+            // This is need to make sure the delayed hide actually triggers.
+            // If the navigation shows without this called, it will not disappear.
+            showMediaControllerOverlay();
+            setNavigationVisibility(true);
+        }
+    }
 
     @Override
     public void finish() {
@@ -169,6 +163,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             unbindService(connection);
         }
 
+        hideSystemUIHandler.removeMessages(0);
         super.onDestroy();
     }
 
@@ -242,29 +237,23 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            videoView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
-        else
-            videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-    }
+    private void setNavigationVisibility(boolean visible) {
+        final boolean newAndroid = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+        int newState = (newAndroid ? View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN : 0)
+                | (newAndroid ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0)
+                | (newAndroid ? View.SYSTEM_UI_FLAG_LAYOUT_STABLE : 0);
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void showSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-            videoView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (!visible) {
+            newState |= View.SYSTEM_UI_FLAG_LOW_PROFILE
+                    | (newAndroid ? View.SYSTEM_UI_FLAG_FULLSCREEN : 0)
+                    | (newAndroid ? View.SYSTEM_UI_FLAG_HIDE_NAVIGATION : 0);
+        } else
+            delayedHide();
+
+        videoView.setSystemUiVisibility(newState);
     }
 
     private void delayedHide() {
-        Log.d("FULL", "Delayed hide triggered");
         hideSystemUIHandler.removeMessages(0);
         hideSystemUIHandler.sendEmptyMessageDelayed(0, HIDE_SYSTEM_UI_DELAY);
     }
@@ -273,8 +262,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
         try {
             controller.show(HIDE_SYSTEM_UI_DELAY);
         } catch (Throwable th) {
-            // Cannot show controller, pass
-            Log.d("FULL", "Exception: " + th.toString());
+            // pass, maybe next time
         }
     }
 
@@ -293,7 +281,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             // Create the media controller to show when the surface is touched
             controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward());
             controller.setMediaPlayer(service);
-            controller.setAnchorView(videoView);
+            controller.setAnchorView(findViewById(R.id.controller_frame));
             showMediaControllerOverlay();
 
             attachPrevNextListeners();
