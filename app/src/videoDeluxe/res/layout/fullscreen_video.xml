@@ -16,14 +16,26 @@
  * along with Podcatcher Deluxe. If not, see <http://www.gnu.org/licenses/>.
  */
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:gravity="center">
+    android:background="@android:color/black">
 
     <SurfaceView
         android:id="@+id/fullscreen_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/controller_anchor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </FrameLayout>
+</FrameLayout>

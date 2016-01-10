@@ -180,7 +180,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             // Update the controller
         else if (controller != null) {
             try {
-                controller.show();
+                controller.show(HIDE_SYSTEM_UI_DELAY);
             } catch (WindowManager.BadTokenException bte) {
                 // This happens of the Amazon devices a lot, not sure why
                 // pass
@@ -244,7 +244,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
     private void showMediaControllerOverlay() {
         if (controller != null)
-            controller.show();
+            controller.show(HIDE_SYSTEM_UI_DELAY);
     }
 
     /**
@@ -262,7 +262,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             // Create the media controller to show when the surface is touched
             controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward());
             controller.setMediaPlayer(service);
-            controller.setAnchorView(videoView);
+            controller.setAnchorView(findViewById(R.id.controller_anchor));
 
             attachPrevNextListeners();
         }
@@ -313,7 +313,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
                 service.seekTo(0);
 
                 // This will make sure the progress bar is updated
-                controller.show();
+                controller.show(HIDE_SYSTEM_UI_DELAY);
             }
         }
     }
