@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2015 Kevin Hausmann
+ * Copyright 2012-2016 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *

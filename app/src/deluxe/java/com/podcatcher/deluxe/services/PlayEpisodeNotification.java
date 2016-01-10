@@ -1,5 +1,5 @@
 /**
- * Copyright 2012-2015 Kevin Hausmann
+ * Copyright 2012-2016 Kevin Hausmann
  *
  * This file is part of Podcatcher Deluxe.
  *
@@ -18,6 +18,13 @@
 
 package com.podcatcher.deluxe.services;
 
+import com.podcatcher.deluxe.BaseActivity.ContentMode;
+import com.podcatcher.deluxe.EpisodeListActivity;
+import com.podcatcher.deluxe.PodcastActivity;
+import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.EpisodeManager;
+import com.podcatcher.deluxe.model.types.Episode;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,12 +37,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v7.app.NotificationCompat;
 
-import com.podcatcher.deluxe.BaseActivity.ContentMode;
-import com.podcatcher.deluxe.EpisodeListActivity;
-import com.podcatcher.deluxe.PodcastActivity;
-import com.podcatcher.deluxe.R;
-import com.podcatcher.deluxe.model.EpisodeManager;
-import com.podcatcher.deluxe.model.types.Episode;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
