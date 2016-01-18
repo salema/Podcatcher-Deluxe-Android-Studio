@@ -337,7 +337,8 @@ public abstract class EpisodeActivity extends BaseActivity implements
                 if (download) {
                     showToast(getString(R.string.download_started, selection.getEpisode().getName()));
 
-                    episodeManager.download(selection.getEpisode());
+                    episodeManager.download(selection.getEpisode(),
+                            ((Podcatcher) getApplication()).isOnFastConnection());
                     updateDownloadUi();
                 } else {
                     // For deletion, we show a confirmation dialog first

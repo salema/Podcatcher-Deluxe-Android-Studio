@@ -180,7 +180,8 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
      */
     public void onDownloadClicked() {
         for (Integer position : getCheckedPositions())
-            episodeManager.download((Episode) fragment.getListAdapter().getItem(position));
+            episodeManager.download((Episode) fragment.getListAdapter().getItem(position),
+                    ((Podcatcher) fragment.getActivity().getApplication()).isOnFastConnection());
 
         // Action picked, so close the CAB
         actionMode.finish();
