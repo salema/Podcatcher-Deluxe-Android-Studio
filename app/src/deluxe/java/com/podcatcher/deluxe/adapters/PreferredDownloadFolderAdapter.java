@@ -73,11 +73,11 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
          */
         SDCARD_APP;
 
-        // Potential path to the external sd card
-        private String[] sdCardPaths = {"/mnt/extSdCard", "/storage/extSdCard",
-                "/mnt/external_sd", "/storage/external_sd", "/mnt/ext_sd", "/storage/ext_sd",
-                "/mnt/sdcard/ext_sd", "/storage/sdcard/ext_sd", "/mnt/external", "/storage/external",
-                "/mnt/sdcard/external_sd", "/storage/sdcard/external_sd"};
+        // Potential prefixes and paths to the external sd card
+        private static String[] SD_CARD_PREFIXES = {"/storage/", "/mnt/", ""};
+        private static String[] SD_CARD_PATH_CANDIDATES = {
+                "ext_sd", "external", "external_sd", "extSdCard",
+                "sdcard1", "sdcard2", "sdcard/ext_sd", "sdcard/external_sd"};
 
         /**
          * Find the file object represented by the enum values. The method might access
@@ -105,14 +105,15 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
                     } else return internalAppFolder;
                 case SDCARD:
                     // Check all paths and select the first that exists
-                    for (String path : sdCardPaths) {
-                        final File sdCardRoot = new File(path);
-                        final File sdCardPodcasts = new File(sdCardRoot, "Podcasts");
+                    for (String prefix : SD_CARD_PREFIXES)
+                        for (String path : SD_CARD_PATH_CANDIDATES) {
+                            final File sdCardRoot = new File(prefix + path);
+                            final File sdCardPodcasts = new File(sdCardRoot, "Podcasts");
 
-                        if (sdCardRoot.exists() &&
-                                (sdCardPodcasts.isDirectory() || sdCardPodcasts.mkdir()))
-                            return sdCardPodcasts;
-                    }
+                            if (sdCardRoot.exists() &&
+                                    (sdCardPodcasts.isDirectory() || sdCardPodcasts.mkdir()))
+                                return sdCardPodcasts;
+                        }
 
                     return null;
                 case SDCARD_APP:
