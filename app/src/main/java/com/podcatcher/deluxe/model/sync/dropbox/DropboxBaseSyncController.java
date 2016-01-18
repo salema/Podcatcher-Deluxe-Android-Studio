@@ -175,7 +175,7 @@ abstract class DropboxBaseSyncController extends SyncController
         if (!syncRunning) {
             syncRunning = true;
 
-            new SyncStoreTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
+            new SyncStoreTask().executeOnExecutor(SYNC_EXECUTOR, (Void) null);
         }
     }
 

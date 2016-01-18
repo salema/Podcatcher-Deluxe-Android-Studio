@@ -36,6 +36,9 @@ import android.net.Uri;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +47,13 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class SyncController implements OnLoadPodcastListener, OnChangePodcastListListener,
         OnLoadPodcastListListener, OnChangeEpisodeStateListener, OnDownloadEpisodeListener {
+
+    /**
+     * An executor for all sync tasks to run on. This should be used instead
+     * of the global thread pool in order to prevent long waits and because
+     * of its unlimited queue.
+     */
+    public static final Executor SYNC_EXECUTOR = new SyncThreadPoolExecutor();
 
     /**
      * The podcast manager handle
@@ -282,5 +292,20 @@ public abstract class SyncController implements OnLoadPodcastListener, OnChangeP
      */
     protected void onDeactivate() {
         // pass, sub-classes might want to do some house keeping here...
+    }
+}
+
+class SyncThreadPoolExecutor extends ThreadPoolExecutor {
+
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final int CORE_POOL_SIZE = CPU_COUNT + 1;
+    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
+    private static final int KEEP_ALIVE = 1;
+
+    public SyncThreadPoolExecutor() {
+        super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
+                TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
+
+        allowCoreThreadTimeOut(true);
     }
 }

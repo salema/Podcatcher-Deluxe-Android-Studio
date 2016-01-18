@@ -39,7 +39,7 @@ public abstract class SyncPodcastListTask extends AsyncTask<Void, Map.Entry<Bool
     /**
      * Podcast manager handle.
      */
-    final private PodcastManager podcastManager = PodcastManager.getInstance();
+    private final PodcastManager podcastManager = PodcastManager.getInstance();
 
     /**
      * This task triggers some LoadPodcastTasks and might need to track their progress.
@@ -92,7 +92,7 @@ public abstract class SyncPodcastListTask extends AsyncTask<Void, Map.Entry<Bool
                         // Bad podcast, do not add
                         allPodcastLoadsFinishedSemaphore.release();
                     }
-                }).executeOnExecutor(THREAD_POOL_EXECUTOR, podcast);
+                }).executeOnExecutor(SyncController.SYNC_EXECUTOR, podcast);
             } else
                 podcastManager.removePodcast(podcastManager.indexOf(podcast));
         }

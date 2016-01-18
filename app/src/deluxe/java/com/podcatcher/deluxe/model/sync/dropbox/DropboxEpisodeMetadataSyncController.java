@@ -244,8 +244,7 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
         if (SyncMode.SEND_RECEIVE.equals(mode) && !syncRunning) {
             syncRunning = true;
 
-            new ApplyEpisodeMetadataTask()
-                    .executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
+            new ApplyEpisodeMetadataTask().executeOnExecutor(SYNC_EXECUTOR, (Void) null);
         }
     }
 

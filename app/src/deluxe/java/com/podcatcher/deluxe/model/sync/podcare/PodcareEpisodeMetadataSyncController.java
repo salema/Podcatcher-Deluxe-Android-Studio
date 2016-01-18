@@ -202,7 +202,7 @@ abstract class PodcareEpisodeMetadataSyncController extends PodcarePodcastListSy
         if (!syncRunning) {
             syncRunning = true;
 
-            new SyncEpisodeMetadataTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
+            new SyncEpisodeMetadataTask().executeOnExecutor(SYNC_EXECUTOR, (Void) null);
         }
     }
 

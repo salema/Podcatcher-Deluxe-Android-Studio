@@ -23,7 +23,6 @@ import com.podcatcher.deluxe.model.types.Podcast;
 import com.podcatcher.labs.sync.podcare.types.Subscription;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.AbstractMap;
@@ -63,7 +62,7 @@ abstract class PodcarePodcastListSyncController extends PodcareBaseSyncControlle
         if (!syncRunning) {
             syncRunning = true;
 
-            new PodcareSyncPodcastListTask().executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, (Void) null);
+            new PodcareSyncPodcastListTask().executeOnExecutor(SYNC_EXECUTOR, (Void) null);
         }
     }
 
