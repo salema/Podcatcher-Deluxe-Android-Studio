@@ -63,6 +63,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 
+import static android.media.AudioManager.AUDIOFOCUS_GAIN;
+import static android.media.AudioManager.STREAM_MUSIC;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_BUFFERING;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_ERROR;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
@@ -464,6 +466,10 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             mediaSession.updateMetadata();
             mediaSession.updateQueue();
 
+            // Some players might not properly call onInfo(),
+            // so we set this information here if we have it
+            canSeek = !episode.isLive();
+
             // Start playback for new episode
             try {
                 // Play local file
@@ -724,35 +730,27 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         episodeManager.updateDuration(currentEpisode,
                 (int) TimeUnit.MILLISECONDS.toSeconds(getDuration()));
 
-        // Try to get audio focus
-        int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN);
-
-        // Only start playback if focus is granted
+        // Start playback if focus is granted
+        final int result = audioManager.requestAudioFocus(this, STREAM_MUSIC, AUDIOFOCUS_GAIN);
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // So we have audio focus and we tell the audio manager all the details
-            // about our playback and that it should route media buttons to us
+            // Tell the audio manager all the details about our playback
+            // and that it should route media buttons to us
             mediaSession.setActive(true);
-
-            // Start the playback the right point in time
+            // Start playback at the right point in time
             seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
-            // A) If we play audio or do not have a video surface, simply start
-            // playback without caring about any video content
+
+            // If we play audio or do not have a video surface, simply start
             if (!isVideo() || videoSurfaceProvider == null) {
                 player.start();
                 alertListenersOnInitialStart();
-            }
-            // B) If we have a video and a surface, use it
-            else {
+            } else {
                 // The surface is available, we can start right away
                 if (videoSurfaceProvider.isVideoSurfaceAvailable()) {
                     setVideoSurface(videoSurfaceProvider.getVideoSurface());
                     player.start();
                     alertListenersOnInitialStart();
-                }
-                // No surface yet, the surface callback will need to start
-                // the playback
-                else
+                } else
+                    // No surface yet, make the surface callback start playback
                     startPlaybackOnSurfaceCreate = true;
             }
 

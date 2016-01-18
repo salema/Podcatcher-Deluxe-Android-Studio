@@ -55,6 +55,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static android.media.AudioManager.AUDIOFOCUS_GAIN;
+import static android.media.AudioManager.STREAM_MUSIC;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_BUFFERING;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_ERROR;
 import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
@@ -352,6 +354,10 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
             this.currentEpisode = episode;
             mediaSession.updateMetadata();
 
+            // Some players might not properly call onInfo(),
+            // so we set this information here if we have it
+            canSeek = !episode.isLive();
+
             // Start playback for new episode
             try {
                 // Play local file
@@ -545,17 +551,14 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         episodeManager.updateDuration(currentEpisode,
                 (int) TimeUnit.MILLISECONDS.toSeconds(getDuration()));
 
-        // Try to get audio focus
-        int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN);
-
-        // Only start playback if focus is granted
+        // Start playback if focus is granted
+        final int result = audioManager.requestAudioFocus(this, STREAM_MUSIC, AUDIOFOCUS_GAIN);
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            // So we have audio focus and we tell the audio manager all the details
-            // about our playback and that it should route media buttons to us
+            // Tell the audio manager all the details about our playback
+            // and that it should route media buttons to us
             mediaSession.setActive(true);
 
-            // Go start and show the notification
+            // Start playback, show notification, and update state
             player.start();
             mediaSession.updatePlayState(STATE_PLAYING);
             rebuildNotification(true);
