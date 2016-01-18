@@ -84,18 +84,18 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
             final Intent intent = new Intent(Intent.ACTION_VIEW);
             final Episode episode = selection.getEpisode();
 
-            // TODO What about the playlist?
             if (episodeManager.isDownloaded(episode))
                 intent.setData(Uri.parse(episodeManager.getLocalPath(episode)));
             else
-                intent.setData(Uri.parse(selection.getEpisode().getMediaUrl()));
+                intent.setData(Uri.parse(episode.getMediaUrl()));
 
             intent.setClassName(MXVP_PRO, MXVP_PLAYBACK_CLASS);
             intent.putExtra(EXTRA_VIDEO_LIST, new Uri[]{intent.getData()});
-            intent.putExtra(EXTRA_TITLE, selection.getEpisode().getName());
-            intent.putExtra(EXTRA_POSITION, episodeManager.getResumeAt(selection.getEpisode()));
+            intent.putExtra(EXTRA_TITLE, episode.getName());
             intent.putExtra(EXTRA_RETURN_RESULT, true);
             intent.putExtra(EXTRA_HEADERS, createHeaderList(episode));
+            if (!episode.isLive())
+                intent.putExtra(EXTRA_POSITION, episodeManager.getResumeAt(episode));
 
             startActivityForResult(intent, 42);
         } else if (!selection.isFullscreenEnabled())
@@ -104,7 +104,8 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        final Episode episode = selection.getEpisode();
+        if (resultCode == RESULT_OK && episode != null && !episode.isLive()) {
             // Depending on the version of MX Player installed,
             // there are different ways to determine if playback completed
             final boolean playbackCompleted = data.hasExtra(EXTRA_END_BY) ? // This should be present for version >= 1.7.19
@@ -112,14 +113,14 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
                     !data.hasExtra(EXTRA_POSITION); // This is a good approximation
 
             if (playbackCompleted) {
-                episodeManager.setState(selection.getEpisode(), true);
-                episodeManager.setResumeAt(selection.getEpisode(), null);
+                episodeManager.setState(episode, true);
+                episodeManager.setResumeAt(episode, null);
 
                 if (PreferenceManager.getDefaultSharedPreferences(this)
                         .getBoolean(SettingsActivity.KEY_AUTO_DELETE, false))
-                    episodeManager.deleteDownload(selection.getEpisode());
+                    episodeManager.deleteDownload(episode);
             } else if (data.hasExtra(EXTRA_POSITION))
-                episodeManager.setResumeAt(selection.getEpisode(), data.getIntExtra(EXTRA_POSITION, 0));
+                episodeManager.setResumeAt(episode, data.getIntExtra(EXTRA_POSITION, 0));
         }
 
         finish();
