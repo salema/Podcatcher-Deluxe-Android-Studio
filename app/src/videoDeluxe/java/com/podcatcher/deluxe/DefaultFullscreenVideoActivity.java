@@ -158,7 +158,14 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
         // Detach from play service (prevents leaking)
         if (service != null) {
-            service.setVideoSurfaceProvider(null);
+            // This was introduced to prevent leaking of this activity,
+            // but broke proper resume of the embedded video playback.
+            // It should not make any difference though, because any
+            // references to this activity instance held by the play
+            // service will be overwritten by the episode fragment
+            // immediately after this activity went away.
+            // service.setVideoSurfaceProvider(null);
+
             service.removePlayServiceListener(this);
             unbindService(connection);
         }
@@ -177,15 +184,9 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
         // the activity.
         if (service != null && !service.isVideo())
             finish();
+        else {
             // Update the controller
-        else if (controller != null) {
-            try {
-                controller.show(HIDE_SYSTEM_UI_DELAY);
-            } catch (WindowManager.BadTokenException bte) {
-                // This happens of the Amazon devices a lot, not sure why
-                // pass
-            }
-
+            showMediaControllerOverlay();
             attachPrevNextListeners();
         }
     }
@@ -244,7 +245,12 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
 
     private void showMediaControllerOverlay() {
         if (controller != null)
-            controller.show(HIDE_SYSTEM_UI_DELAY);
+            try {
+                controller.show(HIDE_SYSTEM_UI_DELAY);
+            } catch (WindowManager.BadTokenException bte) {
+                // This happens of the Amazon devices a lot, not sure why
+                // pass
+            }
     }
 
     /**
@@ -313,7 +319,7 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
                 service.seekTo(0);
 
                 // This will make sure the progress bar is updated
-                controller.show(HIDE_SYSTEM_UI_DELAY);
+                showMediaControllerOverlay();
             }
         }
     }
