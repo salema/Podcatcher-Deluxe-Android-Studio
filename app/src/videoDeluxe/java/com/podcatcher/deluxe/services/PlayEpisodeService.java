@@ -398,7 +398,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
 
             // If the surface is already available, we can switch to it,
             // otherwise the callback will take care of that.
-            if (isPrepared() && isVideo() && videoSurfaceProvider.isVideoSurfaceAvailable())
+            if (videoSurfaceProvider.isVideoSurfaceAvailable())
                 setVideoSurface(videoSurfaceProvider.getVideoSurface());
         }
         // If the provider is set to <code>null</code>, reset the display
@@ -418,7 +418,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         if (startPlaybackOnSurfaceCreate) {
             startPlaybackOnSurfaceCreate = false;
 
-            start();
+            player.start();
             alertListenersOnInitialStart();
         }
     }
@@ -739,20 +739,13 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             // Start playback at the right point in time
             seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
 
-            // If we play audio or do not have a video surface, simply start
-            if (!isVideo() || videoSurfaceProvider == null) {
+            if (videoSurfaceProvider.isVideoSurfaceAvailable()) {
+                // The surface is available, we can start right away
                 player.start();
                 alertListenersOnInitialStart();
-            } else {
-                // The surface is available, we can start right away
-                if (videoSurfaceProvider.isVideoSurfaceAvailable()) {
-                    setVideoSurface(videoSurfaceProvider.getVideoSurface());
-                    player.start();
-                    alertListenersOnInitialStart();
-                } else
-                    // No surface yet, make the surface callback start playback
-                    startPlaybackOnSurfaceCreate = true;
-            }
+            } else
+                // No surface yet, make the surface callback start playback
+                startPlaybackOnSurfaceCreate = true;
 
             // Show notification and update state
             mediaSession.updatePlayState(STATE_PLAYING);
@@ -934,7 +927,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             wifiLock.release();
 
         // Reset player
-        setVideoSurface(null);
         player.reset();
     }
 
