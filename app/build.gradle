@@ -133,4 +133,7 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:support-annotations:+'
+
+    // 5) Connect SDK for casting
+    compile 'com.connectsdk:connect-sdk-android:+'
 }

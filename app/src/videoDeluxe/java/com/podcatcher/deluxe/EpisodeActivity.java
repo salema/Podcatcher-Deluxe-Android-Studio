@@ -52,14 +52,13 @@ import android.widget.SeekBar;
 import java.util.concurrent.TimeUnit;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.podcatcher.deluxe.view.fragments.DeleteDownloadsConfirmationFragment.TAG;
 
 /**
  * Show episode activity. This is thought of as an abstract activity for an app
  * only consisting of an episode view and the player. Sub-classes could extend
  * or simply show this layout.
  */
-public abstract class EpisodeActivity extends BaseActivity implements
+public abstract class EpisodeActivity extends CastActivity implements
         PlayerListener, PlayServiceListener, OnSelectEpisodeListener, OnDownloadEpisodeListener,
         OnEpisodeInformationChangedListener, OnChangePlaylistListener, OnChangeEpisodeStateListener,
         OnRequestFullscreenListener, OnPlayEpisodeFromPositionListener {
