@@ -22,7 +22,7 @@
         android:id="@+id/episode_download_menuitem"
         android:icon="@drawable/ic_menu_download"
         android:orderInCategory="5"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/download"
         tools:ignore="AlwaysShowAction" />
 </menu>

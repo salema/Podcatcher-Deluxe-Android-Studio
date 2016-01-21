@@ -23,6 +23,8 @@ import com.podcatcher.deluxe.model.types.Episode;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -48,6 +50,8 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
 
     public static final String TAG = "CAST";
 
+    private MenuItem castMenuItem;
+
     private DiscoveryManager discoveryManager;
     private ConnectableDevice castDevice;
     private LaunchSession launchSession;
@@ -69,6 +73,36 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        this.castMenuItem = menu.findItem(R.id.cast_menuitem);
+        castMenuItem.setVisible(!discoveryManager.getCompatibleDevices().isEmpty());
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.cast_menuitem) {
+            // Select device to cast to
+            final DevicePicker picker = new DevicePicker(this);
+            picker.getPickerDialog("Cast", new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    castDevice = (ConnectableDevice) parent.getItemAtPosition(position);
+                    castDevice.addListener(CastActivity.this);
+                    castDevice.connect();
+                }
+            }).show();
+
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -78,17 +112,7 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
     @Override
     public void onDeviceAdded(DiscoveryManager manager, ConnectableDevice device) {
         Log.d(TAG, "Device found: " + device);
-
-        final DevicePicker picker = new DevicePicker(this);
-        picker.getPickerDialog("Cast", new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                castDevice = (ConnectableDevice) parent.getItemAtPosition(position);
-                castDevice.addListener(CastActivity.this);
-                castDevice.connect();
-            }
-        }).show();
+        castMenuItem.setVisible(!discoveryManager.getCompatibleDevices().isEmpty());
     }
 
     @Override
@@ -98,7 +122,7 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
 
     @Override
     public void onDeviceRemoved(DiscoveryManager manager, ConnectableDevice device) {
-
+        castMenuItem.setVisible(!discoveryManager.getCompatibleDevices().isEmpty());
     }
 
     @Override
@@ -109,7 +133,32 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
     @Override
     public void onDeviceReady(ConnectableDevice device) {
         Log.d(TAG, "Device ready: " + device);
+        castMenuItem.setIcon(R.drawable.ic_menu_cast_connected);
 
+        castCurrentEpisode();
+    }
+
+    @Override
+    public void onDeviceDisconnected(ConnectableDevice device) {
+        castMenuItem.setIcon(R.drawable.ic_menu_cast);
+    }
+
+    @Override
+    public void onPairingRequired(ConnectableDevice device, DeviceService service, DeviceService.PairingType pairingType) {
+
+    }
+
+    @Override
+    public void onCapabilityUpdated(ConnectableDevice device, List<String> added, List<String> removed) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectableDevice device, ServiceCommandError error) {
+        castMenuItem.setIcon(R.drawable.ic_menu_cast);
+    }
+
+    protected void castCurrentEpisode() {
         final Episode episode = selection.getEpisode();
         if (episode != null) {
             final MediaInfo mediaInfo = new MediaInfo.Builder(episode.getMediaUrl(), episode.getMediaType())
@@ -132,25 +181,5 @@ public abstract class CastActivity extends BaseActivity implements DiscoveryMana
                 }
             });
         }
-    }
-
-    @Override
-    public void onDeviceDisconnected(ConnectableDevice device) {
-
-    }
-
-    @Override
-    public void onPairingRequired(ConnectableDevice device, DeviceService service, DeviceService.PairingType pairingType) {
-
-    }
-
-    @Override
-    public void onCapabilityUpdated(ConnectableDevice device, List<String> added, List<String> removed) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectableDevice device, ServiceCommandError error) {
-
     }
 }
