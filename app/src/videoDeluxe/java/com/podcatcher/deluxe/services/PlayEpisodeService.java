@@ -223,11 +223,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
      * The registered video surface provider
      */
     private VideoSurfaceProvider videoSurfaceProvider;
-    /**
-     * Flag indicating whether we need to start playback once the surface is
-     * ready
-     */
-    private boolean startPlaybackOnSurfaceCreate = false;
 
     /**
      * Binder given to clients
@@ -414,13 +409,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         setVideoSurface(holder);
-
-        if (startPlaybackOnSurfaceCreate) {
-            startPlaybackOnSurfaceCreate = false;
-
-            player.start();
-            alertListenersOnInitialStart();
-        }
     }
 
     @Override
@@ -739,26 +727,17 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
             // Start playback at the right point in time
             seekTo(episodeManager.getResumeAt(currentEpisode) - REWIND_ON_RESUME_DURATION);
 
-            if (videoSurfaceProvider.isVideoSurfaceAvailable()) {
-                // The surface is available, we can start right away
-                player.start();
-                alertListenersOnInitialStart();
-            } else
-                // No surface yet, make the surface callback start playback
-                startPlaybackOnSurfaceCreate = true;
-
-            // Show notification and update state
+            // Start playback, show notification, and update state
+            player.start();
             mediaSession.updatePlayState(STATE_PLAYING);
             rebuildNotification(true);
             startProgressUpdater();
+
+            // Alert the listeners
+            for (PlayServiceListener listener : listeners)
+                listener.onPlaybackStarted();
         } else
             onError(mediaPlayer, 0, 0);
-    }
-
-    private void alertListenersOnInitialStart() {
-        // Alert the listeners
-        for (PlayServiceListener listener : listeners)
-            listener.onPlaybackStarted();
     }
 
     @Override
@@ -917,7 +896,6 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         this.buffering = false;
         this.bufferedPosition = 0;
         this.canSeek = true;
-        this.startPlaybackOnSurfaceCreate = false;
         this.lastPaused = null;
 
         // Release resources
