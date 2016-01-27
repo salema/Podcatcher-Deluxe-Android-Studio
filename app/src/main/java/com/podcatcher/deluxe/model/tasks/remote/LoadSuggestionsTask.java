@@ -82,7 +82,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
     /**
      * The date after which an added podcast suggestion is considered recent
      */
-    private static final Date RECENT_LIMIT = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(30));
+    private static final Date RECENT_LIMIT = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(120));
     /**
      * Our log tag
      */
@@ -201,16 +201,16 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
      * @param list  List to add suggestions to.
      */
     private void addSuggestionsFromJsonArray(JSONArray array, List<Suggestion> list) {
-        // So, this get a little bit involved. In order to make a good judgement which
+        // Okay, this gets a little bit involved. In order to make a good judgement which
         // podcast suggestions should be featured, we need a breakdown by language as
-        // well as votes. This is done in the hitlist:
+        // well as popularity index. This is done in the hitlist:
         final Map<Language, SortedMap<Integer, List<Suggestion>>> hitlist = new HashMap<>();
 
         // Fill hitlist of suggestions
         for (int index = 0; index < array.length(); index++)
             try {
                 final JSONObject object = array.getJSONObject(index);
-                final int votes = object.has(JSON.VOTES) ? object.getInt(JSON.VOTES) : 0;
+                final int popIndex = object.has(JSON.INDEX) ? object.getInt(JSON.INDEX) : 0;
                 final Suggestion suggestion = createSuggestion(object);
 
                 // Might be null if parsing failed -> do not add to result list
@@ -227,13 +227,13 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
                         hitlist.put(language, languageHitlist);
                     }
                     // Put suggestion into the right bucket
-                    if (languageHitlist.containsKey(votes))
-                        languageHitlist.get(votes).add(suggestion);
+                    if (languageHitlist.containsKey(popIndex))
+                        languageHitlist.get(popIndex).add(suggestion);
                     else {
                         final List<Suggestion> entry = new ArrayList<>();
                         entry.add(suggestion);
 
-                        languageHitlist.put(votes, entry);
+                        languageHitlist.put(popIndex, entry);
                     }
                 }
             } catch (JSONException | ArrayIndexOutOfBoundsException e) {

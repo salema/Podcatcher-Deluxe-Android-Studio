@@ -24,7 +24,6 @@ package com.podcatcher.deluxe.model.tags;
 @SuppressWarnings("javadoc")
 public class JSON {
     public static final String TITLE = "title";
-    public static final String NODE = "node";
     public static final String KEYWORDS = "keywords";
     public static final String FEED = "feed";
     public static final String FEED_LABEL = "label";
@@ -34,7 +33,7 @@ public class JSON {
     public static final String LANGUAGE = "language";
     public static final String TYPE = "type";
     public static final String EXPLICIT = "explicit";
-    public static final String VOTES = "votes";
+    public static final String INDEX = "index";
     public static final String DATE_ADDED = "added";
 
     public static final String VALUE_DELIMITER = ", ";
