@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -266,7 +267,21 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             service.addPlayServiceListener(DefaultFullscreenVideoActivity.this);
 
             // Create the media controller to show when the surface is touched
-            controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward());
+            controller = new MediaController(DefaultFullscreenVideoActivity.this, service.canSeekForward()) {
+
+                @Override
+                public boolean dispatchKeyEvent(KeyEvent event) {
+                    if (event != null && KeyEvent.KEYCODE_BACK == event.getKeyCode() &&
+                            KeyEvent.ACTION_DOWN == event.getAction() && event.getRepeatCount() == 0) {
+                        // Override the default behaviour, i.e. close on first back command
+                        // instead of just hiding the media controller
+                        finish();
+
+                        return true;
+                    } else
+                        return super.dispatchKeyEvent(event);
+                }
+            };
             controller.setMediaPlayer(service);
             controller.setAnchorView(findViewById(R.id.controller_anchor));
 
