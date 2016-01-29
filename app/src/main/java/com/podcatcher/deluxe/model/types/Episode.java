@@ -343,8 +343,8 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
                 pubDate = parseDate(parser.nextText());
             else if (tagName.equals(RSS.DURATION))
                 duration = parseDuration(parser.nextText());
-            else if (tagName.equals(RSS.DESCRIPTION))
-                description = parser.nextText();
+            else if (tagName.equals(RSS.DESCRIPTION) || tagName.equals(RSS.SUMMARY))
+                description = parseDescription(parser.nextText());
             else if (isContentEncodedTag(parser))
                 content = parser.nextText();
             else if (tagName.equals(RSS.ENCLOSURE))
@@ -357,6 +357,19 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
 
         // Make sure we end at item tag
         parser.require(XmlPullParser.END_TAG, "", RSS.ITEM);
+    }
+
+    private String parseDescription(String candidate) {
+        if (candidate != null)
+            candidate = candidate.trim();
+
+        // Keep better (longer) episode meta text
+        if (description == null || description.isEmpty())
+            return candidate;
+        else if (candidate == null || candidate.isEmpty())
+            return description;
+        else
+            return description.length() >= candidate.length() ? description : candidate;
     }
 
     protected void parseEnclosure(@NonNull XmlPullParser parser) throws XmlPullParserException, IOException {
