@@ -113,7 +113,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
     /**
      * Flag for the video view visibility
      */
-    private boolean showVideo = false;
+    private boolean showVideo = true;
     /**
      * Flag for the video fill space option
      */
@@ -323,6 +323,7 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
 
         surfaceView = (SurfaceView) view.findViewById(R.id.surface);
         surfaceView.getHolder().addCallback(videoCallback);
+        videoSurfaceAvailable = surfaceView.getHolder().getSurface() != null;
         fullscreenButton = (ImageView) view.findViewById(R.id.fullscreen_overlay);
 
         viewCreated = true;
@@ -562,7 +563,11 @@ public class EpisodeFragment extends Fragment implements VideoSurfaceProvider {
                     metadataBoxTextView.getText().length() == 0 ? GONE : VISIBLE);
             metadataBoxDivider.setVisibility(currentEpisode == null ? GONE :
                     metadataBoxTextView.getText().length() == 0 || showVideo ? GONE : VISIBLE);
-            videoView.setVisibility(showVideo ? VISIBLE : GONE);
+
+            // Some media player implementations will skip all video callbacks,
+            // e.g. onVideoSizeChanged() if no surface has been set. So, we need
+            // keep the surface visible until the episode playback service is up.
+            videoView.setVisibility(showVideo ? VISIBLE : videoSurfaceAvailable ? GONE : VISIBLE);
             descriptionView.setVisibility(currentEpisode == null ||
                     (showVideo && videoFillsSpace) ? GONE : VISIBLE);
         }
