@@ -99,6 +99,9 @@ public class PodcastListItemView extends PodcatcherListItemView {
                 R.plurals.episodes, episodeNumber, episodeNumber));
         if (podcast.canExpand())
             captionTextView.setText(String.format("%1$s %2$s", captionTextView.getText(), EXPANDABLE_INDICATOR));
+        final String feedLabel = podcast.getFeedLabel();
+        if (feedLabel != null && !feedLabel.trim().isEmpty())
+            captionTextView.setText(String.format("%1$s • %2$s", captionTextView.getText(), feedLabel));
         // The caption should only show if there are episodes or there is
         // progress to display
         ((View) captionTextView.getParent())

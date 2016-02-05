@@ -37,6 +37,7 @@ public abstract class OPML {
     public static final String PCD_NS_PREFIX = "pcd:";
     // Extra outline attributes defined by Podcatcher Deluxe
     public static final String PCD_LOGO = "logo";
+    public static final String PCD_LABEL = "feedLabel";
     public static final String PCD_USER = "user";
     public static final String PCD_PASS = "pass";
 }

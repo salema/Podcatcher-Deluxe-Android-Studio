@@ -505,14 +505,14 @@ public class PodcastManager implements OnLoadPodcastListListener, OnLoadPodcastL
      * can wrap multiple feeds (i.e. URLs).
      *
      * @param suggestion Podcast suggestion to check.
-     * @return <code>true</code> iff <em>any</em> of the suggestion's feeds is present in list.
+     * @return <code>true</code> iff <em>all</em> of the suggestion's feeds are present in list.
      */
-    public boolean contains(Suggestion suggestion) {
+    public boolean containsAllOf(Suggestion suggestion) {
         for (String feedUrl : suggestion.getFeeds().values())
-            if (findPodcastForUrl(feedUrl) != null)
-                return true;
+            if (findPodcastForUrl(feedUrl) == null)
+                return false;
 
-        return false;
+        return true;
     }
 
     /**

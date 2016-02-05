@@ -91,6 +91,11 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
      * The podcast's image (logo) location
      */
     protected String logoUrl;
+    /**
+     * The podcast's feed label. This is used for podcast with
+     * multiple feed (e.g. audio/video) and shown on the podcast list.
+     */
+    protected String feedLabel;
 
     /**
      * Username for http authorization
@@ -130,20 +135,41 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
     private int failedLoadAttempts = 0;
 
     /**
+     * Our collator used for podcast sorting
+     */
+    private static Collator collator = Collator.getInstance();
+
+    /**
      * Create a new podcast by name and RSS file location. The name will not be
      * read from the file, but remains as given (unless you give
      * <code>null</code> as the name). All other data on the podcast will only
      * be available after {@link #parse(XmlPullParser)} was called.
      *
      * @param name The podcast's name, if you give <code>null</code> the name
-     *             will be read from the RSS file on
-     *             {@link #parse(XmlPullParser)}.
+     *             will be read from the RSS file on {@link #parse(XmlPullParser)}.
      * @param url  The location of the podcast's RSS file (not <code>null</code>).
      * @see #parse(XmlPullParser)
      */
     public Podcast(@Nullable String name, @NonNull String url) {
         this.name = name;
         this.url = normalizeUrl(url);
+    }
+
+    /**
+     * @return The podcast's feed label, if any.
+     */
+    @Nullable
+    public String getFeedLabel() {
+        return feedLabel;
+    }
+
+    /**
+     * Set the feed label.
+     *
+     * @param feedLabel New label to use.
+     */
+    public void setFeedLabel(@Nullable String feedLabel) {
+        this.feedLabel = feedLabel;
     }
 
     /**
@@ -412,14 +438,53 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
 
     @Override
     public int compareTo(@NonNull Podcast another) {
-        if (name != null && another.name != null)
-            return Collator.getInstance().compare(name, another.name);
-        else if (name == null && another.name != null)
+        if (name != null && another.name != null) {
+            if (!name.equals(another.name))
+                // Name are enough to distinguish podcasts
+                return collator.compare(name, another.name);
+            else
+                // Also use feed labels
+                return compareToWithFeedLabel(another);
+        } else if (name == null && another.name != null)
             return -1;
         else if (name != null) // Always true: && another.name == null)
             return 1;
         else
             return 0;
+    }
+
+    private int compareToWithFeedLabel(Podcast another) {
+        // Add feed labels to names and include them in comparison
+        final String nameMe = name +
+                (feedLabel != null ? prepareCompare(feedLabel) : "");
+        final String nameAnother = another.name +
+                (another.feedLabel != null ? prepareCompare(another.feedLabel) : "");
+
+        return collator.compare(nameMe, nameAnother);
+    }
+
+    private String prepareCompare(String feedLabel) {
+        // This will determine the sorting for some special cases
+        switch (feedLabel.toLowerCase(Locale.ENGLISH)) {
+            case "audio":
+                return "1" + feedLabel;
+            case "video":
+                return "2" + feedLabel;
+            case "video sd":
+                return "3" + feedLabel;
+            case "video (sd)":
+                return "3" + feedLabel;
+            case "video (sd small)":
+                return "4" + feedLabel;
+            case "video (sd large)":
+                return "5" + feedLabel;
+            case "video hd":
+                return "6" + feedLabel;
+            case "video (hd)":
+                return "6" + feedLabel;
+            default:
+                return feedLabel;
+        }
     }
 
     /**

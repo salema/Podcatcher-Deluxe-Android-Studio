@@ -188,6 +188,10 @@ public class StorePodcastListTask extends StoreFileTask<List<Podcast>> {
                 opmlString = String.format("%s %s=\"%s\"", opmlString,
                         OPML.PCD_NS_PREFIX + OPML.PCD_LOGO, htmlEncode(podcast.getLogoUrl()));
 
+            if (podcast.getFeedLabel() != null)
+                opmlString = String.format("%s %s=\"%s\"", opmlString,
+                        OPML.PCD_NS_PREFIX + OPML.PCD_LABEL, htmlEncode(podcast.getFeedLabel()));
+
             if (writeAuthorization && podcast.getAuthorization() != null)
                 // We store the podcast password in the app's private folder base64
                 // encoded (but in the clear). This is justified because it is hard to

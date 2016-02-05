@@ -274,7 +274,7 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
 
         // Do filter!
         for (Suggestion suggestion : suggestions) {
-            if (!podcastManager.contains(suggestion) &&
+            if (!podcastManager.containsAllOf(suggestion) &&
                     !(podcastManager.blockExplicit() && suggestion.isExplicit()))
                 filteredSuggestionList.add(suggestion);
 
@@ -325,6 +325,9 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     @Override
     public void onFeedSelected(String podcastUrl) {
         final Podcast podcast = new Podcast(suggestionToAdd.getName(), podcastUrl);
+        // This will add feed label information if there is more than
+        // one of the suggestion's feeds on the podcast list.
+        applyFeedLabels(podcast);
 
         podcastManager.addPodcast(podcast);
         new ReportAdditionTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, podcast);
@@ -340,6 +343,27 @@ public class AddSuggestionActivity extends BaseActivity implements OnLoadSuggest
     @Override
     public void onResetFilters() {
         searchView.setQuery(null, false);
+    }
+
+    private void applyFeedLabels(Podcast newPodcast) {
+        int feedCount = 0;
+        for (String feedUrl : suggestionToAdd.getFeeds().values())
+            if (podcastManager.findPodcastForUrl(feedUrl) != null)
+                feedCount++;
+
+        if (feedCount > 0)
+            // Add label to the podcast currently added
+            newPodcast.setFeedLabel(suggestionToAdd.getLabelForFeed(newPodcast.getUrl()));
+        // Add labels to all other feeds already on the list
+        for (String feedUrl : suggestionToAdd.getFeeds().values()) {
+            final Podcast podcast = podcastManager.findPodcastForUrl(feedUrl);
+
+            if (podcast != null) {
+                final String label = suggestionToAdd.getLabelForFeed(podcast.getUrl());
+                if (label != null)
+                    podcast.setFeedLabel(label);
+            }
+        }
     }
 
     private void colorSearchView() {

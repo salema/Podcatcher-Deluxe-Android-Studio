@@ -123,6 +123,21 @@ public class Suggestion extends Podcast {
     }
 
     /**
+     * Find the suggestion feed label for given feed url.
+     *
+     * @param feedUrl The URL to check for.
+     * @return The label (stripped to the actual label part, i.e. omitting the meta info)
+     */
+    @Nullable
+    public String getLabelForFeed(String feedUrl) {
+        for (Map.Entry<String, String> feed : feeds.entrySet())
+            if (feedUrl != null && new Podcast(null, feedUrl).equalByUrl(feed.getValue()))
+                return feed.getKey().split("\\s\\(\\d+MB")[0];
+
+        return null;
+    }
+
+    /**
      * @return Whether this suggestion is featured.
      */
     public boolean isFeatured() {

@@ -19,6 +19,7 @@
 package com.podcatcher.deluxe.view.fragments;
 
 import com.podcatcher.deluxe.R;
+import com.podcatcher.deluxe.model.PodcastManager;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -198,6 +199,13 @@ public class SelectFeedFragment extends DialogFragment {
 
         private void show(String label, String url) {
             this.url = url;
+
+            // Disable if feed is already on the podcast list
+            final boolean disabled = PodcastManager.getInstance().findPodcastForUrl(url) != null;
+            itemView.setEnabled(!disabled);
+            labelView.setEnabled(!disabled);
+            captionView.setEnabled(!disabled);
+            iconView.setEnabled(!disabled);
 
             // We expect the label to look like "Feed name (Size, MIME type),
             // e.g. "Premium (60MB, audio/mp3)"

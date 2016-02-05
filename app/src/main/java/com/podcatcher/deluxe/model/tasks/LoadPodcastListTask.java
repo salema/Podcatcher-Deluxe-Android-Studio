@@ -190,10 +190,13 @@ public class LoadPodcastListTask extends AsyncTask<Void, Progress, List<Podcast>
             // Create the podcast
             result = new Podcast(name, parser.getAttributeValue("", OPML.XMLURL));
 
-            // Set logo URL if given
+            // Set logo URL and label if given
             final String logoUrl = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_LOGO);
             if (logoUrl != null && logoUrl.startsWith("http"))
                 result.setLogoUrl(Html.fromHtml(logoUrl).toString());
+            final String label = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_LABEL);
+            if (label != null && !label.trim().isEmpty())
+                result.setFeedLabel(label);
 
             // Set authorization information
             final String userAttribute = parser.getAttributeValue(OPML.PCD_NAMESPACE, OPML.PCD_USER);

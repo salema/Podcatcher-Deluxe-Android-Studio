@@ -63,6 +63,10 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
      * The view item root context
      */
     private Context context;
+    /**
+     * Our podcast manager handle
+     */
+    private final PodcastManager podcastManager = PodcastManager.getInstance();
 
     /**
      * The logo image view
@@ -204,7 +208,7 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
         descriptionTextView.setText(suggestion.getDescription());
 
         // 3. Prepare/Update the add button
-        if (PodcastManager.getInstance().contains(suggestion)) {
+        if (podcastManager.containsAllOf(suggestion)) {
             addButton.setEnabled(false);
             addButton.setImageResource(R.drawable.ic_checkmark);
         } else {
@@ -255,7 +259,8 @@ public class SuggestionListItemViewHolder extends RecyclerView.ViewHolder
     @Override
     public void onPodcastAdded(Podcast podcast) {
         // Callback from the Podcast Manager when a suggestion is added
-        if (podcast != null && suggestion != null && suggestion.hasFeed(podcast.getUrl())) {
+        if (podcast != null && suggestion != null &&
+                suggestion.hasFeed(podcast.getUrl()) && podcastManager.containsAllOf(suggestion)) {
             addButton.setEnabled(false);
             addButton.setImageResource(R.drawable.ic_checkmark);
         }
