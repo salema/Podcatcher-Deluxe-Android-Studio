@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -246,6 +247,6 @@ abstract class PodcareEpisodeMetadataSyncController extends PodcarePodcastListSy
 
     private String formatTime(int time) {
         final int hours = time / 3600;
-        return String.format("%02d:%02d:%02d", hours, (time / 60) - 60 * hours, time % 60);
+        return String.format(Locale.US, "%02d:%02d:%02d", hours, (time / 60) - 60 * hours, time % 60);
     }
 }

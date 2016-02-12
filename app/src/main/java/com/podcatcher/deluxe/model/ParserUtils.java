@@ -68,7 +68,7 @@ public class ParserUtils {
             final int millis = all.length == 2 && all[1].length() == 3 ? Integer.parseInt(all[1]) : 0;
             final String[] nonFraction = all.length == 2 ? all[0].split(":") : timeString.split(":");
 
-            int result = 0;
+            int result;
             switch (nonFraction.length) {
                 case 1:
                     // e.g. 03

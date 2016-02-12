@@ -245,7 +245,7 @@ public abstract class EpisodeDownloadManager extends EpisodeInformationManager i
                 // We need to put a download id. If the episode is already
                 // downloaded (i.e. the file exists) and we somehow missed to catch
                 // it, zero will work just fine.
-                meta.downloadId = 0l;
+                meta.downloadId = 0L;
                 // Prepare metadata record
                 meta.downloadProgress = -1;
                 putAdditionalEpisodeInformation(episode, meta);
