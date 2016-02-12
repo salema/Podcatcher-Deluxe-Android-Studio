@@ -27,11 +27,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,9 +41,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.util.Base64.NO_WRAP;
 import static android.util.Base64.encodeToString;
@@ -91,7 +90,7 @@ public class GpodderClient {
         private static final String AUTHORIZATION = "Authorization";
 
         @Override
-        public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+        public okhttp3.Response intercept(Chain chain) throws IOException {
             final Request originalRequest = chain.request();
             final Request requestWithAuth = originalRequest.newBuilder()
                     .removeHeader(AUTHORIZATION)
@@ -114,7 +113,7 @@ public class GpodderClient {
         private static final String USER_AGENT = "User-Agent";
 
         @Override
-        public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+        public okhttp3.Response intercept(Chain chain) throws IOException {
             final Request originalRequest = chain.request();
             final Request requestWithUserAgent = originalRequest.newBuilder()
                     .removeHeader(USER_AGENT)
@@ -132,27 +131,27 @@ public class GpodderClient {
                          @Nullable String userAgent, boolean enableHttpLogging) {
 
         // Configure OkHttp client
-        final OkHttpClient client = new OkHttpClient();
+        final OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         if (enableHttpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            client.interceptors().add(interceptor);
+            builder.addInterceptor(interceptor);
         }
 
         this.userAgent = userAgent;
         if (userAgent != null)
-            client.networkInterceptors().add(new UserAgentInterceptor());
+            builder.addNetworkInterceptor(new UserAgentInterceptor());
 
         this.username = username;
         final String credentials = String.format(CREDENTIALS_TEMPLATE, username, password);
         this.authorization = String.format(AUTH_TEMPLATE, encodeToString(credentials.getBytes(), NO_WRAP));
-        client.networkInterceptors().add(new AuthInterceptor());
+        builder.addNetworkInterceptor(new AuthInterceptor());
 
         // Create service handle
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GpodderService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(builder.build())
                 .build();
 
         this.service = retrofit.create(GpodderService.class);

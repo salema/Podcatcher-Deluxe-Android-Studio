@@ -28,9 +28,9 @@
 # Prevent proguard from deleting the Dropbox stuff
 -keep class com.dropbox.** {*;}
 # Prevent proguard from deleting the Retrofit stuff
--dontwarn retrofit.**
+-dontwarn retrofit2.**
 -dontwarn okio.**
--keep class retrofit.** { *; }
+-keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
 

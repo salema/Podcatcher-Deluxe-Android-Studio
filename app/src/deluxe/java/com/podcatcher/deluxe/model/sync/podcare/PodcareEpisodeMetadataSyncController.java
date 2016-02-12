@@ -95,22 +95,23 @@ abstract class PodcareEpisodeMetadataSyncController extends PodcarePodcastListSy
                     final List<Item> changes = podcare.getUpdatedEpisodes(connectId, changesSince);
 
                     // Go walk through changes and act on them
-                    for (Item item : changes) {
-                        // Only act if we know the podcast
-                        // (needs to be decoded since gpodder send encoded URLs)
-                        final String podcastUrl = item.getFeed();
-                        if (podcastManager.findPodcastForUrl(podcastUrl) == null)
-                            continue;
+                    if (changes != null)
+                        for (Item item : changes) {
+                            // Only act if we know the podcast
+                            // (needs to be decoded since gpodder send encoded URLs)
+                            final String podcastUrl = item.getFeed();
+                            if (podcastManager.findPodcastForUrl(podcastUrl) == null)
+                                continue;
 
-                        // Get us an episode
-                        final EpisodeMetadata meta = new EpisodeMetadata();
-                        meta.podcastUrl = podcastUrl;
-                        final Episode episode = meta.marshalEpisode(item.getFile());
-                        // Act on the episode action if in receive mode
-                        if (episode != null)
-                            //noinspection unchecked
-                            publishProgress(new AbstractMap.SimpleEntry<>(episode, item));
-                    }
+                            // Get us an episode
+                            final EpisodeMetadata meta = new EpisodeMetadata();
+                            meta.podcastUrl = podcastUrl;
+                            final Episode episode = meta.marshalEpisode(item.getFile());
+                            // Act on the episode action if in receive mode
+                            if (episode != null)
+                                //noinspection unchecked
+                                publishProgress(new AbstractMap.SimpleEntry<>(episode, item));
+                        }
                 }
 
                 // 2. Upload local changes and clear them from the local action

@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
 
 import java.io.IOException;
 
-import retrofit.Response;
+import retrofit2.Response;
 
 /**
  * A Podcare exception type. Used to wrap both IO and network problems

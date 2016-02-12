@@ -30,18 +30,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.os.Build.MODEL;
 import static android.os.Build.VERSION.RELEASE;
@@ -93,7 +94,7 @@ public class PodcareClient {
         private static final String USER_AGENT = "User-Agent";
 
         @Override
-        public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+        public okhttp3.Response intercept(Chain chain) throws IOException {
             final Request originalRequest = chain.request();
             final Request requestWithUserAgent = originalRequest.newBuilder()
                     .removeHeader(USER_AGENT)
@@ -143,21 +144,21 @@ public class PodcareClient {
         this.userAgent = userAgent;
 
         // Configure OkHttp client
-        final OkHttpClient client = new OkHttpClient();
+        final OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         if (enableHttpLogging) {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            client.interceptors().add(interceptor);
+            builder.addInterceptor(interceptor);
         }
 
         if (userAgent != null)
-            client.networkInterceptors().add(new UserAgentInterceptor());
+            builder.addNetworkInterceptor(new UserAgentInterceptor());
 
         // Create service handle
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(PodcareService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(builder.build())
                 .build();
 
         this.service = retrofit.create(PodcareService.class);
@@ -198,7 +199,7 @@ public class PodcareClient {
         service.connect(apiKey, connectKey, MODEL, ANDROID, RELEASE).enqueue(new Callback<ConnectResponse>() {
 
             @Override
-            public void onResponse(Response<ConnectResponse> response, Retrofit retrofit) {
+            public void onResponse(Call<ConnectResponse> call, Response<ConnectResponse> response) {
                 if (response.isSuccess())
                     listener.onConnect(response.body().getConnectId());
                 else
@@ -206,7 +207,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<ConnectResponse> call, Throwable error) {
                 listener.onConnectFailed(new PodcareException(error));
             }
         });
@@ -240,7 +241,7 @@ public class PodcareClient {
         service.disconnect(apiKey, connectId).enqueue(new Callback<MessageResponse>() {
 
             @Override
-            public void onResponse(Response<MessageResponse> response, Retrofit retrofit) {
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccess() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
@@ -248,7 +249,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<MessageResponse> call, Throwable error) {
                 if (listener != null)
                     listener.onRequestFailed(new PodcareException(error));
             }
@@ -283,7 +284,7 @@ public class PodcareClient {
         service.getSubscriptions(apiKey, connectId).enqueue(new Callback<List<Subscription>>() {
 
             @Override
-            public void onResponse(Response<List<Subscription>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<Subscription>> call, Response<List<Subscription>> response) {
                 if (response.isSuccess())
                     listener.onGetSubscriptions(response.body());
                 else
@@ -291,7 +292,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<List<Subscription>> call, Throwable error) {
                 listener.onGetSubscriptionsFailed(new PodcareException(error));
             }
         });
@@ -328,7 +329,7 @@ public class PodcareClient {
         service.addSubscriptions(apiKey, connectId, gson.toJson(feeds)).enqueue(new Callback<MessageResponse>() {
 
             @Override
-            public void onResponse(Response<MessageResponse> response, Retrofit retrofit) {
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccess() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
@@ -336,7 +337,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<MessageResponse> call, Throwable error) {
                 if (listener != null)
                     listener.onRequestFailed(new PodcareException(error));
             }
@@ -375,7 +376,7 @@ public class PodcareClient {
         service.updateSubscription(apiKey, connectId, feed.getFeed(), feed.getState()).enqueue(new Callback<MessageResponse>() {
 
             @Override
-            public void onResponse(Response<MessageResponse> response, Retrofit retrofit) {
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccess() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
@@ -383,7 +384,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<MessageResponse> call, Throwable error) {
                 if (listener != null)
                     listener.onRequestFailed(new PodcareException(error));
             }
@@ -448,7 +449,7 @@ public class PodcareClient {
         service.getUpdatedEpisodes(apiKey, connectId, feedUrl).enqueue(new Callback<List<Item>>() {
 
             @Override
-            public void onResponse(Response<List<Item>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccess())
                     listener.onGetEpisodes(response.body());
                 else
@@ -456,7 +457,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<List<Item>> call, Throwable error) {
                 listener.onGetEpisodesFailed(new PodcareException(error));
             }
         });
@@ -492,7 +493,7 @@ public class PodcareClient {
         service.getUpdatedEpisodes(apiKey, connectId, timestamp).enqueue(new Callback<List<Item>>() {
 
             @Override
-            public void onResponse(Response<List<Item>> response, Retrofit retrofit) {
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
                 if (response.isSuccess())
                     listener.onGetEpisodes(response.body());
                 else
@@ -500,7 +501,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<List<Item>> call, Throwable error) {
                 listener.onGetEpisodesFailed(new PodcareException(error));
             }
         });
@@ -540,7 +541,7 @@ public class PodcareClient {
         service.updateEpisodes(apiKey, connectId, gson.toJson(episodes)).enqueue(new Callback<MessageResponse>() {
 
             @Override
-            public void onResponse(Response<MessageResponse> response, Retrofit retrofit) {
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccess() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
@@ -548,7 +549,7 @@ public class PodcareClient {
             }
 
             @Override
-            public void onFailure(Throwable error) {
+            public void onFailure(Call<MessageResponse> call, Throwable error) {
                 if (listener != null)
                     listener.onRequestFailed(new PodcareException(error));
             }

@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import retrofit.Call;
-import retrofit.http.Body;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Retrofit service definition for the gpodder.net sync service.
@@ -45,7 +45,7 @@ interface GpodderService {
     String TIME_STAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     @POST("api/2/auth/{username}/login.json")
-    Call<Boolean> login(@Path("username") String user);
+    Call<Void> login(@Path("username") String user);
 
     @GET("subscriptions/{username}.json")
     Call<Set<Subscription>> getSubscriptions(@Path("username") String user);
@@ -55,7 +55,7 @@ interface GpodderService {
 
 
     @PUT("subscriptions/{username}/{deviceid}.json")
-    Call<String> putSubscriptions(@Path("username") String user, @Path("deviceid") String deviceId,
+    Call<Void> putSubscriptions(@Path("username") String user, @Path("deviceid") String deviceId,
                                   @Body Set<String> feedUrls);
 
     @POST("api/2/subscriptions/{username}/{deviceid}.json")
