@@ -25,7 +25,6 @@ import com.podcatcher.deluxe.adapters.FileListAdapter;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -280,7 +279,7 @@ public class SelectFileFragment extends DialogFragment {
      * Interface definition for a callback to be invoked when an file or folder
      * is selected by the user in the select file dialog.
      */
-    public interface SelectFileDialogListener extends OnCancelListener {
+    public interface SelectFileDialogListener extends android.content.DialogInterface.OnCancelListener {
 
         /**
          * A file/folder was selected by the user in the dialog.
