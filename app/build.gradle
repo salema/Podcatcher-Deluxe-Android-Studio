@@ -42,14 +42,16 @@ android {
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
             minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         amazon {
             buildConfigField "String", "STORE", "\"Amazon\""
             buildConfigField "String", "STORE_URL_PREFIX", "\"http://www.amazon.com/gp/mas/dl/android?p=\""
 
             minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         slideme {
             buildConfigField "String", "STORE", "\"SlideMe\""
@@ -58,7 +60,8 @@ android {
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
             minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         samsung {
             buildConfigField "String", "STORE", "\"Samsung\""
@@ -66,7 +69,8 @@ android {
             buildConfigField "String", "STORE_URL_PREFIX", "\"market://details?id=\""
 
             minifyEnabled true
-            proguardFiles 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -122,7 +126,7 @@ dependencies {
     compile project(':gpodder_sync')
     compile project(':podcare_sync')
     // 2) Dropbox Sync
-    compile files('libs/dropbox-sync-sdk-android.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     // 3) Picasso (podcast logo loading)
     compile 'com.squareup.picasso:picasso:+'
 
