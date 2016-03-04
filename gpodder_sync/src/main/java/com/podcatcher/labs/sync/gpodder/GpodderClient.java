@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -172,13 +171,16 @@ public class GpodderClient {
      * Get all podcast subscriptions for all devices of the current user.
      *
      * @return The list of podcasts, might be empty.
-     * @throws IOException On network problems.
+     * @throws IOException On network problems or if the server returns an error code.
      */
     @NonNull
     public Set<Subscription> getSubscriptions() throws IOException {
         final Response<Set<Subscription>> response = service.getSubscriptions(username).execute();
 
-        return response.isSuccess() ? response.body() : new HashSet<Subscription>();
+        if (response.isSuccess())
+            return response.body();
+        else
+            throw new IOException("The gpodder.net server returned error code " + response.code());
     }
 
     /**
@@ -186,13 +188,16 @@ public class GpodderClient {
      *
      * @param deviceId The device to check.
      * @return The list of podcast feed URLs gpodder has synced to the device.
-     * @throws IOException On network problems.
+     * @throws IOException On network problems or if the server returns an error code.
      */
     @NonNull
     public Set<String> getSubscriptions(@NonNull String deviceId) throws IOException {
         final Response<Set<String>> response = service.getSubscriptions(username, deviceId).execute();
 
-        return response.isSuccess() ? response.body() : new HashSet<String>();
+        if (response.isSuccess())
+            return response.body();
+        else
+            throw new IOException("The gpodder.net server returned error code " + response.code());
     }
 
     /**
