@@ -29,6 +29,11 @@
     <dimen name="episode_list_shadow_padding">0dp</dimen>
     <dimen name="metadata_box_elevation">4dp</dimen>
     <dimen name="notification_logo_size">200dp</dimen>
+    <!-- Values used by Samsung's multi window feature -->
+    <dimen name="app_default_width">632dp</dimen>
+    <dimen name="app_default_height">598dp</dimen>
+    <dimen name="app_minimum_width">632dp</dimen>
+    <dimen name="app_minimum_height">598dp</dimen>
     <integer name="progress_bar_horizontal_weight">3</integer>
     <integer name="suggestion_grid_columns">2</integer>
     <integer name="suggestion_description_lines">3</integer>
