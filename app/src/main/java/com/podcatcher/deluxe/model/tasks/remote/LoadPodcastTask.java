@@ -261,6 +261,13 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
                 }
             }
         } catch (XmlPullParserException xppe) {
+            // Parsing the podcast RSS file failed. Check the podcast repository
+            // for a better URL to use, if this is the first page parsed and
+            // no new URL has been set yet.
+            if (shouldMoveToUrl == null && !podcast.isExpanded())
+                // Set the shouldMoveToUrl member variable, see onCancelled()
+                hasAlternativeUrl(podcast);
+
             errorCode = PodcastLoadError.NOT_PARSABLE;
             cancel(true);
         } catch (IOException ioe) {
