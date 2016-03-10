@@ -25,6 +25,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,9 +95,9 @@ public class SelectFeedFragment extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final RecyclerView feedList = (RecyclerView) view.findViewById(R.id.feed_list);
 
-        // feedList.addItemDecoration(new Divider);
+        feedList.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         feedList.setHasFixedSize(true);
-        feedList.setLayoutManager(new WrappingLinearLayoutManager(getActivity()));
+        feedList.setLayoutManager(new LinearLayoutManager(getActivity()));
         feedList.setAdapter(adapter);
     }
 
@@ -238,52 +241,32 @@ public class SelectFeedFragment extends DialogFragment {
         }
     }
 
-    /**
-     * Layout manager extension that measures its children and makes sure
-     * that the recycler view is no higher than all its kids together
-     */
-    private class WrappingLinearLayoutManager extends LinearLayoutManager {
+    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
 
-        private WrappingLinearLayoutManager(Context context) {
-            super(context, LinearLayoutManager.VERTICAL, false);
+        private final Drawable divider;
+
+        public SimpleDividerItemDecoration(Context context) {
+            // Use the list view divider drawable
+            final TypedArray a = context.obtainStyledAttributes(new int[]{android.R.attr.listDivider});
+            divider = a.getDrawable(0);
+            a.recycle();
         }
-
-        private int[] mMeasuredDimension = new int[2];
 
         @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,
-                              int widthSpec, int heightSpec) {
-            int width = 0;
-            int height = 0;
+        public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+            final int left = parent.getPaddingLeft();
+            final int right = parent.getWidth() - parent.getPaddingRight();
 
-            // Measure all items and calculate dimensions
-            for (int i = 0; i < getItemCount(); i++) {
-                measureScrapChild(recycler, i,
-                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
-                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
-                        mMeasuredDimension);
+            final int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = parent.getChildAt(i);
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
-                // Add up heights and keep largest width
-                height = height + mMeasuredDimension[1];
-                width = mMeasuredDimension[0] > width ? mMeasuredDimension[0] : width;
-            }
+                final int top = child.getBottom() + params.bottomMargin;
+                final int bottom = top + divider.getIntrinsicHeight();
 
-            setMeasuredDimension(width, height);
-        }
-
-        private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
-                                       int heightSpec, int[] measuredDimension) {
-            View view = recycler.getViewForPosition(position);
-            if (view != null) {
-                RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) view.getLayoutParams();
-                int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec,
-                        getPaddingLeft() + getPaddingRight(), p.width);
-                int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec,
-                        getPaddingTop() + getPaddingBottom(), p.height);
-                view.measure(childWidthSpec, childHeightSpec);
-                measuredDimension[0] = view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
-                measuredDimension[1] = view.getMeasuredHeight() + p.bottomMargin + p.topMargin;
-                recycler.recycleView(view);
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(canvas);
             }
         }
     }
