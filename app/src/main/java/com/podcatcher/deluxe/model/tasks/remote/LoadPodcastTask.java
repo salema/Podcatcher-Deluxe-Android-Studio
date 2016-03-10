@@ -262,9 +262,10 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             }
         } catch (XmlPullParserException xppe) {
             // Parsing the podcast RSS file failed. Check the podcast repository
-            // for a better URL to use, if this is the first page parsed and
-            // no new URL has been set yet.
-            if (shouldMoveToUrl == null && !podcast.isExpanded())
+            // for a better URL to use, if this is the first page parsed for the
+            // first time and no new URL has been set yet.
+            if (shouldMoveToUrl == null &&
+                    !podcast.isExpanded() && podcast.getFailedLoadAttemptCount() == 0)
                 // Set the shouldMoveToUrl member variable, see onCancelled()
                 hasAlternativeUrl(podcast);
 
