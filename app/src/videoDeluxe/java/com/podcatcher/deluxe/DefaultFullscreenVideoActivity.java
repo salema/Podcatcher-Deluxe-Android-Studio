@@ -165,7 +165,6 @@ public class DefaultFullscreenVideoActivity extends BaseActivity implements Vide
             // references to this activity instance held by the play
             // service will be overwritten by the episode fragment
             // immediately after this activity went away.
-            // service.setVideoSurfaceProvider(null);
 
             service.removePlayServiceListener(this);
             unbindService(connection);

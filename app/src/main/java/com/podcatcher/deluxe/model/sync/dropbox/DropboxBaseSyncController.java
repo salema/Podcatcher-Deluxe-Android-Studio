@@ -89,14 +89,6 @@ abstract class DropboxBaseSyncController extends SyncController
             this.store = DbxDatastore.openDefault(account);
             store.addSyncStatusListener(this);
 
-            // To make this delete all contents in the Dropbox data store
-            // uncomment this and comment out the table handle getters in the
-            // sub-classes, then toggle the controller a few times
-            // syncStore();
-            // printStore();
-            // clearStore();
-            // printStore();
-
             // Init the hash for id creation
             this.md5Hash = MessageDigest.getInstance("MD5");
         } catch (DbxException e) {
