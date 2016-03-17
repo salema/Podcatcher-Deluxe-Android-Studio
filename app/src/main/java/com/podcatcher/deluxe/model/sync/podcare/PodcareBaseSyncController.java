@@ -25,7 +25,7 @@ import com.podcatcher.labs.sync.podcare.PodcareClient;
 import android.content.Context;
 
 import static com.podcatcher.deluxe.BuildConfig.DEBUG;
-import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.Podcatcher.userAgentValue;
 
 /**
  * A sync controller for the Podcare service, abstract base class.
@@ -58,7 +58,7 @@ abstract class PodcareBaseSyncController extends PreferenceSetSyncController {
     protected PodcareBaseSyncController(Context context) {
         super(context);
 
-        podcare = new PodcareClient(context.getString(R.string.podcare_api_key), USER_AGENT_VALUE, DEBUG);
+        podcare = new PodcareClient(context.getString(R.string.podcare_api_key), userAgentValue, DEBUG);
         connectId = preferences.getString(CONNECT_ID_KEY, null);
     }
 }

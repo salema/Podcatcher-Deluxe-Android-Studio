@@ -61,7 +61,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
     /**
      * String to put in JSON for missing values, use null to disable
      */
-    private static String NO_VALUE = null;
+    private static String noValue = null;
 
     /**
      * Max age of latest podcast episode. Podcasts with older episodes
@@ -218,20 +218,20 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
         public JsonDummy(SuggestionImport si) {
             this.title = cleanUp(si.getName());
-            this.subtitle = si.subtitle == null || si.subtitle.length() == 0 ? NO_VALUE : si.subtitle;
+            this.subtitle = si.subtitle == null || si.subtitle.length() == 0 ? noValue : si.subtitle;
 
-            this.keywords = si.keywords == null || si.keywords.length() == 0 ? NO_VALUE : si.keywords;
+            this.keywords = si.keywords == null || si.keywords.length() == 0 ? noValue : si.keywords;
             if (si.keywords != null && si.keywords.length() > 160)
                 Log.w(TAG, "Podcast " + title + " keywords are too long!");
 
             this.feed = si.getUrl().replace("http://", "feed://");
 
-            this.logo = si.getLogoUrl() == null ? NO_VALUE : si.getLogoUrl();
+            this.logo = si.getLogoUrl() == null ? noValue : si.getLogoUrl();
             if (si.getLogoUrl() == null)
                 Log.w(TAG, "Podcast " + title + " has no logo!");
 
             this.site = si.link != null && si.link.length() > 5 ?
-                    si.link.endsWith("/") ? si.link.substring(0, si.link.length() - 1) : si.link : NO_VALUE;
+                    si.link.endsWith("/") ? si.link.substring(0, si.link.length() - 1) : si.link : noValue;
 
             if (si.getDescription() == null)
                 this.description = si.summary;

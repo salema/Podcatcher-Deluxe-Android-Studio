@@ -64,7 +64,7 @@ public class Podcatcher extends Application {
     /**
      * The user agent string we use to identify us
      */
-    public static String USER_AGENT_VALUE;
+    public static String userAgentValue;
     /**
      * The http request header field key for the authorization
      */
@@ -95,7 +95,7 @@ public class Podcatcher extends Application {
         super.onCreate();
 
         // First things first, set-up user agent
-        USER_AGENT_VALUE = String.format("%1$s/%2$s", getString(R.string.app_name), VERSION_NAME);
+        userAgentValue = String.format("%1$s/%2$s", getString(R.string.app_name), VERSION_NAME);
 
         Picasso.with(this).setIndicatorsEnabled(BuildConfig.DEBUG);
 

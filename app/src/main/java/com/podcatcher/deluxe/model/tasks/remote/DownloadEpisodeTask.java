@@ -55,7 +55,7 @@ import static android.app.DownloadManager.STATUS_FAILED;
 import static android.app.DownloadManager.STATUS_SUCCESSFUL;
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_KEY;
-import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.Podcatcher.userAgentValue;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.BAD_EPISODE;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.DESTINATION_NOT_WRITABLE;
 import static com.podcatcher.deluxe.model.tasks.remote.DownloadEpisodeTask.EpisodeDownloadError.DOWNLOAD_APP_DISABLED;
@@ -209,7 +209,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
                         .setTitle(episode.getName())
                         .setDescription(episode.getPodcast().getName())
                         .setNotificationVisibility(Request.VISIBILITY_VISIBLE)
-                        .addRequestHeader(USER_AGENT_KEY, USER_AGENT_VALUE)
+                        .addRequestHeader(USER_AGENT_KEY, userAgentValue)
                         .addRequestHeader("Cache-Control", "no-store")
                         .setAllowedNetworkTypes(NETWORK_WIFI | (wifiOnly ? 0 : NETWORK_MOBILE))
                         .setAllowedOverRoaming(!wifiOnly);

@@ -38,7 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.podcatcher.deluxe.BuildConfig.DEBUG;
-import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.Podcatcher.userAgentValue;
 
 /**
  * Non-UI activity to configure the Podcare synchronization settings.
@@ -59,7 +59,7 @@ public class ConfigurePodcareSyncActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.podcare = new PodcareClient(getString(R.string.podcare_api_key), USER_AGENT_VALUE, DEBUG);
+        this.podcare = new PodcareClient(getString(R.string.podcare_api_key), userAgentValue, DEBUG);
 
         if (savedInstanceState == null) {
             // Toggle link/unlink depending on current state

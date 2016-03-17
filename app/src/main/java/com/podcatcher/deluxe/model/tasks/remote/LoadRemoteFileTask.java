@@ -30,7 +30,7 @@ import java.net.URL;
 
 import static com.podcatcher.deluxe.Podcatcher.AUTHORIZATION_KEY;
 import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_KEY;
-import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.Podcatcher.userAgentValue;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
 /**
@@ -115,7 +115,7 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
         // We set a custom user agent here because some servers (e.g. ZDF.de)
         // redirect connections from mobile devices to servers where the content
         // we are looking for might not be available.
-        connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+        connection.setRequestProperty(USER_AGENT_KEY, userAgentValue);
         // Set cache control directive
         if (maxStale >= 0)
             connection.addRequestProperty("Cache-Control", "max-stale=" + maxStale);

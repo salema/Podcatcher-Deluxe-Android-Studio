@@ -141,7 +141,7 @@ public class PlayerFragment extends Fragment {
     /**
      * Delay in between rewind or forward call-backs
      */
-    private static long TRANSPORT_DELAY = 500;
+    private static long transportDelay = 500;
     /**
      * The rewind runnable
      */
@@ -152,7 +152,7 @@ public class PlayerFragment extends Fragment {
             listener.onRewind();
 
             if (rewindButton.isPressed())
-                transportationHandler.postDelayed(rewindRunnable, TRANSPORT_DELAY);
+                transportationHandler.postDelayed(rewindRunnable, transportDelay);
         }
     };
     /**
@@ -165,7 +165,7 @@ public class PlayerFragment extends Fragment {
             listener.onFastForward();
 
             if (forwardButton.isPressed())
-                transportationHandler.postDelayed(forwardRunnable, TRANSPORT_DELAY);
+                transportationHandler.postDelayed(forwardRunnable, transportDelay);
         }
     };
 

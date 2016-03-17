@@ -73,7 +73,7 @@ abstract class GpodderBaseSyncController extends PreferenceSetSyncController {
         final String user = preferences.getString(USERNAME_KEY, "");
         final String password = preferences.getString(PASSWORD_KEY, "");
 
-        client = new GpodderClient(user, password, Podcatcher.USER_AGENT_VALUE, BuildConfig.DEBUG);
+        client = new GpodderClient(user, password, Podcatcher.userAgentValue, BuildConfig.DEBUG);
         deviceId = preferences.getString(DEVICE_ID_KEY, getDefaultDeviceId(context));
     }
 
