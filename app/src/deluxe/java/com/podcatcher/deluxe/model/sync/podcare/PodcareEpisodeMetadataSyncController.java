@@ -246,7 +246,7 @@ abstract class PodcareEpisodeMetadataSyncController extends PodcarePodcastListSy
         return result;
     }
 
-    private String formatTime(int time) {
+    private static String formatTime(int time) {
         final int hours = time / 3600;
         return String.format(Locale.US, "%02d:%02d:%02d", hours, (time / 60) - 60 * hours, time % 60);
     }

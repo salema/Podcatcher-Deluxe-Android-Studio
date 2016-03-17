@@ -300,7 +300,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         return suggestion;
     }
 
-    private boolean isRecentDate(String dateAdded) {
+    private static boolean isRecentDate(String dateAdded) {
         try {
             return DATE_FORMATTER.parse(dateAdded).after(RECENT_LIMIT);
         } catch (ParseException e) {
@@ -366,7 +366,7 @@ public class LoadSuggestionsTask extends LoadRemoteFileTask<Void, List<Suggestio
         }
     }
 
-    private byte[] readFileToByteArray(InputStream stream) throws IOException {
+    private static byte[] readFileToByteArray(InputStream stream) throws IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
         int nRead;

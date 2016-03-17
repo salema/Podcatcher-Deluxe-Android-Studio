@@ -463,7 +463,7 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
         return collator.compare(nameMe, nameAnother);
     }
 
-    private String prepareCompare(String feedLabel) {
+    private static String prepareCompare(String feedLabel) {
         // This will determine the sorting for some special cases
         switch (feedLabel.toLowerCase(Locale.ENGLISH)) {
             case "audio":
