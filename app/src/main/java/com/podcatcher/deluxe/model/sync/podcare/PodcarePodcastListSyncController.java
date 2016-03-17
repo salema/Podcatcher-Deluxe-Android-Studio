@@ -91,7 +91,7 @@ abstract class PodcarePodcastListSyncController extends PodcareBaseSyncControlle
                     final Set<String> subscriptionsRemovedLocally = getLocallyRemovedPodcastUrls();
 
                     // 2b1. Push new local subscriptions to Podcare
-                    if (subscriptionsAddedLocally.size() > 0) {
+                    if (!subscriptionsAddedLocally.isEmpty()) {
                         final List<Subscription> feedsToUpload = new ArrayList<>(subscriptionsAddedLocally.size());
 
                         for (String feed : subscriptionsAddedLocally) {
@@ -100,7 +100,7 @@ abstract class PodcarePodcastListSyncController extends PodcareBaseSyncControlle
                                 feedsToUpload.add(podcastToSubscription(podcast, Subscription.State.SUBSCRIBED));
                         }
 
-                        if (feedsToUpload.size() > 0)
+                        if (!feedsToUpload.isEmpty())
                             podcare.addSubscriptions(connectId, feedsToUpload);
                     }
 

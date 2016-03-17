@@ -242,7 +242,7 @@ public class EpisodeListFragment extends PodcatcherListFragment {
 
             // Restore checked items, if any
             boolean shouldResetAllCheckedStates = true;
-            if (checkedEpisodes != null && checkedEpisodes.size() > 0) {
+            if (checkedEpisodes != null && !checkedEpisodes.isEmpty()) {
                 getListView().clearChoices();
 
                 for (Episode episode : checkedEpisodes) {
