@@ -139,7 +139,7 @@ public class EpisodeListFragment extends PodcatcherListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.episode_list_swipe_refresh));
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.episode_list_swipe_refresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

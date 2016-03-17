@@ -279,7 +279,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
                 float deltaY = motionEvent.getRawY() - mDownY;
                 if (Math.abs(deltaX) > mSlop && Math.abs(deltaY) < Math.abs(deltaX) / 2) {
                     mSwiping = true;
-                    mSwipingSlop = (deltaX > 0 ? mSlop : -mSlop);
+                    mSwipingSlop = deltaX > 0 ? mSlop : -mSlop;
                     mListView.requestDisallowInterceptTouchEvent(true);
 
                     // Cancel ListView's touch (un-highlighting the item)

@@ -192,7 +192,7 @@ public class EpisodeListFragment extends PodcatcherListFragment implements Reord
         infoBoxTextView = (TextView) view.findViewById(R.id.info_box);
         infoBoxDivider = view.findViewById(R.id.info_box_divider);
 
-        refreshLayout = ((SwipeRefreshLayout) view.findViewById(R.id.episode_list_swipe_refresh));
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.episode_list_swipe_refresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

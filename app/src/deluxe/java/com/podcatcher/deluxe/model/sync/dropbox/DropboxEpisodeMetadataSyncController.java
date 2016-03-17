@@ -142,7 +142,7 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
                 long localValue = episodeManager.getResumeAt(episode);
                 // If the local value is zero, it means the same as reset in the
                 // Dropbox sync controller context, so rewrite
-                localValue = (localValue == 0 ? RESUME_AT_RESET : localValue);
+                localValue = localValue == 0 ? RESUME_AT_RESET : localValue;
 
                 if (localValue != remoteValue)
                     episodeManager.setResumeAt(episode,
@@ -216,7 +216,7 @@ abstract class DropboxEpisodeMetadataSyncController extends DropboxPodcastListSy
         try {
             // Find and alter record for given episode as needed
             final DbxRecord episodeRecord = findAndPrepareRecord(episode);
-            final long newValue = (millis == null ? RESUME_AT_RESET : millis);
+            final long newValue = millis == null ? RESUME_AT_RESET : millis;
             // Only write to the record if the data actually changed
             if (!episodeRecord.hasField(EPISODE_RESUME_AT) ||
                     episodeRecord.getLong(EPISODE_RESUME_AT) != newValue)

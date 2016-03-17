@@ -100,7 +100,7 @@ public abstract class EpisodeStateManager extends EpisodePlaylistManager impleme
             } // Metadata available
             else if (meta != null)
                 // We do not need to set this if false, simply remove the record
-                meta.isOld = (isOld != null && isOld ? true : null);
+                meta.isOld = isOld != null && isOld ? true : null;
 
             // We need to add the podcast URL to decide whether this meta
             // information is still needed later (Once the podcast feed is
