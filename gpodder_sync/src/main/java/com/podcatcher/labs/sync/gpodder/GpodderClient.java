@@ -161,7 +161,7 @@ public class GpodderClient {
      */
     public boolean authenticate() {
         try {
-            return service.login(username).execute().isSuccess();
+            return service.login(username).execute().isSuccessful();
         } catch (IOException e) {
             return false;
         }
@@ -177,7 +177,7 @@ public class GpodderClient {
     public Set<Subscription> getSubscriptions() throws IOException {
         final Response<Set<Subscription>> response = service.getSubscriptions(username).execute();
 
-        if (response.isSuccess())
+        if (response.isSuccessful())
             return response.body();
         else
             throw new IOException("The gpodder.net server returned error code " + response.code());
@@ -194,7 +194,7 @@ public class GpodderClient {
     public Set<String> getSubscriptions(@NonNull String deviceId) throws IOException {
         final Response<Set<String>> response = service.getSubscriptions(username, deviceId).execute();
 
-        if (response.isSuccess())
+        if (response.isSuccessful())
             return response.body();
         else
             throw new IOException("The gpodder.net server returned error code " + response.code());
@@ -210,7 +210,7 @@ public class GpodderClient {
      * @throws IOException On network problems.
      */
     public boolean putSubscriptions(@NonNull String deviceId, @NonNull Set<String> feedUrls) throws IOException {
-        return feedUrls.isEmpty() || service.putSubscriptions(username, deviceId, feedUrls).execute().isSuccess();
+        return feedUrls.isEmpty() || service.putSubscriptions(username, deviceId, feedUrls).execute().isSuccessful();
     }
 
     /**
@@ -232,7 +232,7 @@ public class GpodderClient {
             changes.put("add", additions);
             changes.put("remove", deletions);
 
-            return service.putSubscriptionChanges(username, deviceId, changes).execute().isSuccess();
+            return service.putSubscriptionChanges(username, deviceId, changes).execute().isSuccessful();
         }
     }
 
@@ -251,7 +251,7 @@ public class GpodderClient {
         final Response<EpisodeActionResponse> response =
                 service.getEpisodeActions(username, null, null, since, null).execute();
 
-        if (response.isSuccess()) {
+        if (response.isSuccessful()) {
             actions.addAll(response.body().getActions());
 
             // Gpodder sends results with latest first, we want to have this the other way around
@@ -286,7 +286,7 @@ public class GpodderClient {
         final Response<TimestampResponse> response =
                 service.postEpisodeActions(username, actions).execute();
 
-        return response.isSuccess() ? response.body().getTimestamp() : -1;
+        return response.isSuccessful() ? response.body().getTimestamp() : -1;
     }
 
     /**

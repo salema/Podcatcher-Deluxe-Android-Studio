@@ -181,7 +181,7 @@ public class PodcareClient {
         final Response<ConnectResponse> response =
                 service.connect(apiKey, connectKey, MODEL, ANDROID, RELEASE).execute();
 
-        return response.isSuccess() ? response.body().getConnectId() : null;
+        return response.isSuccessful() ? response.body().getConnectId() : null;
     }
 
     /**
@@ -200,7 +200,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<ConnectResponse> call, Response<ConnectResponse> response) {
-                if (response.isSuccess())
+                if (response.isSuccessful())
                     listener.onConnect(response.body().getConnectId());
                 else
                     listener.onConnectFailed(new PodcareException(response));
@@ -224,7 +224,7 @@ public class PodcareClient {
      * @see #disconnectAsync(String, OnFailedListener)
      */
     public boolean disconnect(@NonNull String connectId) throws IOException {
-        return service.disconnect(apiKey, connectId).execute().isSuccess();
+        return service.disconnect(apiKey, connectId).execute().isSuccessful();
     }
 
     /**
@@ -242,7 +242,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                if (response.isSuccess() && listener != null)
+                if (response.isSuccessful() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
                     listener.onRequestFailed(new PodcareException(response));
@@ -285,7 +285,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<List<Subscription>> call, Response<List<Subscription>> response) {
-                if (response.isSuccess())
+                if (response.isSuccessful())
                     listener.onGetSubscriptions(response.body());
                 else
                     listener.onGetSubscriptionsFailed(new PodcareException(response));
@@ -310,7 +310,7 @@ public class PodcareClient {
      * @see #addSubscriptionsAsync(String, List, OnFailedListener)
      */
     public boolean addSubscriptions(@NonNull String connectId, @NonNull List<Subscription> feeds) throws IOException {
-        return service.addSubscriptions(apiKey, connectId, gson.toJson(feeds)).execute().isSuccess();
+        return service.addSubscriptions(apiKey, connectId, gson.toJson(feeds)).execute().isSuccessful();
     }
 
     /**
@@ -330,7 +330,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                if (response.isSuccess() && listener != null)
+                if (response.isSuccessful() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
                     listener.onRequestFailed(new PodcareException(response));
@@ -357,7 +357,7 @@ public class PodcareClient {
      * @see com.podcatcher.labs.sync.podcare.types.Subscription.State
      */
     public boolean updateSubscription(@NonNull String connectId, @NonNull Subscription feed) throws IOException {
-        return service.updateSubscription(apiKey, connectId, feed.getFeed(), feed.getState()).execute().isSuccess();
+        return service.updateSubscription(apiKey, connectId, feed.getFeed(), feed.getState()).execute().isSuccessful();
     }
 
     /**
@@ -377,7 +377,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                if (response.isSuccess() && listener != null)
+                if (response.isSuccessful() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
                     listener.onRequestFailed(new PodcareException(response));
@@ -450,7 +450,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                if (response.isSuccess())
+                if (response.isSuccessful())
                     listener.onGetEpisodes(response.body());
                 else
                     listener.onGetEpisodesFailed(new PodcareException(response));
@@ -494,7 +494,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                if (response.isSuccess())
+                if (response.isSuccessful())
                     listener.onGetEpisodes(response.body());
                 else
                     listener.onGetEpisodesFailed(new PodcareException(response));
@@ -521,7 +521,7 @@ public class PodcareClient {
      * @see com.podcatcher.labs.sync.podcare.types.Item
      */
     public boolean updateEpisodes(@NonNull String connectId, @NonNull List<Item> episodes) throws IOException {
-        return service.updateEpisodes(apiKey, connectId, gson.toJson(episodes)).execute().isSuccess();
+        return service.updateEpisodes(apiKey, connectId, gson.toJson(episodes)).execute().isSuccessful();
     }
 
     /**
@@ -542,7 +542,7 @@ public class PodcareClient {
 
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
-                if (response.isSuccess() && listener != null)
+                if (response.isSuccessful() && listener != null)
                     listener.onSuccess();
                 else if (listener != null)
                     listener.onRequestFailed(new PodcareException(response));
