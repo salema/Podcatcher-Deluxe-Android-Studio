@@ -74,8 +74,8 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
         SDCARD_APP;
 
         // Potential prefixes and paths to the external sd card
-        private static String[] SD_CARD_PREFIXES = {"/storage/", "/mnt/", ""};
-        private static String[] SD_CARD_PATH_CANDIDATES = {
+        private static String[] sdCardPrefixes = {"/storage/", "/mnt/", ""};
+        private static String[] sdCardPathCandidates = {
                 "ext_sd", "external", "external_sd", "extSdCard",
                 "sdcard1", "sdcard2", "sdcard/ext_sd", "sdcard/external_sd"};
 
@@ -105,8 +105,8 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
                     } else return internalAppFolder;
                 case SDCARD:
                     // Check all paths and select the first that exists
-                    for (String prefix : SD_CARD_PREFIXES)
-                        for (String path : SD_CARD_PATH_CANDIDATES) {
+                    for (String prefix : sdCardPrefixes)
+                        for (String path : sdCardPathCandidates) {
                             final File sdCardRoot = new File(prefix + path);
                             final File sdCardPodcasts = new File(sdCardRoot, "Podcasts");
 

@@ -29,7 +29,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import static com.podcatcher.deluxe.BuildConfig.DEBUG;
-import static com.podcatcher.deluxe.Podcatcher.USER_AGENT_VALUE;
+import static com.podcatcher.deluxe.Podcatcher.userAgentValue;
 
 /**
  * Non-UI activity to configure the gpodder synchronization settings.
@@ -77,7 +77,7 @@ public class ConfigureGpodderSyncActivity extends BaseActivity implements
         this.authCheckTask = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                if (!new GpodderClient(username, password, USER_AGENT_VALUE, DEBUG).authenticate())
+                if (!new GpodderClient(username, password, userAgentValue, DEBUG).authenticate())
                     cancel(true);
 
                 return null;

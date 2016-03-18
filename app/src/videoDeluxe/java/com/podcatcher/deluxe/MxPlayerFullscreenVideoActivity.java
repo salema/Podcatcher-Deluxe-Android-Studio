@@ -139,7 +139,7 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
         final List<String> headers = new ArrayList<>(4);
 
         headers.add(Podcatcher.USER_AGENT_KEY);
-        headers.add(Podcatcher.USER_AGENT_VALUE);
+        headers.add(Podcatcher.userAgentValue);
 
         // Put username and password if needed
         final String auth = episode.getPodcast().getAuthorization();
