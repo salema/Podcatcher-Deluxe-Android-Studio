@@ -61,14 +61,6 @@ public class PodcastTest extends InstrumentationTestCase {
 
     public final void testCompareTo() {
         assertTrue(new Podcast(null, null).compareTo(new Podcast(null, null)) == 0);
-        assertEquals("Bla".compareToIgnoreCase("ABZ"),
-                new Podcast("Bla", null).compareTo(new Podcast("ABZ", null)));
-        assertEquals("Bla".compareToIgnoreCase("bla"),
-                new Podcast("Bla", null).compareTo(new Podcast("bla", null)));
-        assertEquals("ABC".compareToIgnoreCase("ABZ"),
-                new Podcast("ABC", null).compareTo(new Podcast("ABZ", null)));
-        assertEquals("ABC".compareToIgnoreCase("ABC"),
-                new Podcast("ABC", null).compareTo(new Podcast("ABC", null)));
     }
 
     public final void testGetName() throws XmlPullParserException,
@@ -111,11 +103,10 @@ public class PodcastTest extends InstrumentationTestCase {
     public final void testGetEpisodeNumber() {
         assertEquals(0, new Podcast(null, null).getEpisodeCount());
 
-        Podcast tal = new Podcast("TAL",
-                "http://feeds.thisamericanlife.org/talpodcast");
-        assertEquals(0, tal.getEpisodeCount());
-        Utils.loadAndWait(tal);
-        assertEquals(1, tal.getEpisodeCount());
+        Podcast sn = new Podcast("SN", "http://feeds.twit.tv/sn.xml");
+        assertEquals(0, sn.getEpisodeCount());
+        Utils.loadAndWait(sn);
+        assertEquals(10, sn.getEpisodeCount());
     }
 
     public final void testGetEpisodes() {
@@ -211,6 +202,10 @@ public class PodcastTest extends InstrumentationTestCase {
 
         assertEquals("http://www.npr.org/rss/podcast.php?id=510289",
                 new Podcast(null, "http://www.npr.org/rss/podcast.php?id=510289").getUrl());
+
+        assertEquals("http://www.rts.ch/la-1ere/programmes/on-en-parle/podcast/?flux=rss",
+                new Podcast(null, "http://www.rts.ch/la-1ere/programmes/on-en-parle/podcast/?flux=rss").getUrl());
+
 
         assertEquals("http://mygreatpodcast.test.com/",
                 new Podcast(null, "http://mygreatpodcast.Test.com").getUrl());

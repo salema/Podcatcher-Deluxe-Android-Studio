@@ -154,7 +154,7 @@ public abstract class FeedEntity {
             String path = url.getPath();
             if (path == null || path.isEmpty())
                 path = "/";
-            else if (path.length() > 1 && path.endsWith("/"))
+            else if (path.length() > 1 && path.endsWith("/") && url.getQuery() == null)
                 path = path.substring(0, path.length() - 1);
 
             // Look at ports and only keep non-defaults

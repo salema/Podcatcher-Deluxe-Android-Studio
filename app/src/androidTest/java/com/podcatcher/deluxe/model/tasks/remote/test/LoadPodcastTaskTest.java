@@ -166,17 +166,17 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
         //assertTrue(mockLoader.failed);
         //assertEquals(mockLoader.code, PodcastLoadError.EXPLICIT_BLOCKED);
 
-        Podcast tal = new Podcast("TAL", "http://feeds.thisamericanlife.org/talpodcast");
-        loadAndWait(mockLoader, tal, false);
-        assertFalse(tal.isExplicit());
-        assertTrue(tal.getEpisodeCount() > 0);
-        assertFalse(tal.getEpisodes().get(0).isExplicit());
+        Podcast clean = new Podcast("SN", "http://feeds.twit.tv/sn.xml");
+        loadAndWait(mockLoader, clean, false);
+        assertFalse(clean.isExplicit());
+        assertTrue(clean.getEpisodeCount() > 0);
+        assertFalse(clean.getEpisodes().get(0).isExplicit());
         assertFalse(mockLoader.failed);
-        Podcast tal2 = new Podcast("TAL", "http://feeds.thisamericanlife.org/talpodcast");
-        loadAndWait(mockLoader, tal2, true);
-        assertFalse(tal2.isExplicit());
-        assertTrue(tal2.getEpisodeCount() > 0);
-        assertFalse(tal2.getEpisodes().get(0).isExplicit());
+        Podcast clean2 = new Podcast("SN", "http://feeds.twit.tv/sn.xml");
+        loadAndWait(mockLoader, clean2, true);
+        assertFalse(clean2.isExplicit());
+        assertTrue(clean2.getEpisodeCount() > 0);
+        assertFalse(clean2.getEpisodes().get(0).isExplicit());
         assertFalse(mockLoader.failed);
     }
 

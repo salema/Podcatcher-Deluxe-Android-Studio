@@ -125,14 +125,13 @@ public class EpisodeTest extends InstrumentationTestCase {
     }
 
     public final void testIsExplicit() {
-        Podcast wtf = new Podcast("Adam Carolla",
-                "http://feeds.feedburner.com/TheAdamCarollaPodcast");
-        Utils.loadAndWait(wtf);
-        assertTrue(wtf.getEpisodes().get(0).isExplicit());
+        Podcast explicit = new Podcast("Sandra", "http://sexnerdsandra.libsyn.com/rss");
+        Utils.loadAndWait(explicit);
+        assertTrue(explicit.getEpisodes().get(0).isExplicit());
 
-        Podcast tal = new Podcast("TAL", "http://feeds.thisamericanlife.org/talpodcast");
-        Utils.loadAndWait(tal);
-        assertFalse(tal.getEpisodes().get(0).isExplicit());
+        Podcast clean = new Podcast("SN", "http://feeds.twit.tv/sn.xml");
+        Utils.loadAndWait(clean);
+        assertFalse(clean.getEpisodes().get(0).isExplicit());
     }
 
     public final void testNormalizeUrl() {
