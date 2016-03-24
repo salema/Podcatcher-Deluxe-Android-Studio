@@ -406,8 +406,8 @@ public class AddSuggestionFragment extends Fragment implements OnChangePodcastLi
 
             // Update view visibility
             progressView.setVisibility(View.GONE);
-            suggestionsGridView.setVisibility(filteredSuggestionList.size() > 0 ? View.VISIBLE : View.GONE);
-            suggestionsGridEmptyView.setVisibility(filteredSuggestionList.size() == 0 ? View.VISIBLE : View.GONE);
+            suggestionsGridView.setVisibility(!filteredSuggestionList.isEmpty() ? View.VISIBLE : View.GONE);
+            suggestionsGridEmptyView.setVisibility(filteredSuggestionList.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 

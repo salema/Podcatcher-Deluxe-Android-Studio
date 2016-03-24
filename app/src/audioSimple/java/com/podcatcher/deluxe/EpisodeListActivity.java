@@ -300,7 +300,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 authorizationFragment.show(getFragmentManager(), AuthorizationFragment.TAG);
             } else {
                 // We might at least be able to show special episodes
-                if (currentEpisodeSet.size() > 0)
+                if (!currentEpisodeSet.isEmpty())
                     updateEpisodeListUi();
                 else
                     episodeListFragment.showLoadFailed(code);

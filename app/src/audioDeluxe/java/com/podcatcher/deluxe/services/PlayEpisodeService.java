@@ -697,7 +697,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         }
 
         // Alert listeners
-        if (listeners.size() > 0)
+        if (!listeners.isEmpty())
             for (PlayServiceListener listener : listeners)
                 listener.onPlaybackComplete();
     }
@@ -730,7 +730,7 @@ public class PlayEpisodeService extends Service implements OnPreparedListener,
         }
         // If there is anybody listening, alert and let them decide what to do
         // next, if not we reset and possibly stop ourselves
-        else if (listeners.size() > 0)
+        else if (!listeners.isEmpty())
             for (PlayServiceListener listener : listeners)
                 listener.onError();
         else
