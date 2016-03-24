@@ -134,8 +134,6 @@ public class MxPlayerFullscreenVideoActivity extends BaseActivity {
     }
 
     private String[] createHeaderList(Episode episode) {
-        // Header example from MX Player docs: String[] headers =
-        // new String[]{"User-Agent", "MX Player Caller App/1.0", "Extra-Header", "911"};
         final List<String> headers = new ArrayList<>(4);
 
         headers.add(Podcatcher.USER_AGENT_KEY);

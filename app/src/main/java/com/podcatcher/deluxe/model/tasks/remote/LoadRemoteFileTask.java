@@ -142,8 +142,6 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
                     connection.getContentEncoding().equals("gzip");
             final boolean sendLoadProgress = contentLength > 0 && !isZippedResponse;
 
-            // showResponseHeaderDetails(connection);
-
             // 2. Create the byte buffer to write to
             result = new ByteArrayOutputStream();
             publishProgress(Progress.LOAD);
@@ -196,8 +194,6 @@ public abstract class LoadRemoteFileTask<Params, Result> extends
 
             // Disconnect
             connection.disconnect();
-
-            // reportCacheStats();
         }
     }
 }

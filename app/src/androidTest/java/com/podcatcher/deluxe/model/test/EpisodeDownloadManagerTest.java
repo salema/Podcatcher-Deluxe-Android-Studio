@@ -30,8 +30,6 @@ public class EpisodeDownloadManagerTest extends InstrumentationTestCase {
     private static final String RESERVED_CHARS = "|\\?*<\":>+[]/'#!,&";
 
     public final void testSanitize() {
-        // assertEquals("", sanitizeAsFilePath("", "", ""));
-
         final char s = File.separatorChar;
         final String url = "http://www.example.com/podcast/";
 

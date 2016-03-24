@@ -163,8 +163,6 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
         loadAndWait(mockLoader, explicit2, true);
         assertTrue(explicit2.isExplicit());
         assertTrue(explicit2.getEpisodeCount() < episodeCountAll);
-        //assertTrue(mockLoader.failed);
-        //assertEquals(mockLoader.code, PodcastLoadError.EXPLICIT_BLOCKED);
 
         Podcast clean = new Podcast("SN", "http://feeds.twit.tv/sn.xml");
         loadAndWait(mockLoader, clean, false);

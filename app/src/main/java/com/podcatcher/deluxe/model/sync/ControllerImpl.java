@@ -119,14 +119,7 @@ public enum ControllerImpl {
      * controller runs on arm architectures only.)
      */
     public boolean isAvailable(Context context) {
-        switch (this) {
-            // Disabling check for now, the stores do that for us
-            /* case DROPBOX:
-                final String arch = System.getProperty("os.arch");
-                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US)); */
-            default:
-                return true;
-        }
+        return true;
     }
 
     /**
