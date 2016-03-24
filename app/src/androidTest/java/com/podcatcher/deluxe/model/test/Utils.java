@@ -81,6 +81,7 @@ public class Utils {
 
             @Override
             public void onPodcastLoadProgress(Podcast podcast, Progress progress) {
+                throw new UnsupportedOperationException();
             }
 
             @Override

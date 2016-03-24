@@ -495,6 +495,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     public void onSyncStarted() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
