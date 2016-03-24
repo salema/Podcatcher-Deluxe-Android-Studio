@@ -107,8 +107,8 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
         // know then, whether the list is actually empty). Also do not show it
         // if we are given an URL in the intent, because this will trigger the
         // dialog anyway.
-        isInitialAppStart = (savedInstanceState == null);
-        hasPodcastToAdd = (getIntent().getData() != null);
+        isInitialAppStart = savedInstanceState == null;
+        hasPodcastToAdd = getIntent().getData() != null;
         needsUiUpdateOnResume = !isInitialAppStart;
         // Check if podcast list is available - if so, set it
         List<Podcast> podcastList = podcastManager.getPodcastList();

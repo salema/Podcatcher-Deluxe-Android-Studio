@@ -657,7 +657,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             // Load in progress
         else
             contentSpinner.setSubtitle(getResources().getQuantityString(R.plurals.podcast_load_multiple_progress,
-                    podcastCount, (podcastCount - loadingPodcastCount), podcastCount));
+                    podcastCount, podcastCount - loadingPodcastCount, podcastCount));
     }
 
     /**
