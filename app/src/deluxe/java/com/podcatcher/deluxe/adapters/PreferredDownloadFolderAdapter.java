@@ -74,8 +74,8 @@ public class PreferredDownloadFolderAdapter extends PodcatcherBaseAdapter {
         SDCARD_APP;
 
         // Potential prefixes and paths to the external sd card
-        private static String[] SD_CARD_PREFIXES = {"/storage/", "/mnt/", "/"};
-        private static String[] SD_CARD_PATH_CANDIDATES = {
+        private static final String[] SD_CARD_PREFIXES = {"/storage/", "/mnt/", ""};
+        private static final String[] SD_CARD_PATH_CANDIDATES = {
                 "ext_sd", "external", "external_sd", "extSdCard",
                 "sdcard1", "sdcard2", "sdcard/ext_sd", "sdcard/external_sd"};
 

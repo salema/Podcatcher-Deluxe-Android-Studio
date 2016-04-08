@@ -430,6 +430,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     public void onSyncStarted() {
+        // Does nothing, we only react to onSyncCompleted()
     }
 
     @Override

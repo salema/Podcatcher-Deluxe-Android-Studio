@@ -95,6 +95,7 @@ public class Podcatcher extends Application {
         super.onCreate();
 
         // First things first, set-up user agent
+        // Since we use the app name resource, this cannot the static final
         USER_AGENT_VALUE = String.format("%1$s/%2$s", getString(R.string.app_name), VERSION_NAME);
 
         Picasso.with(this).setIndicatorsEnabled(BuildConfig.DEBUG);

@@ -18,7 +18,6 @@
 
 package com.podcatcher.deluxe.view.fragments;
 
-import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.R;
 import com.podcatcher.deluxe.listeners.PlayerListener;
 import com.podcatcher.deluxe.model.ParserUtils;
@@ -130,7 +129,7 @@ public class PlayerFragment extends Fragment {
     /**
      * Delay in between rewind or forward call-backs
      */
-    private static long TRANSPORT_DELAY = 500;
+    private static final long TRANSPORT_DELAY = 500;
     /**
      * The rewind runnable
      */

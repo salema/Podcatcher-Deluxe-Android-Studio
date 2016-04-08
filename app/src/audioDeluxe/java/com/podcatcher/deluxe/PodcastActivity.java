@@ -315,7 +315,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
                 final List<String> names = data.getStringArrayListExtra(getString(R.string.podcast_names_key));
                 final List<String> urls = data.getStringArrayListExtra(getString(R.string.podcast_urls_key));
                 // Yes, we got some podcasts from the Simple Podcatcher
-                if (names != null && names.size() > 0) {
+                if (names != null && !names.isEmpty()) {
                     // Make sure dialog does not pop up
                     hasEmptyPodcastList = false;
                     // Import all podcasts
@@ -493,6 +493,7 @@ public class PodcastActivity extends EpisodeListActivity implements OnBackStackC
 
     @Override
     public void onSyncStarted() {
+        // Does nothing, we only react to onSyncCompleted()
     }
 
     @Override

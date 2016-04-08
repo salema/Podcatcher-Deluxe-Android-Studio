@@ -141,7 +141,7 @@ public class PlayerFragment extends Fragment {
     /**
      * Delay in between rewind or forward call-backs
      */
-    private static long TRANSPORT_DELAY = 500;
+    private static final long TRANSPORT_DELAY = 500;
     /**
      * The rewind runnable
      */

@@ -61,7 +61,7 @@ public class SuggestionImporter extends InstrumentationTestCase {
     /**
      * String to put in JSON for missing values, use null to disable
      */
-    private static String NO_VALUE = null;
+    private static final String NO_VALUE = null;
 
     /**
      * Max age of latest podcast episode. Podcasts with older episodes

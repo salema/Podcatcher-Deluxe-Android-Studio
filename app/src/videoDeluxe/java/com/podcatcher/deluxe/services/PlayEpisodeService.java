@@ -811,9 +811,8 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         }
 
         // Alert listeners
-        if (listeners.size() > 0)
-            for (PlayServiceListener listener : listeners)
-                listener.onPlaybackComplete();
+        for (PlayServiceListener listener : listeners)
+            listener.onPlaybackComplete();
     }
 
     @Override
@@ -844,7 +843,7 @@ public class PlayEpisodeService extends Service implements MediaPlayerControl,
         }
         // If there is anybody listening, alert and let them decide what to do
         // next, if not we reset and possibly stop ourselves
-        else if (listeners.size() > 0)
+        else if (!listeners.isEmpty())
             for (PlayServiceListener listener : listeners)
                 listener.onError();
         else

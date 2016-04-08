@@ -212,6 +212,7 @@ public class LoadPodcastTaskTest extends InstrumentationTestCase {
 
         @Override
         public void onPodcastLoadProgress(Podcast podcast, Progress progress) {
+            // Ignore
         }
 
         @Override

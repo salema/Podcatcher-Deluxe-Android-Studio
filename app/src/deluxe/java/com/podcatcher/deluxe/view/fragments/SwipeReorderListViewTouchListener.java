@@ -143,6 +143,7 @@ public class SwipeReorderListViewTouchListener implements View.OnTouchListener {
 
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                // Skip
             }
         };
     }
