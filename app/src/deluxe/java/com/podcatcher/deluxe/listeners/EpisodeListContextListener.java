@@ -237,6 +237,7 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
         // Action picked, so close the CAB
         actionMode.finish();
     }
+
     /**
      * Trigger context action item "remove"
      */

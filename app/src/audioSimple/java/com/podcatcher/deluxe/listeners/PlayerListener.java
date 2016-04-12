@@ -28,25 +28,25 @@ public interface PlayerListener extends OnSeekBarChangeListener {
     /**
      * Load/unload of the current episode requested.
      */
-    public void onToggleLoad();
+    void onToggleLoad();
 
     /**
      * Play/pause of the current episode requested.
      */
-    public void onTogglePlay();
+    void onTogglePlay();
 
     /**
      * Rewind of the current episode requested.
      */
-    public void onRewind();
+    void onRewind();
 
     /**
      * Fast-forward of the current episode requested.
      */
-    public void onFastForward();
+    void onFastForward();
 
     /**
      * Alert the listener that it should return to the currently played episode.
      */
-    public void onReturnToPlayingEpisode();
+    void onReturnToPlayingEpisode();
 }

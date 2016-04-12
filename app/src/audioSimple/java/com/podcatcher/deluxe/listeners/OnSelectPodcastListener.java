@@ -31,25 +31,25 @@ public interface OnSelectPodcastListener {
      * @param selectedPodcast Podcast selected by the user (not
      *                        <code>null</code>).
      */
-    public void onPodcastSelected(Podcast selectedPodcast);
+    void onPodcastSelected(Podcast selectedPodcast);
 
     /**
      * Called on listener to reflect that all podcasts are selected.
      */
-    public void onAllPodcastsSelected();
+    void onAllPodcastsSelected();
 
     /**
      * Called on listener to reflect that downloads are selected.
      */
-    public void onDownloadsSelected();
+    void onDownloadsSelected();
 
     /**
      * Called on listener to reflect that no podcast is selected anymore.
      */
-    public void onNoPodcastSelected();
+    void onNoPodcastSelected();
 
     /**
      * Called on listener to indicate that the user did a swipe-to-refresh on the podcast list.
      */
-    public void onPodcastListSwipeToRefresh();
+    void onPodcastListSwipeToRefresh();
 }

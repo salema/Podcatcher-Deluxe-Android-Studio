@@ -142,9 +142,6 @@ public class EpisodeListContextListener implements MultiChoiceModeListener,
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-        // Get the list of checked positions
-        final ArrayList<Integer> positions = getCheckedPositions();
-
         switch (item.getItemId()) {
             case R.id.episode_download_contextmenuitem:
                 if (!((Podcatcher) fragment.getActivity().getApplication()).canWriteExternalStorage())
