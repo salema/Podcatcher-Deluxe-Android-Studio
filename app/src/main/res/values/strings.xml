@@ -128,6 +128,7 @@
     <string name="sync_unlink_title">Unlink %1$s</string>
     <string name="sync_unlink_message">Do you really want to unlink your %1$s account from this app? While this will end all sync action via %1$s for now, you can revert this by re-linking the app later.</string>
     <string name="sync_unlink_button">Unlink</string>
+    <string name="sync_dropbox_feed_file_header" translatable="false">### Your podcast list, add/remove shows here. The format is \'URL TITLE\', one feed per line. ###\n</string>
     <string name="sync_gpodder_config_title">Configure gpodder.net</string>
     <string name="sync_gpodder_login_invalid">Failed to log into gpodder.net, please check your credentials!</string>
     <string name="sync_gpodder_device_id">Device ID</string>

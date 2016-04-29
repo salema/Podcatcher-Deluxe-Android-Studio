@@ -29,9 +29,11 @@ import android.content.Context;
 public class DropboxSyncController extends DropboxEpisodeMetadataSyncController {
 
     /**
-     * Create a {@link SyncController} for the Dropbox service.
+     * Create new sync controller for the Dropbox service.
      *
-     * @param context Context we live in.
+     * @param context The context to read the configuration from, in particular
+     *                our {@link #ACCESS_TOKEN}. The controller will not function
+     *                unless this is set correctly.
      */
     public DropboxSyncController(Context context) {
         super(context);

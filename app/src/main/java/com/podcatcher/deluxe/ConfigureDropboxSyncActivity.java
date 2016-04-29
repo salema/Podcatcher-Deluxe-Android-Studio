@@ -25,50 +25,48 @@ import com.podcatcher.deluxe.view.fragments.ConfirmSyncUnlinkFragment.ConfirmSyn
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.dropbox.sync.android.DbxAccountManager;
+import com.dropbox.core.android.Auth;
 
 /**
  * Non-UI activity to configure the Dropbox synchronization settings.
  */
 public class ConfigureDropboxSyncActivity extends BaseActivity implements ConfirmSyncUnlinkDialogListener {
 
-    /**
-     * Our account manager handle
-     */
-    private DbxAccountManager accountManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.accountManager = DropboxSyncController.getAccountManager(this);
-
         if (savedInstanceState == null) {
             // Toggle link/unlink depending on current state
-            if (accountManager.hasLinkedAccount()) {
+            if (preferences.contains(DropboxSyncController.ACCESS_TOKEN)) {
                 // Show confirmation dialog, action occurs in call-back implementations below
                 final ConfirmSyncUnlinkFragment dialog = new ConfirmSyncUnlinkFragment();
                 dialog.setController(ControllerImpl.DROPBOX);
 
                 dialog.show(getFragmentManager(), null);
             } else
-                accountManager.startLink(this, 42);
+                Auth.startOAuth2Authentication(this, getString(R.string.dropbox_appkey));
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        setResult(resultCode);
+    protected void onRestart() {
+        super.onRestart();
+
+        final String token = Auth.getOAuth2Token();
+        if (token != null && !preferences.contains(DropboxSyncController.ACCESS_TOKEN))
+            preferences.edit().putString(DropboxSyncController.ACCESS_TOKEN, token).apply();
+
+        setResult(Activity.RESULT_OK);
         finish();
     }
 
     @Override
     public void onConfirmUnlink() {
         syncManager.setSyncMode(ControllerImpl.DROPBOX, null);
-        accountManager.unlink();
+        preferences.edit().remove(DropboxSyncController.ACCESS_TOKEN).apply();
 
         setResult(Activity.RESULT_OK);
         finish();

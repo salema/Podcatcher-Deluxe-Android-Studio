@@ -249,9 +249,8 @@
         <activity
             android:name="com.podcatcher.deluxe.ConfigurePodcareSyncActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name="com.dropbox.sync.android.DbxAuthActivity" />
         <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
+            android:name="com.dropbox.core.android.AuthActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <data android:scheme="@string/dropbox_scheme" />
@@ -262,11 +261,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="com.dropbox.sync.android.DbxSyncService"
-            android:enabled="true"
-            android:exported="false"
-            android:label="Dropbox Sync" />
         <service
             android:name="com.podcatcher.deluxe.services.PlayEpisodeService"
             android:exported="false">

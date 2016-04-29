@@ -120,10 +120,6 @@ public enum ControllerImpl {
      */
     public boolean isAvailable(Context context) {
         switch (this) {
-            // Disabling check for now, the stores do that for us
-            /* case DROPBOX:
-                final String arch = System.getProperty("os.arch");
-                return "arm".equals(arch.substring(0, 3).toLowerCase(Locale.US)); */
             default:
                 return true;
         }
@@ -143,7 +139,7 @@ public enum ControllerImpl {
 
         switch (this) {
             case DROPBOX:
-                return DropboxSyncController.getAccountManager(context).hasLinkedAccount();
+                return preferences.contains(DropboxSyncController.ACCESS_TOKEN);
             case GPODDER:
                 return preferences.contains(GpodderSyncController.USERNAME_KEY) &&
                         preferences.contains(GpodderSyncController.PASSWORD_KEY) &&

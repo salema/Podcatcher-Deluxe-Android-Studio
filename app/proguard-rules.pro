@@ -4,9 +4,11 @@
 # error reports so much more enjoyable...
 -dontobfuscate
 
-# Prevent ProGuard from deleting Dropbox stuff
--keep class com.dropbox.** {*;}
--dontwarn com.dropbox.ledger.**
+# Prevent proguard from deleting the Dropbox stuff
+-keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+-dontwarn com.dropbox.**
 
 # Prevent ProGuard from deleting Retrofit stuff
 -dontwarn retrofit2.**
