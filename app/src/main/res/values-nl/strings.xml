@@ -133,6 +133,7 @@
     <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
     <string name="sync_podcare_config_install">Installeer</string>
     <string name="sync_podcare_config_scan">Scan</string>
+    <string name="sync_podcare_config_connect_failed">Cannot connect to Podcare</string>
     <string name="preferences">Voorkeursinstellingen</string>
     <string name="pref_select_all_on_start_title">Selecteer alles bij opstarten</string>
     <string name="pref_select_all_on_start_summary">Laad alle afleveringen als de app opstart</string>

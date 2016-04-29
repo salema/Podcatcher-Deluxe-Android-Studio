@@ -133,6 +133,7 @@
     <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
     <string name="sync_podcare_config_install">Installa</string>
     <string name="sync_podcare_config_scan">Scansione</string>
+    <string name="sync_podcare_config_connect_failed">Cannot connect to Podcare</string>
     <string name="preferences">Preferenze</string>
     <string name="pref_select_all_on_start_title">Seleziona tutto all\'avvio</string>
     <string name="pref_select_all_on_start_summary">Carica tutte le sottoscrizioni all\'avvio dell\'app</string>

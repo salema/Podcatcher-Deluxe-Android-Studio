@@ -131,8 +131,9 @@
     <string name="sync_gpodder_device_id">ID de dispositivo</string>
     <string name="sync_podcare_config_title">Configure Podcare</string>
     <string name="sync_podcare_config_text">Please scan the QR code shown on the Podcare website to connect!</string>
-    <string name="sync_podcare_config_install">Install</string>
-    <string name="sync_podcare_config_scan">Scan</string>
+    <string name="sync_podcare_config_install">Instalar</string>
+    <string name="sync_podcare_config_scan">Sondar</string>
+    <string name="sync_podcare_config_connect_failed">Cannot connect to Podcare</string>
     <string name="preferences">Preferências</string>
     <string name="pref_select_all_on_start_title">Selecionar todos no arranque</string>
     <string name="pref_select_all_on_start_summary">Carregar todas as subscrições quando o aplicativo é iniciado</string>

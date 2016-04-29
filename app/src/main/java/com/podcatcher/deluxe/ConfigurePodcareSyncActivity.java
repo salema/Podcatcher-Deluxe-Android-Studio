@@ -95,6 +95,8 @@ public class ConfigurePodcareSyncActivity extends BaseActivity implements
 
                 @Override
                 public void onConnectFailed(PodcareException pe) {
+                    showToast(getString(R.string.sync_podcare_config_connect_failed));
+
                     setResult(RESULT_CANCELED);
                     finish();
                 }
