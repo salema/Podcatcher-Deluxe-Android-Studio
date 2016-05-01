@@ -18,6 +18,12 @@
 
 package com.podcatcher.deluxe.model;
 
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnSyncListener;
@@ -25,12 +31,6 @@ import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.SyncController;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncControllerListener;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncMode;
-
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -360,13 +360,16 @@ public class SyncManager implements SyncControllerListener {
         final Set<String> controllerIds = preferences.getStringSet(
                 SettingsActivity.KEY_SYNC_ACTIVE, null);
         if (controllerIds != null)
-            for (String id : controllerIds) {
-                final SyncController controller =
-                        ControllerImpl.create(podcatcher, ControllerImpl.valueOf(id));
-                activeControllers.add(controller);
-                controller.setListener(this);
-                controller.setMode(SyncMode.SEND_ONLY);
-            }
+            for (String id : controllerIds)
+                try {
+                    final SyncController controller =
+                            ControllerImpl.create(podcatcher, ControllerImpl.valueOf(id));
+                    activeControllers.add(controller);
+                    controller.setListener(this);
+                    controller.setMode(SyncMode.SEND_ONLY);
+                } catch (Throwable th) {
+                    // pass, we do not want this to make the app crash
+                }
 
         // Activate receiving controller (if any)
         if (preferences.getString(SettingsActivity.KEY_SYNC_RECEIVE, null) != null) {
