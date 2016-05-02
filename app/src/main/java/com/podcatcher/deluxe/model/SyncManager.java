@@ -18,12 +18,6 @@
 
 package com.podcatcher.deluxe.model;
 
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import com.podcatcher.deluxe.Podcatcher;
 import com.podcatcher.deluxe.SettingsActivity;
 import com.podcatcher.deluxe.listeners.OnSyncListener;
@@ -31,6 +25,12 @@ import com.podcatcher.deluxe.model.sync.ControllerImpl;
 import com.podcatcher.deluxe.model.sync.SyncController;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncControllerListener;
 import com.podcatcher.deluxe.model.sync.SyncController.SyncMode;
+
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.HashSet;
