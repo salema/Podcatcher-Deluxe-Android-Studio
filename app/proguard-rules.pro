@@ -5,10 +5,12 @@
 -dontobfuscate
 
 # Prevent proguard from deleting the Dropbox stuff
+-keepclassmembers class com.dropbox.core.** { @com.fasterxml.jackson.annotation.JsonCreator *; }
 -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
 -keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
 -dontwarn com.dropbox.**
+-dontwarn com.fasterxml.jackson.databind.**
+-adaptresourcefilenames com/dropbox/core/http/trusted-certs.raw
 
 # Prevent ProGuard from deleting Retrofit stuff
 -dontwarn retrofit2.**
