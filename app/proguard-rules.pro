@@ -5,7 +5,6 @@
 -dontobfuscate
 
 # Prevent proguard from deleting the Dropbox stuff
--keepclassmembers class com.dropbox.core.** { @com.fasterxml.jackson.annotation.JsonCreator *; }
 -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.dropbox.**
