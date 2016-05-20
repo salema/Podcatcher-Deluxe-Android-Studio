@@ -18,6 +18,7 @@
 
 package com.podcatcher.deluxe;
 
+import com.podcatcher.deluxe.model.SuggestionManager;
 import com.podcatcher.deluxe.view.fragments.FirstRunFragment;
 import com.podcatcher.deluxe.view.fragments.FirstRunFragment.FirstRunListener;
 
@@ -40,6 +41,10 @@ public class FirstRunActivity extends BaseActivity implements FirstRunListener {
 
         // Make sure we only run once
         preferences.edit().putBoolean(SettingsActivity.KEY_FIRST_RUN, false).apply();
+
+        // The user is very likely to see the suggested podcasts catalog
+        // really soon, start loading a fresh list right away
+        SuggestionManager.getInstance().load();
 
         // Create and show the fragment
         if (savedInstanceState == null) {
