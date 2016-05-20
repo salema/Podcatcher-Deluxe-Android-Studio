@@ -17,5 +17,5 @@
  */
 -->
 <resources>
-    <string name="app_name" translatable="false">MTG Podcasts</string>
+    <string name="app_name" translatable="false">Magic Podcasts</string>
 </resources>
