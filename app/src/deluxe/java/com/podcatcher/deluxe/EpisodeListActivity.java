@@ -725,7 +725,7 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
     }
 
     private boolean shouldAutoDownloadLatestEpisode(Podcast podcast) {
-        if (podcast == null || podcast.getEpisodeCount() == 0)
+        if (podcast == null || podcast.getEpisodeCount() == 0 || !podcastManager.contains(podcast))
             return false;
         else {
             final Episode latestEpisode = podcast.getEpisodes().get(0);
