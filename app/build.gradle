@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        versionCode 244
+        versionCode 245
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
@@ -83,7 +83,7 @@ android {
         simple {
             dimension "edition"
             applicationId "net.alliknow.podcatcher"
-            versionName "2016.05b"
+            versionName "2016.06"
 
             signingConfig audioSimpleSigningVariable
         }
@@ -93,14 +93,14 @@ android {
         audio {
             dimension "media"
             applicationId "com.podcatcher.deluxe"
-            versionName "2016.05b"
+            versionName "2016.06"
 
             signingConfig audioDeluxeSigningVariable
         }
         video {
             dimension "media"
             applicationId "com.podcatcher.deluxe.video"
-            versionName "2016.05b"
+            versionName "2016.06"
 
             signingConfig videoDeluxeSigningVariable
         }
@@ -126,16 +126,16 @@ dependencies {
     compile project(':gpodder_sync')
     compile project(':podcare_sync')
     // 2) Dropbox Sync
-    compile 'com.dropbox.core:dropbox-core-sdk:2.0.+'
+    compile 'com.dropbox.core:dropbox-core-sdk:2.0.3'
     // 3) Picasso (podcast logo loading)
-    compile 'com.squareup.picasso:picasso:+'
+    compile 'com.squareup.picasso:picasso:2.5.+'
 
     // 4) All the nice Android support stuff
     // (see http://developer.android.com/tools/support-library/features.html)
-    compile 'com.android.support:cardview-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.android.support:palette-v7:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.android.support:support-annotations:23.3.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:palette-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:support-annotations:23.4.0'
 }
