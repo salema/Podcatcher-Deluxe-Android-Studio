@@ -27,8 +27,6 @@ import static com.podcatcher.deluxe.model.EpisodeDownloadManager.sanitizeAsFileP
 @SuppressWarnings("javadoc")
 public class EpisodeDownloadManagerTest extends InstrumentationTestCase {
 
-    private static final String RESERVED_CHARS = "|\\?*<\":>+[]/'#!,&";
-
     public final void testSanitize() {
         // assertEquals("", sanitizeAsFilePath("", "", ""));
 

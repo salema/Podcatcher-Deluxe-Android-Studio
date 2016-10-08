@@ -203,17 +203,9 @@ public class SuggestionImporter extends InstrumentationTestCase {
 
         // Field will be access via GSON reflection
         private String title;
-        private String subtitle;
-        private String keywords;
-        private String feed;
-        private String logo;
-        private String site;
-        private String description;
         private Object[] category;
         private String language;
         private String type;
-        private String explicit;
-        private int votes;
         private String path;
 
         public JsonDummy(SuggestionImport si) {
