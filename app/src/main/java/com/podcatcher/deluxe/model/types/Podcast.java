@@ -632,6 +632,8 @@ public class Podcast extends FeedEntity implements Comparable<Podcast> {
                     case RSS.ITEM:
                         parseAndAddEpisode(parser, episodes, episodeIndex++);
                         break;
+                    default:
+                        break;
                 }
             }
 

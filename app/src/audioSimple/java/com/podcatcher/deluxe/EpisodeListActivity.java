@@ -158,6 +158,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
             case SMALL_PORTRAIT:
                 // This case should be handled by sub-classes
                 break;
+            default:
+                break;
         }
     }
 
@@ -197,6 +199,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 break;
             case SMALL_PORTRAIT:
                 // This case should be handled by sub-classes
+                break;
+            default:
                 break;
         }
     }
@@ -243,6 +247,8 @@ public abstract class EpisodeListActivity extends EpisodeActivity implements
                 break;
             case SMALL_PORTRAIT:
                 // This case should be handled by sub-classes
+                break;
+            default:
                 break;
         }
     }
