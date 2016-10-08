@@ -316,7 +316,7 @@ public class LoadPodcastTask extends LoadRemoteFileTask<Podcast, Void> {
             listener.onPodcastLoadFailed(podcast, errorCode);
     }
 
-    private byte[] removeLeadingWhitespaces(byte[] byteArray) {
+    private static byte[] removeLeadingWhitespaces(byte[] byteArray) {
         int firstNonWhiteSpacePosition = 0;
 
         // Trailing whitespaces make the XML pull parser fail, remove them

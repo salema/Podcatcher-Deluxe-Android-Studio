@@ -389,12 +389,12 @@ public class Episode extends FeedEntity implements Comparable<Episode> {
         parser.nextText();
     }
 
-    private String parseMediaType(String attributeValue) {
+    private static String parseMediaType(String attributeValue) {
         return attributeValue != null && attributeValue.trim().length() > 0 ?
                 attributeValue.trim().toLowerCase(Locale.US) : null;
     }
 
-    private int parseFileSize(String attributeValue) {
+    private static int parseFileSize(String attributeValue) {
         try {
             return Integer.valueOf(attributeValue);
         } catch (NumberFormatException | NullPointerException ne) {

@@ -66,7 +66,7 @@ public class EpisodeTest extends InstrumentationTestCase {
         assertTrue(dateOkay(e.parsePubDate("Sun, 10 Nov 2013 00:00:00 -0600")));
     }
 
-    private boolean dateOkay(Date date) {
+    private static boolean dateOkay(Date date) {
 
         return date != null &&
                 // No more then 10 years back

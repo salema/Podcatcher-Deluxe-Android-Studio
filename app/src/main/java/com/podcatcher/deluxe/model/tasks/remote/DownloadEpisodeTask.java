@@ -367,7 +367,7 @@ public class DownloadEpisodeTask extends AsyncTask<Episode, Long, Void> {
         listener.onEpisodeDownloadFailed(episode, downloadError);
     }
 
-    private boolean moveFile(File from, File to) {
+    private static boolean moveFile(File from, File to) {
         boolean success = true;
 
         BufferedInputStream reader = null;
